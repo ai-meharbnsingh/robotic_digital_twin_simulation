@@ -38,6 +38,9 @@ add_library(rdt_core STATIC
     src/network/ProtocolV1.cpp
     src/network/TCPServer.cpp
     src/network/RESTServer.cpp
+    src/fleet/TaskManager.cpp
+    src/fleet/COPPController.cpp
+    src/fleet/FleetManager.cpp
 )
 target_include_directories(rdt_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
