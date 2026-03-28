@@ -16,6 +16,10 @@ add_executable(rdt_tests
     test_motion.cpp
     test_battery.cpp
     test_obstacle.cpp
+    test_bt.cpp
+    test_protocol.cpp
+    test_tcp.cpp
+    test_rest.cpp
 )
 target_include_directories(rdt_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../include

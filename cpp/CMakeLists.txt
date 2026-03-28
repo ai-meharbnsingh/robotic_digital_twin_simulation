@@ -14,20 +14,12 @@ find_package(yaml-cpp CONFIG REQUIRED)
 # osqp may install as osqp or OSQP depending on vcpkg version
 find_package(osqp CONFIG REQUIRED)
 
-# ── BehaviorTree.CPP v4 via FetchContent ──
-include(FetchContent)
-FetchContent_Declare(
-    behaviortree_cpp
-    GIT_REPOSITORY https://github.com/BehaviorTree/BehaviorTree.CPP.git
-    GIT_TAG        4.6.2
-)
-# Disable BT tests/examples to speed up build
-set(BTCPP_BUILD_TOOLS OFF CACHE BOOL "" FORCE)
-set(BTCPP_EXAMPLES OFF CACHE BOOL "" FORCE)
-set(BTCPP_UNIT_TESTS OFF CACHE BOOL "" FORCE)
-FetchContent_MakeAvailable(behaviortree_cpp)
+# ── NOTE: BehaviorTree.CPP v4.6.2 FetchContent removed ──
+# BTCPP has a compile error (lexy typo) in v4.6.2.
+# We use a lightweight custom BT engine instead (src/behavior/).
+# It parses the same BTCPP v4 XML format using tinyxml2.
 
-# ── rdt_core static library (Logger, Timer, Config, Types, Navigation, Robot) ──
+# ── rdt_core static library (Logger, Timer, Config, Types, Navigation, Robot, Behavior, Network) ──
 add_library(rdt_core STATIC
     src/core/Logger.cpp
     src/core/Timer.cpp
@@ -40,6 +32,12 @@ add_library(rdt_core STATIC
     src/robot/MotionController.cpp
     src/robot/BatteryModel.cpp
     src/robot/ObstacleHandler.cpp
+    src/behavior/BTEngine.cpp
+    src/behavior/ActionNodes.cpp
+    src/behavior/ConditionNodes.cpp
+    src/network/ProtocolV1.cpp
+    src/network/TCPServer.cpp
+    src/network/RESTServer.cpp
 )
 target_include_directories(rdt_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
@@ -49,6 +47,7 @@ target_link_libraries(rdt_core PUBLIC
     fmt::fmt
     JsonCpp::JsonCpp
     yaml-cpp::yaml-cpp
+    tinyxml2::tinyxml2
 )
 
 # ── FMS Server executable ──
