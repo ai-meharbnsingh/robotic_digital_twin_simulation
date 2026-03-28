@@ -150,20 +150,34 @@ No task is done until its test passes for real.
 - [ ] 11.6 **GREEN:** docs/ — getting started, API ref, config guide
 - [ ] 11.7 **FINAL KIMI AUDIT** — blueprint delta = 0, no dead code, no faking
 
-## Phase 12: io-gita Accuracy Fix (FMS Timing Features)
-**Goal:** 71% → 90%+ zone accuracy by adding P22 Features 15-16.
+## Phase 12: io-gita Accuracy Fix — Use P22 Proven Method
+**Goal:** 71% → 95%+ zone accuracy. P22 achieved 100% on 25 zones. Use the same approach.
 
-**Problem:** Uniform shelf geometry = identical LiDAR readings across aisles. io-gita graph filter narrows to 3 candidates but can't pick the right one from identical signatures.
+**What P22 did right (100% accuracy):**
+1. 360-ray LiDAR scan per zone (not 36 rays)
+2. 7 distinct zone types with DIFFERENT scan signatures (dock≠aisle≠shelf≠cross≠hub≠lane≠mid)
+3. 16 features from FULL 360° scan: sector clearances, variance, gap count, symmetry, density
+4. Graph adjacency filter after ODE (only reachable neighbors)
+5. Odometry features: dist_from_dock + heading + turns_since_dock
 
-**Solution:** The FMS knows when/where the robot was last seen. Use that:
-- Feature 15: `distance_since_last_known = velocity × time_elapsed`
-- Feature 16: `heading_changes_since_last_known`
-- These eliminate "wrong identical aisle" candidates because the robot physically couldn't have traveled that far.
+**What our sim did wrong (71% accuracy):**
+1. Only 36 rays (not 360)
+2. Uniform shelf geometry (all shelves look identical)
+3. Features too sparse to discriminate identical corridors
 
-- [ ] 12.1 **TEST RED:** `test_iogita_fms_features.py` — zone accuracy >85% on BotValley with FMS timing
-- [ ] 12.2 **GREEN:** Add `FMSTimingFeature` to `zone_identifier.py` — reads last_known_node + timestamp + velocity from FMS state
-- [ ] 12.3 **GREEN:** Add distance/heading features to feature vector (expand from 16 to 18 features)
-- [ ] 12.4 **GREEN:** Update cold_start.py — use FMS timing in recovery hints
-- [ ] 12.5 **TEST:** Run BotValley 63-node accuracy test — must exceed 85%
-- [ ] 12.6 **TEST:** Run uniform-shelf-grid accuracy — must exceed 80%
-- [ ] 12.7 **AUDIT** — Kimi/Gemini review
+**Fix: Port P22's exact cold_start_v2.py approach:**
+- Use 360-ray LiDAR from Gazebo (our plugin already supports configurable rays)
+- Generate zone-type-specific scan signatures (dock/aisle/shelf/cross/hub patterns from P22)
+- Use P22's extract_16_features() function (sector clearances + variance + gaps + symmetry)
+- Add FMS timing features (distance + heading since last known)
+- Graph disambiguation after ODE
+
+Source: case-studies/project_22_not_llm_maddy/io-gita/use_case_folder/robotics/cold_start_aliasing/cold_start_v2.py
+
+- [ ] 12.1 **Copy** P22's `generate_zone_scan()` and `extract_16_features()` into zone_identifier.py
+- [ ] 12.2 **Update** Gazebo robot model to use 360 rays (already configurable in YAML: sensors.lidar.rays)
+- [ ] 12.3 **Add** FMS timing features (distance + heading since last known = Features 15-16)
+- [ ] 12.4 **TEST:** BotValley 63-node accuracy >90%
+- [ ] 12.5 **TEST:** simple_grid 25-node accuracy >95%
+- [ ] 12.6 **TEST:** Cold start recovery <2s maintained
+- [ ] 12.7 **AUDIT** — target 95/100
