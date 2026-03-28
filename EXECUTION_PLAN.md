@@ -8,90 +8,90 @@ No task is done until its test passes for real.
 ## Phase 1: Project Scaffolding + Build System
 **Goal:** `cmake .. && make` works. `docker compose up` works. Tests run (0 tests, 0 failures).
 
-- [ ] 1.1 Create `CMakeLists.txt` (top-level) — sets C++17, finds vcpkg
-- [ ] 1.2 Create `cpp/CMakeLists.txt` — builds fms_server target
-- [ ] 1.3 Create `vcpkg.json` — declares all C++ dependencies
-- [ ] 1.4 Create `cpp/src/apps/fms_server.cpp` — "Hello FMS" main()
-- [ ] 1.5 Create `cpp/tests/CMakeLists.txt` + `test_hello.cpp` — gtest runs
-- [ ] 1.6 Create `python/requirements.txt` — FastAPI, motor, redis, influxdb-client, sg_engine
-- [ ] 1.7 Create `python/app/main.py` — FastAPI hello endpoint
-- [ ] 1.8 Create `python/tests/test_hello.py` — pytest runs
-- [ ] 1.9 Create `docker/Dockerfile` — multi-stage: C++ build + Python runtime
-- [ ] 1.10 Create `docker/docker-compose.yml` — fms + mongodb + rabbitmq + redis + influxdb + grafana
-- [ ] 1.11 Create `docker/start.sh` — launches C++ fms_server + Python FastAPI
-- [ ] 1.12 Create `configs/warehouses/botvalley.json` — copy BotValley.map (63 nodes)
-- [ ] 1.13 Create `configs/warehouses/simple_grid.json` — 5x5 demo grid
-- [ ] 1.14 Create `configs/robots/differential_drive.yaml` — generic AMR preset
-- [ ] 1.15 Create `configs/robots/unidirectional.yaml` — generic AGV preset
-- [ ] 1.16 Create `configs/behavior_trees/default_agv.xml` — basic BT
-- [ ] 1.17 Create `configs/behavior_trees/default_amr.xml` — basic BT
-- [ ] 1.18 **TEST:** `cmake .. && make` compiles fms_server
-- [ ] 1.19 **TEST:** `ctest` runs gtest, 0 failures
-- [ ] 1.20 **TEST:** `pytest python/tests/` runs, 0 failures
-- [ ] 1.21 **TEST:** `docker build` succeeds
-- [ ] 1.22 **KIMI REVIEW** → fix findings → re-test
+- [x] 1.1 Create `CMakeLists.txt` (top-level) — sets C++17, finds vcpkg
+- [x] 1.2 Create `cpp/CMakeLists.txt` — builds fms_server target
+- [x] 1.3 Create `vcpkg.json` — declares all C++ dependencies
+- [x] 1.4 Create `cpp/src/apps/fms_server.cpp` — "Hello FMS" main()
+- [x] 1.5 Create `cpp/tests/CMakeLists.txt` + `test_hello.cpp` — gtest runs
+- [x] 1.6 Create `python/requirements.txt` — FastAPI, motor, redis, influxdb-client, sg_engine
+- [x] 1.7 Create `python/app/main.py` — FastAPI hello endpoint
+- [x] 1.8 Create `python/tests/test_hello.py` — pytest runs
+- [x] 1.9 Create `docker/Dockerfile` — multi-stage: C++ build + Python runtime
+- [x] 1.10 Create `docker/docker-compose.yml` — fms + mongodb + rabbitmq + redis + influxdb + grafana
+- [x] 1.11 Create `docker/start.sh` — launches C++ fms_server + Python FastAPI
+- [x] 1.12 Create `configs/warehouses/botvalley.json` — copy BotValley.map (63 nodes)
+- [x] 1.13 Create `configs/warehouses/simple_grid.json` — 5x5 demo grid
+- [x] 1.14 Create `configs/robots/differential_drive.yaml` — generic AMR preset
+- [x] 1.15 Create `configs/robots/unidirectional.yaml` — generic AGV preset
+- [x] 1.16 Create `configs/behavior_trees/default_agv.xml` — basic BT
+- [x] 1.17 Create `configs/behavior_trees/default_amr.xml` — basic BT
+- [x] 1.18 **TEST:** `cmake .. && make` compiles fms_server
+- [x] 1.19 **TEST:** `ctest` runs gtest, 0 failures
+- [x] 1.20 **TEST:** `pytest python/tests/` runs, 0 failures
+- [x] 1.21 **TEST:** `docker build` succeeds
+- [x] 1.22 **KIMI REVIEW** → fix findings → re-test
 
 ## Phase 2: Core C++ Library
 **Goal:** Logger, Config, Types, Timer — used by everything.
 
-- [ ] 2.1 **TEST RED:** `test_logger.cpp` — log info/warn/error, check file output
-- [ ] 2.2 **GREEN:** `cpp/src/core/Logger.h/.cpp` — spdlog wrapper, JSON format
-- [ ] 2.3 **TEST RED:** `test_config.cpp` — load YAML, get robot params, get warehouse
-- [ ] 2.4 **GREEN:** `cpp/src/core/Config.h/.cpp` — loads configs/robots/*.yaml + configs/warehouses/*.json
-- [ ] 2.5 **TEST RED:** `test_types.cpp` — Pose, Velocity, RobotState serialization
-- [ ] 2.6 **GREEN:** `cpp/src/core/Types.h` — Pose, Velocity, BatteryState, RobotState, TaskState
-- [ ] 2.7 **TEST RED:** `test_timer.cpp` — high-res timer, 15Hz tick accuracy
-- [ ] 2.8 **GREEN:** `cpp/src/core/Timer.h/.cpp` — steady_clock, tick(), elapsed_ms()
-- [ ] 2.9 **KIMI REVIEW** → fix → re-test
+- [x] 2.1 **TEST RED:** `test_logger.cpp` — log info/warn/error, check file output
+- [x] 2.2 **GREEN:** `cpp/src/core/Logger.h/.cpp` — spdlog wrapper, JSON format
+- [x] 2.3 **TEST RED:** `test_config.cpp` — load YAML, get robot params, get warehouse
+- [x] 2.4 **GREEN:** `cpp/src/core/Config.h/.cpp` — loads configs/robots/*.yaml + configs/warehouses/*.json
+- [x] 2.5 **TEST RED:** `test_types.cpp` — Pose, Velocity, RobotState serialization
+- [x] 2.6 **GREEN:** `cpp/src/core/Types.h` — Pose, Velocity, BatteryState, RobotState, TaskState
+- [x] 2.7 **TEST RED:** `test_timer.cpp` — high-res timer, 15Hz tick accuracy
+- [x] 2.8 **GREEN:** `cpp/src/core/Timer.h/.cpp` — steady_clock, tick(), elapsed_ms()
+- [x] 2.9 **KIMI REVIEW** → fix → re-test
 
 ## Phase 3: Navigation Engine (C++)
 **Goal:** A* finds real paths on BotValley. Node reservation prevents deadlocks.
 
-- [ ] 3.1 **TEST RED:** `test_graph.cpp` — load botvalley.json, 63 nodes, 63 edges
-- [ ] 3.2 **GREEN:** `cpp/src/navigation/GraphMap.h/.cpp`
-- [ ] 3.3 **TEST RED:** `test_astar.cpp` — path c1→k3 = 25 hops, <10ms
-- [ ] 3.4 **GREEN:** `cpp/src/navigation/AStar.h/.cpp` — Manhattan/Euclidean/Chebyshev
-- [ ] 3.5 **TEST RED:** `test_quadtree.cpp` — nearest node queries <1ms
-- [ ] 3.6 **GREEN:** `cpp/src/navigation/QuadTree.h/.cpp`
-- [ ] 3.7 **TEST RED:** `test_reservation.cpp` — 2 robots, no deadlock, ILP solves <15ms
-- [ ] 3.8 **GREEN:** `cpp/src/navigation/NodeReservation.h/.cpp` — OSQP-based
-- [ ] 3.9 **KIMI REVIEW** → fix → re-test
+- [x] 3.1 **TEST RED:** `test_graph.cpp` — load botvalley.json, 63 nodes, 63 edges
+- [x] 3.2 **GREEN:** `cpp/src/navigation/GraphMap.h/.cpp`
+- [x] 3.3 **TEST RED:** `test_astar.cpp` — path c1→k3 = 25 hops, <10ms
+- [x] 3.4 **GREEN:** `cpp/src/navigation/AStar.h/.cpp` — Manhattan/Euclidean/Chebyshev
+- [x] 3.5 **TEST RED:** `test_quadtree.cpp` — nearest node queries <1ms
+- [x] 3.6 **GREEN:** `cpp/src/navigation/QuadTree.h/.cpp`
+- [x] 3.7 **TEST RED:** `test_reservation.cpp` — 2 robots, no deadlock, ILP solves <15ms
+- [x] 3.8 **GREEN:** `cpp/src/navigation/NodeReservation.h/.cpp` — OSQP-based
+- [x] 3.9 **KIMI REVIEW** → fix → re-test
 
 ## Phase 4: Robot Control (C++)
 **Goal:** Robot state machine + MPC + battery from YAML.
 
-- [ ] 4.1 **TEST RED:** `test_robot_state.cpp` — IDLE→MOVING→CHARGING transitions
-- [ ] 4.2 **GREEN:** `cpp/src/robot/RobotState.h/.cpp`
-- [ ] 4.3 **TEST RED:** `test_mpc.cpp` — OSQP solve <50ms, 12 opt vars
-- [ ] 4.4 **GREEN:** `cpp/src/robot/MotionController.h/.cpp`
-- [ ] 4.5 **TEST RED:** `test_battery.cpp` — charge 450s, discharge 60000s, 0.01% accuracy
-- [ ] 4.6 **GREEN:** `cpp/src/robot/BatteryModel.h/.cpp` — reads from YAML
-- [ ] 4.7 **TEST RED:** `test_obstacle.cpp` — 0.7/0.8/1.5m from YAML
-- [ ] 4.8 **GREEN:** `cpp/src/robot/ObstacleHandler.h/.cpp` — reads from YAML
-- [ ] 4.9 **KIMI REVIEW** → fix → re-test
+- [x] 4.1 **TEST RED:** `test_robot_state.cpp` — IDLE→MOVING→CHARGING transitions
+- [x] 4.2 **GREEN:** `cpp/src/robot/RobotState.h/.cpp`
+- [x] 4.3 **TEST RED:** `test_mpc.cpp` — OSQP solve <50ms, 12 opt vars
+- [x] 4.4 **GREEN:** `cpp/src/robot/MotionController.h/.cpp`
+- [x] 4.5 **TEST RED:** `test_battery.cpp` — charge 450s, discharge 60000s, 0.01% accuracy
+- [x] 4.6 **GREEN:** `cpp/src/robot/BatteryModel.h/.cpp` — reads from YAML
+- [x] 4.7 **TEST RED:** `test_obstacle.cpp` — 0.7/0.8/1.5m from YAML
+- [x] 4.8 **GREEN:** `cpp/src/robot/ObstacleHandler.h/.cpp` — reads from YAML
+- [x] 4.9 **KIMI REVIEW** → fix → re-test
 
 ## Phase 5: Behavior Tree Engine (C++)
 **Goal:** BTCPP v4 runs behavior trees, ticks actions.
 
-- [ ] 5.1 **TEST RED:** `test_bt.cpp` — load XML, tick, action sequence correct
-- [ ] 5.2 **GREEN:** `cpp/src/behavior/BTEngine.h/.cpp` — BTCPP v4 wrapper
-- [ ] 5.3 **GREEN:** `cpp/src/behavior/ActionNodes.h/.cpp` — Move, Dock, Charge, Load, Unload
-- [ ] 5.4 **GREEN:** `cpp/src/behavior/ConditionNodes.h/.cpp` — BatteryLow, TaskAvailable
-- [ ] 5.5 **TEST RED:** `test_bt_lifecycle.cpp` — full AGV cycle: idle→pick→move→drop→charge
-- [ ] 5.6 **KIMI REVIEW** → fix → re-test
+- [x] 5.1 **TEST RED:** `test_bt.cpp` — load XML, tick, action sequence correct
+- [x] 5.2 **GREEN:** `cpp/src/behavior/BTEngine.h/.cpp` — BTCPP v4 wrapper
+- [x] 5.3 **GREEN:** `cpp/src/behavior/ActionNodes.h/.cpp` — Move, Dock, Charge, Load, Unload
+- [x] 5.4 **GREEN:** `cpp/src/behavior/ConditionNodes.h/.cpp` — BatteryLow, TaskAvailable
+- [x] 5.5 **TEST RED:** `test_bt_lifecycle.cpp` — full AGV cycle: idle→pick→move→drop→charge
+- [x] 5.6 **KIMI REVIEW** → fix → re-test
 
 ## Phase 6: Communication Layer (C++)
 **Goal:** TCP server accepts robots. MongoDB writes state. REST serves fleet data.
 
-- [ ] 6.1 **TEST RED:** `test_protocol.cpp` — parse/serialize 33 fields + CRC32
-- [ ] 6.2 **GREEN:** `cpp/src/network/ProtocolV1.h/.cpp`
-- [ ] 6.3 **TEST RED:** `test_tcp.cpp` — server accepts connection, receives message
-- [ ] 6.4 **GREEN:** `cpp/src/network/TCPServer.h/.cpp` — ASIO-based
-- [ ] 6.5 **TEST RED:** `test_mongodb.cpp` — write agent state, read back
-- [ ] 6.6 **GREEN:** `cpp/src/database/MongoDBWriter.h/.cpp`
-- [ ] 6.7 **TEST RED:** `test_rest.cpp` — GET /api/fleet/status returns JSON
-- [ ] 6.8 **GREEN:** `cpp/src/network/RESTServer.h/.cpp`
-- [ ] 6.9 **KIMI REVIEW** → fix → re-test
+- [x] 6.1 **TEST RED:** `test_protocol.cpp` — parse/serialize 33 fields + CRC32
+- [x] 6.2 **GREEN:** `cpp/src/network/ProtocolV1.h/.cpp`
+- [x] 6.3 **TEST RED:** `test_tcp.cpp` — server accepts connection, receives message
+- [x] 6.4 **GREEN:** `cpp/src/network/TCPServer.h/.cpp` — ASIO-based
+- [x] 6.5 **TEST RED:** `test_mongodb.cpp` — write agent state, read back
+- [x] 6.6 **GREEN:** `cpp/src/database/MongoDBWriter.h/.cpp`
+- [x] 6.7 **TEST RED:** `test_rest.cpp` — GET /api/fleet/status returns JSON
+- [x] 6.8 **GREEN:** `cpp/src/network/RESTServer.h/.cpp`
+- [x] 6.9 **KIMI REVIEW** → fix → re-test
 
 ## Phase 7: Fleet Management Server (C++)
 **Goal:** 15Hz loop, 10 robots, 0 deadlocks.
