@@ -1,0 +1,182 @@
+Running main() from /Users/meharban/vcpkg/buildtrees/gtest/src/v1.17.0-0c449efaff.clean/googletest/src/gtest_main.cc
+[==========] Running 75 tests from 5 test suites.
+[----------] Global test environment set-up.
+[----------] 1 test from HelloTest
+[ RUN      ] HelloTest.ServerExists
+[       OK ] HelloTest.ServerExists (0 ms)
+[----------] 1 test from HelloTest (0 ms total)
+
+[----------] 11 tests from LoggerTest
+[ RUN      ] LoggerTest.InitSucceeds
+[       OK ] LoggerTest.InitSucceeds (0 ms)
+[ RUN      ] LoggerTest.InitWithAllLevels
+[       OK ] LoggerTest.InitWithAllLevels (0 ms)
+[ RUN      ] LoggerTest.GetReturnsValidLogger
+[       OK ] LoggerTest.GetReturnsValidLogger (0 ms)
+[ RUN      ] LoggerTest.LogMacrosDoNotCrashBeforeInit
+[       OK ] LoggerTest.LogMacrosDoNotCrashBeforeInit (0 ms)
+[ RUN      ] LoggerTest.LogMacrosDoNotCrashAfterInit
+[2026-03-28 10:39:03.669] [trace] [2286397] trace message
+[2026-03-28 10:39:03.669] [debug] [2286397] debug message
+[2026-03-28 10:39:03.669] [info] [2286397] info message: 42
+[2026-03-28 10:39:03.669] [warning] [2286397] warn message
+[2026-03-28 10:39:03.669] [error] [2286397] error message
+[2026-03-28 10:39:03.669] [critical] [2286397] critical message
+[       OK ] LoggerTest.LogMacrosDoNotCrashAfterInit (0 ms)
+[ RUN      ] LoggerTest.FileIsCreatedWhenPathGiven
+[2026-03-28 10:39:03.669] [info] [2286397] file creation test message
+[       OK ] LoggerTest.FileIsCreatedWhenPathGiven (1 ms)
+[ RUN      ] LoggerTest.FileContainsLoggedMessages
+[2026-03-28 10:39:03.670] [info] [2286397] UNIQUE_TEST_MARKER_12345
+[       OK ] LoggerTest.FileContainsLoggedMessages (0 ms)
+[ RUN      ] LoggerTest.FileOutputIsJsonFormat
+[2026-03-28 10:39:03.670] [info] [2286397] json format test
+[       OK ] LoggerTest.FileOutputIsJsonFormat (0 ms)
+[ RUN      ] LoggerTest.ReinitializationWorks
+[       OK ] LoggerTest.ReinitializationWorks (0 ms)
+[ RUN      ] LoggerTest.ShutdownCleansUp
+[       OK ] LoggerTest.ShutdownCleansUp (0 ms)
+[ RUN      ] LoggerTest.LevelFilteringWorks
+[2026-03-28 10:39:03.671] [warning] [2286397] should_appear_warn
+[2026-03-28 10:39:03.671] [error] [2286397] should_appear_error
+[       OK ] LoggerTest.LevelFilteringWorks (0 ms)
+[----------] 11 tests from LoggerTest (2 ms total)
+
+[----------] 12 tests from TimerTest
+[ RUN      ] TimerTest.ElapsedIsZeroBeforeTick
+[       OK ] TimerTest.ElapsedIsZeroBeforeTick (0 ms)
+[ RUN      ] TimerTest.ElapsedIsPositiveAfterTick
+[       OK ] TimerTest.ElapsedIsPositiveAfterTick (5 ms)
+[ RUN      ] TimerTest.TickCountIncrements
+[       OK ] TimerTest.TickCountIncrements (0 ms)
+[ RUN      ] TimerTest.ElapsedResetsOnTick
+[       OK ] TimerTest.ElapsedResetsOnTick (24 ms)
+[ RUN      ] TimerTest.SleepUntilNextSleepsCorrectDuration
+[       OK ] TimerTest.SleepUntilNextSleepsCorrectDuration (110 ms)
+[ RUN      ] TimerTest.SleepUntilNextReturnsImmediatelyWhenOverBudget
+[       OK ] TimerTest.SleepUntilNextReturnsImmediatelyWhenOverBudget (50 ms)
+[ RUN      ] TimerTest.SleepUntilNextWithPartialWork
+[       OK ] TimerTest.SleepUntilNextWithPartialWork (68 ms)
+[ RUN      ] TimerTest.FrequencyIsZeroBeforeTwoTicks
+[       OK ] TimerTest.FrequencyIsZeroBeforeTwoTicks (0 ms)
+[ RUN      ] TimerTest.FrequencyMeasures10HzAt100msIntervals
+[       OK ] TimerTest.FrequencyMeasures10HzAt100msIntervals (100 ms)
+[ RUN      ] TimerTest.FrequencyMeasures15HzAt67msIntervals
+[       OK ] TimerTest.FrequencyMeasures15HzAt67msIntervals (68 ms)
+[ RUN      ] TimerTest.FrequencyUpdatesWithLatestInterval
+[       OK ] TimerTest.FrequencyUpdatesWithLatestInterval (155 ms)
+[ RUN      ] TimerTest.SimulatedLoopMaintainsTargetFrequency
+[       OK ] TimerTest.SimulatedLoopMaintainsTargetFrequency (531 ms)
+[----------] 12 tests from TimerTest (1114 ms total)
+
+[----------] 19 tests from TypesTest
+[ RUN      ] TypesTest.PoseDefaultConstructorInitializesToZero
+[       OK ] TypesTest.PoseDefaultConstructorInitializesToZero (0 ms)
+[ RUN      ] TypesTest.PoseEqualityOperator
+[       OK ] TypesTest.PoseEqualityOperator (0 ms)
+[ RUN      ] TypesTest.PoseJsonRoundtrip
+[       OK ] TypesTest.PoseJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.VelocityDefaultZero
+[       OK ] TypesTest.VelocityDefaultZero (0 ms)
+[ RUN      ] TypesTest.VelocityJsonRoundtrip
+[       OK ] TypesTest.VelocityJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.BatteryStateDefaultValues
+[       OK ] TypesTest.BatteryStateDefaultValues (0 ms)
+[ RUN      ] TypesTest.BatteryStateJsonRoundtrip
+[       OK ] TypesTest.BatteryStateJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.ObstacleReadingDefaultValues
+[       OK ] TypesTest.ObstacleReadingDefaultValues (0 ms)
+[ RUN      ] TypesTest.ObstacleReadingJsonRoundtrip
+[       OK ] TypesTest.ObstacleReadingJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.RobotStateEnumValues
+[       OK ] TypesTest.RobotStateEnumValues (0 ms)
+[ RUN      ] TypesTest.RobotStateToString
+[       OK ] TypesTest.RobotStateToString (0 ms)
+[ RUN      ] TypesTest.TaskStateEnumValues
+[       OK ] TypesTest.TaskStateEnumValues (0 ms)
+[ RUN      ] TypesTest.TaskTypeEnumValues
+[       OK ] TypesTest.TaskTypeEnumValues (0 ms)
+[ RUN      ] TypesTest.RobotTypeStringRoundtrip
+[       OK ] TypesTest.RobotTypeStringRoundtrip (0 ms)
+[ RUN      ] TypesTest.MapNodeToJsonRoundtrip
+[       OK ] TypesTest.MapNodeToJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.MapNodeWithRealValues
+[       OK ] TypesTest.MapNodeWithRealValues (0 ms)
+[ RUN      ] TypesTest.MapEdgeToJsonRoundtrip
+[       OK ] TypesTest.MapEdgeToJsonRoundtrip (0 ms)
+[ RUN      ] TypesTest.MapEdgeDirectional
+[       OK ] TypesTest.MapEdgeDirectional (0 ms)
+[ RUN      ] TypesTest.MapEdgeDefaultBidirectional
+[       OK ] TypesTest.MapEdgeDefaultBidirectional (0 ms)
+[----------] 19 tests from TypesTest (0 ms total)
+
+[----------] 32 tests from ConfigTest
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_NodeCount
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_NodeCount (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_EdgeCount
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_EdgeCount (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_ZoneCount
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_ZoneCount (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_Name
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_Name (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_GridSpacing
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_GridSpacing (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_FirstNode
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_FirstNode (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_HubNode
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_HubNode (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_ZoneDetails
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_ZoneDetails (0 ms)
+[ RUN      ] ConfigTest.LoadSimpleGridWarehouse_FirstEdge
+[       OK ] ConfigTest.LoadSimpleGridWarehouse_FirstEdge (0 ms)
+[ RUN      ] ConfigTest.LoadWarehouse_InvalidPath_Throws
+[       OK ] ConfigTest.LoadWarehouse_InvalidPath_Throws (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_MaxLinearVelocity
+[       OK ] ConfigTest.LoadDiffDrive_MaxLinearVelocity (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Name
+[       OK ] ConfigTest.LoadDiffDrive_Name (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Type
+[       OK ] ConfigTest.LoadDiffDrive_Type (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_MotionParams
+[       OK ] ConfigTest.LoadDiffDrive_MotionParams (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Dimensions
+[       OK ] ConfigTest.LoadDiffDrive_Dimensions (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Battery
+[       OK ] ConfigTest.LoadDiffDrive_Battery (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_ObstacleThresholds
+[       OK ] ConfigTest.LoadDiffDrive_ObstacleThresholds (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Sensors
+[       OK ] ConfigTest.LoadDiffDrive_Sensors (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Attachment
+[       OK ] ConfigTest.LoadDiffDrive_Attachment (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_Mpc
+[       OK ] ConfigTest.LoadDiffDrive_Mpc (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_ActionCodes
+[       OK ] ConfigTest.LoadDiffDrive_ActionCodes (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_ResponseCodes
+[       OK ] ConfigTest.LoadDiffDrive_ResponseCodes (0 ms)
+[ RUN      ] ConfigTest.LoadDiffDrive_BehaviorTree
+[       OK ] ConfigTest.LoadDiffDrive_BehaviorTree (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_MaxLinearVelocity
+[       OK ] ConfigTest.LoadUnidirectional_MaxLinearVelocity (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_Name
+[       OK ] ConfigTest.LoadUnidirectional_Name (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_Type
+[       OK ] ConfigTest.LoadUnidirectional_Type (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_CurveVelocity
+[       OK ] ConfigTest.LoadUnidirectional_CurveVelocity (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_Battery
+[       OK ] ConfigTest.LoadUnidirectional_Battery (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_Attachment
+[       OK ] ConfigTest.LoadUnidirectional_Attachment (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_ImuDisabled
+[       OK ] ConfigTest.LoadUnidirectional_ImuDisabled (0 ms)
+[ RUN      ] ConfigTest.LoadUnidirectional_BehaviorTree
+[       OK ] ConfigTest.LoadUnidirectional_BehaviorTree (0 ms)
+[ RUN      ] ConfigTest.LoadRobot_InvalidPath_Throws
+[       OK ] ConfigTest.LoadRobot_InvalidPath_Throws (0 ms)
+[----------] 32 tests from ConfigTest (5 ms total)
+
+[----------] Global test environment tear-down
+[==========] 75 tests from 5 test suites ran. (1122 ms total)
+[  PASSED  ] 75 tests.

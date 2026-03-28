@@ -9,6 +9,7 @@
     "gtest",
     "osqp",
     "tinyxml2",
-    "jsoncpp"
+    "jsoncpp",
+    "yaml-cpp"
   ]
 }

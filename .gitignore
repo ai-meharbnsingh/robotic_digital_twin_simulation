@@ -39,3 +39,5 @@ htmlcov/
 # Env
 .env
 .env.local
+.cache/
+build/
