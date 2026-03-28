@@ -5,7 +5,6 @@
     "spdlog",
     "fmt",
     "asio",
-    "rapidjson",
     "eigen3",
     "gtest",
     "osqp",
