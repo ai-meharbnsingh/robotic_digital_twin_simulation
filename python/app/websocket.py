@@ -1,0 +1,109 @@
+"""
+WebSocket manager for real-time fleet updates.
+
+Broadcasts these event types:
+  - robot_position
+  - robot_state_change
+  - task_update
+  - collision_alert
+  - iogita_zone_update
+  - deadlock_event
+  - fleet_metrics
+  - wcs_event
+  - sg_prediction
+
+Usage:
+  ws_manager = ConnectionManager()
+  await ws_manager.broadcast({"type": "robot_position", "data": {...}})
+"""
+
+import json
+import time
+from typing import Any
+
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect
+
+router = APIRouter()
+
+
+class ConnectionManager:
+    """Manages WebSocket connections for /ws/fleet."""
+
+    def __init__(self):
+        self.active_connections: list[WebSocket] = []
+        self._message_count: int = 0
+
+    async def connect(self, websocket: WebSocket):
+        """Accept a new WebSocket connection."""
+        await websocket.accept()
+        self.active_connections.append(websocket)
+
+    def disconnect(self, websocket: WebSocket):
+        """Remove a disconnected WebSocket."""
+        if websocket in self.active_connections:
+            self.active_connections.remove(websocket)
+
+    async def broadcast(self, message: dict[str, Any]):
+        """Broadcast a message to all connected clients."""
+        self._message_count += 1
+        message["_seq"] = self._message_count
+        message["_ts"] = time.time()
+
+        payload = json.dumps(message)
+        disconnected = []
+        for connection in self.active_connections:
+            try:
+                await connection.send_text(payload)
+            except Exception:
+                disconnected.append(connection)
+
+        for conn in disconnected:
+            self.disconnect(conn)
+
+    async def send_personal(self, websocket: WebSocket, message: dict[str, Any]):
+        """Send a message to a specific client."""
+        try:
+            await websocket.send_text(json.dumps(message))
+        except Exception:
+            self.disconnect(websocket)
+
+    @property
+    def connection_count(self) -> int:
+        return len(self.active_connections)
+
+    @property
+    def message_count(self) -> int:
+        return self._message_count
+
+
+# Global instance — used by routes and background tasks
+ws_manager = ConnectionManager()
+
+
+@router.websocket("/ws/fleet")
+async def websocket_fleet(websocket: WebSocket):
+    """
+    WebSocket endpoint for real-time fleet updates.
+    Clients connect here to receive streaming updates.
+    """
+    await ws_manager.connect(websocket)
+    try:
+        # Send initial connection confirmation
+        await ws_manager.send_personal(websocket, {
+            "type": "connected",
+            "message": "Connected to fleet WebSocket",
+            "active_connections": ws_manager.connection_count,
+        })
+
+        # Keep connection alive, process any incoming messages
+        while True:
+            data = await websocket.receive_text()
+            # Clients can send subscription filters or heartbeats
+            try:
+                msg = json.loads(data)
+                if msg.get("type") == "ping":
+                    await ws_manager.send_personal(websocket, {"type": "pong", "ts": time.time()})
+            except json.JSONDecodeError:
+                pass
+    except WebSocketDisconnect:
+        ws_manager.disconnect(websocket)

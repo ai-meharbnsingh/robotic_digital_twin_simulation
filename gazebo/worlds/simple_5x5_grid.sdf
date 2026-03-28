@@ -1,0 +1,3856 @@
+<?xml version="1.0" ?>
+<sdf version="1.9">
+  <world name="simple_5x5_grid">
+    <light name="sun" type="directional">
+      <cast_shadows>true</cast_shadows>
+      <pose>0 0 10 0 0 0</pose>
+      <diffuse>0.8 0.8 0.8 1</diffuse>
+      <specular>0.2 0.2 0.2 1</specular>
+      <direction>-0.5 0.1 -0.9</direction>
+    </light>
+    <physics name="default_physics" type="ode">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+      <real_time_update_rate>1000</real_time_update_rate>
+    </physics>
+    <scene>
+      <ambient>0.4 0.4 0.4 1.0</ambient>
+      <background>0.7 0.7 0.9 1.0</background>
+      <shadows>true</shadows>
+    </scene>
+    <gravity>0 0 -9.81</gravity>
+    <model name="ground_plane">
+      <static>true</static>
+      <pose>4.0 4.0 0 0 0 0</pose>
+      <link name="ground_link">
+        <visual name="ground_visual">
+          <geometry>
+            <box>
+              <size>12.0 12.0 0.01</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.85 0.85 0.85 1.0</ambient>
+            <diffuse>0.85 0.85 0.85 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="ground_visual_collision">
+          <geometry>
+            <box>
+              <size>12.0 12.0 0.01</size>
+            </box>
+          </geometry>
+        </collision>
+        <collision name="ground_collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>12.0 12.0</size>
+            </plane>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_north">
+      <static>true</static>
+      <pose>4.0 10.0 1.25 0 0 0</pose>
+      <link name="wall_north_link">
+        <visual name="wall_north_visual">
+          <geometry>
+            <box>
+              <size>12.15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1.0</ambient>
+            <diffuse>0.75 0.75 0.75 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="wall_north_visual_collision">
+          <geometry>
+            <box>
+              <size>12.15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_south">
+      <static>true</static>
+      <pose>4.0 -2.0 1.25 0 0 0</pose>
+      <link name="wall_south_link">
+        <visual name="wall_south_visual">
+          <geometry>
+            <box>
+              <size>12.15 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1.0</ambient>
+            <diffuse>0.75 0.75 0.75 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="wall_south_visual_collision">
+          <geometry>
+            <box>
+              <size>12.15 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_east">
+      <static>true</static>
+      <pose>10.0 4.0 1.25 0 0 0</pose>
+      <link name="wall_east_link">
+        <visual name="wall_east_visual">
+          <geometry>
+            <box>
+              <size>0.15 12.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1.0</ambient>
+            <diffuse>0.75 0.75 0.75 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="wall_east_visual_collision">
+          <geometry>
+            <box>
+              <size>0.15 12.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="wall_west">
+      <static>true</static>
+      <pose>-2.0 4.0 1.25 0 0 0</pose>
+      <link name="wall_west_link">
+        <visual name="wall_west_visual">
+          <geometry>
+            <box>
+              <size>0.15 12.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1.0</ambient>
+            <diffuse>0.75 0.75 0.75 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="wall_west_visual_collision">
+          <geometry>
+            <box>
+              <size>0.15 12.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_11">
+      <static>true</static>
+      <pose>2 2 0.6 0 0 0</pose>
+      <link name="shelf_S_11_link">
+        <visual name="shelf_S_11_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_11_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_12">
+      <static>true</static>
+      <pose>4 2 0.6 0 0 0</pose>
+      <link name="shelf_S_12_link">
+        <visual name="shelf_S_12_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_12_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_13">
+      <static>true</static>
+      <pose>6 2 0.6 0 0 0</pose>
+      <link name="shelf_S_13_link">
+        <visual name="shelf_S_13_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_13_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_21">
+      <static>true</static>
+      <pose>2 4 0.6 0 0 0</pose>
+      <link name="shelf_S_21_link">
+        <visual name="shelf_S_21_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_21_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_23">
+      <static>true</static>
+      <pose>6 4 0.6 0 0 0</pose>
+      <link name="shelf_S_23_link">
+        <visual name="shelf_S_23_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_23_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_31">
+      <static>true</static>
+      <pose>2 6 0.6 0 0 0</pose>
+      <link name="shelf_S_31_link">
+        <visual name="shelf_S_31_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_31_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_32">
+      <static>true</static>
+      <pose>4 6 0.6 0 0 0</pose>
+      <link name="shelf_S_32_link">
+        <visual name="shelf_S_32_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_32_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="shelf_S_33">
+      <static>true</static>
+      <pose>6 6 0.6 0 0 0</pose>
+      <link name="shelf_S_33_link">
+        <visual name="shelf_S_33_visual">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="shelf_S_33_visual_collision">
+          <geometry>
+            <box>
+              <size>0.4 0.4 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="charger_DOCK_1">
+      <static>true</static>
+      <pose>0 0 0.025 0 0 0</pose>
+      <link name="charger_DOCK_1_link">
+        <visual name="charger_DOCK_1_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0 1.0</ambient>
+            <diffuse>0.0 0.8 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="charger_DOCK_1_visual_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="charger_DOCK_2">
+      <static>true</static>
+      <pose>8 0 0.025 0 0 0</pose>
+      <link name="charger_DOCK_2_link">
+        <visual name="charger_DOCK_2_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0 1.0</ambient>
+            <diffuse>0.0 0.8 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="charger_DOCK_2_visual_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="station_PICK_1">
+      <static>true</static>
+      <pose>0 8 0.025 0 0 0</pose>
+      <link name="station_PICK_1_link">
+        <visual name="station_PICK_1_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.0 0.4 1.0 1.0</ambient>
+            <diffuse>0.0 0.4 1.0 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="station_PICK_1_visual_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="station_DROP_1">
+      <static>true</static>
+      <pose>8 8 0.025 0 0 0</pose>
+      <link name="station_DROP_1_link">
+        <visual name="station_DROP_1_visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>1.0 0.4 0.0 1.0</ambient>
+            <diffuse>1.0 0.4 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="station_DROP_1_visual_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>0.05</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="barcode_grid">
+      <static>true</static>
+      <pose>0 0 0.001 0 0 0</pose>
+      <link name="barcode_grid_link">
+        <visual name="barcode_0">
+          <pose>-2.0 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_1">
+          <pose>-2.0 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_2">
+          <pose>-2.0 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_3">
+          <pose>-2.0 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_4">
+          <pose>-2.0 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_5">
+          <pose>-2.0 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_6">
+          <pose>-2.0 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_7">
+          <pose>-2.0 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_8">
+          <pose>-2.0 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_9">
+          <pose>-2.0 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_10">
+          <pose>-2.0 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_11">
+          <pose>-2.0 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_12">
+          <pose>-2.0 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_13">
+          <pose>-2.0 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_14">
+          <pose>-2.0 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_15">
+          <pose>-2.0 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_16">
+          <pose>-1.2 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_17">
+          <pose>-1.2 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_18">
+          <pose>-1.2 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_19">
+          <pose>-1.2 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_20">
+          <pose>-1.2 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_21">
+          <pose>-1.2 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_22">
+          <pose>-1.2 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_23">
+          <pose>-1.2 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_24">
+          <pose>-1.2 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_25">
+          <pose>-1.2 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_26">
+          <pose>-1.2 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_27">
+          <pose>-1.2 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_28">
+          <pose>-1.2 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_29">
+          <pose>-1.2 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_30">
+          <pose>-1.2 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_31">
+          <pose>-1.2 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_32">
+          <pose>-0.3999999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_33">
+          <pose>-0.3999999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_34">
+          <pose>-0.3999999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_35">
+          <pose>-0.3999999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_36">
+          <pose>-0.3999999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_37">
+          <pose>-0.3999999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_38">
+          <pose>-0.3999999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_39">
+          <pose>-0.3999999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_40">
+          <pose>-0.3999999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_41">
+          <pose>-0.3999999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_42">
+          <pose>-0.3999999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_43">
+          <pose>-0.3999999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_44">
+          <pose>-0.3999999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_45">
+          <pose>-0.3999999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_46">
+          <pose>-0.3999999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_47">
+          <pose>-0.3999999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_48">
+          <pose>0.40000000000000013 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_49">
+          <pose>0.40000000000000013 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_50">
+          <pose>0.40000000000000013 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_51">
+          <pose>0.40000000000000013 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_52">
+          <pose>0.40000000000000013 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_53">
+          <pose>0.40000000000000013 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_54">
+          <pose>0.40000000000000013 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_55">
+          <pose>0.40000000000000013 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_56">
+          <pose>0.40000000000000013 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_57">
+          <pose>0.40000000000000013 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_58">
+          <pose>0.40000000000000013 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_59">
+          <pose>0.40000000000000013 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_60">
+          <pose>0.40000000000000013 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_61">
+          <pose>0.40000000000000013 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_62">
+          <pose>0.40000000000000013 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_63">
+          <pose>0.40000000000000013 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_64">
+          <pose>1.2000000000000002 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_65">
+          <pose>1.2000000000000002 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_66">
+          <pose>1.2000000000000002 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_67">
+          <pose>1.2000000000000002 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_68">
+          <pose>1.2000000000000002 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_69">
+          <pose>1.2000000000000002 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_70">
+          <pose>1.2000000000000002 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_71">
+          <pose>1.2000000000000002 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_72">
+          <pose>1.2000000000000002 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_73">
+          <pose>1.2000000000000002 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_74">
+          <pose>1.2000000000000002 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_75">
+          <pose>1.2000000000000002 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_76">
+          <pose>1.2000000000000002 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_77">
+          <pose>1.2000000000000002 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_78">
+          <pose>1.2000000000000002 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_79">
+          <pose>1.2000000000000002 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_80">
+          <pose>2.0 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_81">
+          <pose>2.0 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_82">
+          <pose>2.0 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_83">
+          <pose>2.0 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_84">
+          <pose>2.0 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_85">
+          <pose>2.0 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_86">
+          <pose>2.0 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_87">
+          <pose>2.0 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_88">
+          <pose>2.0 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_89">
+          <pose>2.0 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_90">
+          <pose>2.0 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_91">
+          <pose>2.0 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_92">
+          <pose>2.0 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_93">
+          <pose>2.0 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_94">
+          <pose>2.0 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_95">
+          <pose>2.0 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_96">
+          <pose>2.8 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_97">
+          <pose>2.8 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_98">
+          <pose>2.8 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_99">
+          <pose>2.8 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_100">
+          <pose>2.8 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_101">
+          <pose>2.8 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_102">
+          <pose>2.8 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_103">
+          <pose>2.8 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_104">
+          <pose>2.8 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_105">
+          <pose>2.8 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_106">
+          <pose>2.8 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_107">
+          <pose>2.8 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_108">
+          <pose>2.8 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_109">
+          <pose>2.8 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_110">
+          <pose>2.8 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_111">
+          <pose>2.8 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_112">
+          <pose>3.5999999999999996 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_113">
+          <pose>3.5999999999999996 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_114">
+          <pose>3.5999999999999996 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_115">
+          <pose>3.5999999999999996 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_116">
+          <pose>3.5999999999999996 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_117">
+          <pose>3.5999999999999996 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_118">
+          <pose>3.5999999999999996 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_119">
+          <pose>3.5999999999999996 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_120">
+          <pose>3.5999999999999996 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_121">
+          <pose>3.5999999999999996 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_122">
+          <pose>3.5999999999999996 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_123">
+          <pose>3.5999999999999996 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_124">
+          <pose>3.5999999999999996 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_125">
+          <pose>3.5999999999999996 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_126">
+          <pose>3.5999999999999996 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_127">
+          <pose>3.5999999999999996 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_128">
+          <pose>4.3999999999999995 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_129">
+          <pose>4.3999999999999995 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_130">
+          <pose>4.3999999999999995 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_131">
+          <pose>4.3999999999999995 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_132">
+          <pose>4.3999999999999995 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_133">
+          <pose>4.3999999999999995 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_134">
+          <pose>4.3999999999999995 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_135">
+          <pose>4.3999999999999995 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_136">
+          <pose>4.3999999999999995 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_137">
+          <pose>4.3999999999999995 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_138">
+          <pose>4.3999999999999995 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_139">
+          <pose>4.3999999999999995 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_140">
+          <pose>4.3999999999999995 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_141">
+          <pose>4.3999999999999995 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_142">
+          <pose>4.3999999999999995 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_143">
+          <pose>4.3999999999999995 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_144">
+          <pose>5.199999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_145">
+          <pose>5.199999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_146">
+          <pose>5.199999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_147">
+          <pose>5.199999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_148">
+          <pose>5.199999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_149">
+          <pose>5.199999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_150">
+          <pose>5.199999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_151">
+          <pose>5.199999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_152">
+          <pose>5.199999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_153">
+          <pose>5.199999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_154">
+          <pose>5.199999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_155">
+          <pose>5.199999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_156">
+          <pose>5.199999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_157">
+          <pose>5.199999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_158">
+          <pose>5.199999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_159">
+          <pose>5.199999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_160">
+          <pose>5.999999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_161">
+          <pose>5.999999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_162">
+          <pose>5.999999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_163">
+          <pose>5.999999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_164">
+          <pose>5.999999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_165">
+          <pose>5.999999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_166">
+          <pose>5.999999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_167">
+          <pose>5.999999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_168">
+          <pose>5.999999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_169">
+          <pose>5.999999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_170">
+          <pose>5.999999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_171">
+          <pose>5.999999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_172">
+          <pose>5.999999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_173">
+          <pose>5.999999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_174">
+          <pose>5.999999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_175">
+          <pose>5.999999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_176">
+          <pose>6.799999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_177">
+          <pose>6.799999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_178">
+          <pose>6.799999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_179">
+          <pose>6.799999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_180">
+          <pose>6.799999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_181">
+          <pose>6.799999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_182">
+          <pose>6.799999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_183">
+          <pose>6.799999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_184">
+          <pose>6.799999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_185">
+          <pose>6.799999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_186">
+          <pose>6.799999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_187">
+          <pose>6.799999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_188">
+          <pose>6.799999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_189">
+          <pose>6.799999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_190">
+          <pose>6.799999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_191">
+          <pose>6.799999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_192">
+          <pose>7.599999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_193">
+          <pose>7.599999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_194">
+          <pose>7.599999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_195">
+          <pose>7.599999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_196">
+          <pose>7.599999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_197">
+          <pose>7.599999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_198">
+          <pose>7.599999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_199">
+          <pose>7.599999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_200">
+          <pose>7.599999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_201">
+          <pose>7.599999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_202">
+          <pose>7.599999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_203">
+          <pose>7.599999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_204">
+          <pose>7.599999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_205">
+          <pose>7.599999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_206">
+          <pose>7.599999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_207">
+          <pose>7.599999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_208">
+          <pose>8.399999999999999 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_209">
+          <pose>8.399999999999999 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_210">
+          <pose>8.399999999999999 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_211">
+          <pose>8.399999999999999 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_212">
+          <pose>8.399999999999999 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_213">
+          <pose>8.399999999999999 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_214">
+          <pose>8.399999999999999 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_215">
+          <pose>8.399999999999999 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_216">
+          <pose>8.399999999999999 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_217">
+          <pose>8.399999999999999 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_218">
+          <pose>8.399999999999999 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_219">
+          <pose>8.399999999999999 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_220">
+          <pose>8.399999999999999 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_221">
+          <pose>8.399999999999999 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_222">
+          <pose>8.399999999999999 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_223">
+          <pose>8.399999999999999 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_224">
+          <pose>9.2 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_225">
+          <pose>9.2 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_226">
+          <pose>9.2 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_227">
+          <pose>9.2 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_228">
+          <pose>9.2 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_229">
+          <pose>9.2 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_230">
+          <pose>9.2 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_231">
+          <pose>9.2 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_232">
+          <pose>9.2 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_233">
+          <pose>9.2 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_234">
+          <pose>9.2 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_235">
+          <pose>9.2 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_236">
+          <pose>9.2 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_237">
+          <pose>9.2 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_238">
+          <pose>9.2 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_239">
+          <pose>9.2 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_240">
+          <pose>10.0 -2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_241">
+          <pose>10.0 -1.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_242">
+          <pose>10.0 -0.3999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_243">
+          <pose>10.0 0.40000000000000013 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_244">
+          <pose>10.0 1.2000000000000002 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_245">
+          <pose>10.0 2.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_246">
+          <pose>10.0 2.8 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_247">
+          <pose>10.0 3.5999999999999996 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_248">
+          <pose>10.0 4.3999999999999995 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_249">
+          <pose>10.0 5.199999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_250">
+          <pose>10.0 5.999999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_251">
+          <pose>10.0 6.799999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_252">
+          <pose>10.0 7.599999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_253">
+          <pose>10.0 8.399999999999999 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_254">
+          <pose>10.0 9.2 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+        <visual name="barcode_255">
+          <pose>10.0 10.0 0 0 0 0</pose>
+          <geometry>
+            <box>
+              <size>0.06 0.06 0.001</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.1 0.1 0.1 1.0</ambient>
+            <diffuse>0.1 0.1 0.1 1.0</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+    <model name="node_markers">
+      <static>true</static>
+      <pose>0 0 0.01 0 0 0</pose>
+      <link name="markers_link">
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_DOCK_1">
+          <pose>0 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0 1.0</ambient>
+            <diffuse>0.0 0.8 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_01">
+          <pose>2 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_02">
+          <pose>4 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_03">
+          <pose>6 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_DOCK_2">
+          <pose>8 0 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.0 0.8 0.0 1.0</ambient>
+            <diffuse>0.0 0.8 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_10">
+          <pose>0 2 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_11">
+          <pose>2 2 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_12">
+          <pose>4 2 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_13">
+          <pose>6 2 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_14">
+          <pose>8 2 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_20">
+          <pose>0 4 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_21">
+          <pose>2 4 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_HUB">
+          <pose>4 4 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>1.0 1.0 0.0 1.0</ambient>
+            <diffuse>1.0 1.0 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_23">
+          <pose>6 4 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_24">
+          <pose>8 4 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_30">
+          <pose>0 6 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_31">
+          <pose>2 6 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_32">
+          <pose>4 6 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_S_33">
+          <pose>6 6 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.6 0.3 0.0 1.0</ambient>
+            <diffuse>0.6 0.3 0.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_34">
+          <pose>8 6 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_PICK_1">
+          <pose>0 8 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.0 0.4 1.0 1.0</ambient>
+            <diffuse>0.0 0.4 1.0 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_41">
+          <pose>2 8 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_42">
+          <pose>4 8 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_N_43">
+          <pose>6 8 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>0.7 0.7 0.7 1.0</ambient>
+            <diffuse>0.7 0.7 0.7 1.0</diffuse>
+          </material>
+        </visual>
+        <pose>0 0 0 0 0 0</pose>
+        <visual name="marker_DROP_1">
+          <pose>8 8 0 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.08</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <ambient>1.0 0.4 0.0 1.0</ambient>
+            <diffuse>1.0 0.4 0.0 1.0</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>
