@@ -41,3 +41,5 @@ htmlcov/
 .env.local
 .cache/
 build/
+test_output*.txt
+_archive/
