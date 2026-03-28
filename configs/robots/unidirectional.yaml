@@ -1,0 +1,94 @@
+# Unidirectional AGV (Conveyor-Top) — Generic Preset
+# Based on typical sortation robots (e.g., Addverb Zippy, Geek+, GreyOrange)
+# Cannot rotate in place — moves forward only, turns at intersections.
+
+name: "Uni_AGV"
+type: unidirectional
+
+motion:
+  max_linear_velocity: 1.4
+  max_linear_velocity_curve: 0.6  # Reduced speed on curves
+  max_angular_velocity: 1.57      # 90 deg/s
+  linear_acceleration: 0.8
+  linear_deceleration: 0.8
+  jerk_max: 10.0
+  position_tolerance: 0.07
+  angular_tolerance: 0.025
+  creep_distance: 0.02
+  creep_velocity: 0.02
+  exit_velocity: 0.4
+
+dimensions:
+  length: 0.6
+  width: 0.5
+  height: 0.25
+  weight: 30.0
+  payload_capacity: 30.0
+  wheel_separation: 0.4
+  wheel_radius: 0.05
+
+sensors:
+  lidar:
+    enabled: true
+    type: "2d"
+    fov_deg: 30                    # Forward-facing only (+-15 deg)
+    range_m: 1.5                   # Short range obstacle sensor
+    rays: 30
+    height_m: 0.1
+    noise_stddev_m: 0.03
+  barcode_reader:
+    enabled: true
+    debounce_ms: 5
+    failure_threshold: 5
+  imu:
+    enabled: false
+
+battery:
+  charge_duration_s: 450
+  discharge_duration_s: 60000
+  motion_energy_factor: 1.02
+  attachment_energy_factor: 1.02
+  critical_threshold_pct: 20
+  initial_charge_pct: 100
+
+obstacle_thresholds:
+  critical_m: 0.7
+  warning_m: 0.8
+  planning_m: 1.5
+
+attachment:
+  type: "conveyor"
+  load_time_s: 3.0
+  unload_time_s: 3.0
+
+mpc:
+  num_opt_vars: 12
+  dt: 0.1
+  position_weight: 1.0
+  velocity_weight: 0.0
+  weight_scale: 0.05
+  jerk_scale: 1.0
+  acceleration_scale: 1.0
+  final_position_offset: 0.015
+  final_velocity_threshold: 0.05
+  osqp_iterations: 500
+  osqp_eps_abs: 0.01
+  osqp_eps_rel: 0.01
+
+behavior_tree: "default_agv.xml"
+
+action_codes:
+  move: 0
+  charge_dock: 2
+  start_charging: 3
+  charge_undock: 4
+  start_loading: 14
+  start_unloading: 15
+  reset_errors: 31
+  hard_reset: 51
+
+response_codes:
+  reached_dock: 10
+  reached_predock: 8
+  charging_stopped: 18
+  charging_error: 501
