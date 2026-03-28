@@ -12,6 +12,10 @@ add_executable(rdt_tests
     test_graph.cpp
     test_astar.cpp
     test_quadtree.cpp
+    test_robot_state.cpp
+    test_motion.cpp
+    test_battery.cpp
+    test_obstacle.cpp
 )
 target_include_directories(rdt_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../include
