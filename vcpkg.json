@@ -1,0 +1,15 @@
+{
+  "name": "robotic-digital-twin",
+  "version": "0.1.0",
+  "dependencies": [
+    "spdlog",
+    "fmt",
+    "asio",
+    "rapidjson",
+    "eigen3",
+    "gtest",
+    "osqp",
+    "tinyxml2",
+    "jsoncpp"
+  ]
+}

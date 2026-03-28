@@ -1,0 +1,2001 @@
+{
+   "blockers": null,
+   "edges": [
+      {
+         "from": "c1|k1_1",
+         "isUniDirectional": false,
+         "name": "c1|k1_1|c1",
+         "to": "c1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "c1|k1_2",
+         "isUniDirectional": false,
+         "name": "c1|k1_2|c1|k1_1",
+         "to": "c1|k1_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "c1|k1_3",
+         "isUniDirectional": false,
+         "name": "c1|k1_3|c1|k1_2",
+         "to": "c1|k1_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "c1|k1_4",
+         "isUniDirectional": false,
+         "name": "c1|k1_4|c1|k1_3",
+         "to": "c1|k1_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "c1|k1_5",
+         "isUniDirectional": false,
+         "name": "c1|k1_5|c1|k1_4",
+         "to": "c1|k1_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1",
+         "isUniDirectional": false,
+         "name": "k1|c1|k1_5",
+         "to": "c1|k1_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_1",
+         "isUniDirectional": false,
+         "name": "k1|k2_1|k1",
+         "to": "k1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_2",
+         "isUniDirectional": false,
+         "name": "k1|k2_2|k1|k2_1",
+         "to": "k1|k2_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_5",
+         "isUniDirectional": false,
+         "name": "k1|k2_5|k1|k2_2",
+         "to": "k1|k2_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_7",
+         "isUniDirectional": false,
+         "name": "k1|k2_7|k1|k2_6",
+         "to": "k1|k2_6",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_8",
+         "isUniDirectional": false,
+         "name": "k1|k2_8|k1|k2_7",
+         "to": "k1|k2_7",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_9",
+         "isUniDirectional": false,
+         "name": "k1|k2_9|k1|k2_10",
+         "to": "k1|k2_10",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k1|k2_9",
+         "isUniDirectional": false,
+         "name": "k1|k2_9|k1|k2_8",
+         "to": "k1|k2_8",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2",
+         "isUniDirectional": false,
+         "name": "k2|k1|k2_10",
+         "to": "k1|k2_10",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2|k3_1",
+         "isUniDirectional": false,
+         "name": "k2|k3_1|k2",
+         "to": "k2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2|k3_2",
+         "isUniDirectional": false,
+         "name": "k2|k3_2|k2|k3_1",
+         "to": "k2|k3_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2|k3_3",
+         "isUniDirectional": false,
+         "name": "k2|k3_3|k2|k3_2",
+         "to": "k2|k3_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2|k3_4",
+         "isUniDirectional": false,
+         "name": "k2|k3_4|k2|k3_3",
+         "to": "k2|k3_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k2|k3_5",
+         "isUniDirectional": false,
+         "name": "k2|k3_5|k2|k3_4",
+         "to": "k2|k3_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3",
+         "isUniDirectional": false,
+         "name": "k3|k2|k3_5",
+         "to": "k2|k3_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3|k4_1",
+         "isUniDirectional": false,
+         "name": "k3|k4_1|k3",
+         "to": "k3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3|k4_2",
+         "isUniDirectional": false,
+         "name": "k3|k4_2|k3|k4_1",
+         "to": "k3|k4_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3|k4_3",
+         "isUniDirectional": false,
+         "name": "k3|k4_3|k3|k4_2",
+         "to": "k3|k4_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3|k4_4",
+         "isUniDirectional": false,
+         "name": "k3|k4_4|k3|k4_3",
+         "to": "k3|k4_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k3|k4_5",
+         "isUniDirectional": false,
+         "name": "k3|k4_5|k3|k4_4",
+         "to": "k3|k4_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4",
+         "isUniDirectional": false,
+         "name": "k4|k3|k4_5",
+         "to": "k3|k4_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4|k5_1",
+         "isUniDirectional": false,
+         "name": "k4|k5_1|k4",
+         "to": "k4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4|k5_2",
+         "isUniDirectional": false,
+         "name": "k4|k5_2|k4|k5_1",
+         "to": "k4|k5_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4|k5_3",
+         "isUniDirectional": false,
+         "name": "k4|k5_3|k4|k5_2",
+         "to": "k4|k5_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4|k5_4",
+         "isUniDirectional": false,
+         "name": "k4|k5_4|k4|k5_3",
+         "to": "k4|k5_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k4|k5_5",
+         "isUniDirectional": false,
+         "name": "k4|k5_5|k4|k5_4",
+         "to": "k4|k5_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k5",
+         "isUniDirectional": false,
+         "name": "k5|k4|k5_5",
+         "to": "k4|k5_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_10",
+         "isUniDirectional": false,
+         "name": "k7|k1_10|k1",
+         "to": "k1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_1",
+         "isUniDirectional": false,
+         "name": "k7|k1_1|k7",
+         "to": "k7",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_2",
+         "isUniDirectional": false,
+         "name": "k7|k1_2|k7|k1_1",
+         "to": "k7|k1_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_3",
+         "isUniDirectional": false,
+         "name": "k7|k1_3|k7|k1_2",
+         "to": "k7|k1_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_4",
+         "isUniDirectional": false,
+         "name": "k7|k1_4|k7|k1_3",
+         "to": "k7|k1_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_5",
+         "isUniDirectional": false,
+         "name": "k7|k1_5|k7|k1_4",
+         "to": "k7|k1_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_6",
+         "isUniDirectional": false,
+         "name": "k7|k1_6|k7|k1_5",
+         "to": "k7|k1_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_7",
+         "isUniDirectional": false,
+         "name": "k7|k1_7|k7|k1_6",
+         "to": "k7|k1_6",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_8",
+         "isUniDirectional": false,
+         "name": "k7|k1_8|k7|k1_7",
+         "to": "k7|k1_7",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_9",
+         "isUniDirectional": false,
+         "name": "k7|k1_9|k7|k1_10",
+         "to": "k7|k1_10",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "k7|k1_9",
+         "isUniDirectional": false,
+         "name": "k7|k1_9|k7|k1_8",
+         "to": "k7|k1_8",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|o1_new|o2_new_2_1",
+         "isUniDirectional": false,
+         "name": "o1_new|o1_new|o2_new_2_1|o1_new",
+         "to": "o1_new",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|o2_new_2",
+         "isUniDirectional": false,
+         "name": "o1_new|o2_new_2|o1_new|o1_new|o2_new_2_1",
+         "to": "o1_new|o1_new|o2_new_2_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|o2_new_3",
+         "isUniDirectional": false,
+         "name": "o1_new|o2_new_3|o1_new|o2_new_2",
+         "to": "o1_new|o2_new_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|o2_new_4",
+         "isUniDirectional": false,
+         "name": "o1_new|o2_new_4|o1_new|o2_new_3",
+         "to": "o1_new|o2_new_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|o2_new_5",
+         "isUniDirectional": false,
+         "name": "o1_new|o2_new_5|o1_new|o2_new_4",
+         "to": "o1_new|o2_new_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|w2_2",
+         "isUniDirectional": false,
+         "name": "o1_new|w2_2|o1_new",
+         "to": "o1_new",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|w2_3",
+         "isUniDirectional": false,
+         "name": "o1_new|w2_3|o1_new|w2_2",
+         "to": "o1_new|w2_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|w2_4",
+         "isUniDirectional": false,
+         "name": "o1_new|w2_4|o1_new|w2_3",
+         "to": "o1_new|w2_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|w2_5",
+         "isUniDirectional": false,
+         "name": "o1_new|w2_5|k7|k1_10",
+         "to": "k7|k1_10",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o1_new|w2_5",
+         "isUniDirectional": false,
+         "name": "o1_new|w2_5|o1_new|w2_4",
+         "to": "o1_new|w2_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_2",
+         "isUniDirectional": false,
+         "name": "o2_new|k1|k2_5_2|o2_new|k1|k2_5_1",
+         "to": "o2_new|k1|k2_5_1",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_3",
+         "isUniDirectional": false,
+         "name": "o2_new|k1|k2_5_3|k1|k2_6",
+         "to": "k1|k2_6",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_3",
+         "isUniDirectional": false,
+         "name": "o2_new|k1|k2_5_3|o2_new|k1|k2_5_2",
+         "to": "o2_new|k1|k2_5_2",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_4",
+         "isUniDirectional": false,
+         "name": "o2_new|k1|k2_5_4|o2_new|k1|k2_5_3",
+         "to": "o2_new|k1|k2_5_3",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_5",
+         "isUniDirectional": false,
+         "length": 0.13630985451639535,
+         "name": "o2_new|k1|k2_5_5|k1|k2_5",
+         "to": "k1|k2_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|k1|k2_5_5",
+         "isUniDirectional": false,
+         "name": "o2_new|k1|k2_5_5|o2_new|k1|k2_5_4",
+         "to": "o2_new|k1|k2_5_4",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|o1_new|o2_new_5_1",
+         "isUniDirectional": false,
+         "name": "o2_new|o1_new|o2_new_5_1|o1_new|o2_new_5",
+         "to": "o1_new|o2_new_5",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|o1_new|o2_new_5_1",
+         "isUniDirectional": false,
+         "name": "o2_new|o1_new|o2_new_5_1|o2_new",
+         "to": "o2_new",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|o2_new|k1|k2_5_1_1",
+         "isUniDirectional": false,
+         "name": "o2_new|o2_new|k1|k2_5_1_1|o2_new",
+         "to": "o2_new",
+         "useAwake": true,
+         "useSleep": true
+      },
+      {
+         "from": "o2_new|o2_new|k1|k2_5_1_1",
+         "isUniDirectional": false,
+         "name": "o2_new|o2_new|k1|k2_5_1_1|o2_new|k1|k2_5_1",
+         "to": "o2_new|k1|k2_5_1",
+         "useAwake": true,
+         "useSleep": true
+      }
+   ],
+   "junctions": null,
+   "nodes": [
+      {
+         "name": "c1",
+         "pose": {
+            "orientation": {
+               "w": -0.2086581185670485,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.97798864490139126
+            },
+            "position": {
+               "x": 1.7146425247192383,
+               "y": -1.7317887544631958,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "charge"
+      },
+      {
+         "name": "k1",
+         "pose": {
+            "orientation": {
+               "w": 0.87660580998335824,
+               "x": 0.0,
+               "y": 0.0,
+               "z": -0.48120915816661303
+            },
+            "position": {
+               "x": -1.758684515953064,
+               "y": -3.2982900142669678,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2",
+         "pose": {
+            "orientation": {
+               "w": 0.98040635130058751,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.19698575158997897
+            },
+            "position": {
+               "x": 7.7645759582519531,
+               "y": -19.392702102661133,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3",
+         "pose": {
+            "orientation": {
+               "w": 0.50872094351782471,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.86093147324646813
+            },
+            "position": {
+               "x": 16.873785018920898,
+               "y": -14.262846946716309,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4",
+         "pose": {
+            "orientation": {
+               "w": 0.5268895457899182,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.8499337659707924
+            },
+            "position": {
+               "x": 11.452939987182617,
+               "y": -4.5844197273254395,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k5",
+         "pose": {
+            "orientation": {
+               "w": 0.53543502140176691,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.8445764251129021
+            },
+            "position": {
+               "x": 5.6786470413208008,
+               "y": 3.6116576194763184,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7",
+         "pose": {
+            "orientation": {
+               "w": 0.88441559781141288,
+               "x": 0.0,
+               "y": 0.0,
+               "z": -0.46670017178899897
+            },
+            "position": {
+               "x": -12.859872817993164,
+               "y": 14.515297889709473,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k1|k2_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.41727715730667114,
+               "y": -4.9551668167114258,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "linkedNodes": "k1|k2_5",
+         "name": "k1|k2_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.509238600730896,
+               "y": -5.7673697471618652,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "predock"
+      },
+      {
+         "attachmentType": "Lifter",
+         "distanceVariation": -1.0,
+         "distributionType": "Uniform",
+         "dockDirection": {
+            "yaw": 1.0
+         },
+         "linkedNodes": "k1|k2_2",
+         "meanDistance": -1.0,
+         "name": "k1|k2_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.69115108251571655,
+               "y": -6.7226295471191406,
+               "z": 0.0
+            }
+         },
+         "queue": 0,
+         "queueBiasSize": 1.5,
+         "queueCapacity": 5,
+         "queueOverflow": 1.5,
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "pick"
+      },
+      {
+         "name": "k1|k2_6",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 1.1738572120666504,
+               "y": -13.458955764770508,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k1|k2_7",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 4.5959329605102539,
+               "y": -13.846612930297852,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k1|k2_8",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 5.1838512420654297,
+               "y": -14.81391716003418,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k1|k2_9",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 6.0440926551818848,
+               "y": -16.340179443359375,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k1|k2_10",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 6.904334545135498,
+               "y": -17.866439819335938,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2|k3_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 9.3140573501586914,
+               "y": -18.516298294067383,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2|k3_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 10.86353874206543,
+               "y": -17.639894485473633,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2|k3_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 12.413020133972168,
+               "y": -16.763490676879883,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2|k3_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 13.962501525878906,
+               "y": -15.887086868286133,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k2|k3_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 15.511982917785645,
+               "y": -15.010683059692383,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3|k4_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 16.126710891723633,
+               "y": -12.542635917663574,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3|k4_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 15.191956520080566,
+               "y": -10.950992584228516,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3|k4_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 14.2572021484375,
+               "y": -9.359349250793457,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3|k4_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 13.32244873046875,
+               "y": -7.7677063941955566,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k3|k4_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 12.387694358825684,
+               "y": -6.176063060760498,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4|k5_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 10.490557670593262,
+               "y": -3.2184069156646729,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4|k5_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 9.5281763076782227,
+               "y": -1.8523941040039062,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4|k5_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 8.5657939910888672,
+               "y": -0.4863811731338501,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4|k5_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 7.6034116744995117,
+               "y": 0.87963175773620605,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k4|k5_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 6.6410293579101562,
+               "y": 2.2456445693969727,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -11.845165252685547,
+               "y": 12.959014892578125,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -10.830456733703613,
+               "y": 11.402730941772461,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -9.8157482147216797,
+               "y": 9.8464469909667969,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -8.8010396957397461,
+               "y": 8.2901630401611328,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -7.7863316535949707,
+               "y": 6.7338790893554688,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_6",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -6.7716231346130371,
+               "y": 5.1775956153869629,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "k7|k1_7",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.6786799430847168,
+               "y": 3.8304426670074463,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "attachmentType": "Lifter",
+         "dockDirection": {
+            "yaw": 1.0
+         },
+         "linkedNodes": "k7|k1_9",
+         "name": "k7|k1_8",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.7422065734863281,
+               "y": 2.0650279521942139,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "drop"
+      },
+      {
+         "linkedNodes": "k7|k1_8",
+         "name": "k7|k1_9",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4,
+               "y": 0.4,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "predock"
+      },
+      {
+         "name": "k7|k1_10",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -2.8607993125915527,
+               "y": -2.2503156661987305,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "c1|k1_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 0.76852202415466309,
+               "y": -2.2135622501373291,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "c1|k1_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": 0.10828320682048798,
+               "y": -2.5398871898651123,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "c1|k1_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.26357543468475342,
+               "y": -2.7296109199523926,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "c1|k1_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.6126672625541687,
+               "y": -2.919334888458252,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "c1|k1_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.85551369190216064,
+               "y": -3.0787026882171631,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|w2_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -5.233762264251709,
+               "y": -5.9314827919006348,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|w2_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.609227180480957,
+               "y": -5.5588607788085938,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|w2_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.2401309013366699,
+               "y": -4.4496893882751465,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|w2_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -3.3851330280303955,
+               "y": -3.4821915626525879,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|o2_new_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -5.9468507766723633,
+               "y": -8.7148571014404297,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|o2_new_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -5.4481229782104492,
+               "y": -9.7190942764282227,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|o2_new_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.9493951797485352,
+               "y": -10.723330497741699,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|o2_new_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.4506673812866211,
+               "y": -11.727567672729492,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|k1|k2_5_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -2.859428882598877,
+               "y": -12.315691947937012,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|k1|k2_5_2",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -1.7669177055358887,
+               "y": -11.899580001831055,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|k1|k2_5_3",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.78711575269699097,
+               "y": -11.096843719482422,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|k1|k2_5_4",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.67646366357803345,
+               "y": -9.4457740783691406,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|k1|k2_5_5",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -0.49914029240608215,
+               "y": -8.0721368789672852,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new",
+         "pose": {
+            "orientation": {
+               "w": 0.83715634593696586,
+               "x": 0.0,
+               "y": 0.0,
+               "z": -0.54696366648751638
+            },
+            "position": {
+               "x": -6.8502068519592285,
+               "y": -6.7974352836608887,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new",
+         "pose": {
+            "orientation": {
+               "w": 0.98940039549748293,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.14521314468540505
+            },
+            "position": {
+               "x": -3.8772158622741699,
+               "y": -12.606410026550293,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|o1_new|o2_new_5_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -4.1639418601989746,
+               "y": -12.166989326477051,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o2_new|o2_new|k1|k2_5_1_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -3.3683223724365234,
+               "y": -12.461050987243652,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      },
+      {
+         "name": "o1_new|o1_new|o2_new_2_1",
+         "pose": {
+            "orientation": {
+               "w": 1.0,
+               "x": 0.0,
+               "y": 0.0,
+               "z": 0.0
+            },
+            "position": {
+               "x": -6.4598793983459473,
+               "y": -7.6082382202148438,
+               "z": 0.0
+            }
+         },
+         "sleepType": "none",
+         "turnCost": {
+            "Clockwise": 3.1400000000000001,
+            "antiClockwise": 3.1400000000000001
+         },
+         "type": "none"
+      }
+   ],
+   "param": {
+      "defaultView": {
+         "x": 1.0,
+         "y": 1.0,
+         "yaw": 0.0
+      },
+      "flipX": false,
+      "flipY": false,
+      "offsetPose": {
+         "orientation": {
+            "w": 0.0,
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+         },
+         "position": {
+            "x": 0.0,
+            "y": 0.0,
+            "z": 0.0
+         }
+      },
+      "pickEdgeMultiplier": 10.0
+   },
+   "zones": [
+      {
+         "boxes": [
+            [
+               {
+                  "x": -6.8499999999999996,
+                  "y": 1.22,
+                  "z": 0
+               },
+               {
+                  "x": -6.8499999999999996,
+                  "y": 3.0,
+                  "z": 0
+               },
+               {
+                  "x": -3.9399999999999999,
+                  "y": 3.0,
+                  "z": 0
+               },
+               {
+                  "x": -3.9399999999999999,
+                  "y": 1.22,
+                  "z": 0
+               }
+            ]
+         ],
+         "color": "#9575cd80",
+         "name": "ZoneA",
+         "type": "none"
+      },
+      {
+         "boxes": [
+            [
+               {
+                  "x": -1.9099999999999999,
+                  "y": -7.3899999999999997,
+                  "z": 0
+               },
+               {
+                  "x": -1.9099999999999999,
+                  "y": -5.79,
+                  "z": 0
+               },
+               {
+                  "x": 0.11999999999999988,
+                  "y": -5.79,
+                  "z": 0
+               },
+               {
+                  "x": 0.11999999999999988,
+                  "y": -7.3899999999999997,
+                  "z": 0
+               }
+            ]
+         ],
+         "color": "#26c6da80",
+         "name": "ZoneB",
+         "type": "none"
+      }
+   ]
+}

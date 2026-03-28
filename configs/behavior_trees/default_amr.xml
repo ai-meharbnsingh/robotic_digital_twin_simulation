@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Default AMR Behavior Tree — BTCPP v4 format
+  Robot type: differential_drive (omnidirectional movement capable)
+  Lifecycle: idle -> check_task -> move_to_pickup -> load -> move_to_drop -> unload -> check_battery -> charge_if_needed -> repeat
+
+  Action codes (from configs/robots/differential_drive.yaml):
+    move=0, charge_dock=2, start_charging=3, charge_undock=4,
+    start_loading=14, start_unloading=15, reset_errors=31, hard_reset=51
+
+  Key differences from AGV:
+  - Differential drive can rotate in place (no minimum turn radius)
+  - 360-degree LiDAR enables reactive obstacle avoidance
+  - Supports lifter attachment for pallet operations
+  - Dynamic replanning when obstacles detected mid-path
+-->
+<root BTCPP_format="4" main_tree_to_execute="AMR_Main">
+
+  <!-- ============================================================ -->
+  <!-- MAIN TREE: Reactive loop with continuous obstacle monitoring  -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="AMR_Main">
+    <ReactiveSequence>
+      <!-- Continuous safety monitor — highest priority -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInCriticalZone" distance_m="0.7"/>
+        </Inverter>
+        <Action ID="EmergencyStop"/>
+      </Fallback>
+
+      <!-- Global error monitor -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasErrors"/>
+        </Inverter>
+        <SubTree ID="ErrorRecovery"/>
+      </Fallback>
+
+      <!-- Main work loop -->
+      <Sequence>
+        <RepeatNode num_cycles="-1">
+          <Sequence>
+            <!-- Phase 1: Wait for a task assignment -->
+            <SubTree ID="WaitForTask"/>
+
+            <!-- Phase 2: Execute the task with obstacle avoidance -->
+            <SubTree ID="ExecuteTask"/>
+
+            <!-- Phase 3: Battery management after each task -->
+            <SubTree ID="BatteryManagement"/>
+          </Sequence>
+        </RepeatNode>
+      </Sequence>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: WaitForTask — polls for task availability           -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="WaitForTask">
+    <RetryNode num_attempts="-1">
+      <Sequence>
+        <Condition ID="TaskAvailable"/>
+        <Action ID="AcceptTask" task_id="{task_id}" pickup_node="{pickup_node}" drop_node="{drop_node}"/>
+      </Sequence>
+    </RetryNode>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: ExecuteTask — with reactive obstacle avoidance      -->
+  <!-- AMR can rotate in place and replan dynamically               -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="ExecuteTask">
+    <Sequence>
+      <!-- Navigate to pickup with reactive avoidance -->
+      <SubTree ID="NavigateWithAvoidance"
+               _target="{pickup_node}"
+               _velocity_profile="standard"/>
+
+      <!-- Rotate in place to align with pickup station -->
+      <Action ID="RotateToHeading"
+              target_heading="{pickup_heading}"
+              angular_velocity="1.5"
+              tolerance_rad="0.025"/>
+
+      <!-- Lifter: lower before loading (if lifter attachment) -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasLifterAttachment"/>
+        </Inverter>
+        <Action ID="LowerLifter" timeout_s="5.0"/>
+      </Fallback>
+
+      <!-- Load cargo (action_code=14: start_loading) -->
+      <Action ID="ExecuteAttachment"
+              action_code="14"
+              timeout_s="10.0"/>
+
+      <!-- Lifter: raise after loading (if lifter attachment) -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasLifterAttachment"/>
+        </Inverter>
+        <Action ID="RaiseLifter" timeout_s="5.0"/>
+      </Fallback>
+
+      <!-- Confirm load is secured -->
+      <Condition ID="CargoSecured"/>
+
+      <!-- Navigate to dropoff with reactive avoidance -->
+      <SubTree ID="NavigateWithAvoidance"
+               _target="{drop_node}"
+               _velocity_profile="loaded"/>
+
+      <!-- Rotate to align with drop station -->
+      <Action ID="RotateToHeading"
+              target_heading="{drop_heading}"
+              angular_velocity="1.5"
+              tolerance_rad="0.025"/>
+
+      <!-- Lifter: lower to release (if lifter attachment) -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasLifterAttachment"/>
+        </Inverter>
+        <Action ID="LowerLifter" timeout_s="5.0"/>
+      </Fallback>
+
+      <!-- Unload cargo (action_code=15: start_unloading) -->
+      <Action ID="ExecuteAttachment"
+              action_code="15"
+              timeout_s="10.0"/>
+
+      <!-- Report task complete -->
+      <Action ID="ReportTaskComplete" task_id="{task_id}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: NavigateWithAvoidance — differential drive movement -->
+  <!-- Reactive replanning when obstacles detected                  -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="NavigateWithAvoidance">
+    <ReactiveSequence>
+      <!-- Monitor for obstacles in warning zone while moving -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInWarningZone" distance_m="0.8"/>
+        </Inverter>
+        <!-- Obstacle in warning zone: decelerate and replan -->
+        <Sequence>
+          <Action ID="Decelerate"/>
+          <Action ID="RequestReplan" target_node="{_target}"/>
+        </Sequence>
+      </Fallback>
+
+      <!-- Execute movement along planned path (action_code=0: move) -->
+      <Action ID="NavigateToNode"
+              target_node="{_target}"
+              action_code="0"
+              velocity_profile="{_velocity_profile}"
+              allow_rotation="true"/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: BatteryManagement — charge if below threshold       -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="BatteryManagement">
+    <Fallback>
+      <!-- If battery is OK, skip charging entirely -->
+      <Condition ID="BatteryAboveThreshold" threshold_pct="20"/>
+
+      <!-- Battery is low — go charge -->
+      <Sequence>
+        <!-- Navigate to nearest charge dock with avoidance -->
+        <SubTree ID="NavigateWithAvoidance"
+                 _target="{nearest_dock}"
+                 _velocity_profile="cautious"/>
+
+        <!-- Dock at charger (action_code=2: charge_dock) -->
+        <Action ID="DockAtCharger"
+                action_code="2"
+                timeout_s="30.0"/>
+
+        <!-- Start charging (action_code=3: start_charging) -->
+        <Action ID="StartCharging"
+                action_code="3"/>
+
+        <!-- Wait until battery is full -->
+        <Action ID="WaitUntilCharged"
+                target_pct="95"/>
+
+        <!-- Undock from charger (action_code=4: charge_undock) -->
+        <Action ID="UndockFromCharger"
+                action_code="4"
+                timeout_s="15.0"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: ErrorRecovery — reset errors and resume             -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="ErrorRecovery">
+    <Sequence>
+      <!-- Try soft reset first (action_code=31: reset_errors) -->
+      <Fallback>
+        <Action ID="SendActionCode"
+                action_code="31"
+                description="reset_errors"
+                timeout_s="5.0"/>
+
+        <!-- Soft reset failed — try hard reset (action_code=51) -->
+        <Action ID="SendActionCode"
+                action_code="51"
+                description="hard_reset"
+                timeout_s="15.0"/>
+      </Fallback>
+
+      <!-- Wait for robot to stabilize after reset -->
+      <Action ID="WaitSeconds" seconds="2.0"/>
+
+      <!-- Verify errors are cleared -->
+      <Condition ID="NoErrors"/>
+    </Sequence>
+  </BehaviorTree>
+
+</root>

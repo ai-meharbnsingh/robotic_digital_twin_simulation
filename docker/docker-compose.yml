@@ -1,0 +1,122 @@
+# ============================================================
+# Robotic Digital Twin — Full Stack Services
+# ============================================================
+# Usage: docker compose -f docker/docker-compose.yml up --build
+# Context is parent directory (..) so all source is accessible.
+
+services:
+  # ── Main application: C++ FMS + Python API ──
+  rdt:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: rdt-app
+    ports:
+      - "65123:65123"  # C++ TCP server (robot protocol V1)
+      - "7012:7012"    # C++ REST server (fleet API)
+      - "8029:8029"    # Python FastAPI (API + intelligence)
+      - "5199:5199"    # React Dashboard
+    depends_on:
+      mongodb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      redis:
+        condition: service_started
+      influxdb:
+        condition: service_started
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - REDIS_URL=redis://redis:6379
+      - INFLUXDB_URL=http://influxdb:8086
+      - INFLUXDB_TOKEN=rdt-influx-token
+      - INFLUXDB_ORG=rdt
+      - INFLUXDB_BUCKET=fleet_telemetry
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_PORT=5672
+      - RABBITMQ_USER=fms
+      - RABBITMQ_PASS=fms_pass
+      - WAREHOUSE_CONFIG=simple_grid
+      - ROBOT_CONFIG=differential_drive
+      - FMS_TCP_PORT=65123
+      - FMS_REST_PORT=7012
+      - API_PORT=8029
+      - LOG_LEVEL=info
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8029/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── MongoDB: state IPC between C++ and Python ──
+  mongodb:
+    image: mongo:7
+    container_name: rdt-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── RabbitMQ: task queue + event bus ──
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rdt-rabbitmq
+    ports:
+      - "5672:5672"    # AMQP protocol
+      - "15672:15672"  # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: fms
+      RABBITMQ_DEFAULT_PASS: fms_pass
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+
+  # ── Redis: real-time cache (robot positions, telemetry) ──
+  redis:
+    image: redis:7-alpine
+    container_name: rdt-redis
+    ports:
+      - "6379:6379"
+
+  # ── InfluxDB: time-series telemetry storage ──
+  influxdb:
+    image: influxdb:2
+    container_name: rdt-influxdb
+    ports:
+      - "8086:8086"
+    environment:
+      DOCKER_INFLUXDB_INIT_MODE: setup
+      DOCKER_INFLUXDB_INIT_USERNAME: admin
+      DOCKER_INFLUXDB_INIT_PASSWORD: adminpass
+      DOCKER_INFLUXDB_INIT_ORG: rdt
+      DOCKER_INFLUXDB_INIT_BUCKET: fleet_telemetry
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: rdt-influx-token
+    volumes:
+      - influx_data:/var/lib/influxdb2
+
+  # ── Grafana: dashboards for telemetry visualization ──
+  grafana:
+    image: grafana/grafana:latest
+    container_name: rdt-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+    depends_on:
+      - influxdb
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+volumes:
+  mongo_data:
+  influx_data:
+  grafana_data:
