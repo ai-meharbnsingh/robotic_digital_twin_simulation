@@ -53,7 +53,7 @@ fi
 # --- Start Python FastAPI ---
 echo "[start.sh] Starting Python FastAPI on port ${API_PORT:-8029}..."
 cd "$PYTHON_APP"
-python3.11 -m uvicorn app.main:app \
+python3 -m uvicorn app.main:app \
     --host 0.0.0.0 \
     --port "${API_PORT:-8029}" \
     --log-level "${LOG_LEVEL:-info}" &

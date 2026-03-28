@@ -9,6 +9,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Install build toolchain
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
+    ca-certificates \
     cmake \
     git \
     curl \
@@ -59,23 +60,14 @@ RUN npm run build
 # ============================================================
 # Stage 3: Runtime — Python + compiled C++ binaries + frontend
 # ============================================================
-FROM ubuntu:22.04
+FROM python:3.11-slim
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install Python 3.11 and runtime dependencies
+# Install runtime dependencies (curl for healthcheck, libssl for C++ binary)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-    python3.11 \
-    python3.11-dev \
-    python3.11-venv \
-    python3-pip \
     libssl3 \
     curl \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 1 \
     && apt-get clean \
     && true
 
@@ -90,11 +82,11 @@ COPY --from=cpp-builder /app/build/cpp/ /tmp/cpp-build/
 RUN mkdir -p /app/lib && find /tmp/cpp-build -name '*.so*' -exec cp {} /app/lib/ \; 2>/dev/null; true
 
 # Set library path for any shared deps
-ENV LD_LIBRARY_PATH=/app/lib:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH=/app/lib
 
 # Install Python dependencies
 COPY python/requirements.txt /app/python/requirements.txt
-RUN python3.11 -m pip install --no-cache-dir -r /app/python/requirements.txt
+RUN pip install --no-cache-dir -r /app/python/requirements.txt
 
 # Copy application code
 COPY configs/ /app/configs/
