@@ -32,10 +32,7 @@ services:
       - INFLUXDB_TOKEN=rdt-influx-token
       - INFLUXDB_ORG=rdt
       - INFLUXDB_BUCKET=fleet_telemetry
-      - RABBITMQ_HOST=rabbitmq
-      - RABBITMQ_PORT=5672
-      - RABBITMQ_USER=fms
-      - RABBITMQ_PASS=fms_pass
+      - RABBITMQ_URL=amqp://fms:fms_pass@rabbitmq:5672/
       - WAREHOUSE_CONFIG=simple_grid
       - ROBOT_CONFIG=differential_drive
       - FMS_TCP_PORT=65123

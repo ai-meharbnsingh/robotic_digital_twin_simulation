@@ -9,6 +9,7 @@
 // ──────────────────────────────────────────────────────────
 
 #include "rdt/behavior/BTEngine.h"
+#include "rdt/core/Logger.h"
 
 #include <tinyxml2.h>
 #include <algorithm>
@@ -271,8 +272,9 @@ BTStatus BTEngine::tickFallback(std::shared_ptr<BTNode> node) {
 BTStatus BTEngine::tickAction(std::shared_ptr<BTNode> node) {
     auto it = actions_.find(node->id);
     if (it == actions_.end()) {
-        // Unregistered action — treat as SUCCESS (non-critical)
-        return BTStatus::SUCCESS;
+        // Unregistered action — return FAILURE to surface config errors.
+        RDT_LOG_WARN("BTEngine: unregistered action '{}' — returning FAILURE", node->id);
+        return BTStatus::FAILURE;
     }
     return it->second(node->params);
 }

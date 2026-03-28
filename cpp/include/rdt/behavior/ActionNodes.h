@@ -46,6 +46,9 @@ struct BTRobotContext {
     bool   task_available     = false;   // set by task manager
     bool   has_errors         = false;   // set by error monitor
     bool   cargo_secured      = false;   // set after load complete
+    bool   has_lifter         = false;   // set if robot has lifter attachment
+    bool   obstacle_detected  = false;   // set by obstacle sensor / sim
+    double obstacle_distance  = 999.0;  // distance to nearest obstacle in meters
     double wait_elapsed_s     = 0.0;     // accumulated wait time
     std::string current_task_id;
 };
@@ -69,5 +72,13 @@ BTStatus actionWaitSeconds(BTRobotContext& ctx, const BTParams& params);
 BTStatus actionWaitUntilCharged(BTRobotContext& ctx, const BTParams& params);
 BTStatus actionAcceptTask(BTRobotContext& ctx, const BTParams& params);
 BTStatus actionAlignAtStation(BTRobotContext& ctx, const BTParams& params);
+
+// ── AMR-specific action handlers ────────────────────
+BTStatus actionEmergencyStop(BTRobotContext& ctx, const BTParams& params);
+BTStatus actionRotateToHeading(BTRobotContext& ctx, const BTParams& params);
+BTStatus actionLowerLifter(BTRobotContext& ctx, const BTParams& params);
+BTStatus actionRaiseLifter(BTRobotContext& ctx, const BTParams& params);
+BTStatus actionDecelerate(BTRobotContext& ctx, const BTParams& params);
+BTStatus actionRequestReplan(BTRobotContext& ctx, const BTParams& params);
 
 } // namespace rdt

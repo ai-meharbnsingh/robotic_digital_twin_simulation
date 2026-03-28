@@ -23,19 +23,18 @@ static constexpr size_t PROTOCOL_V1_FIELD_COUNT = 33;
 /// @brief All 33 fields transmitted between robot and FMS.
 ///
 /// Field indices (0-based):
-///  0  timestamp           12 obstacle_range       24 load_weight
-///  1  robot_id            13 barcode_row          25 conveyor_speed
-///  2  x                   14 barcode_col          26 temperature
-///  3  y                   15 barcode_valid        27 wifi_rssi
-///  4  theta               16 current_task_id      28 uptime_sec
-///  5  state               17 task_state           29 firmware_version
-///  6  battery_pct         18 error_code           30 heartbeat_seq
-///  7  battery_voltage     19 motor_left_rpm       31 checksum (CRC32)
-///  8  charging            20 motor_right_rpm      32 (end — field 31 is last)
+///  0  timestamp           12 obstacle_range       24 attachment_state
+///  1  robot_id            13 barcode_row          25 load_weight
+///  2  x                   14 barcode_col          26 conveyor_speed
+///  3  y                   15 barcode_valid        27 temperature
+///  4  theta               16 current_task_id      28 wifi_rssi
+///  5  state               17 task_state           29 uptime_sec
+///  6  battery_pct         18 error_code           30 firmware_version
+///  7  battery_voltage     19 motor_left_rpm       31 heartbeat_seq
+///  8  charging            20 motor_right_rpm      32 checksum (CRC32)
 ///  9  linear_vel          21 imu_roll
 /// 10  angular_vel         22 imu_pitch
 /// 11  obstacle_detected   23 imu_yaw
-///                         24 attachment_state
 ///
 /// NOTE: Field count is 33 (indices 0–32). Index 32 = checksum.
 struct ProtocolV1Message {

@@ -578,10 +578,10 @@ TEST(BTEngineTest, RegistrationCounts) {
     registerStandardActions(engine, ctx);
     registerStandardConditions(engine, ctx);
 
-    // 11 action handlers registered
-    EXPECT_EQ(engine.getActionCount(), 11u);
-    // 7 condition handlers registered
-    EXPECT_EQ(engine.getConditionCount(), 7u);
+    // 17 action handlers registered (11 standard + 6 AMR)
+    EXPECT_EQ(engine.getActionCount(), 17u);
+    // 10 condition handlers registered (7 standard + 3 AMR)
+    EXPECT_EQ(engine.getConditionCount(), 10u);
 }
 
 // ═══════════════════════════════════════════════════════
@@ -729,10 +729,10 @@ TEST(BTEngineTest, ResetClearsState) {
 }
 
 // ═══════════════════════════════════════════════════════
-// 17. Unregistered action returns SUCCESS (non-critical)
+// 17. Unregistered action returns FAILURE (surfaces config errors)
 // ═══════════════════════════════════════════════════════
 
-TEST(BTEngineTest, UnregisteredActionReturnsSuccess) {
+TEST(BTEngineTest, UnregisteredActionReturnsFailure) {
     BTEngine engine;
 
     std::string xml = R"(
@@ -744,7 +744,7 @@ TEST(BTEngineTest, UnregisteredActionReturnsSuccess) {
     )";
     ASSERT_TRUE(engine.loadFromString(xml));
 
-    EXPECT_EQ(engine.tick(), BTStatus::SUCCESS);
+    EXPECT_EQ(engine.tick(), BTStatus::FAILURE);
 }
 
 // ═══════════════════════════════════════════════════════

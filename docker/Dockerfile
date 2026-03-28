@@ -74,8 +74,9 @@ WORKDIR /app
 COPY --from=cpp-builder /app/build/cpp/fms_server /app/bin/fms_server
 
 # Copy shared libraries the C++ binary might need
-# (vcpkg builds are mostly static, but copy any .so just in case)
-COPY --from=cpp-builder /app/build/cpp/*.so* /app/lib/ 2>/dev/null || true
+# (vcpkg builds are mostly static — this dir may be empty)
+COPY --from=cpp-builder /app/build/cpp/ /tmp/cpp-build/
+RUN mkdir -p /app/lib && find /tmp/cpp-build -name '*.so*' -exec cp {} /app/lib/ \; 2>/dev/null; true
 
 # Set library path for any shared deps
 ENV LD_LIBRARY_PATH=/app/lib:${LD_LIBRARY_PATH}

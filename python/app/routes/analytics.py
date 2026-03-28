@@ -15,11 +15,6 @@ def _get_db():
     return app_state.get("mongo_db")
 
 
-def _get_sg_engine():
-    from app.main import app_state
-    return app_state.get("sg_engine")
-
-
 def _get_bottleneck_predictor():
     from app.main import app_state
     return app_state.get("bottleneck_predictor")

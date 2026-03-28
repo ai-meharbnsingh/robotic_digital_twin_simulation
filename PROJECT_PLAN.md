@@ -44,10 +44,9 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 │  │ ├── behavior/ BTEngine, ActionNodes, ConditionNodes        │ │
 │  │ ├── network/ TCPServer(:65123), RESTServer(:7012),         │ │
 │  │ │            ProtocolV1 (33 fields + CRC32)                │ │
-│  │ ├── fleet/   [Phase 7] FleetManager, TaskManager, COPP    │ │
-│  │ └── database/ [Phase 7] MongoDBWriter                      │ │
-│  └───────────┬────────────────────────────────────────────────┘ │
-│              │ MongoDB (state IPC)                               │
+│  │ └── fleet/   [Phase 7] FleetManager, TaskManager, COPP    │ │
+│  └───────────┬──────���────────────────────────���────────────────┘ │
+│              │ JSON file output (fleet_state.json)               │
 │  ┌───────────▼────────────────────────────────────────────────┐ │
 │  │ PYTHON PROCESS: FastAPI (python/app/main.py :8029)          │ │
 │  │ ├── REST API (34 endpoints — reads MongoDB)                 │ │
@@ -86,7 +85,7 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 | Fleet Manager | C++17 | — | Phase 7 |
 | Task Manager | C++17 | — | Phase 7 |
 | COPP Controller | C++17 | — | Phase 7 |
-| MongoDB Writer | C++17 | mongocxx | Phase 7 |
+| State Writer | C++17 | jsoncpp (JSON file) | DONE |
 | FastAPI | Python | FastAPI | DONE (scaffold) |
 | Health Checks | Python | Real probes | DONE |
 | Pydantic Models | Python | Pydantic v2 | DONE |
@@ -103,7 +102,7 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 spdlog, fmt, asio, eigen3, gtest, osqp, tinyxml2, jsoncpp, yaml-cpp
 ```
 
-Note: mongo-cxx-driver and rabbitmq-c will be added in Phase 7.
+Note: C++ uses JSON file output for state. MongoDB is accessed only from Python via Motor (async driver).
 
 ## Repository Structure (ACTUAL — matches filesystem)
 

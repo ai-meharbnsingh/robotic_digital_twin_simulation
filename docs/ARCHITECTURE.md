@@ -18,12 +18,11 @@ The simulation runs as three primary processes plus supporting infrastructure se
   │  │  ├── robot/       StateMachine, MotionController, Battery    │  │
   │  │  ├── behavior/    BTEngine, ActionNodes, ConditionNodes      │  │
   │  │  ├── network/     TCPServer, RESTServer, ProtocolV1          │  │
-  │  │  ├── fleet/       FleetManager, TaskManager, COPP            │  │
-  │  │  └── database/    MongoDBWriter                              │  │
+  │  │  └── fleet/       FleetManager, TaskManager, COPP            │  │
   │  └──────────┬─────────────────────────────────────────────┬─────┘  │
-  │             │  TCP (:65123)                    MongoDB Writes │      │
-  │             │  Protocol V1                     (state IPC)   │      │
-  │             ▼                                                ▼      │
+  │             │  TCP (:65123)               JSON file output │        │
+  │             │  Protocol V1               (fleet_state.json)│        │
+  │             ▼                                              ▼        │
   │   ┌──────────────┐                            ┌──────────────┐     │
   │   │  Simulated   │                            │   MongoDB    │     │
   │   │  Robots      │                            │   :27017     │     │
@@ -70,11 +69,9 @@ C++ TCPServer (:65123)
     ▼
 C++ FleetManager
     │  Update robot state, run A* pathfinding, tick behavior trees
+    │  Write state to JSON file (fleet_state.json) each cycle
     ▼
-C++ MongoDBWriter
-    │  Bulk upsert to MongoDB every tick
-    ▼
-MongoDB "robots" collection
+MongoDB "robots" collection (populated by Python API from FMS REST)
     │
     ├──► Python FastAPI (REST: GET /api/robots)
     ��       └──► JSON response to client

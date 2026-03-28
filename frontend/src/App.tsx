@@ -30,9 +30,9 @@ export default function App() {
   const { data: robots, error: robotsErr } = useApi<Robot[]>('/api/robots', POLL_MS)
   const { data: tasks, error: tasksErr } = useApi<Task[]>('/api/tasks', POLL_MS)
   const { data: mapData } = useApi<MapData>('/api/map', 0) // Fetch once
-  const { data: health } = useApi<Health>('/api/health', 5000)
+  const { data: health } = useApi<Health>('/health', 5000)
   const { data: zones } = useApi<IoGitaZoneStatus[]>('/api/iogita/zones', POLL_MS)
-  const { data: predictions } = useApi<SGPrediction[]>('/api/sg/predictions', POLL_MS)
+  const { data: predictions } = useApi<SGPrediction[]>('/api/analytics/predictions', POLL_MS)
 
   // Track WS event count for header indicator
   const wsEventCount = useRef(0)
@@ -60,7 +60,7 @@ export default function App() {
         <div className="flex items-center gap-1.5 text-xs">
           <span
             className={`w-2 h-2 rounded-full ${
-              health?.status === 'ok' ? 'bg-success' : 'bg-danger'
+              health?.status === 'healthy' || health?.status === 'degraded' ? 'bg-success' : 'bg-danger'
             }`}
           />
           <span className="text-muted">
@@ -96,9 +96,9 @@ export default function App() {
               </span>
             </span>
             <span>
-              FMS{' '}
-              <span className={health.fms_ok ? 'text-success' : 'text-danger'}>
-                {health.fms_ok ? 'OK' : 'DOWN'}
+              RabbitMQ{' '}
+              <span className={health.rabbitmq_ok ? 'text-success' : 'text-danger'}>
+                {health.rabbitmq_ok ? 'OK' : 'DOWN'}
               </span>
             </span>
           </div>

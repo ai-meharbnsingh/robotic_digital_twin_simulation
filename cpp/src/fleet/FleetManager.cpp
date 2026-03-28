@@ -73,14 +73,18 @@ void FleetManager::run() {
 }
 
 void FleetManager::stop() {
-    if (!running_.exchange(false)) return;
+    bool was_running = running_.exchange(false);
 
-    RDT_LOG_INFO("FleetManager: stopping...");
-
+    // Always shut down servers even if run() was never called,
+    // since init() starts TCP and REST servers independently.
     if (tcp_server_) tcp_server_->stop();
     if (rest_server_) rest_server_->stop();
 
-    RDT_LOG_INFO("FleetManager: shutdown complete");
+    if (was_running) {
+        RDT_LOG_INFO("FleetManager: shutdown complete (was running)");
+    } else {
+        RDT_LOG_INFO("FleetManager: shutdown complete (servers cleaned up)");
+    }
 }
 
 bool FleetManager::isRunning() const {

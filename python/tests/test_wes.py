@@ -174,10 +174,16 @@ class TestTaskGenerator:
 
 class TestKPITracker:
     def test_init(self):
-        """KPITracker initializes."""
+        """KPITracker initializes with callable compute method."""
         from wes.kpi_tracker import KPITracker
         kpi = KPITracker()
-        assert kpi is not None
+        assert hasattr(kpi, "compute")
+        assert callable(kpi.compute)
+        # Verify it returns a dict with expected keys
+        result = kpi.compute([], [])
+        assert isinstance(result, dict)
+        assert "orders_per_hour" in result
+        assert "pick_accuracy_pct" in result
 
     def test_compute_empty(self):
         """Empty data produces zero KPIs."""

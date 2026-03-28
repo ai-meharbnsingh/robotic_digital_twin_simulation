@@ -117,8 +117,12 @@ export interface Health {
   redis_ok: boolean
   influxdb_ok: boolean
   rabbitmq_ok: boolean
-  fms_ok: boolean
-  uptime_seconds: number
+  warehouse_loaded: boolean
+  robot_loaded: boolean
+  iogita_loaded: boolean
+  sg_loaded: boolean
+  wes_loaded: boolean
+  check_duration_ms: number
 }
 
 export interface IoGitaZoneStatus {

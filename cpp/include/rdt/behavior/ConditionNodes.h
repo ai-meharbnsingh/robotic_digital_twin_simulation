@@ -35,4 +35,9 @@ bool conditionHasErrors(BTRobotContext& ctx, const BTParams& params);
 bool conditionNoErrors(BTRobotContext& ctx, const BTParams& params);
 bool conditionCargoSecured(BTRobotContext& ctx, const BTParams& params);
 
+// ── AMR-specific condition handlers ─────────────────
+bool conditionObstacleInCriticalZone(BTRobotContext& ctx, const BTParams& params);
+bool conditionObstacleInWarningZone(BTRobotContext& ctx, const BTParams& params);
+bool conditionHasLifterAttachment(BTRobotContext& ctx, const BTParams& params);
+
 } // namespace rdt

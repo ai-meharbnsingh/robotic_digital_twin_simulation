@@ -31,14 +31,13 @@
 #include "rdt/core/Config.h"
 #include "rdt/fleet/FleetManager.h"
 
-// Global pointer for signal handler
-static rdt::fleet::FleetManager* g_fleet_manager = nullptr;
+// Async-signal-safe shutdown flag.
+// The signal handler ONLY sets this atomic flag — no logging, no object
+// method calls, no allocations. All cleanup happens in the main thread.
+static volatile std::sig_atomic_t g_shutdown_requested = 0;
 
-static void signalHandler(int signum) {
-    spdlog::info("Received signal {} — shutting down...", signum);
-    if (g_fleet_manager) {
-        g_fleet_manager->stop();
-    }
+static void signalHandler(int /*signum*/) {
+    g_shutdown_requested = 1;
 }
 
 static std::string getEnvOrDefault(const char* name, const std::string& fallback) {
@@ -160,9 +159,8 @@ int main(int argc, char* argv[]) {
 
     // ── Create and run FleetManager ──
     rdt::fleet::FleetManager fm(wh_config, robot_configs);
-    g_fleet_manager = &fm;
 
-    // Install signal handlers
+    // Install signal handlers (async-signal-safe: only sets atomic flag)
     std::signal(SIGINT,  signalHandler);
     std::signal(SIGTERM, signalHandler);
 
@@ -172,10 +170,18 @@ int main(int argc, char* argv[]) {
     }
 
     spdlog::info("FleetManager initialized — starting 15Hz loop...");
-    fm.run();
+
+    // Run the main loop manually, checking the signal flag each cycle.
+    // This avoids calling FleetManager methods from the signal handler.
+    while (!g_shutdown_requested) {
+        fm.runOneCycle();
+    }
+
+    // Signal caught — perform clean shutdown from main thread (safe)
+    spdlog::info("Signal caught — performing clean shutdown...");
+    fm.stop();
 
     // ── Cleanup ──
-    g_fleet_manager = nullptr;
     rdt::core::Logger::shutdown();
 
     return 0;

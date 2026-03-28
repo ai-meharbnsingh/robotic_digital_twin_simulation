@@ -244,6 +244,68 @@ BTStatus actionAlignAtStation(BTRobotContext& /*ctx*/, const BTParams& /*params*
     return BTStatus::SUCCESS;
 }
 
+// ── EmergencyStop (AMR) ───────────────────────────────
+
+BTStatus actionEmergencyStop(BTRobotContext& ctx, const BTParams& /*params*/) {
+    if (!ctx.state_machine) return BTStatus::FAILURE;
+
+    RobotState current = ctx.state_machine->getCurrentState();
+    if (current == RobotState::ERROR) {
+        // Already stopped
+        return BTStatus::SUCCESS;
+    }
+
+    // Transition to ERROR state (emergency) from any moving state
+    if (current == RobotState::MOVING) {
+        ctx.state_machine->transitionTo(RobotState::ERROR);
+    }
+    ctx.has_errors = true;
+    return BTStatus::SUCCESS;
+}
+
+// ── RotateToHeading (AMR) ─────────────────────────────
+
+BTStatus actionRotateToHeading(BTRobotContext& ctx, const BTParams& /*params*/) {
+    // In simulation, differential drive rotation is instantaneous.
+    // A real implementation would command angular velocity and wait
+    // for heading to converge within tolerance_rad.
+    if (!ctx.state_machine) return BTStatus::FAILURE;
+    return BTStatus::SUCCESS;
+}
+
+// ── LowerLifter (AMR) ────────────────────────────────
+
+BTStatus actionLowerLifter(BTRobotContext& ctx, const BTParams& /*params*/) {
+    if (!ctx.state_machine) return BTStatus::FAILURE;
+    // In simulation, lifter operations are instantaneous
+    return BTStatus::SUCCESS;
+}
+
+// ── RaiseLifter (AMR) ────────────────────────────────
+
+BTStatus actionRaiseLifter(BTRobotContext& ctx, const BTParams& /*params*/) {
+    if (!ctx.state_machine) return BTStatus::FAILURE;
+    // In simulation, lifter operations are instantaneous
+    return BTStatus::SUCCESS;
+}
+
+// ── Decelerate (AMR) ─────────────────────────────────
+
+BTStatus actionDecelerate(BTRobotContext& /*ctx*/, const BTParams& /*params*/) {
+    // In simulation, deceleration is handled by the motion controller.
+    // This action signals the intent to slow down for obstacle avoidance.
+    return BTStatus::SUCCESS;
+}
+
+// ── RequestReplan (AMR) ──────────────────────────────
+
+BTStatus actionRequestReplan(BTRobotContext& ctx, const BTParams& /*params*/) {
+    // Clear the current planned path so the fleet manager replans on next cycle.
+    // In simulation, this triggers a new A* path computation.
+    ctx.move_complete = false;
+    return BTStatus::SUCCESS;
+}
+
 // ── Register all standard actions ──────────────────────
 
 void registerStandardActions(BTEngine& engine, BTRobotContext& ctx) {
@@ -279,6 +341,25 @@ void registerStandardActions(BTEngine& engine, BTRobotContext& ctx) {
 
     engine.registerAction("AlignAtStation",
         [&ctx](const BTParams& p) { return actionAlignAtStation(ctx, p); });
+
+    // AMR-specific actions
+    engine.registerAction("EmergencyStop",
+        [&ctx](const BTParams& p) { return actionEmergencyStop(ctx, p); });
+
+    engine.registerAction("RotateToHeading",
+        [&ctx](const BTParams& p) { return actionRotateToHeading(ctx, p); });
+
+    engine.registerAction("LowerLifter",
+        [&ctx](const BTParams& p) { return actionLowerLifter(ctx, p); });
+
+    engine.registerAction("RaiseLifter",
+        [&ctx](const BTParams& p) { return actionRaiseLifter(ctx, p); });
+
+    engine.registerAction("Decelerate",
+        [&ctx](const BTParams& p) { return actionDecelerate(ctx, p); });
+
+    engine.registerAction("RequestReplan",
+        [&ctx](const BTParams& p) { return actionRequestReplan(ctx, p); });
 }
 
 } // namespace rdt
