@@ -121,18 +121,20 @@ class TestSimpleGridWorld:
         assert len(chargers) == 2, f"Expected 2 chargers, got {len(chargers)}"
 
     def test_has_pick_drop_stations(self, simple_grid_sdf):
-        """simple_grid has 1 pick and 1 drop node."""
+        """simple_grid has 1 pick and 1 drop node — multiple models per station."""
         root = _parse_sdf(simple_grid_sdf)
         models = _find_all_models(root)
-        stations = [m for m in models if m.attrib.get("name", "").startswith("station_")]
-        assert len(stations) == 2, f"Expected 2 stations (pick+drop), got {len(stations)}"
+        pick_models = [m for m in models if m.attrib.get("name", "").startswith(("pick_table_", "pick_shelf_"))]
+        drop_models = [m for m in models if m.attrib.get("name", "").startswith(("drop_conv_", "drop_wall_"))]
+        assert len(pick_models) >= 1, f"Expected pick station models, got {len(pick_models)}"
+        assert len(drop_models) >= 1, f"Expected drop station models, got {len(drop_models)}"
 
     def test_has_shelf_models(self, simple_grid_sdf):
-        """simple_grid has 8 shelf nodes."""
+        """simple_grid has 8 shelf nodes — each generates rack models."""
         root = _parse_sdf(simple_grid_sdf)
         models = _find_all_models(root)
-        shelves = [m for m in models if m.attrib.get("name", "").startswith("shelf_")]
-        assert len(shelves) == 8, f"Expected 8 shelves, got {len(shelves)}"
+        racks = [m for m in models if m.attrib.get("name", "").startswith("rack_")]
+        assert len(racks) >= 8, f"Expected at least 8 rack models, got {len(racks)}"
 
     def test_has_barcode_grid(self, simple_grid_sdf):
         """World must have a barcode_grid model with visual markers."""
@@ -231,11 +233,13 @@ class TestBotValleyWorld:
         assert len(chargers) == 1, f"Expected 1 charger, got {len(chargers)}"
 
     def test_has_pick_drop(self, botvalley_sdf):
-        """botvalley has 1 pick and 1 drop node."""
+        """botvalley has 1 pick and 1 drop node — multiple models per station."""
         root = _parse_sdf(botvalley_sdf)
         models = _find_all_models(root)
-        stations = [m for m in models if m.attrib.get("name", "").startswith("station_")]
-        assert len(stations) == 2
+        pick_models = [m for m in models if m.attrib.get("name", "").startswith(("pick_table_", "pick_shelf_"))]
+        drop_models = [m for m in models if m.attrib.get("name", "").startswith(("drop_conv_", "drop_wall_"))]
+        assert len(pick_models) >= 1, f"Expected pick station models, got {len(pick_models)}"
+        assert len(drop_models) >= 1, f"Expected drop station models, got {len(drop_models)}"
 
     def test_world_bounds_reasonable(self, botvalley_sdf):
         """World bounds should cover the ~30m x 34m BotValley layout."""

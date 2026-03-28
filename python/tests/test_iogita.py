@@ -43,7 +43,7 @@ class TestZoneIdentifier:
         from intelligence.iogita.zone_identifier import ZoneIdentifier
         zi = ZoneIdentifier(zones=SAMPLE_ZONES, nodes=SAMPLE_NODES)
         assert zi.num_zones == 3
-        assert zi.backend in ("sg_engine", "hopfield_fallback")
+        assert zi.backend in ("sg_engine", "hopfield_ode", "hopfield_fallback")
 
     def test_identify_returns_zone_name(self):
         """identify() returns a string zone name."""

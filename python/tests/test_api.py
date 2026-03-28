@@ -160,7 +160,7 @@ class TestMap:
         assert data["name"] == "Simple 5x5 Grid"
         assert len(data["nodes"]) == 25
         assert len(data["edges"]) == 40
-        assert len(data["zones"]) == 3
+        assert len(data["zones"]) == 8
 
     async def test_list_nodes(self, client: AsyncClient):
         """GET /api/map/nodes — returns all nodes."""
@@ -200,7 +200,7 @@ class TestMap:
         assert resp.status_code == 200
         zones = resp.json()
         assert isinstance(zones, list)
-        assert len(zones) == 3
+        assert len(zones) == 8
         zone_names = [z["name"] for z in zones]
         assert "Charging" in zone_names
         assert "Storage" in zone_names

@@ -36,9 +36,9 @@ class TestWarehouseConfig:
         warehouse = load_warehouse_config("simple_grid")
         assert len(warehouse["edges"]) == 40
 
-    def test_warehouse_has_3_zones(self):
+    def test_warehouse_has_8_zones(self):
         warehouse = load_warehouse_config("simple_grid")
-        assert len(warehouse["zones"]) == 3
+        assert len(warehouse["zones"]) == 8
 
     def test_zone_names(self):
         warehouse = load_warehouse_config("simple_grid")

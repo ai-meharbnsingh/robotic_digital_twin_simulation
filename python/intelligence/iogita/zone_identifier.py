@@ -681,7 +681,8 @@ class ZoneIdentifier:
                 pass
 
         # Use Hopfield ODE for identification
-        if hasattr(self, '_hopfield') and self._hopfield.dim > 0:
+        if (hasattr(self, '_hopfield') and self._hopfield.n_patterns > 0
+                and feat_arr.shape[0] == self._hopfield.n_features):
             name, sim, iters = self._hopfield.identify(feat_arr)
             # Map node name to zone name
             zone = self._node_to_zone.get(name, name)

@@ -40,7 +40,7 @@ TEST(ConfigTest, LoadSimpleGridWarehouse_EdgeCount) {
 TEST(ConfigTest, LoadSimpleGridWarehouse_ZoneCount) {
     auto cfg = Config::loadWarehouseConfig(
         projectRoot() + "/configs/warehouses/simple_grid.json");
-    EXPECT_EQ(cfg.zones.size(), 3u);
+    EXPECT_EQ(cfg.zones.size(), 8u);
 }
 
 TEST(ConfigTest, LoadSimpleGridWarehouse_Name) {
@@ -85,19 +85,39 @@ TEST(ConfigTest, LoadSimpleGridWarehouse_HubNode) {
 TEST(ConfigTest, LoadSimpleGridWarehouse_ZoneDetails) {
     auto cfg = Config::loadWarehouseConfig(
         projectRoot() + "/configs/warehouses/simple_grid.json");
-    ASSERT_EQ(cfg.zones.size(), 3u);
+    ASSERT_EQ(cfg.zones.size(), 8u);
 
     EXPECT_EQ(cfg.zones[0].name, "Charging");
     EXPECT_EQ(cfg.zones[0].type, "dock");
     EXPECT_EQ(cfg.zones[0].nodes.size(), 2u);
 
-    EXPECT_EQ(cfg.zones[1].name, "Storage");
-    EXPECT_EQ(cfg.zones[1].type, "shelf");
-    EXPECT_EQ(cfg.zones[1].nodes.size(), 8u);
+    EXPECT_EQ(cfg.zones[1].name, "Aisle_North");
+    EXPECT_EQ(cfg.zones[1].type, "aisle");
+    EXPECT_EQ(cfg.zones[1].nodes.size(), 3u);
 
-    EXPECT_EQ(cfg.zones[2].name, "Operations");
-    EXPECT_EQ(cfg.zones[2].type, "ops");
+    EXPECT_EQ(cfg.zones[2].name, "Aisle_West");
+    EXPECT_EQ(cfg.zones[2].type, "lane");
     EXPECT_EQ(cfg.zones[2].nodes.size(), 3u);
+
+    EXPECT_EQ(cfg.zones[3].name, "Storage");
+    EXPECT_EQ(cfg.zones[3].type, "shelf");
+    EXPECT_EQ(cfg.zones[3].nodes.size(), 8u);
+
+    EXPECT_EQ(cfg.zones[4].name, "Operations");
+    EXPECT_EQ(cfg.zones[4].type, "ops");
+    EXPECT_EQ(cfg.zones[4].nodes.size(), 1u);
+
+    EXPECT_EQ(cfg.zones[5].name, "Aisle_East");
+    EXPECT_EQ(cfg.zones[5].type, "lane");
+    EXPECT_EQ(cfg.zones[5].nodes.size(), 3u);
+
+    EXPECT_EQ(cfg.zones[6].name, "Aisle_South");
+    EXPECT_EQ(cfg.zones[6].type, "aisle");
+    EXPECT_EQ(cfg.zones[6].nodes.size(), 3u);
+
+    EXPECT_EQ(cfg.zones[7].name, "Pick_Drop");
+    EXPECT_EQ(cfg.zones[7].type, "pick");
+    EXPECT_EQ(cfg.zones[7].nodes.size(), 2u);
 }
 
 TEST(ConfigTest, LoadSimpleGridWarehouse_FirstEdge) {
