@@ -20,7 +20,10 @@ from typing import Any
 
 import httpx
 import redis.asyncio as aioredis
+from pathlib import Path
+
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
 
 from app.config import Settings, get_settings, load_robot_config, load_warehouse_config
@@ -300,3 +303,9 @@ async def root():
         "docs": "/docs",
         "endpoints": 34,
     }
+
+
+# --- Serve React dashboard if frontend dist exists ---
+_frontend_dist = Path(__file__).resolve().parent.parent.parent / "frontend" / "dist"
+if _frontend_dist.is_dir():
+    app.mount("/dashboard", StaticFiles(directory=str(_frontend_dist), html=True), name="dashboard")

@@ -62,7 +62,11 @@ echo "[start.sh] Python FastAPI started (PID $API_PID)"
 
 # --- Wait for either process to exit ---
 # If either process exits, we shut down everything
-echo "[start.sh] All services running. Waiting..."
+echo "[start.sh] All services running."
+echo "[start.sh]   API:       http://localhost:${API_PORT:-8029}"
+echo "[start.sh]   Dashboard: http://localhost:${API_PORT:-8029}/dashboard"
+echo "[start.sh]   Docs:      http://localhost:${API_PORT:-8029}/docs"
+echo "[start.sh] Waiting..."
 
 # Wait on both processes — if one exits, trigger shutdown
 wait -n "$API_PID" ${FMS_PID:+"$FMS_PID"} 2>/dev/null || true

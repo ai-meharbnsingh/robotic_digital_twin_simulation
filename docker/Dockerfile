@@ -46,7 +46,18 @@ RUN cmake -B build -S . \
 RUN cmake --build build --parallel $(nproc)
 
 # ============================================================
-# Stage 2: Runtime — Python + compiled C++ binaries
+# Stage 2: Frontend Builder — build React dashboard
+# ============================================================
+FROM node:20-slim AS frontend-builder
+
+WORKDIR /frontend
+COPY frontend/package.json frontend/package-lock.json* ./
+RUN npm ci --ignore-scripts 2>/dev/null || npm install
+COPY frontend/ ./
+RUN npm run build
+
+# ============================================================
+# Stage 3: Runtime — Python + compiled C++ binaries + frontend
 # ============================================================
 FROM ubuntu:22.04
 
@@ -89,6 +100,9 @@ RUN python3.11 -m pip install --no-cache-dir -r /app/python/requirements.txt
 COPY configs/ /app/configs/
 COPY python/ /app/python/
 COPY gazebo/ /app/gazebo/
+
+# Copy built frontend from frontend-builder
+COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 
 # Copy and prepare startup script
 COPY docker/start.sh /app/start.sh
