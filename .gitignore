@@ -1,0 +1,41 @@
+# C++ build
+build/
+cmake-build-*/
+*.o
+*.so
+*.a
+*.dylib
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log
+
+# Runtime
+/tmp/
+*.db
+*.db-shm
+*.db-wal
+
+# Test
+.pytest_cache/
+htmlcov/
+.coverage
+
+# Env
+.env
+.env.local
