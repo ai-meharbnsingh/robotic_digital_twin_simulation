@@ -43,3 +43,4 @@ htmlcov/
 build/
 test_output*.txt
 _archive/
+frontend/node_modules/
