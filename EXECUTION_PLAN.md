@@ -149,3 +149,21 @@ No task is done until its test passes for real.
 - [ ] 11.5 **GREEN:** demo/fleet_demo.py — 10-minute demo script
 - [ ] 11.6 **GREEN:** docs/ — getting started, API ref, config guide
 - [ ] 11.7 **FINAL KIMI AUDIT** — blueprint delta = 0, no dead code, no faking
+
+## Phase 12: io-gita Accuracy Fix (FMS Timing Features)
+**Goal:** 71% → 90%+ zone accuracy by adding P22 Features 15-16.
+
+**Problem:** Uniform shelf geometry = identical LiDAR readings across aisles. io-gita graph filter narrows to 3 candidates but can't pick the right one from identical signatures.
+
+**Solution:** The FMS knows when/where the robot was last seen. Use that:
+- Feature 15: `distance_since_last_known = velocity × time_elapsed`
+- Feature 16: `heading_changes_since_last_known`
+- These eliminate "wrong identical aisle" candidates because the robot physically couldn't have traveled that far.
+
+- [ ] 12.1 **TEST RED:** `test_iogita_fms_features.py` — zone accuracy >85% on BotValley with FMS timing
+- [ ] 12.2 **GREEN:** Add `FMSTimingFeature` to `zone_identifier.py` — reads last_known_node + timestamp + velocity from FMS state
+- [ ] 12.3 **GREEN:** Add distance/heading features to feature vector (expand from 16 to 18 features)
+- [ ] 12.4 **GREEN:** Update cold_start.py — use FMS timing in recovery hints
+- [ ] 12.5 **TEST:** Run BotValley 63-node accuracy test — must exceed 85%
+- [ ] 12.6 **TEST:** Run uniform-shelf-grid accuracy — must exceed 80%
+- [ ] 12.7 **AUDIT** — Kimi/Gemini review
