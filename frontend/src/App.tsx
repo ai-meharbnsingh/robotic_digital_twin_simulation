@@ -1,0 +1,133 @@
+import { useCallback, useRef } from 'react'
+import { useApi } from './hooks/useApi'
+import { useFleetWebSocket } from './hooks/useFleetWebSocket'
+import { WarehouseGrid } from './components/WarehouseGrid'
+import { RobotStatusPanel } from './components/RobotStatusPanel'
+import { TaskQueue } from './components/TaskQueue'
+import { BatteryLevels } from './components/BatteryLevels'
+import { IoGitaZones } from './components/IoGitaZones'
+import { SGPredictions } from './components/SGPredictions'
+import type {
+  Robot,
+  Task,
+  MapNode,
+  MapEdge,
+  Health,
+  IoGitaZoneStatus,
+  SGPrediction,
+  FleetWSEvent,
+} from './types'
+
+const POLL_MS = 3000
+
+interface MapData {
+  nodes: MapNode[]
+  edges: MapEdge[]
+}
+
+export default function App() {
+  // REST polling for core data
+  const { data: robots, error: robotsErr } = useApi<Robot[]>('/api/robots', POLL_MS)
+  const { data: tasks, error: tasksErr } = useApi<Task[]>('/api/tasks', POLL_MS)
+  const { data: mapData } = useApi<MapData>('/api/map', 0) // Fetch once
+  const { data: health } = useApi<Health>('/api/health', 5000)
+  const { data: zones } = useApi<IoGitaZoneStatus[]>('/api/iogita/zones', POLL_MS)
+  const { data: predictions } = useApi<SGPrediction[]>('/api/sg/predictions', POLL_MS)
+
+  // Track WS event count for header indicator
+  const wsEventCount = useRef(0)
+  const handleWSEvent = useCallback((_event: FleetWSEvent) => {
+    wsEventCount.current += 1
+    // Future: merge real-time updates into state for lower-latency display.
+    // For now, REST polling provides the data and WS is connected for when
+    // the backend sends push updates.
+  }, [])
+
+  const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
+
+  // Aggregate errors
+  const apiErrors = [robotsErr, tasksErr].filter(Boolean)
+
+  return (
+    <div className="min-h-screen bg-surface text-gray-200 flex flex-col">
+      {/* Header */}
+      <header className="bg-panel border-b border-border px-4 py-2 flex items-center gap-4">
+        <h1 className="text-lg font-bold text-gray-100 tracking-tight">
+          RDT Fleet Dashboard
+        </h1>
+
+        {/* Health indicator */}
+        <div className="flex items-center gap-1.5 text-xs">
+          <span
+            className={`w-2 h-2 rounded-full ${
+              health?.status === 'ok' ? 'bg-success' : 'bg-danger'
+            }`}
+          />
+          <span className="text-muted">
+            {health ? health.status.toUpperCase() : 'CONNECTING'}
+          </span>
+        </div>
+
+        {/* WS status */}
+        <div className="flex items-center gap-1.5 text-xs">
+          <span
+            className={`w-2 h-2 rounded-full ${
+              wsConnected ? 'bg-success' : 'bg-warning'
+            }`}
+          />
+          <span className="text-muted">
+            WS {wsConnected ? 'LIVE' : 'RECONNECTING'}
+          </span>
+        </div>
+
+        {/* Service status (from health) */}
+        {health && (
+          <div className="ml-auto flex items-center gap-3 text-[10px] text-muted">
+            <span>
+              MongoDB{' '}
+              <span className={health.mongodb_ok ? 'text-success' : 'text-danger'}>
+                {health.mongodb_ok ? 'OK' : 'DOWN'}
+              </span>
+            </span>
+            <span>
+              Redis{' '}
+              <span className={health.redis_ok ? 'text-success' : 'text-danger'}>
+                {health.redis_ok ? 'OK' : 'DOWN'}
+              </span>
+            </span>
+            <span>
+              FMS{' '}
+              <span className={health.fms_ok ? 'text-success' : 'text-danger'}>
+                {health.fms_ok ? 'OK' : 'DOWN'}
+              </span>
+            </span>
+          </div>
+        )}
+      </header>
+
+      {/* Error banner */}
+      {apiErrors.length > 0 && (
+        <div className="bg-danger/10 border-b border-danger/30 px-4 py-1.5 text-xs text-danger">
+          API Error: {apiErrors.join(' | ')}
+        </div>
+      )}
+
+      {/* 6-panel grid */}
+      <main className="flex-1 p-3 grid grid-cols-3 grid-rows-2 gap-3 min-h-0">
+        {/* Row 1 */}
+        <WarehouseGrid
+          nodes={mapData?.nodes ?? []}
+          edges={mapData?.edges ?? []}
+          robots={robots ?? []}
+        />
+        <RobotStatusPanel robots={robots ?? []} />
+        <TaskQueue tasks={tasks ?? []} />
+
+        {/* Row 2 */}
+        <BatteryLevels robots={robots ?? []} />
+        <IoGitaZones zones={zones ?? []} />
+        <SGPredictions predictions={predictions ?? []} />
+      </main>
+    </div>
+  )
+}

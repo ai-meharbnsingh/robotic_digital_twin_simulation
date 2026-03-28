@@ -1,0 +1,1 @@
+{"root":["./src/app.tsx","./src/main.tsx","./src/types.ts","./src/vite-env.d.ts","./src/components/batterylevels.tsx","./src/components/iogitazones.tsx","./src/components/robotstatuspanel.tsx","./src/components/sgpredictions.tsx","./src/components/taskqueue.tsx","./src/components/warehousegrid.tsx","./src/hooks/useapi.ts","./src/hooks/usefleetwebsocket.ts"],"version":"5.9.3"}
