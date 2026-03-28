@@ -1,6 +1,11 @@
 <?xml version="1.0" ?>
 <sdf version="1.9">
   <world name="botvalley">
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
+      <render_engine>ogre2</render_engine>
+    </plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
     <light name="sun" type="directional">
       <cast_shadows>true</cast_shadows>
       <pose>0 0 10 0 0 0</pose>
@@ -147,128 +152,1750 @@
         </collision>
       </link>
     </model>
-    <model name="zone_ZoneA_0">
+    <model name="dock_wall_c1_001">
       <static>true</static>
-      <pose>-5.395 2.11 0.6 0 0 0</pose>
-      <link name="zone_ZoneA_0_link">
-        <visual name="zone_ZoneA_0_visual">
+      <pose>1.7146425247192383 -2.5317887544631956 1.0 0 0 0</pose>
+      <link name="dock_wall_c1_001_link">
+        <visual name="dock_wall_c1_001_vis">
           <geometry>
             <box>
-              <size>2.9099999999999997 1.78 1.2</size>
+              <size>2.0 0.15 2.0</size>
             </box>
           </geometry>
           <material>
-            <ambient>0.55 0.35 0.15 0.6</ambient>
-            <diffuse>0.55 0.35 0.15 0.6</diffuse>
+            <ambient>0.6 0.6 0.6 1.0</ambient>
+            <diffuse>0.6 0.6 0.6 1.0</diffuse>
           </material>
         </visual>
-        <collision name="zone_ZoneA_0_visual_collision">
+        <collision name="dock_wall_c1_001_vis_collision">
           <geometry>
             <box>
-              <size>2.9099999999999997 1.78 1.2</size>
+              <size>2.0 0.15 2.0</size>
             </box>
           </geometry>
         </collision>
       </link>
     </model>
-    <model name="zone_ZoneB_0">
+    <model name="charger_c1_002">
       <static>true</static>
-      <pose>-0.895 -6.59 0.6 0 0 0</pose>
-      <link name="zone_ZoneB_0_link">
-        <visual name="zone_ZoneB_0_visual">
+      <pose>2.2146425247192383 -2.0317887544631956 0.75 0 0 0</pose>
+      <link name="charger_c1_002_link">
+        <visual name="charger_c1_002_vis">
           <geometry>
             <box>
-              <size>2.03 1.5999999999999996 1.2</size>
+              <size>0.3 0.3 1.5</size>
             </box>
-          </geometry>
-          <material>
-            <ambient>0.55 0.35 0.15 0.6</ambient>
-            <diffuse>0.55 0.35 0.15 0.6</diffuse>
-          </material>
-        </visual>
-        <collision name="zone_ZoneB_0_visual_collision">
-          <geometry>
-            <box>
-              <size>2.03 1.5999999999999996 1.2</size>
-            </box>
-          </geometry>
-        </collision>
-      </link>
-    </model>
-    <model name="charger_c1">
-      <static>true</static>
-      <pose>1.7146425247192383 -1.7317887544631958 0.025 0 0 0</pose>
-      <link name="charger_c1_link">
-        <visual name="charger_c1_visual">
-          <geometry>
-            <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
-            </cylinder>
           </geometry>
           <material>
             <ambient>0.0 0.8 0.0 1.0</ambient>
             <diffuse>0.0 0.8 0.0 1.0</diffuse>
           </material>
         </visual>
-        <collision name="charger_c1_visual_collision">
+        <collision name="charger_c1_002_vis_collision">
+          <geometry>
+            <box>
+              <size>0.3 0.3 1.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_003">
+      <static>true</static>
+      <pose>-1.758684515953064 -3.2982900142669678 0.01 0 0 0</pose>
+      <link name="cross_k1_003_link">
+        <visual name="cross_k1_003_vis">
           <geometry>
             <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_003_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
             </cylinder>
           </geometry>
         </collision>
       </link>
     </model>
-    <model name="station_k1_k2_5">
+    <model name="cross_k2_004">
       <static>true</static>
-      <pose>-0.6911510825157166 -6.722629547119141 0.025 0 0 0</pose>
-      <link name="station_k1_k2_5_link">
-        <visual name="station_k1_k2_5_visual">
+      <pose>7.764575958251953 -19.392702102661133 0.01 0 0 0</pose>
+      <link name="cross_k2_004_link">
+        <visual name="cross_k2_004_vis">
           <geometry>
             <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
+              <radius>0.15</radius>
+              <length>0.02</length>
             </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_004_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_005">
+      <static>true</static>
+      <pose>16.8737850189209 -14.262846946716309 0.01 0 0 0</pose>
+      <link name="cross_k3_005_link">
+        <visual name="cross_k3_005_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_005_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_006">
+      <static>true</static>
+      <pose>11.452939987182617 -4.5844197273254395 0.01 0 0 0</pose>
+      <link name="cross_k4_006_link">
+        <visual name="cross_k4_006_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_006_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k5_007">
+      <static>true</static>
+      <pose>5.678647041320801 3.6116576194763184 0.01 0 0 0</pose>
+      <link name="cross_k5_007_link">
+        <visual name="cross_k5_007_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k5_007_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_008">
+      <static>true</static>
+      <pose>-12.859872817993164 14.515297889709473 0.01 0 0 0</pose>
+      <link name="cross_k7_008_link">
+        <visual name="cross_k7_008_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_008_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_k2_1_009">
+      <static>true</static>
+      <pose>-0.41727715730667114 -4.955166816711426 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_1_009_link">
+        <visual name="cross_k1_k2_1_009_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_1_009_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="lane_wall_k1_k2_2_010">
+      <static>true</static>
+      <pose>-1.409238600730896 -5.767369747161865 1.0 0 0 0</pose>
+      <link name="lane_wall_k1_k2_2_010_link">
+        <visual name="lane_wall_k1_k2_2_010_vis">
+          <geometry>
+            <box>
+              <size>0.15 3.0 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="lane_wall_k1_k2_2_010_vis_collision">
+          <geometry>
+            <box>
+              <size>0.15 3.0 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="pick_table_k1_k2_5_011">
+      <static>true</static>
+      <pose>-0.6911510825157166 -6.122629547119141 0.4 0 0 0</pose>
+      <link name="pick_table_k1_k2_5_011_link">
+        <visual name="pick_table_k1_k2_5_011_vis">
+          <geometry>
+            <box>
+              <size>1.5 0.5 0.8</size>
+            </box>
           </geometry>
           <material>
             <ambient>0.0 0.4 1.0 1.0</ambient>
             <diffuse>0.0 0.4 1.0 1.0</diffuse>
           </material>
         </visual>
-        <collision name="station_k1_k2_5_visual_collision">
+        <collision name="pick_table_k1_k2_5_011_vis_collision">
+          <geometry>
+            <box>
+              <size>1.5 0.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="pick_shelf_k1_k2_5_012">
+      <static>true</static>
+      <pose>-0.6911510825157166 -7.5226295471191404 1.0 0 0 0</pose>
+      <link name="pick_shelf_k1_k2_5_012_link">
+        <visual name="pick_shelf_k1_k2_5_012_vis">
+          <geometry>
+            <box>
+              <size>1.5 0.15 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="pick_shelf_k1_k2_5_012_vis_collision">
+          <geometry>
+            <box>
+              <size>1.5 0.15 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_k2_6_013">
+      <static>true</static>
+      <pose>1.1738572120666504 -13.458955764770508 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_6_013_link">
+        <visual name="cross_k1_k2_6_013_vis">
           <geometry>
             <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_6_013_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
             </cylinder>
           </geometry>
         </collision>
       </link>
     </model>
-    <model name="station_k7_k1_8">
+    <model name="cross_k1_k2_7_014">
       <static>true</static>
-      <pose>-4.742206573486328 2.065027952194214 0.025 0 0 0</pose>
-      <link name="station_k7_k1_8_link">
-        <visual name="station_k7_k1_8_visual">
+      <pose>4.595932960510254 -13.846612930297852 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_7_014_link">
+        <visual name="cross_k1_k2_7_014_vis">
           <geometry>
             <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
+              <radius>0.15</radius>
+              <length>0.02</length>
             </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_7_014_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_k2_8_015">
+      <static>true</static>
+      <pose>5.18385124206543 -14.81391716003418 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_8_015_link">
+        <visual name="cross_k1_k2_8_015_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_8_015_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_k2_9_016">
+      <static>true</static>
+      <pose>6.044092655181885 -16.340179443359375 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_9_016_link">
+        <visual name="cross_k1_k2_9_016_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_9_016_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k1_k2_10_017">
+      <static>true</static>
+      <pose>6.904334545135498 -17.866439819335938 0.01 0 0 0</pose>
+      <link name="cross_k1_k2_10_017_link">
+        <visual name="cross_k1_k2_10_017_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k1_k2_10_017_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k2_k3_1_018">
+      <static>true</static>
+      <pose>9.314057350158691 -18.516298294067383 0.01 0 0 0</pose>
+      <link name="cross_k2_k3_1_018_link">
+        <visual name="cross_k2_k3_1_018_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_k3_1_018_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k2_k3_2_019">
+      <static>true</static>
+      <pose>10.86353874206543 -17.639894485473633 0.01 0 0 0</pose>
+      <link name="cross_k2_k3_2_019_link">
+        <visual name="cross_k2_k3_2_019_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_k3_2_019_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k2_k3_3_020">
+      <static>true</static>
+      <pose>12.413020133972168 -16.763490676879883 0.01 0 0 0</pose>
+      <link name="cross_k2_k3_3_020_link">
+        <visual name="cross_k2_k3_3_020_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_k3_3_020_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k2_k3_4_021">
+      <static>true</static>
+      <pose>13.962501525878906 -15.887086868286133 0.01 0 0 0</pose>
+      <link name="cross_k2_k3_4_021_link">
+        <visual name="cross_k2_k3_4_021_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_k3_4_021_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k2_k3_5_022">
+      <static>true</static>
+      <pose>15.511982917785645 -15.010683059692383 0.01 0 0 0</pose>
+      <link name="cross_k2_k3_5_022_link">
+        <visual name="cross_k2_k3_5_022_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k2_k3_5_022_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_k4_1_023">
+      <static>true</static>
+      <pose>16.126710891723633 -12.542635917663574 0.01 0 0 0</pose>
+      <link name="cross_k3_k4_1_023_link">
+        <visual name="cross_k3_k4_1_023_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_k4_1_023_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_k4_2_024">
+      <static>true</static>
+      <pose>15.191956520080566 -10.950992584228516 0.01 0 0 0</pose>
+      <link name="cross_k3_k4_2_024_link">
+        <visual name="cross_k3_k4_2_024_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_k4_2_024_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_k4_3_025">
+      <static>true</static>
+      <pose>14.2572021484375 -9.359349250793457 0.01 0 0 0</pose>
+      <link name="cross_k3_k4_3_025_link">
+        <visual name="cross_k3_k4_3_025_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_k4_3_025_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_k4_4_026">
+      <static>true</static>
+      <pose>13.32244873046875 -7.767706394195557 0.01 0 0 0</pose>
+      <link name="cross_k3_k4_4_026_link">
+        <visual name="cross_k3_k4_4_026_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_k4_4_026_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k3_k4_5_027">
+      <static>true</static>
+      <pose>12.387694358825684 -6.176063060760498 0.01 0 0 0</pose>
+      <link name="cross_k3_k4_5_027_link">
+        <visual name="cross_k3_k4_5_027_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k3_k4_5_027_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_k5_1_028">
+      <static>true</static>
+      <pose>10.490557670593262 -3.218406915664673 0.01 0 0 0</pose>
+      <link name="cross_k4_k5_1_028_link">
+        <visual name="cross_k4_k5_1_028_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_k5_1_028_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_k5_2_029">
+      <static>true</static>
+      <pose>9.528176307678223 -1.8523941040039062 0.01 0 0 0</pose>
+      <link name="cross_k4_k5_2_029_link">
+        <visual name="cross_k4_k5_2_029_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_k5_2_029_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_k5_3_030">
+      <static>true</static>
+      <pose>8.565793991088867 -0.4863811731338501 0.01 0 0 0</pose>
+      <link name="cross_k4_k5_3_030_link">
+        <visual name="cross_k4_k5_3_030_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_k5_3_030_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_k5_4_031">
+      <static>true</static>
+      <pose>7.603411674499512 0.879631757736206 0.01 0 0 0</pose>
+      <link name="cross_k4_k5_4_031_link">
+        <visual name="cross_k4_k5_4_031_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_k5_4_031_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k4_k5_5_032">
+      <static>true</static>
+      <pose>6.641029357910156 2.2456445693969727 0.01 0 0 0</pose>
+      <link name="cross_k4_k5_5_032_link">
+        <visual name="cross_k4_k5_5_032_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k4_k5_5_032_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_1_033">
+      <static>true</static>
+      <pose>-11.845165252685547 12.959014892578125 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_1_033_link">
+        <visual name="cross_k7_k1_1_033_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_1_033_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_2_034">
+      <static>true</static>
+      <pose>-10.830456733703613 11.402730941772461 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_2_034_link">
+        <visual name="cross_k7_k1_2_034_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_2_034_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_3_035">
+      <static>true</static>
+      <pose>-9.81574821472168 9.846446990966797 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_3_035_link">
+        <visual name="cross_k7_k1_3_035_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_3_035_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_4_036">
+      <static>true</static>
+      <pose>-8.801039695739746 8.290163040161133 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_4_036_link">
+        <visual name="cross_k7_k1_4_036_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_4_036_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_5_037">
+      <static>true</static>
+      <pose>-7.786331653594971 6.733879089355469 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_5_037_link">
+        <visual name="cross_k7_k1_5_037_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_5_037_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_6_038">
+      <static>true</static>
+      <pose>-6.771623134613037 5.177595615386963 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_6_038_link">
+        <visual name="cross_k7_k1_6_038_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_6_038_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_7_039">
+      <static>true</static>
+      <pose>-4.678679943084717 3.8304426670074463 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_7_039_link">
+        <visual name="cross_k7_k1_7_039_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_7_039_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="drop_conv_k7_k1_8_040">
+      <static>true</static>
+      <pose>-4.742206573486328 2.465027952194214 0.4 0 0 0</pose>
+      <link name="drop_conv_k7_k1_8_040_link">
+        <visual name="drop_conv_k7_k1_8_040_vis">
+          <geometry>
+            <box>
+              <size>1.5 0.5 0.8</size>
+            </box>
           </geometry>
           <material>
             <ambient>1.0 0.4 0.0 1.0</ambient>
             <diffuse>1.0 0.4 0.0 1.0</diffuse>
           </material>
         </visual>
-        <collision name="station_k7_k1_8_visual_collision">
+        <collision name="drop_conv_k7_k1_8_040_vis_collision">
+          <geometry>
+            <box>
+              <size>1.5 0.5 0.8</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="drop_wall_k7_k1_8_041">
+      <static>true</static>
+      <pose>-4.742206573486328 1.2650279521942138 1.25 0 0 0</pose>
+      <link name="drop_wall_k7_k1_8_041_link">
+        <visual name="drop_wall_k7_k1_8_041_vis">
+          <geometry>
+            <box>
+              <size>2.0 0.15 2.5</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.6 0.6 0.6 1.0</ambient>
+            <diffuse>0.6 0.6 0.6 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="drop_wall_k7_k1_8_041_vis_collision">
+          <geometry>
+            <box>
+              <size>2.0 0.15 2.5</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="lane_wall_k7_k1_9_042">
+      <static>true</static>
+      <pose>-4.9 0.4 1.0 0 0 0</pose>
+      <link name="lane_wall_k7_k1_9_042_link">
+        <visual name="lane_wall_k7_k1_9_042_vis">
+          <geometry>
+            <box>
+              <size>0.15 3.0 2.0</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="lane_wall_k7_k1_9_042_vis_collision">
+          <geometry>
+            <box>
+              <size>0.15 3.0 2.0</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_k7_k1_10_043">
+      <static>true</static>
+      <pose>-2.8607993125915527 -2.2503156661987305 0.01 0 0 0</pose>
+      <link name="cross_k7_k1_10_043_link">
+        <visual name="cross_k7_k1_10_043_vis">
           <geometry>
             <cylinder>
-              <radius>0.3</radius>
-              <length>0.05</length>
+              <radius>0.15</radius>
+              <length>0.02</length>
             </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_k7_k1_10_043_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_c1_k1_1_044">
+      <static>true</static>
+      <pose>0.7685220241546631 -2.213562250137329 0.01 0 0 0</pose>
+      <link name="cross_c1_k1_1_044_link">
+        <visual name="cross_c1_k1_1_044_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_c1_k1_1_044_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_c1_k1_2_045">
+      <static>true</static>
+      <pose>0.10828320682048798 -2.5398871898651123 0.01 0 0 0</pose>
+      <link name="cross_c1_k1_2_045_link">
+        <visual name="cross_c1_k1_2_045_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_c1_k1_2_045_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_c1_k1_3_046">
+      <static>true</static>
+      <pose>-0.2635754346847534 -2.7296109199523926 0.01 0 0 0</pose>
+      <link name="cross_c1_k1_3_046_link">
+        <visual name="cross_c1_k1_3_046_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_c1_k1_3_046_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_c1_k1_4_047">
+      <static>true</static>
+      <pose>-0.6126672625541687 -2.919334888458252 0.01 0 0 0</pose>
+      <link name="cross_c1_k1_4_047_link">
+        <visual name="cross_c1_k1_4_047_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_c1_k1_4_047_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_c1_k1_5_048">
+      <static>true</static>
+      <pose>-0.8555136919021606 -3.078702688217163 0.01 0 0 0</pose>
+      <link name="cross_c1_k1_5_048_link">
+        <visual name="cross_c1_k1_5_048_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_c1_k1_5_048_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_w2_2_049">
+      <static>true</static>
+      <pose>-5.233762264251709 -5.931482791900635 0.01 0 0 0</pose>
+      <link name="cross_o1_new_w2_2_049_link">
+        <visual name="cross_o1_new_w2_2_049_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_w2_2_049_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_w2_3_050">
+      <static>true</static>
+      <pose>-4.609227180480957 -5.558860778808594 0.01 0 0 0</pose>
+      <link name="cross_o1_new_w2_3_050_link">
+        <visual name="cross_o1_new_w2_3_050_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_w2_3_050_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_w2_4_051">
+      <static>true</static>
+      <pose>-4.24013090133667 -4.4496893882751465 0.01 0 0 0</pose>
+      <link name="cross_o1_new_w2_4_051_link">
+        <visual name="cross_o1_new_w2_4_051_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_w2_4_051_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_w2_5_052">
+      <static>true</static>
+      <pose>-3.3851330280303955 -3.482191562652588 0.01 0 0 0</pose>
+      <link name="cross_o1_new_w2_5_052_link">
+        <visual name="cross_o1_new_w2_5_052_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_w2_5_052_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_o2_new_2_053">
+      <static>true</static>
+      <pose>-5.946850776672363 -8.71485710144043 0.01 0 0 0</pose>
+      <link name="cross_o1_new_o2_new_2_053_link">
+        <visual name="cross_o1_new_o2_new_2_053_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_o2_new_2_053_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_o2_new_3_054">
+      <static>true</static>
+      <pose>-5.448122978210449 -9.719094276428223 0.01 0 0 0</pose>
+      <link name="cross_o1_new_o2_new_3_054_link">
+        <visual name="cross_o1_new_o2_new_3_054_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_o2_new_3_054_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_o2_new_4_055">
+      <static>true</static>
+      <pose>-4.949395179748535 -10.7233304977417 0.01 0 0 0</pose>
+      <link name="cross_o1_new_o2_new_4_055_link">
+        <visual name="cross_o1_new_o2_new_4_055_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_o2_new_4_055_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_o2_new_5_056">
+      <static>true</static>
+      <pose>-4.450667381286621 -11.727567672729492 0.01 0 0 0</pose>
+      <link name="cross_o1_new_o2_new_5_056_link">
+        <visual name="cross_o1_new_o2_new_5_056_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_o2_new_5_056_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_k1_k2_5_1_057">
+      <static>true</static>
+      <pose>-2.859428882598877 -12.315691947937012 0.01 0 0 0</pose>
+      <link name="cross_o2_new_k1_k2_5_1_057_link">
+        <visual name="cross_o2_new_k1_k2_5_1_057_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_k1_k2_5_1_057_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_k1_k2_5_2_058">
+      <static>true</static>
+      <pose>-1.7669177055358887 -11.899580001831055 0.01 0 0 0</pose>
+      <link name="cross_o2_new_k1_k2_5_2_058_link">
+        <visual name="cross_o2_new_k1_k2_5_2_058_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_k1_k2_5_2_058_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_k1_k2_5_3_059">
+      <static>true</static>
+      <pose>-0.787115752696991 -11.096843719482422 0.01 0 0 0</pose>
+      <link name="cross_o2_new_k1_k2_5_3_059_link">
+        <visual name="cross_o2_new_k1_k2_5_3_059_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_k1_k2_5_3_059_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_k1_k2_5_4_060">
+      <static>true</static>
+      <pose>-0.6764636635780334 -9.44577407836914 0.01 0 0 0</pose>
+      <link name="cross_o2_new_k1_k2_5_4_060_link">
+        <visual name="cross_o2_new_k1_k2_5_4_060_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_k1_k2_5_4_060_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_k1_k2_5_5_061">
+      <static>true</static>
+      <pose>-0.49914029240608215 -8.072136878967285 0.01 0 0 0</pose>
+      <link name="cross_o2_new_k1_k2_5_5_061_link">
+        <visual name="cross_o2_new_k1_k2_5_5_061_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_k1_k2_5_5_061_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_062">
+      <static>true</static>
+      <pose>-6.8502068519592285 -6.797435283660889 0.01 0 0 0</pose>
+      <link name="cross_o1_new_062_link">
+        <visual name="cross_o1_new_062_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_062_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_063">
+      <static>true</static>
+      <pose>-3.87721586227417 -12.606410026550293 0.01 0 0 0</pose>
+      <link name="cross_o2_new_063_link">
+        <visual name="cross_o2_new_063_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_063_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_o1_new_o2_new_5_1_064">
+      <static>true</static>
+      <pose>-4.163941860198975 -12.16698932647705 0.01 0 0 0</pose>
+      <link name="cross_o2_new_o1_new_o2_new_5_1_064_link">
+        <visual name="cross_o2_new_o1_new_o2_new_5_1_064_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_o1_new_o2_new_5_1_064_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o2_new_o2_new_k1_k2_5_1_1_065">
+      <static>true</static>
+      <pose>-3.3683223724365234 -12.461050987243652 0.01 0 0 0</pose>
+      <link name="cross_o2_new_o2_new_k1_k2_5_1_1_065_link">
+        <visual name="cross_o2_new_o2_new_k1_k2_5_1_1_065_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o2_new_o2_new_k1_k2_5_1_1_065_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="cross_o1_new_o1_new_o2_new_2_1_066">
+      <static>true</static>
+      <pose>-6.459879398345947 -7.608238220214844 0.01 0 0 0</pose>
+      <link name="cross_o1_new_o1_new_o2_new_2_1_066_link">
+        <visual name="cross_o1_new_o1_new_o2_new_2_1_066_vis">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <ambient>0.9 0.9 0.2 1.0</ambient>
+            <diffuse>0.9 0.9 0.2 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="cross_o1_new_o1_new_o2_new_2_1_066_vis_collision">
+          <geometry>
+            <cylinder>
+              <radius>0.15</radius>
+              <length>0.02</length>
+            </cylinder>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="zone_ZoneA_067">
+      <static>true</static>
+      <pose>-5.395 2.11 0.6 0 0 0</pose>
+      <link name="zone_ZoneA_067_link">
+        <visual name="zone_ZoneA_067_vis">
+          <geometry>
+            <box>
+              <size>2.9099999999999997 1.78 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="zone_ZoneA_067_vis_collision">
+          <geometry>
+            <box>
+              <size>2.9099999999999997 1.78 1.2</size>
+            </box>
+          </geometry>
+        </collision>
+      </link>
+    </model>
+    <model name="zone_ZoneB_068">
+      <static>true</static>
+      <pose>-0.895 -6.59 0.6 0 0 0</pose>
+      <link name="zone_ZoneB_068_link">
+        <visual name="zone_ZoneB_068_vis">
+          <geometry>
+            <box>
+              <size>2.03 1.5999999999999996 1.2</size>
+            </box>
+          </geometry>
+          <material>
+            <ambient>0.55 0.35 0.15 1.0</ambient>
+            <diffuse>0.55 0.35 0.15 1.0</diffuse>
+          </material>
+        </visual>
+        <collision name="zone_ZoneB_068_vis_collision">
+          <geometry>
+            <box>
+              <size>2.03 1.5999999999999996 1.2</size>
+            </box>
           </geometry>
         </collision>
       </link>

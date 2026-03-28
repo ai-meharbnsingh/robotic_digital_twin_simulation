@@ -1,0 +1,46 @@
+{
+  "warehouse": "RIL Production (rilBase.map)",
+  "total_nodes_in_map": 1610,
+  "sampled_nodes": 100,
+  "map_size_m": "233m x 269m",
+  "mode": "synthetic_p22",
+  "accuracy_exact": 99,
+  "accuracy_adjacent": 0,
+  "accuracy_pct": 99.0,
+  "by_type": {
+    "pick": {
+      "correct": 4,
+      "adjacent": 0,
+      "total": 4
+    },
+    "drop": {
+      "correct": 0,
+      "adjacent": 0,
+      "total": 1
+    },
+    "wait": {
+      "correct": 3,
+      "adjacent": 0,
+      "total": 3
+    },
+    "bin": {
+      "correct": 25,
+      "adjacent": 0,
+      "total": 25
+    },
+    "predock": {
+      "correct": 25,
+      "adjacent": 0,
+      "total": 25
+    },
+    "none": {
+      "correct": 42,
+      "adjacent": 0,
+      "total": 42
+    }
+  },
+  "ode_mean_ms": 0.155,
+  "iogita_mean_s": 1.157,
+  "blind_mean_s": 19.503,
+  "speedup": 16.9
+}

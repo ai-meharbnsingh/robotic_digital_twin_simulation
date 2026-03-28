@@ -163,16 +163,12 @@ NODE_COLORS = {
     "none":    (0.5, 0.5, 0.5),   # grey
 }
 
-SHELF_HEIGHT = 1.2       # metres
-SHELF_DEPTH = 0.4        # metres
 WALL_HEIGHT = 2.5        # metres
 WALL_THICKNESS = 0.15    # metres
 BARCODE_INTERVAL = 0.8   # metres
 BARCODE_SIZE = 0.06      # metres (side of square)
 NODE_MARKER_RADIUS = 0.08
 NODE_MARKER_HEIGHT = 0.01  # just above ground
-STATION_HEIGHT = 0.05
-STATION_RADIUS = 0.3
 
 
 def _build_ground_plane(world: ET.Element, min_x: float, min_y: float,
@@ -221,25 +217,154 @@ def _build_perimeter_walls(world: ET.Element, min_x: float, min_y: float,
                           0.75, 0.75, 0.75)
 
 
-def _build_shelves(world: ET.Element, nodes: list[WarehouseNode], data: dict):
-    """Place shelf models at 'shelf' type nodes.
+def _build_zone_geometry(world: ET.Element, nodes: list[WarehouseNode], data: dict):
+    """Place DISTINCT geometry per zone type so LiDAR sees different signatures.
 
-    For simple_grid: shelf nodes get a shelf box.
-    For botvalley: no explicit shelf nodes, so we skip (shelves are inferred
-    from zone boxes if present).
+    Uses zone specs (shelf_height, shelf_depth, has_gaps) from the JSON config
+    instead of hardcoded dimensions, so each zone produces a unique LiDAR
+    signature even when nodes share the same type.
+
+    Zone types and their geometry:
+      dock/charge: back wall + tall charger pillar, open front (wall height = zone shelf_height)
+      aisle:       two long parallel shelf walls (corridor) (wall height = zone shelf_height)
+      shelf:       dense racks (height = zone shelf_height, depth = zone shelf_depth)
+                   if zone has_gaps: skip every other shelf rack
+      cross/none:  OPEN junction, no obstacles nearby
+      hub:         large open area, no obstacles
+      lane/predock: wall on ONE side only
+      pick:        low conveyor table + open approach (height from zone spec)
+      drop:        low conveyor table + back wall (height from zone spec)
+      ops:         mixed obstacles at medium distance
     """
-    shelf_nodes = [n for n in nodes if n.node_type == "shelf"]
+    model_id = [0]  # mutable counter
 
-    for i, sn in enumerate(shelf_nodes):
-        sname = f"shelf_{_safe_name(sn.name)}"
-        model = _add_sub(world, "model", name=sname)
+    def _next_name(prefix):
+        model_id[0] += 1
+        return f"{prefix}_{model_id[0]:03d}"
+
+    def _add_static_box(name, x, y, z, sx, sy, sz, r, g, b, yaw=0):
+        model = _add_sub(world, "model", name=name)
         _add_sub(model, "static", "true")
-        _add_sub(model, "pose", _pose_str(sn.x, sn.y, SHELF_HEIGHT / 2))
-        link = _add_sub(model, "link", name=f"{sname}_link")
-        # Shelf box sits above ground, same XY as node
-        _build_box_visual(link, f"{sname}_visual",
-                          SHELF_DEPTH, SHELF_DEPTH, SHELF_HEIGHT,
-                          0.55, 0.35, 0.15)  # brown
+        _add_sub(model, "pose", _pose_str(x, y, z, 0, 0, yaw))
+        link = _add_sub(model, "link", name=f"{name}_link")
+        _build_box_visual(link, f"{name}_vis", sx, sy, sz, r, g, b)
+
+    def _add_static_cylinder(name, x, y, z, radius, length, r, g, b):
+        model = _add_sub(world, "model", name=name)
+        _add_sub(model, "static", "true")
+        _add_sub(model, "pose", _pose_str(x, y, z, 0, 0, 0))
+        link = _add_sub(model, "link", name=f"{name}_link")
+        _build_cylinder_visual(link, f"{name}_vis", radius, length, r, g, b)
+
+    # ── Build node_name → zone_spec lookup from data["zones"] ──
+    # Each zone carries shelf_height, shelf_depth, has_gaps that override defaults.
+    _node_zone_spec: dict[str, dict] = {}
+    _default_spec = {"shelf_height": 2.0, "shelf_depth": 0.3, "has_gaps": False}
+    for zone in data.get("zones", []):
+        spec = {
+            "shelf_height": zone.get("shelf_height", 2.0),
+            "shelf_depth":  zone.get("shelf_depth", 0.3),
+            "has_gaps":     zone.get("has_gaps", False),
+        }
+        for nn in zone.get("nodes", []):
+            _node_zone_spec[nn] = spec
+
+    # Track shelf rack index per node for has_gaps skip logic
+    _shelf_rack_counter: dict[str, int] = {}
+
+    for node in nodes:
+        nx, ny = node.x, node.y
+        nt = node.node_type
+        nn = _safe_name(node.name)
+        zspec = _node_zone_spec.get(node.name, _default_spec)
+        sh = zspec["shelf_height"]
+        sd = zspec["shelf_depth"]
+        gaps = zspec["has_gaps"]
+
+        if nt in ("charge", "dock"):
+            # DOCK: back wall behind node (height from zone spec), charger pillar, open front
+            _add_static_box(_next_name(f"dock_wall_{nn}"),
+                            nx, ny - 0.8, sh / 2, 2.0, 0.15, sh, 0.6, 0.6, 0.6)
+            # Charger pillar: tall narrow next to node
+            _add_static_box(_next_name(f"charger_{nn}"),
+                            nx + 0.5, ny - 0.3, 0.75, 0.3, 0.3, 1.5, 0.0, 0.8, 0.0)
+
+        elif nt == "aisle":
+            # AISLE: two long parallel walls forming corridor
+            # Wall height from zone's shelf_height
+            _add_static_box(_next_name(f"aisle_L_{nn}"),
+                            nx - 0.9, ny, sh / 2, 0.15, 3.0, sh, 0.55, 0.35, 0.15)
+            _add_static_box(_next_name(f"aisle_R_{nn}"),
+                            nx + 0.9, ny, sh / 2, 0.15, 3.0, sh, 0.55, 0.35, 0.15)
+
+        elif nt == "shelf":
+            # SHELF: dense racks using zone's shelf_height and shelf_depth
+            # If zone has_gaps: skip every other shelf rack (leave periodic gaps)
+            if gaps:
+                # Count this shelf node within its zone for gap logic
+                zone_key = node.name.rsplit("_S", 1)[0] if "_S" in node.name else node.name
+                idx = _shelf_rack_counter.get(zone_key, 0)
+                _shelf_rack_counter[zone_key] = idx + 1
+                if idx % 2 == 1:
+                    # Skip this rack — leave a gap (just a floor marker)
+                    _add_static_cylinder(_next_name(f"gap_{nn}"),
+                                         nx, ny, 0.01, 0.15, 0.02, 0.9, 0.9, 0.2)
+                    continue
+
+            # Multiple short shelf segments around the node
+            for dx, dy, length, h_frac in [
+                (-0.6, -0.5, 1.0, 1.0),   # left-back rack (full height)
+                (-0.6,  0.5, 1.0, 1.0),   # left-front rack
+                ( 0.6, -0.5, 1.0, 1.0),   # right-back rack
+                ( 0.6,  0.5, 1.0, 1.0),   # right-front rack
+                ( 0.0, -0.8, 0.8, 0.75),  # back center (shorter)
+            ]:
+                rack_h = sh * h_frac
+                _add_static_box(_next_name(f"rack_{nn}"),
+                                nx + dx, ny + dy, rack_h / 2,
+                                sd, length, rack_h, 0.55, 0.35, 0.15)
+
+        elif nt in ("cross", "none"):
+            # CROSS/INTERSECTION: OPEN — no obstacles within 1.5m
+            _add_static_cylinder(_next_name(f"cross_{nn}"),
+                                 nx, ny, 0.01, 0.15, 0.02, 0.9, 0.9, 0.2)
+
+        elif nt == "hub":
+            # HUB: large open area — no obstacles within 3m
+            _add_static_cylinder(_next_name(f"hub_{nn}"),
+                                 nx, ny, 0.01, 0.4, 0.02, 1.0, 1.0, 0.0)
+
+        elif nt in ("lane", "predock"):
+            # LANE: wall on ONE side only (left), open on right
+            _add_static_box(_next_name(f"lane_wall_{nn}"),
+                            nx - 0.9, ny, 1.0, 0.15, 3.0, 2.0, 0.55, 0.35, 0.15)
+
+        elif nt == "pick":
+            # PICK: low conveyor table in front (height from zone spec), open sides
+            _add_static_box(_next_name(f"pick_table_{nn}"),
+                            nx, ny + 0.6, sh / 2, 1.5, 0.5, sh, 0.0, 0.4, 1.0)
+            # Shelves behind
+            _add_static_box(_next_name(f"pick_shelf_{nn}"),
+                            nx, ny - 0.8, sh, 1.5, 0.15, sh * 2, 0.55, 0.35, 0.15)
+
+        elif nt == "drop":
+            # DROP: conveyor close in front (height from zone spec), wall behind, open sides
+            _add_static_box(_next_name(f"drop_conv_{nn}"),
+                            nx, ny + 0.4, sh / 2, 1.5, 0.5, sh, 1.0, 0.4, 0.0)
+            _add_static_box(_next_name(f"drop_wall_{nn}"),
+                            nx, ny - 0.8, sh, 2.0, 0.15, sh * 2, 0.6, 0.6, 0.6)
+
+        elif nt == "ops":
+            # OPS: mixed obstacles at medium distance
+            _add_static_box(_next_name(f"ops_eq_{nn}"),
+                            nx + 0.8, ny, 0.75, 0.6, 0.6, 1.5, 0.4, 0.4, 0.5)
+            _add_static_box(_next_name(f"ops_bench_{nn}"),
+                            nx - 0.5, ny + 0.5, 0.5, 1.2, 0.4, 1.0, 0.5, 0.5, 0.4)
+
+        else:
+            # Unknown type: single small obstacle
+            _add_static_box(_next_name(f"obs_{nn}"),
+                            nx + 0.5, ny, 0.5, 0.3, 0.3, 1.0, 0.5, 0.5, 0.5)
 
     # BotValley zones — render zone boxes as shelf rows if present
     for zone in data.get("zones", []):
@@ -248,55 +373,15 @@ def _build_shelves(world: ET.Element, nodes: list[WarehouseNode], data: dict):
         for bi, box_pts in enumerate(zone["boxes"]):
             if len(box_pts) < 2:
                 continue
-            # Compute bounding rectangle of the zone box
             zxs = [p["x"] for p in box_pts]
             zys = [p["y"] for p in box_pts]
-            zmin_x, zmax_x = min(zxs), max(zxs)
-            zmin_y, zmax_y = min(zys), max(zys)
-            zcx = (zmin_x + zmax_x) / 2
-            zcy = (zmin_y + zmax_y) / 2
-            zsx = zmax_x - zmin_x
-            zsy = zmax_y - zmin_y
-
-            zname = f"zone_{_safe_name(zone['name'])}_{bi}"
-            model = _add_sub(world, "model", name=zname)
-            _add_sub(model, "static", "true")
-            _add_sub(model, "pose", _pose_str(zcx, zcy, SHELF_HEIGHT / 2))
-            link = _add_sub(model, "link", name=f"{zname}_link")
-            _build_box_visual(link, f"{zname}_visual",
-                              max(zsx, 0.2), max(zsy, 0.2), SHELF_HEIGHT,
-                              0.55, 0.35, 0.15, 0.6)  # semi-transparent brown
-
-
-def _build_charging_stations(world: ET.Element, nodes: list[WarehouseNode]):
-    """Place charging station models at 'charge' type nodes."""
-    for n in nodes:
-        if n.node_type != "charge":
-            continue
-        sname = f"charger_{_safe_name(n.name)}"
-        model = _add_sub(world, "model", name=sname)
-        _add_sub(model, "static", "true")
-        _add_sub(model, "pose", _pose_str(n.x, n.y, STATION_HEIGHT / 2))
-        link = _add_sub(model, "link", name=f"{sname}_link")
-        _build_cylinder_visual(link, f"{sname}_visual",
-                               STATION_RADIUS, STATION_HEIGHT,
-                               0.0, 0.8, 0.0)  # green
-
-
-def _build_pick_drop_stations(world: ET.Element, nodes: list[WarehouseNode]):
-    """Place pick/drop station markers."""
-    for n in nodes:
-        if n.node_type not in ("pick", "drop"):
-            continue
-        color = NODE_COLORS.get(n.node_type, (0.5, 0.5, 0.5))
-        sname = f"station_{_safe_name(n.name)}"
-        model = _add_sub(world, "model", name=sname)
-        _add_sub(model, "static", "true")
-        _add_sub(model, "pose", _pose_str(n.x, n.y, STATION_HEIGHT / 2))
-        link = _add_sub(model, "link", name=f"{sname}_link")
-        _build_cylinder_visual(link, f"{sname}_visual",
-                               STATION_RADIUS, STATION_HEIGHT,
-                               *color)
+            zcx = (min(zxs) + max(zxs)) / 2
+            zcy = (min(zys) + max(zys)) / 2
+            zsx = max(zxs) - min(zxs)
+            zsy = max(zys) - min(zys)
+            _add_static_box(_next_name(f"zone_{_safe_name(zone['name'])}"),
+                            zcx, zcy, 0.6, max(zsx, 0.2), max(zsy, 0.2), 1.2,
+                            0.55, 0.35, 0.15)
 
 
 def _build_barcode_grid(world: ET.Element, min_x: float, min_y: float,
@@ -423,6 +508,15 @@ def generate_world(json_path: str, output_dir: str | None = None) -> str:
     sdf = ET.Element("sdf", version="1.9")
     world = _add_sub(sdf, "world", name=warehouse_name)
 
+    # System plugins for sensor simulation
+    _add_sub(world, "plugin", filename="gz-sim-physics-system",
+             name="gz::sim::systems::Physics")
+    sensors_plugin = _add_sub(world, "plugin", filename="gz-sim-sensors-system",
+                              name="gz::sim::systems::Sensors")
+    _add_sub(sensors_plugin, "render_engine", "ogre2")
+    _add_sub(world, "plugin", filename="gz-sim-scene-broadcaster-system",
+             name="gz::sim::systems::SceneBroadcaster")
+
     # Sun, physics, scene
     _build_sun_and_physics(world)
 
@@ -432,20 +526,21 @@ def generate_world(json_path: str, output_dir: str | None = None) -> str:
     # Perimeter walls
     _build_perimeter_walls(world, min_x, min_y, max_x, max_y)
 
-    # Shelves
-    _build_shelves(world, nodes, data)
+    # Zone-type-specific geometry (distinct LiDAR signatures per type)
+    _build_zone_geometry(world, nodes, data)
 
-    # Charging stations
-    _build_charging_stations(world, nodes)
+    # Barcode grid — skip for large worlds (>200 nodes) to avoid overwhelming renderer
+    if len(nodes) <= 200:
+        barcode_count = _build_barcode_grid(world, min_x, min_y, max_x, max_y)
+    else:
+        barcode_count = 0
+        print(f"  Skipping barcode grid ({len(nodes)} nodes > 200) — too many visuals for renderer")
 
-    # Pick/drop stations
-    _build_pick_drop_stations(world, nodes)
-
-    # Barcode grid
-    barcode_count = _build_barcode_grid(world, min_x, min_y, max_x, max_y)
-
-    # Node markers
-    _build_node_markers(world, nodes)
+    # Node markers — skip for large worlds
+    if len(nodes) <= 200:
+        _build_node_markers(world, nodes)
+    else:
+        print(f"  Skipping node markers ({len(nodes)} nodes > 200) — not needed for LiDAR")
 
     # Write SDF
     xml_str = _indent_xml(sdf)

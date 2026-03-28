@@ -1,0 +1,6313 @@
+{
+  "name": "Realistic Warehouse 150x200m",
+  "description": "12 zones, 60 aisles, 720 shelves, 24 chargers, varied geometry per zone",
+  "size_m": [
+    150,
+    200
+  ],
+  "nodes": [
+    {
+      "name": "Zone_A_C1",
+      "x": 10.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_A_C2",
+      "x": 35.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_A_entry",
+      "x": 25.0,
+      "y": 157.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_A_A0_entry",
+      "x": 10.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A0_S0",
+      "x": 10.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S1",
+      "x": 10.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S2",
+      "x": 10.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S3",
+      "x": 10.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S4",
+      "x": 10.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S5",
+      "x": 10.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S6",
+      "x": 10.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_S7",
+      "x": 10.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A0_exit",
+      "x": 10.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A1_entry",
+      "x": 16.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A1_S0",
+      "x": 16.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S1",
+      "x": 16.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S2",
+      "x": 16.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S3",
+      "x": 16.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S4",
+      "x": 16.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S5",
+      "x": 16.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S6",
+      "x": 16.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_S7",
+      "x": 16.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A1_exit",
+      "x": 16.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A2_entry",
+      "x": 22.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A2_S0",
+      "x": 22.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S1",
+      "x": 22.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S2",
+      "x": 22.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S3",
+      "x": 22.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S4",
+      "x": 22.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S5",
+      "x": 22.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S6",
+      "x": 22.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_S7",
+      "x": 22.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A2_exit",
+      "x": 22.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A3_entry",
+      "x": 28.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A3_S0",
+      "x": 28.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S1",
+      "x": 28.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S2",
+      "x": 28.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S3",
+      "x": 28.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S4",
+      "x": 28.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S5",
+      "x": 28.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S6",
+      "x": 28.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_S7",
+      "x": 28.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A3_exit",
+      "x": 28.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A4_entry",
+      "x": 34.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_A_A4_S0",
+      "x": 34.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S1",
+      "x": 34.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S2",
+      "x": 34.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S3",
+      "x": 34.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S4",
+      "x": 34.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S5",
+      "x": 34.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S6",
+      "x": 34.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_S7",
+      "x": 34.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_A_A4_exit",
+      "x": 34.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_C1",
+      "x": 55.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_B_C2",
+      "x": 80.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_B_entry",
+      "x": 70.0,
+      "y": 157.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_B_A0_entry",
+      "x": 55.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A0_S0",
+      "x": 55.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S1",
+      "x": 55.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S2",
+      "x": 55.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S3",
+      "x": 55.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S4",
+      "x": 55.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S5",
+      "x": 55.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S6",
+      "x": 55.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_S7",
+      "x": 55.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A0_exit",
+      "x": 55.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A1_entry",
+      "x": 61.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A1_S0",
+      "x": 61.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S1",
+      "x": 61.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S2",
+      "x": 61.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S3",
+      "x": 61.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S4",
+      "x": 61.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S5",
+      "x": 61.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S6",
+      "x": 61.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_S7",
+      "x": 61.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A1_exit",
+      "x": 61.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A2_entry",
+      "x": 67.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A2_S0",
+      "x": 67.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S1",
+      "x": 67.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S2",
+      "x": 67.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S3",
+      "x": 67.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S4",
+      "x": 67.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S5",
+      "x": 67.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S6",
+      "x": 67.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_S7",
+      "x": 67.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A2_exit",
+      "x": 67.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A3_entry",
+      "x": 73.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A3_S0",
+      "x": 73.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S1",
+      "x": 73.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S2",
+      "x": 73.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S3",
+      "x": 73.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S4",
+      "x": 73.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S5",
+      "x": 73.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S6",
+      "x": 73.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_S7",
+      "x": 73.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A3_exit",
+      "x": 73.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A4_entry",
+      "x": 79.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_B_A4_S0",
+      "x": 79.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S1",
+      "x": 79.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S2",
+      "x": 79.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S3",
+      "x": 79.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S4",
+      "x": 79.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S5",
+      "x": 79.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S6",
+      "x": 79.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_S7",
+      "x": 79.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_B_A4_exit",
+      "x": 79.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_C1",
+      "x": 100.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_C_C2",
+      "x": 125.0,
+      "y": 157.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_C_entry",
+      "x": 115.0,
+      "y": 157.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_C_A0_entry",
+      "x": 100.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A0_S0",
+      "x": 100.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S1",
+      "x": 100.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S2",
+      "x": 100.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S3",
+      "x": 100.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S4",
+      "x": 100.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S5",
+      "x": 100.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S6",
+      "x": 100.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_S7",
+      "x": 100.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A0_exit",
+      "x": 100.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A1_entry",
+      "x": 106.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A1_S0",
+      "x": 106.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S1",
+      "x": 106.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S2",
+      "x": 106.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S3",
+      "x": 106.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S4",
+      "x": 106.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S5",
+      "x": 106.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S6",
+      "x": 106.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_S7",
+      "x": 106.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A1_exit",
+      "x": 106.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A2_entry",
+      "x": 112.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A2_S0",
+      "x": 112.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S1",
+      "x": 112.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S2",
+      "x": 112.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S3",
+      "x": 112.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S4",
+      "x": 112.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S5",
+      "x": 112.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S6",
+      "x": 112.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_S7",
+      "x": 112.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A2_exit",
+      "x": 112.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A3_entry",
+      "x": 118.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A3_S0",
+      "x": 118.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S1",
+      "x": 118.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S2",
+      "x": 118.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S3",
+      "x": 118.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S4",
+      "x": 118.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S5",
+      "x": 118.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S6",
+      "x": 118.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_S7",
+      "x": 118.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A3_exit",
+      "x": 118.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A4_entry",
+      "x": 124.0,
+      "y": 160.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_C_A4_S0",
+      "x": 124.0,
+      "y": 163.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S1",
+      "x": 124.0,
+      "y": 167.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S2",
+      "x": 124.0,
+      "y": 172.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S3",
+      "x": 124.0,
+      "y": 176.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S4",
+      "x": 124.0,
+      "y": 181.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S5",
+      "x": 124.0,
+      "y": 185.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S6",
+      "x": 124.0,
+      "y": 190.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_S7",
+      "x": 124.0,
+      "y": 194.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_C_A4_exit",
+      "x": 124.0,
+      "y": 197.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_C1",
+      "x": 10.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_D_C2",
+      "x": 35.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_D_entry",
+      "x": 25.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A0_entry",
+      "x": 10.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A0_S0",
+      "x": 10.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A0_S1",
+      "x": 10.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A0_S2",
+      "x": 10.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A0_S3",
+      "x": 10.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A0_S4",
+      "x": 10.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A0_S5",
+      "x": 10.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A0_S6",
+      "x": 10.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A0_S7",
+      "x": 10.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A0_exit",
+      "x": 10.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A1_entry",
+      "x": 16.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A1_S0",
+      "x": 16.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A1_S1",
+      "x": 16.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A1_S2",
+      "x": 16.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A1_S3",
+      "x": 16.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A1_S4",
+      "x": 16.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A1_S5",
+      "x": 16.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A1_S6",
+      "x": 16.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A1_S7",
+      "x": 16.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A1_exit",
+      "x": 16.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A2_entry",
+      "x": 22.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A2_S0",
+      "x": 22.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A2_S1",
+      "x": 22.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A2_S2",
+      "x": 22.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A2_S3",
+      "x": 22.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A2_S4",
+      "x": 22.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A2_S5",
+      "x": 22.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A2_S6",
+      "x": 22.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A2_S7",
+      "x": 22.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A2_exit",
+      "x": 22.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A3_entry",
+      "x": 28.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A3_S0",
+      "x": 28.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A3_S1",
+      "x": 28.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A3_S2",
+      "x": 28.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A3_S3",
+      "x": 28.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A3_S4",
+      "x": 28.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A3_S5",
+      "x": 28.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A3_S6",
+      "x": 28.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A3_S7",
+      "x": 28.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A3_exit",
+      "x": 28.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A4_entry",
+      "x": 34.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_D_A4_S0",
+      "x": 34.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A4_S1",
+      "x": 34.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A4_S2",
+      "x": 34.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A4_S3",
+      "x": 34.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A4_S4",
+      "x": 34.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A4_S5",
+      "x": 34.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A4_S6",
+      "x": 34.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_D_A4_S7",
+      "x": 34.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_A4_exit",
+      "x": 34.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_C1",
+      "x": 55.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_E_C2",
+      "x": 80.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_E_entry",
+      "x": 70.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A0_entry",
+      "x": 55.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A0_S0",
+      "x": 55.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A0_S1",
+      "x": 55.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A0_S2",
+      "x": 55.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A0_S3",
+      "x": 55.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A0_S4",
+      "x": 55.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A0_S5",
+      "x": 55.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A0_S6",
+      "x": 55.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A0_S7",
+      "x": 55.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A0_exit",
+      "x": 55.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A1_entry",
+      "x": 61.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A1_S0",
+      "x": 61.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A1_S1",
+      "x": 61.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A1_S2",
+      "x": 61.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A1_S3",
+      "x": 61.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A1_S4",
+      "x": 61.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A1_S5",
+      "x": 61.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A1_S6",
+      "x": 61.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A1_S7",
+      "x": 61.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A1_exit",
+      "x": 61.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A2_entry",
+      "x": 67.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A2_S0",
+      "x": 67.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A2_S1",
+      "x": 67.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A2_S2",
+      "x": 67.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A2_S3",
+      "x": 67.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A2_S4",
+      "x": 67.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A2_S5",
+      "x": 67.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A2_S6",
+      "x": 67.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A2_S7",
+      "x": 67.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A2_exit",
+      "x": 67.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A3_entry",
+      "x": 73.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A3_S0",
+      "x": 73.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A3_S1",
+      "x": 73.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A3_S2",
+      "x": 73.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A3_S3",
+      "x": 73.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A3_S4",
+      "x": 73.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A3_S5",
+      "x": 73.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A3_S6",
+      "x": 73.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A3_S7",
+      "x": 73.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A3_exit",
+      "x": 73.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A4_entry",
+      "x": 79.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_E_A4_S0",
+      "x": 79.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A4_S1",
+      "x": 79.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A4_S2",
+      "x": 79.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A4_S3",
+      "x": 79.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A4_S4",
+      "x": 79.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A4_S5",
+      "x": 79.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A4_S6",
+      "x": 79.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_E_A4_S7",
+      "x": 79.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_A4_exit",
+      "x": 79.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_C1",
+      "x": 100.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_F_C2",
+      "x": 125.0,
+      "y": 107.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_F_entry",
+      "x": 115.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A0_entry",
+      "x": 100.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A0_S0",
+      "x": 100.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A0_S1",
+      "x": 100.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A0_S2",
+      "x": 100.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A0_S3",
+      "x": 100.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A0_S4",
+      "x": 100.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A0_S5",
+      "x": 100.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A0_S6",
+      "x": 100.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A0_S7",
+      "x": 100.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A0_exit",
+      "x": 100.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A1_entry",
+      "x": 106.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A1_S0",
+      "x": 106.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A1_S1",
+      "x": 106.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A1_S2",
+      "x": 106.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A1_S3",
+      "x": 106.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A1_S4",
+      "x": 106.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A1_S5",
+      "x": 106.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A1_S6",
+      "x": 106.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A1_S7",
+      "x": 106.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A1_exit",
+      "x": 106.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A2_entry",
+      "x": 112.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A2_S0",
+      "x": 112.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A2_S1",
+      "x": 112.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A2_S2",
+      "x": 112.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A2_S3",
+      "x": 112.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A2_S4",
+      "x": 112.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A2_S5",
+      "x": 112.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A2_S6",
+      "x": 112.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A2_S7",
+      "x": 112.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A2_exit",
+      "x": 112.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A3_entry",
+      "x": 118.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A3_S0",
+      "x": 118.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A3_S1",
+      "x": 118.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A3_S2",
+      "x": 118.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A3_S3",
+      "x": 118.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A3_S4",
+      "x": 118.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A3_S5",
+      "x": 118.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A3_S6",
+      "x": 118.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A3_S7",
+      "x": 118.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A3_exit",
+      "x": 118.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A4_entry",
+      "x": 124.0,
+      "y": 110.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_F_A4_S0",
+      "x": 124.0,
+      "y": 113.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A4_S1",
+      "x": 124.0,
+      "y": 117.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A4_S2",
+      "x": 124.0,
+      "y": 122.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A4_S3",
+      "x": 124.0,
+      "y": 126.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A4_S4",
+      "x": 124.0,
+      "y": 131.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A4_S5",
+      "x": 124.0,
+      "y": 135.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A4_S6",
+      "x": 124.0,
+      "y": 140.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_F_A4_S7",
+      "x": 124.0,
+      "y": 144.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_A4_exit",
+      "x": 124.0,
+      "y": 147.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_C1",
+      "x": 10.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_G_C2",
+      "x": 35.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_G_entry",
+      "x": 25.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_G_A0_entry",
+      "x": 10.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A0_S0",
+      "x": 10.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S1",
+      "x": 10.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S2",
+      "x": 10.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S3",
+      "x": 10.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S4",
+      "x": 10.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S5",
+      "x": 10.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S6",
+      "x": 10.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_S7",
+      "x": 10.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A0_exit",
+      "x": 10.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A1_entry",
+      "x": 16.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A1_S0",
+      "x": 16.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S1",
+      "x": 16.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S2",
+      "x": 16.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S3",
+      "x": 16.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S4",
+      "x": 16.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S5",
+      "x": 16.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S6",
+      "x": 16.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_S7",
+      "x": 16.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A1_exit",
+      "x": 16.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A2_entry",
+      "x": 22.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A2_S0",
+      "x": 22.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S1",
+      "x": 22.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S2",
+      "x": 22.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S3",
+      "x": 22.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S4",
+      "x": 22.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S5",
+      "x": 22.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S6",
+      "x": 22.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_S7",
+      "x": 22.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A2_exit",
+      "x": 22.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A3_entry",
+      "x": 28.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A3_S0",
+      "x": 28.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S1",
+      "x": 28.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S2",
+      "x": 28.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S3",
+      "x": 28.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S4",
+      "x": 28.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S5",
+      "x": 28.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S6",
+      "x": 28.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_S7",
+      "x": 28.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A3_exit",
+      "x": 28.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A4_entry",
+      "x": 34.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_G_A4_S0",
+      "x": 34.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S1",
+      "x": 34.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S2",
+      "x": 34.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S3",
+      "x": 34.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S4",
+      "x": 34.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S5",
+      "x": 34.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S6",
+      "x": 34.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_S7",
+      "x": 34.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_G_A4_exit",
+      "x": 34.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_C1",
+      "x": 55.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_H_C2",
+      "x": 80.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_H_entry",
+      "x": 70.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_H_A0_entry",
+      "x": 55.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A0_S0",
+      "x": 55.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S1",
+      "x": 55.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S2",
+      "x": 55.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S3",
+      "x": 55.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S4",
+      "x": 55.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S5",
+      "x": 55.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S6",
+      "x": 55.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_S7",
+      "x": 55.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A0_exit",
+      "x": 55.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A1_entry",
+      "x": 61.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A1_S0",
+      "x": 61.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S1",
+      "x": 61.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S2",
+      "x": 61.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S3",
+      "x": 61.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S4",
+      "x": 61.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S5",
+      "x": 61.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S6",
+      "x": 61.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_S7",
+      "x": 61.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A1_exit",
+      "x": 61.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A2_entry",
+      "x": 67.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A2_S0",
+      "x": 67.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S1",
+      "x": 67.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S2",
+      "x": 67.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S3",
+      "x": 67.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S4",
+      "x": 67.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S5",
+      "x": 67.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S6",
+      "x": 67.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_S7",
+      "x": 67.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A2_exit",
+      "x": 67.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A3_entry",
+      "x": 73.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A3_S0",
+      "x": 73.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S1",
+      "x": 73.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S2",
+      "x": 73.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S3",
+      "x": 73.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S4",
+      "x": 73.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S5",
+      "x": 73.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S6",
+      "x": 73.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_S7",
+      "x": 73.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A3_exit",
+      "x": 73.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A4_entry",
+      "x": 79.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_H_A4_S0",
+      "x": 79.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S1",
+      "x": 79.0,
+      "y": 67.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S2",
+      "x": 79.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S3",
+      "x": 79.0,
+      "y": 76.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S4",
+      "x": 79.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S5",
+      "x": 79.0,
+      "y": 85.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S6",
+      "x": 79.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_S7",
+      "x": 79.0,
+      "y": 94.5,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_H_A4_exit",
+      "x": 79.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_C1",
+      "x": 100.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_I_C2",
+      "x": 125.0,
+      "y": 57.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_I_entry",
+      "x": 115.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A0_entry",
+      "x": 100.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A0_S0",
+      "x": 100.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A0_S1",
+      "x": 100.0,
+      "y": 67.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A0_S2",
+      "x": 100.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A0_S3",
+      "x": 100.0,
+      "y": 76.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A0_S4",
+      "x": 100.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A0_S5",
+      "x": 100.0,
+      "y": 85.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A0_S6",
+      "x": 100.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A0_S7",
+      "x": 100.0,
+      "y": 94.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A0_exit",
+      "x": 100.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A1_entry",
+      "x": 106.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A1_S0",
+      "x": 106.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A1_S1",
+      "x": 106.0,
+      "y": 67.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A1_S2",
+      "x": 106.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A1_S3",
+      "x": 106.0,
+      "y": 76.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A1_S4",
+      "x": 106.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A1_S5",
+      "x": 106.0,
+      "y": 85.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A1_S6",
+      "x": 106.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A1_S7",
+      "x": 106.0,
+      "y": 94.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A1_exit",
+      "x": 106.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A2_entry",
+      "x": 112.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A2_S0",
+      "x": 112.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A2_S1",
+      "x": 112.0,
+      "y": 67.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A2_S2",
+      "x": 112.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A2_S3",
+      "x": 112.0,
+      "y": 76.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A2_S4",
+      "x": 112.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A2_S5",
+      "x": 112.0,
+      "y": 85.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A2_S6",
+      "x": 112.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A2_S7",
+      "x": 112.0,
+      "y": 94.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A2_exit",
+      "x": 112.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A3_entry",
+      "x": 118.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A3_S0",
+      "x": 118.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A3_S1",
+      "x": 118.0,
+      "y": 67.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A3_S2",
+      "x": 118.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A3_S3",
+      "x": 118.0,
+      "y": 76.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A3_S4",
+      "x": 118.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A3_S5",
+      "x": 118.0,
+      "y": 85.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A3_S6",
+      "x": 118.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A3_S7",
+      "x": 118.0,
+      "y": 94.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A3_exit",
+      "x": 118.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A4_entry",
+      "x": 124.0,
+      "y": 60.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_I_A4_S0",
+      "x": 124.0,
+      "y": 63.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A4_S1",
+      "x": 124.0,
+      "y": 67.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A4_S2",
+      "x": 124.0,
+      "y": 72.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A4_S3",
+      "x": 124.0,
+      "y": 76.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A4_S4",
+      "x": 124.0,
+      "y": 81.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A4_S5",
+      "x": 124.0,
+      "y": 85.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A4_S6",
+      "x": 124.0,
+      "y": 90.0,
+      "type": "shelf"
+    },
+    {
+      "name": "Zone_I_A4_S7",
+      "x": 124.0,
+      "y": 94.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_A4_exit",
+      "x": 124.0,
+      "y": 97.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_J_P0_approach",
+      "x": 10.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_J_P0",
+      "x": 10.0,
+      "y": 20.0,
+      "type": "pick"
+    },
+    {
+      "name": "Zone_J_P1_approach",
+      "x": 18.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_J_P1",
+      "x": 18.0,
+      "y": 20.0,
+      "type": "pick"
+    },
+    {
+      "name": "Zone_J_P2_approach",
+      "x": 26.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_J_P2",
+      "x": 26.0,
+      "y": 20.0,
+      "type": "pick"
+    },
+    {
+      "name": "Zone_J_P3_approach",
+      "x": 34.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_J_P3",
+      "x": 34.0,
+      "y": 20.0,
+      "type": "pick"
+    },
+    {
+      "name": "Zone_J_C1",
+      "x": 7.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_J_C2",
+      "x": 40.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_K_D0_approach",
+      "x": 55.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_K_D0",
+      "x": 55.0,
+      "y": 20.0,
+      "type": "drop"
+    },
+    {
+      "name": "Zone_K_D1_approach",
+      "x": 63.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_K_D1",
+      "x": 63.0,
+      "y": 20.0,
+      "type": "drop"
+    },
+    {
+      "name": "Zone_K_D2_approach",
+      "x": 71.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_K_D2",
+      "x": 71.0,
+      "y": 20.0,
+      "type": "drop"
+    },
+    {
+      "name": "Zone_K_D3_approach",
+      "x": 79.0,
+      "y": 10.0,
+      "type": "aisle"
+    },
+    {
+      "name": "Zone_K_D3",
+      "x": 79.0,
+      "y": 20.0,
+      "type": "drop"
+    },
+    {
+      "name": "Zone_K_C1",
+      "x": 52.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_K_C2",
+      "x": 85.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_L_W0",
+      "x": 100.0,
+      "y": 15.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_W1",
+      "x": 112.0,
+      "y": 15.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_W2",
+      "x": 124.0,
+      "y": 15.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_W3",
+      "x": 100.0,
+      "y": 30.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_W4",
+      "x": 112.0,
+      "y": 30.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_W5",
+      "x": 124.0,
+      "y": 30.0,
+      "type": "hub"
+    },
+    {
+      "name": "Zone_L_C1",
+      "x": 97.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_L_C2",
+      "x": 130.0,
+      "y": 7.0,
+      "type": "charge"
+    },
+    {
+      "name": "Zone_J_corridor_E",
+      "x": 43.0,
+      "y": 27.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_K_corridor_W",
+      "x": 52.0,
+      "y": 27.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_K_corridor_E",
+      "x": 88.0,
+      "y": 27.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_L_corridor_W",
+      "x": 97.0,
+      "y": 27.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_G_corridor_E",
+      "x": 43.0,
+      "y": 77.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_H_corridor_W",
+      "x": 52.0,
+      "y": 77.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_H_corridor_E",
+      "x": 88.0,
+      "y": 77.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_corridor_W",
+      "x": 97.0,
+      "y": 77.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_corridor_E",
+      "x": 43.0,
+      "y": 127.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_corridor_W",
+      "x": 52.0,
+      "y": 127.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_corridor_E",
+      "x": 88.0,
+      "y": 127.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_corridor_W",
+      "x": 97.0,
+      "y": 127.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_A_corridor_E",
+      "x": 43.0,
+      "y": 177.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_B_corridor_W",
+      "x": 52.0,
+      "y": 177.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_B_corridor_E",
+      "x": 88.0,
+      "y": 177.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_C_corridor_W",
+      "x": 97.0,
+      "y": 177.5,
+      "type": "none"
+    },
+    {
+      "name": "Zone_J_corridor_N",
+      "x": 25.0,
+      "y": 48.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_G_corridor_S",
+      "x": 25.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_G_corridor_N",
+      "x": 25.0,
+      "y": 98.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_corridor_S",
+      "x": 25.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_D_corridor_N",
+      "x": 25.0,
+      "y": 148.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_A_corridor_S",
+      "x": 25.0,
+      "y": 157.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_K_corridor_N",
+      "x": 70.0,
+      "y": 48.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_H_corridor_S",
+      "x": 70.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_H_corridor_N",
+      "x": 70.0,
+      "y": 98.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_corridor_S",
+      "x": 70.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_E_corridor_N",
+      "x": 70.0,
+      "y": 148.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_B_corridor_S",
+      "x": 70.0,
+      "y": 157.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_L_corridor_N",
+      "x": 115.0,
+      "y": 48.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_corridor_S",
+      "x": 115.0,
+      "y": 57.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_I_corridor_N",
+      "x": 115.0,
+      "y": 98.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_corridor_S",
+      "x": 115.0,
+      "y": 107.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_F_corridor_N",
+      "x": 115.0,
+      "y": 148.0,
+      "type": "none"
+    },
+    {
+      "name": "Zone_C_corridor_S",
+      "x": 115.0,
+      "y": 157.0,
+      "type": "none"
+    }
+  ],
+  "edges": [
+    {
+      "from": "Zone_A_C1",
+      "to": "Zone_A_entry"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_C2"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_A0_entry"
+    },
+    {
+      "from": "Zone_A_A0_entry",
+      "to": "Zone_A_A0_S0"
+    },
+    {
+      "from": "Zone_A_A0_S0",
+      "to": "Zone_A_A0_S1"
+    },
+    {
+      "from": "Zone_A_A0_S1",
+      "to": "Zone_A_A0_S2"
+    },
+    {
+      "from": "Zone_A_A0_S2",
+      "to": "Zone_A_A0_S3"
+    },
+    {
+      "from": "Zone_A_A0_S3",
+      "to": "Zone_A_A0_S4"
+    },
+    {
+      "from": "Zone_A_A0_S4",
+      "to": "Zone_A_A0_S5"
+    },
+    {
+      "from": "Zone_A_A0_S5",
+      "to": "Zone_A_A0_S6"
+    },
+    {
+      "from": "Zone_A_A0_S6",
+      "to": "Zone_A_A0_S7"
+    },
+    {
+      "from": "Zone_A_A0_S7",
+      "to": "Zone_A_A0_exit"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_A1_entry"
+    },
+    {
+      "from": "Zone_A_A1_entry",
+      "to": "Zone_A_A1_S0"
+    },
+    {
+      "from": "Zone_A_A1_S0",
+      "to": "Zone_A_A1_S1"
+    },
+    {
+      "from": "Zone_A_A1_S1",
+      "to": "Zone_A_A1_S2"
+    },
+    {
+      "from": "Zone_A_A1_S2",
+      "to": "Zone_A_A1_S3"
+    },
+    {
+      "from": "Zone_A_A1_S3",
+      "to": "Zone_A_A1_S4"
+    },
+    {
+      "from": "Zone_A_A1_S4",
+      "to": "Zone_A_A1_S5"
+    },
+    {
+      "from": "Zone_A_A1_S5",
+      "to": "Zone_A_A1_S6"
+    },
+    {
+      "from": "Zone_A_A1_S6",
+      "to": "Zone_A_A1_S7"
+    },
+    {
+      "from": "Zone_A_A1_S7",
+      "to": "Zone_A_A1_exit"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_A2_entry"
+    },
+    {
+      "from": "Zone_A_A2_entry",
+      "to": "Zone_A_A2_S0"
+    },
+    {
+      "from": "Zone_A_A2_S0",
+      "to": "Zone_A_A2_S1"
+    },
+    {
+      "from": "Zone_A_A2_S1",
+      "to": "Zone_A_A2_S2"
+    },
+    {
+      "from": "Zone_A_A2_S2",
+      "to": "Zone_A_A2_S3"
+    },
+    {
+      "from": "Zone_A_A2_S3",
+      "to": "Zone_A_A2_S4"
+    },
+    {
+      "from": "Zone_A_A2_S4",
+      "to": "Zone_A_A2_S5"
+    },
+    {
+      "from": "Zone_A_A2_S5",
+      "to": "Zone_A_A2_S6"
+    },
+    {
+      "from": "Zone_A_A2_S6",
+      "to": "Zone_A_A2_S7"
+    },
+    {
+      "from": "Zone_A_A2_S7",
+      "to": "Zone_A_A2_exit"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_A3_entry"
+    },
+    {
+      "from": "Zone_A_A3_entry",
+      "to": "Zone_A_A3_S0"
+    },
+    {
+      "from": "Zone_A_A3_S0",
+      "to": "Zone_A_A3_S1"
+    },
+    {
+      "from": "Zone_A_A3_S1",
+      "to": "Zone_A_A3_S2"
+    },
+    {
+      "from": "Zone_A_A3_S2",
+      "to": "Zone_A_A3_S3"
+    },
+    {
+      "from": "Zone_A_A3_S3",
+      "to": "Zone_A_A3_S4"
+    },
+    {
+      "from": "Zone_A_A3_S4",
+      "to": "Zone_A_A3_S5"
+    },
+    {
+      "from": "Zone_A_A3_S5",
+      "to": "Zone_A_A3_S6"
+    },
+    {
+      "from": "Zone_A_A3_S6",
+      "to": "Zone_A_A3_S7"
+    },
+    {
+      "from": "Zone_A_A3_S7",
+      "to": "Zone_A_A3_exit"
+    },
+    {
+      "from": "Zone_A_entry",
+      "to": "Zone_A_A4_entry"
+    },
+    {
+      "from": "Zone_A_A4_entry",
+      "to": "Zone_A_A4_S0"
+    },
+    {
+      "from": "Zone_A_A4_S0",
+      "to": "Zone_A_A4_S1"
+    },
+    {
+      "from": "Zone_A_A4_S1",
+      "to": "Zone_A_A4_S2"
+    },
+    {
+      "from": "Zone_A_A4_S2",
+      "to": "Zone_A_A4_S3"
+    },
+    {
+      "from": "Zone_A_A4_S3",
+      "to": "Zone_A_A4_S4"
+    },
+    {
+      "from": "Zone_A_A4_S4",
+      "to": "Zone_A_A4_S5"
+    },
+    {
+      "from": "Zone_A_A4_S5",
+      "to": "Zone_A_A4_S6"
+    },
+    {
+      "from": "Zone_A_A4_S6",
+      "to": "Zone_A_A4_S7"
+    },
+    {
+      "from": "Zone_A_A4_S7",
+      "to": "Zone_A_A4_exit"
+    },
+    {
+      "from": "Zone_A_A0_S3",
+      "to": "Zone_A_A1_S3"
+    },
+    {
+      "from": "Zone_A_A1_S3",
+      "to": "Zone_A_A2_S3"
+    },
+    {
+      "from": "Zone_A_A2_S3",
+      "to": "Zone_A_A3_S3"
+    },
+    {
+      "from": "Zone_A_A3_S3",
+      "to": "Zone_A_A4_S3"
+    },
+    {
+      "from": "Zone_A_A0_entry",
+      "to": "Zone_A_A1_entry"
+    },
+    {
+      "from": "Zone_A_A1_entry",
+      "to": "Zone_A_A2_entry"
+    },
+    {
+      "from": "Zone_A_A2_entry",
+      "to": "Zone_A_A3_entry"
+    },
+    {
+      "from": "Zone_A_A3_entry",
+      "to": "Zone_A_A4_entry"
+    },
+    {
+      "from": "Zone_B_C1",
+      "to": "Zone_B_entry"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_C2"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_A0_entry"
+    },
+    {
+      "from": "Zone_B_A0_entry",
+      "to": "Zone_B_A0_S0"
+    },
+    {
+      "from": "Zone_B_A0_S0",
+      "to": "Zone_B_A0_S1"
+    },
+    {
+      "from": "Zone_B_A0_S1",
+      "to": "Zone_B_A0_S2"
+    },
+    {
+      "from": "Zone_B_A0_S2",
+      "to": "Zone_B_A0_S3"
+    },
+    {
+      "from": "Zone_B_A0_S3",
+      "to": "Zone_B_A0_S4"
+    },
+    {
+      "from": "Zone_B_A0_S4",
+      "to": "Zone_B_A0_S5"
+    },
+    {
+      "from": "Zone_B_A0_S5",
+      "to": "Zone_B_A0_S6"
+    },
+    {
+      "from": "Zone_B_A0_S6",
+      "to": "Zone_B_A0_S7"
+    },
+    {
+      "from": "Zone_B_A0_S7",
+      "to": "Zone_B_A0_exit"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_A1_entry"
+    },
+    {
+      "from": "Zone_B_A1_entry",
+      "to": "Zone_B_A1_S0"
+    },
+    {
+      "from": "Zone_B_A1_S0",
+      "to": "Zone_B_A1_S1"
+    },
+    {
+      "from": "Zone_B_A1_S1",
+      "to": "Zone_B_A1_S2"
+    },
+    {
+      "from": "Zone_B_A1_S2",
+      "to": "Zone_B_A1_S3"
+    },
+    {
+      "from": "Zone_B_A1_S3",
+      "to": "Zone_B_A1_S4"
+    },
+    {
+      "from": "Zone_B_A1_S4",
+      "to": "Zone_B_A1_S5"
+    },
+    {
+      "from": "Zone_B_A1_S5",
+      "to": "Zone_B_A1_S6"
+    },
+    {
+      "from": "Zone_B_A1_S6",
+      "to": "Zone_B_A1_S7"
+    },
+    {
+      "from": "Zone_B_A1_S7",
+      "to": "Zone_B_A1_exit"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_A2_entry"
+    },
+    {
+      "from": "Zone_B_A2_entry",
+      "to": "Zone_B_A2_S0"
+    },
+    {
+      "from": "Zone_B_A2_S0",
+      "to": "Zone_B_A2_S1"
+    },
+    {
+      "from": "Zone_B_A2_S1",
+      "to": "Zone_B_A2_S2"
+    },
+    {
+      "from": "Zone_B_A2_S2",
+      "to": "Zone_B_A2_S3"
+    },
+    {
+      "from": "Zone_B_A2_S3",
+      "to": "Zone_B_A2_S4"
+    },
+    {
+      "from": "Zone_B_A2_S4",
+      "to": "Zone_B_A2_S5"
+    },
+    {
+      "from": "Zone_B_A2_S5",
+      "to": "Zone_B_A2_S6"
+    },
+    {
+      "from": "Zone_B_A2_S6",
+      "to": "Zone_B_A2_S7"
+    },
+    {
+      "from": "Zone_B_A2_S7",
+      "to": "Zone_B_A2_exit"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_A3_entry"
+    },
+    {
+      "from": "Zone_B_A3_entry",
+      "to": "Zone_B_A3_S0"
+    },
+    {
+      "from": "Zone_B_A3_S0",
+      "to": "Zone_B_A3_S1"
+    },
+    {
+      "from": "Zone_B_A3_S1",
+      "to": "Zone_B_A3_S2"
+    },
+    {
+      "from": "Zone_B_A3_S2",
+      "to": "Zone_B_A3_S3"
+    },
+    {
+      "from": "Zone_B_A3_S3",
+      "to": "Zone_B_A3_S4"
+    },
+    {
+      "from": "Zone_B_A3_S4",
+      "to": "Zone_B_A3_S5"
+    },
+    {
+      "from": "Zone_B_A3_S5",
+      "to": "Zone_B_A3_S6"
+    },
+    {
+      "from": "Zone_B_A3_S6",
+      "to": "Zone_B_A3_S7"
+    },
+    {
+      "from": "Zone_B_A3_S7",
+      "to": "Zone_B_A3_exit"
+    },
+    {
+      "from": "Zone_B_entry",
+      "to": "Zone_B_A4_entry"
+    },
+    {
+      "from": "Zone_B_A4_entry",
+      "to": "Zone_B_A4_S0"
+    },
+    {
+      "from": "Zone_B_A4_S0",
+      "to": "Zone_B_A4_S1"
+    },
+    {
+      "from": "Zone_B_A4_S1",
+      "to": "Zone_B_A4_S2"
+    },
+    {
+      "from": "Zone_B_A4_S2",
+      "to": "Zone_B_A4_S3"
+    },
+    {
+      "from": "Zone_B_A4_S3",
+      "to": "Zone_B_A4_S4"
+    },
+    {
+      "from": "Zone_B_A4_S4",
+      "to": "Zone_B_A4_S5"
+    },
+    {
+      "from": "Zone_B_A4_S5",
+      "to": "Zone_B_A4_S6"
+    },
+    {
+      "from": "Zone_B_A4_S6",
+      "to": "Zone_B_A4_S7"
+    },
+    {
+      "from": "Zone_B_A4_S7",
+      "to": "Zone_B_A4_exit"
+    },
+    {
+      "from": "Zone_B_A0_S3",
+      "to": "Zone_B_A1_S3"
+    },
+    {
+      "from": "Zone_B_A1_S3",
+      "to": "Zone_B_A2_S3"
+    },
+    {
+      "from": "Zone_B_A2_S3",
+      "to": "Zone_B_A3_S3"
+    },
+    {
+      "from": "Zone_B_A3_S3",
+      "to": "Zone_B_A4_S3"
+    },
+    {
+      "from": "Zone_B_A0_entry",
+      "to": "Zone_B_A1_entry"
+    },
+    {
+      "from": "Zone_B_A1_entry",
+      "to": "Zone_B_A2_entry"
+    },
+    {
+      "from": "Zone_B_A2_entry",
+      "to": "Zone_B_A3_entry"
+    },
+    {
+      "from": "Zone_B_A3_entry",
+      "to": "Zone_B_A4_entry"
+    },
+    {
+      "from": "Zone_C_C1",
+      "to": "Zone_C_entry"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_C2"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_A0_entry"
+    },
+    {
+      "from": "Zone_C_A0_entry",
+      "to": "Zone_C_A0_S0"
+    },
+    {
+      "from": "Zone_C_A0_S0",
+      "to": "Zone_C_A0_S1"
+    },
+    {
+      "from": "Zone_C_A0_S1",
+      "to": "Zone_C_A0_S2"
+    },
+    {
+      "from": "Zone_C_A0_S2",
+      "to": "Zone_C_A0_S3"
+    },
+    {
+      "from": "Zone_C_A0_S3",
+      "to": "Zone_C_A0_S4"
+    },
+    {
+      "from": "Zone_C_A0_S4",
+      "to": "Zone_C_A0_S5"
+    },
+    {
+      "from": "Zone_C_A0_S5",
+      "to": "Zone_C_A0_S6"
+    },
+    {
+      "from": "Zone_C_A0_S6",
+      "to": "Zone_C_A0_S7"
+    },
+    {
+      "from": "Zone_C_A0_S7",
+      "to": "Zone_C_A0_exit"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_A1_entry"
+    },
+    {
+      "from": "Zone_C_A1_entry",
+      "to": "Zone_C_A1_S0"
+    },
+    {
+      "from": "Zone_C_A1_S0",
+      "to": "Zone_C_A1_S1"
+    },
+    {
+      "from": "Zone_C_A1_S1",
+      "to": "Zone_C_A1_S2"
+    },
+    {
+      "from": "Zone_C_A1_S2",
+      "to": "Zone_C_A1_S3"
+    },
+    {
+      "from": "Zone_C_A1_S3",
+      "to": "Zone_C_A1_S4"
+    },
+    {
+      "from": "Zone_C_A1_S4",
+      "to": "Zone_C_A1_S5"
+    },
+    {
+      "from": "Zone_C_A1_S5",
+      "to": "Zone_C_A1_S6"
+    },
+    {
+      "from": "Zone_C_A1_S6",
+      "to": "Zone_C_A1_S7"
+    },
+    {
+      "from": "Zone_C_A1_S7",
+      "to": "Zone_C_A1_exit"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_A2_entry"
+    },
+    {
+      "from": "Zone_C_A2_entry",
+      "to": "Zone_C_A2_S0"
+    },
+    {
+      "from": "Zone_C_A2_S0",
+      "to": "Zone_C_A2_S1"
+    },
+    {
+      "from": "Zone_C_A2_S1",
+      "to": "Zone_C_A2_S2"
+    },
+    {
+      "from": "Zone_C_A2_S2",
+      "to": "Zone_C_A2_S3"
+    },
+    {
+      "from": "Zone_C_A2_S3",
+      "to": "Zone_C_A2_S4"
+    },
+    {
+      "from": "Zone_C_A2_S4",
+      "to": "Zone_C_A2_S5"
+    },
+    {
+      "from": "Zone_C_A2_S5",
+      "to": "Zone_C_A2_S6"
+    },
+    {
+      "from": "Zone_C_A2_S6",
+      "to": "Zone_C_A2_S7"
+    },
+    {
+      "from": "Zone_C_A2_S7",
+      "to": "Zone_C_A2_exit"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_A3_entry"
+    },
+    {
+      "from": "Zone_C_A3_entry",
+      "to": "Zone_C_A3_S0"
+    },
+    {
+      "from": "Zone_C_A3_S0",
+      "to": "Zone_C_A3_S1"
+    },
+    {
+      "from": "Zone_C_A3_S1",
+      "to": "Zone_C_A3_S2"
+    },
+    {
+      "from": "Zone_C_A3_S2",
+      "to": "Zone_C_A3_S3"
+    },
+    {
+      "from": "Zone_C_A3_S3",
+      "to": "Zone_C_A3_S4"
+    },
+    {
+      "from": "Zone_C_A3_S4",
+      "to": "Zone_C_A3_S5"
+    },
+    {
+      "from": "Zone_C_A3_S5",
+      "to": "Zone_C_A3_S6"
+    },
+    {
+      "from": "Zone_C_A3_S6",
+      "to": "Zone_C_A3_S7"
+    },
+    {
+      "from": "Zone_C_A3_S7",
+      "to": "Zone_C_A3_exit"
+    },
+    {
+      "from": "Zone_C_entry",
+      "to": "Zone_C_A4_entry"
+    },
+    {
+      "from": "Zone_C_A4_entry",
+      "to": "Zone_C_A4_S0"
+    },
+    {
+      "from": "Zone_C_A4_S0",
+      "to": "Zone_C_A4_S1"
+    },
+    {
+      "from": "Zone_C_A4_S1",
+      "to": "Zone_C_A4_S2"
+    },
+    {
+      "from": "Zone_C_A4_S2",
+      "to": "Zone_C_A4_S3"
+    },
+    {
+      "from": "Zone_C_A4_S3",
+      "to": "Zone_C_A4_S4"
+    },
+    {
+      "from": "Zone_C_A4_S4",
+      "to": "Zone_C_A4_S5"
+    },
+    {
+      "from": "Zone_C_A4_S5",
+      "to": "Zone_C_A4_S6"
+    },
+    {
+      "from": "Zone_C_A4_S6",
+      "to": "Zone_C_A4_S7"
+    },
+    {
+      "from": "Zone_C_A4_S7",
+      "to": "Zone_C_A4_exit"
+    },
+    {
+      "from": "Zone_C_A0_S3",
+      "to": "Zone_C_A1_S3"
+    },
+    {
+      "from": "Zone_C_A1_S3",
+      "to": "Zone_C_A2_S3"
+    },
+    {
+      "from": "Zone_C_A2_S3",
+      "to": "Zone_C_A3_S3"
+    },
+    {
+      "from": "Zone_C_A3_S3",
+      "to": "Zone_C_A4_S3"
+    },
+    {
+      "from": "Zone_C_A0_entry",
+      "to": "Zone_C_A1_entry"
+    },
+    {
+      "from": "Zone_C_A1_entry",
+      "to": "Zone_C_A2_entry"
+    },
+    {
+      "from": "Zone_C_A2_entry",
+      "to": "Zone_C_A3_entry"
+    },
+    {
+      "from": "Zone_C_A3_entry",
+      "to": "Zone_C_A4_entry"
+    },
+    {
+      "from": "Zone_D_C1",
+      "to": "Zone_D_entry"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_C2"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_A0_entry"
+    },
+    {
+      "from": "Zone_D_A0_entry",
+      "to": "Zone_D_A0_S0"
+    },
+    {
+      "from": "Zone_D_A0_S0",
+      "to": "Zone_D_A0_S1"
+    },
+    {
+      "from": "Zone_D_A0_S1",
+      "to": "Zone_D_A0_S2"
+    },
+    {
+      "from": "Zone_D_A0_S2",
+      "to": "Zone_D_A0_S3"
+    },
+    {
+      "from": "Zone_D_A0_S3",
+      "to": "Zone_D_A0_S4"
+    },
+    {
+      "from": "Zone_D_A0_S4",
+      "to": "Zone_D_A0_S5"
+    },
+    {
+      "from": "Zone_D_A0_S5",
+      "to": "Zone_D_A0_S6"
+    },
+    {
+      "from": "Zone_D_A0_S6",
+      "to": "Zone_D_A0_S7"
+    },
+    {
+      "from": "Zone_D_A0_S7",
+      "to": "Zone_D_A0_exit"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_A1_entry"
+    },
+    {
+      "from": "Zone_D_A1_entry",
+      "to": "Zone_D_A1_S0"
+    },
+    {
+      "from": "Zone_D_A1_S0",
+      "to": "Zone_D_A1_S1"
+    },
+    {
+      "from": "Zone_D_A1_S1",
+      "to": "Zone_D_A1_S2"
+    },
+    {
+      "from": "Zone_D_A1_S2",
+      "to": "Zone_D_A1_S3"
+    },
+    {
+      "from": "Zone_D_A1_S3",
+      "to": "Zone_D_A1_S4"
+    },
+    {
+      "from": "Zone_D_A1_S4",
+      "to": "Zone_D_A1_S5"
+    },
+    {
+      "from": "Zone_D_A1_S5",
+      "to": "Zone_D_A1_S6"
+    },
+    {
+      "from": "Zone_D_A1_S6",
+      "to": "Zone_D_A1_S7"
+    },
+    {
+      "from": "Zone_D_A1_S7",
+      "to": "Zone_D_A1_exit"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_A2_entry"
+    },
+    {
+      "from": "Zone_D_A2_entry",
+      "to": "Zone_D_A2_S0"
+    },
+    {
+      "from": "Zone_D_A2_S0",
+      "to": "Zone_D_A2_S1"
+    },
+    {
+      "from": "Zone_D_A2_S1",
+      "to": "Zone_D_A2_S2"
+    },
+    {
+      "from": "Zone_D_A2_S2",
+      "to": "Zone_D_A2_S3"
+    },
+    {
+      "from": "Zone_D_A2_S3",
+      "to": "Zone_D_A2_S4"
+    },
+    {
+      "from": "Zone_D_A2_S4",
+      "to": "Zone_D_A2_S5"
+    },
+    {
+      "from": "Zone_D_A2_S5",
+      "to": "Zone_D_A2_S6"
+    },
+    {
+      "from": "Zone_D_A2_S6",
+      "to": "Zone_D_A2_S7"
+    },
+    {
+      "from": "Zone_D_A2_S7",
+      "to": "Zone_D_A2_exit"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_A3_entry"
+    },
+    {
+      "from": "Zone_D_A3_entry",
+      "to": "Zone_D_A3_S0"
+    },
+    {
+      "from": "Zone_D_A3_S0",
+      "to": "Zone_D_A3_S1"
+    },
+    {
+      "from": "Zone_D_A3_S1",
+      "to": "Zone_D_A3_S2"
+    },
+    {
+      "from": "Zone_D_A3_S2",
+      "to": "Zone_D_A3_S3"
+    },
+    {
+      "from": "Zone_D_A3_S3",
+      "to": "Zone_D_A3_S4"
+    },
+    {
+      "from": "Zone_D_A3_S4",
+      "to": "Zone_D_A3_S5"
+    },
+    {
+      "from": "Zone_D_A3_S5",
+      "to": "Zone_D_A3_S6"
+    },
+    {
+      "from": "Zone_D_A3_S6",
+      "to": "Zone_D_A3_S7"
+    },
+    {
+      "from": "Zone_D_A3_S7",
+      "to": "Zone_D_A3_exit"
+    },
+    {
+      "from": "Zone_D_entry",
+      "to": "Zone_D_A4_entry"
+    },
+    {
+      "from": "Zone_D_A4_entry",
+      "to": "Zone_D_A4_S0"
+    },
+    {
+      "from": "Zone_D_A4_S0",
+      "to": "Zone_D_A4_S1"
+    },
+    {
+      "from": "Zone_D_A4_S1",
+      "to": "Zone_D_A4_S2"
+    },
+    {
+      "from": "Zone_D_A4_S2",
+      "to": "Zone_D_A4_S3"
+    },
+    {
+      "from": "Zone_D_A4_S3",
+      "to": "Zone_D_A4_S4"
+    },
+    {
+      "from": "Zone_D_A4_S4",
+      "to": "Zone_D_A4_S5"
+    },
+    {
+      "from": "Zone_D_A4_S5",
+      "to": "Zone_D_A4_S6"
+    },
+    {
+      "from": "Zone_D_A4_S6",
+      "to": "Zone_D_A4_S7"
+    },
+    {
+      "from": "Zone_D_A4_S7",
+      "to": "Zone_D_A4_exit"
+    },
+    {
+      "from": "Zone_D_A0_S3",
+      "to": "Zone_D_A1_S3"
+    },
+    {
+      "from": "Zone_D_A1_S3",
+      "to": "Zone_D_A2_S3"
+    },
+    {
+      "from": "Zone_D_A2_S3",
+      "to": "Zone_D_A3_S3"
+    },
+    {
+      "from": "Zone_D_A3_S3",
+      "to": "Zone_D_A4_S3"
+    },
+    {
+      "from": "Zone_D_A0_entry",
+      "to": "Zone_D_A1_entry"
+    },
+    {
+      "from": "Zone_D_A1_entry",
+      "to": "Zone_D_A2_entry"
+    },
+    {
+      "from": "Zone_D_A2_entry",
+      "to": "Zone_D_A3_entry"
+    },
+    {
+      "from": "Zone_D_A3_entry",
+      "to": "Zone_D_A4_entry"
+    },
+    {
+      "from": "Zone_E_C1",
+      "to": "Zone_E_entry"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_C2"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_A0_entry"
+    },
+    {
+      "from": "Zone_E_A0_entry",
+      "to": "Zone_E_A0_S0"
+    },
+    {
+      "from": "Zone_E_A0_S0",
+      "to": "Zone_E_A0_S1"
+    },
+    {
+      "from": "Zone_E_A0_S1",
+      "to": "Zone_E_A0_S2"
+    },
+    {
+      "from": "Zone_E_A0_S2",
+      "to": "Zone_E_A0_S3"
+    },
+    {
+      "from": "Zone_E_A0_S3",
+      "to": "Zone_E_A0_S4"
+    },
+    {
+      "from": "Zone_E_A0_S4",
+      "to": "Zone_E_A0_S5"
+    },
+    {
+      "from": "Zone_E_A0_S5",
+      "to": "Zone_E_A0_S6"
+    },
+    {
+      "from": "Zone_E_A0_S6",
+      "to": "Zone_E_A0_S7"
+    },
+    {
+      "from": "Zone_E_A0_S7",
+      "to": "Zone_E_A0_exit"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_A1_entry"
+    },
+    {
+      "from": "Zone_E_A1_entry",
+      "to": "Zone_E_A1_S0"
+    },
+    {
+      "from": "Zone_E_A1_S0",
+      "to": "Zone_E_A1_S1"
+    },
+    {
+      "from": "Zone_E_A1_S1",
+      "to": "Zone_E_A1_S2"
+    },
+    {
+      "from": "Zone_E_A1_S2",
+      "to": "Zone_E_A1_S3"
+    },
+    {
+      "from": "Zone_E_A1_S3",
+      "to": "Zone_E_A1_S4"
+    },
+    {
+      "from": "Zone_E_A1_S4",
+      "to": "Zone_E_A1_S5"
+    },
+    {
+      "from": "Zone_E_A1_S5",
+      "to": "Zone_E_A1_S6"
+    },
+    {
+      "from": "Zone_E_A1_S6",
+      "to": "Zone_E_A1_S7"
+    },
+    {
+      "from": "Zone_E_A1_S7",
+      "to": "Zone_E_A1_exit"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_A2_entry"
+    },
+    {
+      "from": "Zone_E_A2_entry",
+      "to": "Zone_E_A2_S0"
+    },
+    {
+      "from": "Zone_E_A2_S0",
+      "to": "Zone_E_A2_S1"
+    },
+    {
+      "from": "Zone_E_A2_S1",
+      "to": "Zone_E_A2_S2"
+    },
+    {
+      "from": "Zone_E_A2_S2",
+      "to": "Zone_E_A2_S3"
+    },
+    {
+      "from": "Zone_E_A2_S3",
+      "to": "Zone_E_A2_S4"
+    },
+    {
+      "from": "Zone_E_A2_S4",
+      "to": "Zone_E_A2_S5"
+    },
+    {
+      "from": "Zone_E_A2_S5",
+      "to": "Zone_E_A2_S6"
+    },
+    {
+      "from": "Zone_E_A2_S6",
+      "to": "Zone_E_A2_S7"
+    },
+    {
+      "from": "Zone_E_A2_S7",
+      "to": "Zone_E_A2_exit"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_A3_entry"
+    },
+    {
+      "from": "Zone_E_A3_entry",
+      "to": "Zone_E_A3_S0"
+    },
+    {
+      "from": "Zone_E_A3_S0",
+      "to": "Zone_E_A3_S1"
+    },
+    {
+      "from": "Zone_E_A3_S1",
+      "to": "Zone_E_A3_S2"
+    },
+    {
+      "from": "Zone_E_A3_S2",
+      "to": "Zone_E_A3_S3"
+    },
+    {
+      "from": "Zone_E_A3_S3",
+      "to": "Zone_E_A3_S4"
+    },
+    {
+      "from": "Zone_E_A3_S4",
+      "to": "Zone_E_A3_S5"
+    },
+    {
+      "from": "Zone_E_A3_S5",
+      "to": "Zone_E_A3_S6"
+    },
+    {
+      "from": "Zone_E_A3_S6",
+      "to": "Zone_E_A3_S7"
+    },
+    {
+      "from": "Zone_E_A3_S7",
+      "to": "Zone_E_A3_exit"
+    },
+    {
+      "from": "Zone_E_entry",
+      "to": "Zone_E_A4_entry"
+    },
+    {
+      "from": "Zone_E_A4_entry",
+      "to": "Zone_E_A4_S0"
+    },
+    {
+      "from": "Zone_E_A4_S0",
+      "to": "Zone_E_A4_S1"
+    },
+    {
+      "from": "Zone_E_A4_S1",
+      "to": "Zone_E_A4_S2"
+    },
+    {
+      "from": "Zone_E_A4_S2",
+      "to": "Zone_E_A4_S3"
+    },
+    {
+      "from": "Zone_E_A4_S3",
+      "to": "Zone_E_A4_S4"
+    },
+    {
+      "from": "Zone_E_A4_S4",
+      "to": "Zone_E_A4_S5"
+    },
+    {
+      "from": "Zone_E_A4_S5",
+      "to": "Zone_E_A4_S6"
+    },
+    {
+      "from": "Zone_E_A4_S6",
+      "to": "Zone_E_A4_S7"
+    },
+    {
+      "from": "Zone_E_A4_S7",
+      "to": "Zone_E_A4_exit"
+    },
+    {
+      "from": "Zone_E_A0_S3",
+      "to": "Zone_E_A1_S3"
+    },
+    {
+      "from": "Zone_E_A1_S3",
+      "to": "Zone_E_A2_S3"
+    },
+    {
+      "from": "Zone_E_A2_S3",
+      "to": "Zone_E_A3_S3"
+    },
+    {
+      "from": "Zone_E_A3_S3",
+      "to": "Zone_E_A4_S3"
+    },
+    {
+      "from": "Zone_E_A0_entry",
+      "to": "Zone_E_A1_entry"
+    },
+    {
+      "from": "Zone_E_A1_entry",
+      "to": "Zone_E_A2_entry"
+    },
+    {
+      "from": "Zone_E_A2_entry",
+      "to": "Zone_E_A3_entry"
+    },
+    {
+      "from": "Zone_E_A3_entry",
+      "to": "Zone_E_A4_entry"
+    },
+    {
+      "from": "Zone_F_C1",
+      "to": "Zone_F_entry"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_C2"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_A0_entry"
+    },
+    {
+      "from": "Zone_F_A0_entry",
+      "to": "Zone_F_A0_S0"
+    },
+    {
+      "from": "Zone_F_A0_S0",
+      "to": "Zone_F_A0_S1"
+    },
+    {
+      "from": "Zone_F_A0_S1",
+      "to": "Zone_F_A0_S2"
+    },
+    {
+      "from": "Zone_F_A0_S2",
+      "to": "Zone_F_A0_S3"
+    },
+    {
+      "from": "Zone_F_A0_S3",
+      "to": "Zone_F_A0_S4"
+    },
+    {
+      "from": "Zone_F_A0_S4",
+      "to": "Zone_F_A0_S5"
+    },
+    {
+      "from": "Zone_F_A0_S5",
+      "to": "Zone_F_A0_S6"
+    },
+    {
+      "from": "Zone_F_A0_S6",
+      "to": "Zone_F_A0_S7"
+    },
+    {
+      "from": "Zone_F_A0_S7",
+      "to": "Zone_F_A0_exit"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_A1_entry"
+    },
+    {
+      "from": "Zone_F_A1_entry",
+      "to": "Zone_F_A1_S0"
+    },
+    {
+      "from": "Zone_F_A1_S0",
+      "to": "Zone_F_A1_S1"
+    },
+    {
+      "from": "Zone_F_A1_S1",
+      "to": "Zone_F_A1_S2"
+    },
+    {
+      "from": "Zone_F_A1_S2",
+      "to": "Zone_F_A1_S3"
+    },
+    {
+      "from": "Zone_F_A1_S3",
+      "to": "Zone_F_A1_S4"
+    },
+    {
+      "from": "Zone_F_A1_S4",
+      "to": "Zone_F_A1_S5"
+    },
+    {
+      "from": "Zone_F_A1_S5",
+      "to": "Zone_F_A1_S6"
+    },
+    {
+      "from": "Zone_F_A1_S6",
+      "to": "Zone_F_A1_S7"
+    },
+    {
+      "from": "Zone_F_A1_S7",
+      "to": "Zone_F_A1_exit"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_A2_entry"
+    },
+    {
+      "from": "Zone_F_A2_entry",
+      "to": "Zone_F_A2_S0"
+    },
+    {
+      "from": "Zone_F_A2_S0",
+      "to": "Zone_F_A2_S1"
+    },
+    {
+      "from": "Zone_F_A2_S1",
+      "to": "Zone_F_A2_S2"
+    },
+    {
+      "from": "Zone_F_A2_S2",
+      "to": "Zone_F_A2_S3"
+    },
+    {
+      "from": "Zone_F_A2_S3",
+      "to": "Zone_F_A2_S4"
+    },
+    {
+      "from": "Zone_F_A2_S4",
+      "to": "Zone_F_A2_S5"
+    },
+    {
+      "from": "Zone_F_A2_S5",
+      "to": "Zone_F_A2_S6"
+    },
+    {
+      "from": "Zone_F_A2_S6",
+      "to": "Zone_F_A2_S7"
+    },
+    {
+      "from": "Zone_F_A2_S7",
+      "to": "Zone_F_A2_exit"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_A3_entry"
+    },
+    {
+      "from": "Zone_F_A3_entry",
+      "to": "Zone_F_A3_S0"
+    },
+    {
+      "from": "Zone_F_A3_S0",
+      "to": "Zone_F_A3_S1"
+    },
+    {
+      "from": "Zone_F_A3_S1",
+      "to": "Zone_F_A3_S2"
+    },
+    {
+      "from": "Zone_F_A3_S2",
+      "to": "Zone_F_A3_S3"
+    },
+    {
+      "from": "Zone_F_A3_S3",
+      "to": "Zone_F_A3_S4"
+    },
+    {
+      "from": "Zone_F_A3_S4",
+      "to": "Zone_F_A3_S5"
+    },
+    {
+      "from": "Zone_F_A3_S5",
+      "to": "Zone_F_A3_S6"
+    },
+    {
+      "from": "Zone_F_A3_S6",
+      "to": "Zone_F_A3_S7"
+    },
+    {
+      "from": "Zone_F_A3_S7",
+      "to": "Zone_F_A3_exit"
+    },
+    {
+      "from": "Zone_F_entry",
+      "to": "Zone_F_A4_entry"
+    },
+    {
+      "from": "Zone_F_A4_entry",
+      "to": "Zone_F_A4_S0"
+    },
+    {
+      "from": "Zone_F_A4_S0",
+      "to": "Zone_F_A4_S1"
+    },
+    {
+      "from": "Zone_F_A4_S1",
+      "to": "Zone_F_A4_S2"
+    },
+    {
+      "from": "Zone_F_A4_S2",
+      "to": "Zone_F_A4_S3"
+    },
+    {
+      "from": "Zone_F_A4_S3",
+      "to": "Zone_F_A4_S4"
+    },
+    {
+      "from": "Zone_F_A4_S4",
+      "to": "Zone_F_A4_S5"
+    },
+    {
+      "from": "Zone_F_A4_S5",
+      "to": "Zone_F_A4_S6"
+    },
+    {
+      "from": "Zone_F_A4_S6",
+      "to": "Zone_F_A4_S7"
+    },
+    {
+      "from": "Zone_F_A4_S7",
+      "to": "Zone_F_A4_exit"
+    },
+    {
+      "from": "Zone_F_A0_S3",
+      "to": "Zone_F_A1_S3"
+    },
+    {
+      "from": "Zone_F_A1_S3",
+      "to": "Zone_F_A2_S3"
+    },
+    {
+      "from": "Zone_F_A2_S3",
+      "to": "Zone_F_A3_S3"
+    },
+    {
+      "from": "Zone_F_A3_S3",
+      "to": "Zone_F_A4_S3"
+    },
+    {
+      "from": "Zone_F_A0_entry",
+      "to": "Zone_F_A1_entry"
+    },
+    {
+      "from": "Zone_F_A1_entry",
+      "to": "Zone_F_A2_entry"
+    },
+    {
+      "from": "Zone_F_A2_entry",
+      "to": "Zone_F_A3_entry"
+    },
+    {
+      "from": "Zone_F_A3_entry",
+      "to": "Zone_F_A4_entry"
+    },
+    {
+      "from": "Zone_G_C1",
+      "to": "Zone_G_entry"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_C2"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_A0_entry"
+    },
+    {
+      "from": "Zone_G_A0_entry",
+      "to": "Zone_G_A0_S0"
+    },
+    {
+      "from": "Zone_G_A0_S0",
+      "to": "Zone_G_A0_S1"
+    },
+    {
+      "from": "Zone_G_A0_S1",
+      "to": "Zone_G_A0_S2"
+    },
+    {
+      "from": "Zone_G_A0_S2",
+      "to": "Zone_G_A0_S3"
+    },
+    {
+      "from": "Zone_G_A0_S3",
+      "to": "Zone_G_A0_S4"
+    },
+    {
+      "from": "Zone_G_A0_S4",
+      "to": "Zone_G_A0_S5"
+    },
+    {
+      "from": "Zone_G_A0_S5",
+      "to": "Zone_G_A0_S6"
+    },
+    {
+      "from": "Zone_G_A0_S6",
+      "to": "Zone_G_A0_S7"
+    },
+    {
+      "from": "Zone_G_A0_S7",
+      "to": "Zone_G_A0_exit"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_A1_entry"
+    },
+    {
+      "from": "Zone_G_A1_entry",
+      "to": "Zone_G_A1_S0"
+    },
+    {
+      "from": "Zone_G_A1_S0",
+      "to": "Zone_G_A1_S1"
+    },
+    {
+      "from": "Zone_G_A1_S1",
+      "to": "Zone_G_A1_S2"
+    },
+    {
+      "from": "Zone_G_A1_S2",
+      "to": "Zone_G_A1_S3"
+    },
+    {
+      "from": "Zone_G_A1_S3",
+      "to": "Zone_G_A1_S4"
+    },
+    {
+      "from": "Zone_G_A1_S4",
+      "to": "Zone_G_A1_S5"
+    },
+    {
+      "from": "Zone_G_A1_S5",
+      "to": "Zone_G_A1_S6"
+    },
+    {
+      "from": "Zone_G_A1_S6",
+      "to": "Zone_G_A1_S7"
+    },
+    {
+      "from": "Zone_G_A1_S7",
+      "to": "Zone_G_A1_exit"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_A2_entry"
+    },
+    {
+      "from": "Zone_G_A2_entry",
+      "to": "Zone_G_A2_S0"
+    },
+    {
+      "from": "Zone_G_A2_S0",
+      "to": "Zone_G_A2_S1"
+    },
+    {
+      "from": "Zone_G_A2_S1",
+      "to": "Zone_G_A2_S2"
+    },
+    {
+      "from": "Zone_G_A2_S2",
+      "to": "Zone_G_A2_S3"
+    },
+    {
+      "from": "Zone_G_A2_S3",
+      "to": "Zone_G_A2_S4"
+    },
+    {
+      "from": "Zone_G_A2_S4",
+      "to": "Zone_G_A2_S5"
+    },
+    {
+      "from": "Zone_G_A2_S5",
+      "to": "Zone_G_A2_S6"
+    },
+    {
+      "from": "Zone_G_A2_S6",
+      "to": "Zone_G_A2_S7"
+    },
+    {
+      "from": "Zone_G_A2_S7",
+      "to": "Zone_G_A2_exit"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_A3_entry"
+    },
+    {
+      "from": "Zone_G_A3_entry",
+      "to": "Zone_G_A3_S0"
+    },
+    {
+      "from": "Zone_G_A3_S0",
+      "to": "Zone_G_A3_S1"
+    },
+    {
+      "from": "Zone_G_A3_S1",
+      "to": "Zone_G_A3_S2"
+    },
+    {
+      "from": "Zone_G_A3_S2",
+      "to": "Zone_G_A3_S3"
+    },
+    {
+      "from": "Zone_G_A3_S3",
+      "to": "Zone_G_A3_S4"
+    },
+    {
+      "from": "Zone_G_A3_S4",
+      "to": "Zone_G_A3_S5"
+    },
+    {
+      "from": "Zone_G_A3_S5",
+      "to": "Zone_G_A3_S6"
+    },
+    {
+      "from": "Zone_G_A3_S6",
+      "to": "Zone_G_A3_S7"
+    },
+    {
+      "from": "Zone_G_A3_S7",
+      "to": "Zone_G_A3_exit"
+    },
+    {
+      "from": "Zone_G_entry",
+      "to": "Zone_G_A4_entry"
+    },
+    {
+      "from": "Zone_G_A4_entry",
+      "to": "Zone_G_A4_S0"
+    },
+    {
+      "from": "Zone_G_A4_S0",
+      "to": "Zone_G_A4_S1"
+    },
+    {
+      "from": "Zone_G_A4_S1",
+      "to": "Zone_G_A4_S2"
+    },
+    {
+      "from": "Zone_G_A4_S2",
+      "to": "Zone_G_A4_S3"
+    },
+    {
+      "from": "Zone_G_A4_S3",
+      "to": "Zone_G_A4_S4"
+    },
+    {
+      "from": "Zone_G_A4_S4",
+      "to": "Zone_G_A4_S5"
+    },
+    {
+      "from": "Zone_G_A4_S5",
+      "to": "Zone_G_A4_S6"
+    },
+    {
+      "from": "Zone_G_A4_S6",
+      "to": "Zone_G_A4_S7"
+    },
+    {
+      "from": "Zone_G_A4_S7",
+      "to": "Zone_G_A4_exit"
+    },
+    {
+      "from": "Zone_G_A0_S3",
+      "to": "Zone_G_A1_S3"
+    },
+    {
+      "from": "Zone_G_A1_S3",
+      "to": "Zone_G_A2_S3"
+    },
+    {
+      "from": "Zone_G_A2_S3",
+      "to": "Zone_G_A3_S3"
+    },
+    {
+      "from": "Zone_G_A3_S3",
+      "to": "Zone_G_A4_S3"
+    },
+    {
+      "from": "Zone_G_A0_entry",
+      "to": "Zone_G_A1_entry"
+    },
+    {
+      "from": "Zone_G_A1_entry",
+      "to": "Zone_G_A2_entry"
+    },
+    {
+      "from": "Zone_G_A2_entry",
+      "to": "Zone_G_A3_entry"
+    },
+    {
+      "from": "Zone_G_A3_entry",
+      "to": "Zone_G_A4_entry"
+    },
+    {
+      "from": "Zone_H_C1",
+      "to": "Zone_H_entry"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_C2"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_A0_entry"
+    },
+    {
+      "from": "Zone_H_A0_entry",
+      "to": "Zone_H_A0_S0"
+    },
+    {
+      "from": "Zone_H_A0_S0",
+      "to": "Zone_H_A0_S1"
+    },
+    {
+      "from": "Zone_H_A0_S1",
+      "to": "Zone_H_A0_S2"
+    },
+    {
+      "from": "Zone_H_A0_S2",
+      "to": "Zone_H_A0_S3"
+    },
+    {
+      "from": "Zone_H_A0_S3",
+      "to": "Zone_H_A0_S4"
+    },
+    {
+      "from": "Zone_H_A0_S4",
+      "to": "Zone_H_A0_S5"
+    },
+    {
+      "from": "Zone_H_A0_S5",
+      "to": "Zone_H_A0_S6"
+    },
+    {
+      "from": "Zone_H_A0_S6",
+      "to": "Zone_H_A0_S7"
+    },
+    {
+      "from": "Zone_H_A0_S7",
+      "to": "Zone_H_A0_exit"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_A1_entry"
+    },
+    {
+      "from": "Zone_H_A1_entry",
+      "to": "Zone_H_A1_S0"
+    },
+    {
+      "from": "Zone_H_A1_S0",
+      "to": "Zone_H_A1_S1"
+    },
+    {
+      "from": "Zone_H_A1_S1",
+      "to": "Zone_H_A1_S2"
+    },
+    {
+      "from": "Zone_H_A1_S2",
+      "to": "Zone_H_A1_S3"
+    },
+    {
+      "from": "Zone_H_A1_S3",
+      "to": "Zone_H_A1_S4"
+    },
+    {
+      "from": "Zone_H_A1_S4",
+      "to": "Zone_H_A1_S5"
+    },
+    {
+      "from": "Zone_H_A1_S5",
+      "to": "Zone_H_A1_S6"
+    },
+    {
+      "from": "Zone_H_A1_S6",
+      "to": "Zone_H_A1_S7"
+    },
+    {
+      "from": "Zone_H_A1_S7",
+      "to": "Zone_H_A1_exit"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_A2_entry"
+    },
+    {
+      "from": "Zone_H_A2_entry",
+      "to": "Zone_H_A2_S0"
+    },
+    {
+      "from": "Zone_H_A2_S0",
+      "to": "Zone_H_A2_S1"
+    },
+    {
+      "from": "Zone_H_A2_S1",
+      "to": "Zone_H_A2_S2"
+    },
+    {
+      "from": "Zone_H_A2_S2",
+      "to": "Zone_H_A2_S3"
+    },
+    {
+      "from": "Zone_H_A2_S3",
+      "to": "Zone_H_A2_S4"
+    },
+    {
+      "from": "Zone_H_A2_S4",
+      "to": "Zone_H_A2_S5"
+    },
+    {
+      "from": "Zone_H_A2_S5",
+      "to": "Zone_H_A2_S6"
+    },
+    {
+      "from": "Zone_H_A2_S6",
+      "to": "Zone_H_A2_S7"
+    },
+    {
+      "from": "Zone_H_A2_S7",
+      "to": "Zone_H_A2_exit"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_A3_entry"
+    },
+    {
+      "from": "Zone_H_A3_entry",
+      "to": "Zone_H_A3_S0"
+    },
+    {
+      "from": "Zone_H_A3_S0",
+      "to": "Zone_H_A3_S1"
+    },
+    {
+      "from": "Zone_H_A3_S1",
+      "to": "Zone_H_A3_S2"
+    },
+    {
+      "from": "Zone_H_A3_S2",
+      "to": "Zone_H_A3_S3"
+    },
+    {
+      "from": "Zone_H_A3_S3",
+      "to": "Zone_H_A3_S4"
+    },
+    {
+      "from": "Zone_H_A3_S4",
+      "to": "Zone_H_A3_S5"
+    },
+    {
+      "from": "Zone_H_A3_S5",
+      "to": "Zone_H_A3_S6"
+    },
+    {
+      "from": "Zone_H_A3_S6",
+      "to": "Zone_H_A3_S7"
+    },
+    {
+      "from": "Zone_H_A3_S7",
+      "to": "Zone_H_A3_exit"
+    },
+    {
+      "from": "Zone_H_entry",
+      "to": "Zone_H_A4_entry"
+    },
+    {
+      "from": "Zone_H_A4_entry",
+      "to": "Zone_H_A4_S0"
+    },
+    {
+      "from": "Zone_H_A4_S0",
+      "to": "Zone_H_A4_S1"
+    },
+    {
+      "from": "Zone_H_A4_S1",
+      "to": "Zone_H_A4_S2"
+    },
+    {
+      "from": "Zone_H_A4_S2",
+      "to": "Zone_H_A4_S3"
+    },
+    {
+      "from": "Zone_H_A4_S3",
+      "to": "Zone_H_A4_S4"
+    },
+    {
+      "from": "Zone_H_A4_S4",
+      "to": "Zone_H_A4_S5"
+    },
+    {
+      "from": "Zone_H_A4_S5",
+      "to": "Zone_H_A4_S6"
+    },
+    {
+      "from": "Zone_H_A4_S6",
+      "to": "Zone_H_A4_S7"
+    },
+    {
+      "from": "Zone_H_A4_S7",
+      "to": "Zone_H_A4_exit"
+    },
+    {
+      "from": "Zone_H_A0_S3",
+      "to": "Zone_H_A1_S3"
+    },
+    {
+      "from": "Zone_H_A1_S3",
+      "to": "Zone_H_A2_S3"
+    },
+    {
+      "from": "Zone_H_A2_S3",
+      "to": "Zone_H_A3_S3"
+    },
+    {
+      "from": "Zone_H_A3_S3",
+      "to": "Zone_H_A4_S3"
+    },
+    {
+      "from": "Zone_H_A0_entry",
+      "to": "Zone_H_A1_entry"
+    },
+    {
+      "from": "Zone_H_A1_entry",
+      "to": "Zone_H_A2_entry"
+    },
+    {
+      "from": "Zone_H_A2_entry",
+      "to": "Zone_H_A3_entry"
+    },
+    {
+      "from": "Zone_H_A3_entry",
+      "to": "Zone_H_A4_entry"
+    },
+    {
+      "from": "Zone_I_C1",
+      "to": "Zone_I_entry"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_C2"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_A0_entry"
+    },
+    {
+      "from": "Zone_I_A0_entry",
+      "to": "Zone_I_A0_S0"
+    },
+    {
+      "from": "Zone_I_A0_S0",
+      "to": "Zone_I_A0_S1"
+    },
+    {
+      "from": "Zone_I_A0_S1",
+      "to": "Zone_I_A0_S2"
+    },
+    {
+      "from": "Zone_I_A0_S2",
+      "to": "Zone_I_A0_S3"
+    },
+    {
+      "from": "Zone_I_A0_S3",
+      "to": "Zone_I_A0_S4"
+    },
+    {
+      "from": "Zone_I_A0_S4",
+      "to": "Zone_I_A0_S5"
+    },
+    {
+      "from": "Zone_I_A0_S5",
+      "to": "Zone_I_A0_S6"
+    },
+    {
+      "from": "Zone_I_A0_S6",
+      "to": "Zone_I_A0_S7"
+    },
+    {
+      "from": "Zone_I_A0_S7",
+      "to": "Zone_I_A0_exit"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_A1_entry"
+    },
+    {
+      "from": "Zone_I_A1_entry",
+      "to": "Zone_I_A1_S0"
+    },
+    {
+      "from": "Zone_I_A1_S0",
+      "to": "Zone_I_A1_S1"
+    },
+    {
+      "from": "Zone_I_A1_S1",
+      "to": "Zone_I_A1_S2"
+    },
+    {
+      "from": "Zone_I_A1_S2",
+      "to": "Zone_I_A1_S3"
+    },
+    {
+      "from": "Zone_I_A1_S3",
+      "to": "Zone_I_A1_S4"
+    },
+    {
+      "from": "Zone_I_A1_S4",
+      "to": "Zone_I_A1_S5"
+    },
+    {
+      "from": "Zone_I_A1_S5",
+      "to": "Zone_I_A1_S6"
+    },
+    {
+      "from": "Zone_I_A1_S6",
+      "to": "Zone_I_A1_S7"
+    },
+    {
+      "from": "Zone_I_A1_S7",
+      "to": "Zone_I_A1_exit"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_A2_entry"
+    },
+    {
+      "from": "Zone_I_A2_entry",
+      "to": "Zone_I_A2_S0"
+    },
+    {
+      "from": "Zone_I_A2_S0",
+      "to": "Zone_I_A2_S1"
+    },
+    {
+      "from": "Zone_I_A2_S1",
+      "to": "Zone_I_A2_S2"
+    },
+    {
+      "from": "Zone_I_A2_S2",
+      "to": "Zone_I_A2_S3"
+    },
+    {
+      "from": "Zone_I_A2_S3",
+      "to": "Zone_I_A2_S4"
+    },
+    {
+      "from": "Zone_I_A2_S4",
+      "to": "Zone_I_A2_S5"
+    },
+    {
+      "from": "Zone_I_A2_S5",
+      "to": "Zone_I_A2_S6"
+    },
+    {
+      "from": "Zone_I_A2_S6",
+      "to": "Zone_I_A2_S7"
+    },
+    {
+      "from": "Zone_I_A2_S7",
+      "to": "Zone_I_A2_exit"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_A3_entry"
+    },
+    {
+      "from": "Zone_I_A3_entry",
+      "to": "Zone_I_A3_S0"
+    },
+    {
+      "from": "Zone_I_A3_S0",
+      "to": "Zone_I_A3_S1"
+    },
+    {
+      "from": "Zone_I_A3_S1",
+      "to": "Zone_I_A3_S2"
+    },
+    {
+      "from": "Zone_I_A3_S2",
+      "to": "Zone_I_A3_S3"
+    },
+    {
+      "from": "Zone_I_A3_S3",
+      "to": "Zone_I_A3_S4"
+    },
+    {
+      "from": "Zone_I_A3_S4",
+      "to": "Zone_I_A3_S5"
+    },
+    {
+      "from": "Zone_I_A3_S5",
+      "to": "Zone_I_A3_S6"
+    },
+    {
+      "from": "Zone_I_A3_S6",
+      "to": "Zone_I_A3_S7"
+    },
+    {
+      "from": "Zone_I_A3_S7",
+      "to": "Zone_I_A3_exit"
+    },
+    {
+      "from": "Zone_I_entry",
+      "to": "Zone_I_A4_entry"
+    },
+    {
+      "from": "Zone_I_A4_entry",
+      "to": "Zone_I_A4_S0"
+    },
+    {
+      "from": "Zone_I_A4_S0",
+      "to": "Zone_I_A4_S1"
+    },
+    {
+      "from": "Zone_I_A4_S1",
+      "to": "Zone_I_A4_S2"
+    },
+    {
+      "from": "Zone_I_A4_S2",
+      "to": "Zone_I_A4_S3"
+    },
+    {
+      "from": "Zone_I_A4_S3",
+      "to": "Zone_I_A4_S4"
+    },
+    {
+      "from": "Zone_I_A4_S4",
+      "to": "Zone_I_A4_S5"
+    },
+    {
+      "from": "Zone_I_A4_S5",
+      "to": "Zone_I_A4_S6"
+    },
+    {
+      "from": "Zone_I_A4_S6",
+      "to": "Zone_I_A4_S7"
+    },
+    {
+      "from": "Zone_I_A4_S7",
+      "to": "Zone_I_A4_exit"
+    },
+    {
+      "from": "Zone_I_A0_S3",
+      "to": "Zone_I_A1_S3"
+    },
+    {
+      "from": "Zone_I_A1_S3",
+      "to": "Zone_I_A2_S3"
+    },
+    {
+      "from": "Zone_I_A2_S3",
+      "to": "Zone_I_A3_S3"
+    },
+    {
+      "from": "Zone_I_A3_S3",
+      "to": "Zone_I_A4_S3"
+    },
+    {
+      "from": "Zone_I_A0_entry",
+      "to": "Zone_I_A1_entry"
+    },
+    {
+      "from": "Zone_I_A1_entry",
+      "to": "Zone_I_A2_entry"
+    },
+    {
+      "from": "Zone_I_A2_entry",
+      "to": "Zone_I_A3_entry"
+    },
+    {
+      "from": "Zone_I_A3_entry",
+      "to": "Zone_I_A4_entry"
+    },
+    {
+      "from": "Zone_J_P0_approach",
+      "to": "Zone_J_P0"
+    },
+    {
+      "from": "Zone_J_P1_approach",
+      "to": "Zone_J_P1"
+    },
+    {
+      "from": "Zone_J_P0_approach",
+      "to": "Zone_J_P1_approach"
+    },
+    {
+      "from": "Zone_J_P2_approach",
+      "to": "Zone_J_P2"
+    },
+    {
+      "from": "Zone_J_P1_approach",
+      "to": "Zone_J_P2_approach"
+    },
+    {
+      "from": "Zone_J_P3_approach",
+      "to": "Zone_J_P3"
+    },
+    {
+      "from": "Zone_J_P2_approach",
+      "to": "Zone_J_P3_approach"
+    },
+    {
+      "from": "Zone_J_C1",
+      "to": "Zone_J_P0_approach"
+    },
+    {
+      "from": "Zone_J_C2",
+      "to": "Zone_J_P3_approach"
+    },
+    {
+      "from": "Zone_K_D0_approach",
+      "to": "Zone_K_D0"
+    },
+    {
+      "from": "Zone_K_D1_approach",
+      "to": "Zone_K_D1"
+    },
+    {
+      "from": "Zone_K_D0_approach",
+      "to": "Zone_K_D1_approach"
+    },
+    {
+      "from": "Zone_K_D2_approach",
+      "to": "Zone_K_D2"
+    },
+    {
+      "from": "Zone_K_D1_approach",
+      "to": "Zone_K_D2_approach"
+    },
+    {
+      "from": "Zone_K_D3_approach",
+      "to": "Zone_K_D3"
+    },
+    {
+      "from": "Zone_K_D2_approach",
+      "to": "Zone_K_D3_approach"
+    },
+    {
+      "from": "Zone_K_C1",
+      "to": "Zone_K_D0_approach"
+    },
+    {
+      "from": "Zone_K_C2",
+      "to": "Zone_K_D3_approach"
+    },
+    {
+      "from": "Zone_L_W0",
+      "to": "Zone_L_W1"
+    },
+    {
+      "from": "Zone_L_W1",
+      "to": "Zone_L_W2"
+    },
+    {
+      "from": "Zone_L_W2",
+      "to": "Zone_L_W3"
+    },
+    {
+      "from": "Zone_L_W3",
+      "to": "Zone_L_W4"
+    },
+    {
+      "from": "Zone_L_W4",
+      "to": "Zone_L_W5"
+    },
+    {
+      "from": "Zone_L_W5",
+      "to": "Zone_L_W0"
+    },
+    {
+      "from": "Zone_L_C1",
+      "to": "Zone_L_W0"
+    },
+    {
+      "from": "Zone_L_C2",
+      "to": "Zone_L_W2"
+    },
+    {
+      "from": "Zone_J_corridor_E",
+      "to": "Zone_K_corridor_W"
+    },
+    {
+      "from": "Zone_K_corridor_E",
+      "to": "Zone_L_corridor_W"
+    },
+    {
+      "from": "Zone_G_corridor_E",
+      "to": "Zone_H_corridor_W"
+    },
+    {
+      "from": "Zone_G_A4_exit",
+      "to": "Zone_G_corridor_E"
+    },
+    {
+      "from": "Zone_H_corridor_W",
+      "to": "Zone_H_A0_entry"
+    },
+    {
+      "from": "Zone_H_corridor_E",
+      "to": "Zone_I_corridor_W"
+    },
+    {
+      "from": "Zone_H_A4_exit",
+      "to": "Zone_H_corridor_E"
+    },
+    {
+      "from": "Zone_I_corridor_W",
+      "to": "Zone_I_A0_entry"
+    },
+    {
+      "from": "Zone_D_corridor_E",
+      "to": "Zone_E_corridor_W"
+    },
+    {
+      "from": "Zone_D_A4_exit",
+      "to": "Zone_D_corridor_E"
+    },
+    {
+      "from": "Zone_E_corridor_W",
+      "to": "Zone_E_A0_entry"
+    },
+    {
+      "from": "Zone_E_corridor_E",
+      "to": "Zone_F_corridor_W"
+    },
+    {
+      "from": "Zone_E_A4_exit",
+      "to": "Zone_E_corridor_E"
+    },
+    {
+      "from": "Zone_F_corridor_W",
+      "to": "Zone_F_A0_entry"
+    },
+    {
+      "from": "Zone_A_corridor_E",
+      "to": "Zone_B_corridor_W"
+    },
+    {
+      "from": "Zone_A_A4_exit",
+      "to": "Zone_A_corridor_E"
+    },
+    {
+      "from": "Zone_B_corridor_W",
+      "to": "Zone_B_A0_entry"
+    },
+    {
+      "from": "Zone_B_corridor_E",
+      "to": "Zone_C_corridor_W"
+    },
+    {
+      "from": "Zone_B_A4_exit",
+      "to": "Zone_B_corridor_E"
+    },
+    {
+      "from": "Zone_C_corridor_W",
+      "to": "Zone_C_A0_entry"
+    },
+    {
+      "from": "Zone_J_corridor_N",
+      "to": "Zone_G_corridor_S"
+    },
+    {
+      "from": "Zone_J_P0_approach",
+      "to": "Zone_J_corridor_N"
+    },
+    {
+      "from": "Zone_G_corridor_S",
+      "to": "Zone_G_entry"
+    },
+    {
+      "from": "Zone_G_corridor_N",
+      "to": "Zone_D_corridor_S"
+    },
+    {
+      "from": "Zone_G_A2_exit",
+      "to": "Zone_G_corridor_N"
+    },
+    {
+      "from": "Zone_D_corridor_S",
+      "to": "Zone_D_entry"
+    },
+    {
+      "from": "Zone_D_corridor_N",
+      "to": "Zone_A_corridor_S"
+    },
+    {
+      "from": "Zone_D_A2_exit",
+      "to": "Zone_D_corridor_N"
+    },
+    {
+      "from": "Zone_A_corridor_S",
+      "to": "Zone_A_entry"
+    },
+    {
+      "from": "Zone_K_corridor_N",
+      "to": "Zone_H_corridor_S"
+    },
+    {
+      "from": "Zone_K_D0_approach",
+      "to": "Zone_K_corridor_N"
+    },
+    {
+      "from": "Zone_H_corridor_S",
+      "to": "Zone_H_entry"
+    },
+    {
+      "from": "Zone_H_corridor_N",
+      "to": "Zone_E_corridor_S"
+    },
+    {
+      "from": "Zone_H_A2_exit",
+      "to": "Zone_H_corridor_N"
+    },
+    {
+      "from": "Zone_E_corridor_S",
+      "to": "Zone_E_entry"
+    },
+    {
+      "from": "Zone_E_corridor_N",
+      "to": "Zone_B_corridor_S"
+    },
+    {
+      "from": "Zone_E_A2_exit",
+      "to": "Zone_E_corridor_N"
+    },
+    {
+      "from": "Zone_B_corridor_S",
+      "to": "Zone_B_entry"
+    },
+    {
+      "from": "Zone_L_corridor_N",
+      "to": "Zone_I_corridor_S"
+    },
+    {
+      "from": "Zone_L_W0",
+      "to": "Zone_L_corridor_N"
+    },
+    {
+      "from": "Zone_I_corridor_S",
+      "to": "Zone_I_entry"
+    },
+    {
+      "from": "Zone_I_corridor_N",
+      "to": "Zone_F_corridor_S"
+    },
+    {
+      "from": "Zone_I_A2_exit",
+      "to": "Zone_I_corridor_N"
+    },
+    {
+      "from": "Zone_F_corridor_S",
+      "to": "Zone_F_entry"
+    },
+    {
+      "from": "Zone_F_corridor_N",
+      "to": "Zone_C_corridor_S"
+    },
+    {
+      "from": "Zone_F_A2_exit",
+      "to": "Zone_F_corridor_N"
+    },
+    {
+      "from": "Zone_C_corridor_S",
+      "to": "Zone_C_entry"
+    }
+  ],
+  "zones": [
+    {
+      "name": "Zone_A",
+      "type": "storage",
+      "nodes": [
+        "Zone_A_C1",
+        "Zone_A_C2",
+        "Zone_A_entry",
+        "Zone_A_A0_entry",
+        "Zone_A_A0_S0",
+        "Zone_A_A0_S1",
+        "Zone_A_A0_S2",
+        "Zone_A_A0_S3",
+        "Zone_A_A0_S4",
+        "Zone_A_A0_S5",
+        "Zone_A_A0_S6",
+        "Zone_A_A0_S7",
+        "Zone_A_A0_exit",
+        "Zone_A_A1_entry",
+        "Zone_A_A1_S0",
+        "Zone_A_A1_S1",
+        "Zone_A_A1_S2",
+        "Zone_A_A1_S3",
+        "Zone_A_A1_S4",
+        "Zone_A_A1_S5",
+        "Zone_A_A1_S6",
+        "Zone_A_A1_S7",
+        "Zone_A_A1_exit",
+        "Zone_A_A2_entry",
+        "Zone_A_A2_S0",
+        "Zone_A_A2_S1",
+        "Zone_A_A2_S2",
+        "Zone_A_A2_S3",
+        "Zone_A_A2_S4",
+        "Zone_A_A2_S5",
+        "Zone_A_A2_S6",
+        "Zone_A_A2_S7",
+        "Zone_A_A2_exit",
+        "Zone_A_A3_entry",
+        "Zone_A_A3_S0",
+        "Zone_A_A3_S1",
+        "Zone_A_A3_S2",
+        "Zone_A_A3_S3",
+        "Zone_A_A3_S4",
+        "Zone_A_A3_S5",
+        "Zone_A_A3_S6",
+        "Zone_A_A3_S7",
+        "Zone_A_A3_exit",
+        "Zone_A_A4_entry",
+        "Zone_A_A4_S0",
+        "Zone_A_A4_S1",
+        "Zone_A_A4_S2",
+        "Zone_A_A4_S3",
+        "Zone_A_A4_S4",
+        "Zone_A_A4_S5",
+        "Zone_A_A4_S6",
+        "Zone_A_A4_S7",
+        "Zone_A_A4_exit"
+      ],
+      "shelf_height": 2.5,
+      "shelf_depth": 0.4,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_B",
+      "type": "storage",
+      "nodes": [
+        "Zone_B_C1",
+        "Zone_B_C2",
+        "Zone_B_entry",
+        "Zone_B_A0_entry",
+        "Zone_B_A0_S0",
+        "Zone_B_A0_S1",
+        "Zone_B_A0_S2",
+        "Zone_B_A0_S3",
+        "Zone_B_A0_S4",
+        "Zone_B_A0_S5",
+        "Zone_B_A0_S6",
+        "Zone_B_A0_S7",
+        "Zone_B_A0_exit",
+        "Zone_B_A1_entry",
+        "Zone_B_A1_S0",
+        "Zone_B_A1_S1",
+        "Zone_B_A1_S2",
+        "Zone_B_A1_S3",
+        "Zone_B_A1_S4",
+        "Zone_B_A1_S5",
+        "Zone_B_A1_S6",
+        "Zone_B_A1_S7",
+        "Zone_B_A1_exit",
+        "Zone_B_A2_entry",
+        "Zone_B_A2_S0",
+        "Zone_B_A2_S1",
+        "Zone_B_A2_S2",
+        "Zone_B_A2_S3",
+        "Zone_B_A2_S4",
+        "Zone_B_A2_S5",
+        "Zone_B_A2_S6",
+        "Zone_B_A2_S7",
+        "Zone_B_A2_exit",
+        "Zone_B_A3_entry",
+        "Zone_B_A3_S0",
+        "Zone_B_A3_S1",
+        "Zone_B_A3_S2",
+        "Zone_B_A3_S3",
+        "Zone_B_A3_S4",
+        "Zone_B_A3_S5",
+        "Zone_B_A3_S6",
+        "Zone_B_A3_S7",
+        "Zone_B_A3_exit",
+        "Zone_B_A4_entry",
+        "Zone_B_A4_S0",
+        "Zone_B_A4_S1",
+        "Zone_B_A4_S2",
+        "Zone_B_A4_S3",
+        "Zone_B_A4_S4",
+        "Zone_B_A4_S5",
+        "Zone_B_A4_S6",
+        "Zone_B_A4_S7",
+        "Zone_B_A4_exit"
+      ],
+      "shelf_height": 2.0,
+      "shelf_depth": 0.3,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_C",
+      "type": "storage",
+      "nodes": [
+        "Zone_C_C1",
+        "Zone_C_C2",
+        "Zone_C_entry",
+        "Zone_C_A0_entry",
+        "Zone_C_A0_S0",
+        "Zone_C_A0_S1",
+        "Zone_C_A0_S2",
+        "Zone_C_A0_S3",
+        "Zone_C_A0_S4",
+        "Zone_C_A0_S5",
+        "Zone_C_A0_S6",
+        "Zone_C_A0_S7",
+        "Zone_C_A0_exit",
+        "Zone_C_A1_entry",
+        "Zone_C_A1_S0",
+        "Zone_C_A1_S1",
+        "Zone_C_A1_S2",
+        "Zone_C_A1_S3",
+        "Zone_C_A1_S4",
+        "Zone_C_A1_S5",
+        "Zone_C_A1_S6",
+        "Zone_C_A1_S7",
+        "Zone_C_A1_exit",
+        "Zone_C_A2_entry",
+        "Zone_C_A2_S0",
+        "Zone_C_A2_S1",
+        "Zone_C_A2_S2",
+        "Zone_C_A2_S3",
+        "Zone_C_A2_S4",
+        "Zone_C_A2_S5",
+        "Zone_C_A2_S6",
+        "Zone_C_A2_S7",
+        "Zone_C_A2_exit",
+        "Zone_C_A3_entry",
+        "Zone_C_A3_S0",
+        "Zone_C_A3_S1",
+        "Zone_C_A3_S2",
+        "Zone_C_A3_S3",
+        "Zone_C_A3_S4",
+        "Zone_C_A3_S5",
+        "Zone_C_A3_S6",
+        "Zone_C_A3_S7",
+        "Zone_C_A3_exit",
+        "Zone_C_A4_entry",
+        "Zone_C_A4_S0",
+        "Zone_C_A4_S1",
+        "Zone_C_A4_S2",
+        "Zone_C_A4_S3",
+        "Zone_C_A4_S4",
+        "Zone_C_A4_S5",
+        "Zone_C_A4_S6",
+        "Zone_C_A4_S7",
+        "Zone_C_A4_exit"
+      ],
+      "shelf_height": 3.0,
+      "shelf_depth": 0.5,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_D",
+      "type": "storage",
+      "nodes": [
+        "Zone_D_C1",
+        "Zone_D_C2",
+        "Zone_D_entry",
+        "Zone_D_A0_entry",
+        "Zone_D_A0_S0",
+        "Zone_D_A0_S1",
+        "Zone_D_A0_S2",
+        "Zone_D_A0_S3",
+        "Zone_D_A0_S4",
+        "Zone_D_A0_S5",
+        "Zone_D_A0_S6",
+        "Zone_D_A0_S7",
+        "Zone_D_A0_exit",
+        "Zone_D_A1_entry",
+        "Zone_D_A1_S0",
+        "Zone_D_A1_S1",
+        "Zone_D_A1_S2",
+        "Zone_D_A1_S3",
+        "Zone_D_A1_S4",
+        "Zone_D_A1_S5",
+        "Zone_D_A1_S6",
+        "Zone_D_A1_S7",
+        "Zone_D_A1_exit",
+        "Zone_D_A2_entry",
+        "Zone_D_A2_S0",
+        "Zone_D_A2_S1",
+        "Zone_D_A2_S2",
+        "Zone_D_A2_S3",
+        "Zone_D_A2_S4",
+        "Zone_D_A2_S5",
+        "Zone_D_A2_S6",
+        "Zone_D_A2_S7",
+        "Zone_D_A2_exit",
+        "Zone_D_A3_entry",
+        "Zone_D_A3_S0",
+        "Zone_D_A3_S1",
+        "Zone_D_A3_S2",
+        "Zone_D_A3_S3",
+        "Zone_D_A3_S4",
+        "Zone_D_A3_S5",
+        "Zone_D_A3_S6",
+        "Zone_D_A3_S7",
+        "Zone_D_A3_exit",
+        "Zone_D_A4_entry",
+        "Zone_D_A4_S0",
+        "Zone_D_A4_S1",
+        "Zone_D_A4_S2",
+        "Zone_D_A4_S3",
+        "Zone_D_A4_S4",
+        "Zone_D_A4_S5",
+        "Zone_D_A4_S6",
+        "Zone_D_A4_S7",
+        "Zone_D_A4_exit"
+      ],
+      "shelf_height": 2.5,
+      "shelf_depth": 0.5,
+      "has_gaps": true
+    },
+    {
+      "name": "Zone_E",
+      "type": "storage",
+      "nodes": [
+        "Zone_E_C1",
+        "Zone_E_C2",
+        "Zone_E_entry",
+        "Zone_E_A0_entry",
+        "Zone_E_A0_S0",
+        "Zone_E_A0_S1",
+        "Zone_E_A0_S2",
+        "Zone_E_A0_S3",
+        "Zone_E_A0_S4",
+        "Zone_E_A0_S5",
+        "Zone_E_A0_S6",
+        "Zone_E_A0_S7",
+        "Zone_E_A0_exit",
+        "Zone_E_A1_entry",
+        "Zone_E_A1_S0",
+        "Zone_E_A1_S1",
+        "Zone_E_A1_S2",
+        "Zone_E_A1_S3",
+        "Zone_E_A1_S4",
+        "Zone_E_A1_S5",
+        "Zone_E_A1_S6",
+        "Zone_E_A1_S7",
+        "Zone_E_A1_exit",
+        "Zone_E_A2_entry",
+        "Zone_E_A2_S0",
+        "Zone_E_A2_S1",
+        "Zone_E_A2_S2",
+        "Zone_E_A2_S3",
+        "Zone_E_A2_S4",
+        "Zone_E_A2_S5",
+        "Zone_E_A2_S6",
+        "Zone_E_A2_S7",
+        "Zone_E_A2_exit",
+        "Zone_E_A3_entry",
+        "Zone_E_A3_S0",
+        "Zone_E_A3_S1",
+        "Zone_E_A3_S2",
+        "Zone_E_A3_S3",
+        "Zone_E_A3_S4",
+        "Zone_E_A3_S5",
+        "Zone_E_A3_S6",
+        "Zone_E_A3_S7",
+        "Zone_E_A3_exit",
+        "Zone_E_A4_entry",
+        "Zone_E_A4_S0",
+        "Zone_E_A4_S1",
+        "Zone_E_A4_S2",
+        "Zone_E_A4_S3",
+        "Zone_E_A4_S4",
+        "Zone_E_A4_S5",
+        "Zone_E_A4_S6",
+        "Zone_E_A4_S7",
+        "Zone_E_A4_exit"
+      ],
+      "shelf_height": 2.0,
+      "shelf_depth": 0.7,
+      "has_gaps": true
+    },
+    {
+      "name": "Zone_F",
+      "type": "storage",
+      "nodes": [
+        "Zone_F_C1",
+        "Zone_F_C2",
+        "Zone_F_entry",
+        "Zone_F_A0_entry",
+        "Zone_F_A0_S0",
+        "Zone_F_A0_S1",
+        "Zone_F_A0_S2",
+        "Zone_F_A0_S3",
+        "Zone_F_A0_S4",
+        "Zone_F_A0_S5",
+        "Zone_F_A0_S6",
+        "Zone_F_A0_S7",
+        "Zone_F_A0_exit",
+        "Zone_F_A1_entry",
+        "Zone_F_A1_S0",
+        "Zone_F_A1_S1",
+        "Zone_F_A1_S2",
+        "Zone_F_A1_S3",
+        "Zone_F_A1_S4",
+        "Zone_F_A1_S5",
+        "Zone_F_A1_S6",
+        "Zone_F_A1_S7",
+        "Zone_F_A1_exit",
+        "Zone_F_A2_entry",
+        "Zone_F_A2_S0",
+        "Zone_F_A2_S1",
+        "Zone_F_A2_S2",
+        "Zone_F_A2_S3",
+        "Zone_F_A2_S4",
+        "Zone_F_A2_S5",
+        "Zone_F_A2_S6",
+        "Zone_F_A2_S7",
+        "Zone_F_A2_exit",
+        "Zone_F_A3_entry",
+        "Zone_F_A3_S0",
+        "Zone_F_A3_S1",
+        "Zone_F_A3_S2",
+        "Zone_F_A3_S3",
+        "Zone_F_A3_S4",
+        "Zone_F_A3_S5",
+        "Zone_F_A3_S6",
+        "Zone_F_A3_S7",
+        "Zone_F_A3_exit",
+        "Zone_F_A4_entry",
+        "Zone_F_A4_S0",
+        "Zone_F_A4_S1",
+        "Zone_F_A4_S2",
+        "Zone_F_A4_S3",
+        "Zone_F_A4_S4",
+        "Zone_F_A4_S5",
+        "Zone_F_A4_S6",
+        "Zone_F_A4_S7",
+        "Zone_F_A4_exit"
+      ],
+      "shelf_height": 3.0,
+      "shelf_depth": 0.3,
+      "has_gaps": true
+    },
+    {
+      "name": "Zone_G",
+      "type": "storage",
+      "nodes": [
+        "Zone_G_C1",
+        "Zone_G_C2",
+        "Zone_G_entry",
+        "Zone_G_A0_entry",
+        "Zone_G_A0_S0",
+        "Zone_G_A0_S1",
+        "Zone_G_A0_S2",
+        "Zone_G_A0_S3",
+        "Zone_G_A0_S4",
+        "Zone_G_A0_S5",
+        "Zone_G_A0_S6",
+        "Zone_G_A0_S7",
+        "Zone_G_A0_exit",
+        "Zone_G_A1_entry",
+        "Zone_G_A1_S0",
+        "Zone_G_A1_S1",
+        "Zone_G_A1_S2",
+        "Zone_G_A1_S3",
+        "Zone_G_A1_S4",
+        "Zone_G_A1_S5",
+        "Zone_G_A1_S6",
+        "Zone_G_A1_S7",
+        "Zone_G_A1_exit",
+        "Zone_G_A2_entry",
+        "Zone_G_A2_S0",
+        "Zone_G_A2_S1",
+        "Zone_G_A2_S2",
+        "Zone_G_A2_S3",
+        "Zone_G_A2_S4",
+        "Zone_G_A2_S5",
+        "Zone_G_A2_S6",
+        "Zone_G_A2_S7",
+        "Zone_G_A2_exit",
+        "Zone_G_A3_entry",
+        "Zone_G_A3_S0",
+        "Zone_G_A3_S1",
+        "Zone_G_A3_S2",
+        "Zone_G_A3_S3",
+        "Zone_G_A3_S4",
+        "Zone_G_A3_S5",
+        "Zone_G_A3_S6",
+        "Zone_G_A3_S7",
+        "Zone_G_A3_exit",
+        "Zone_G_A4_entry",
+        "Zone_G_A4_S0",
+        "Zone_G_A4_S1",
+        "Zone_G_A4_S2",
+        "Zone_G_A4_S3",
+        "Zone_G_A4_S4",
+        "Zone_G_A4_S5",
+        "Zone_G_A4_S6",
+        "Zone_G_A4_S7",
+        "Zone_G_A4_exit"
+      ],
+      "shelf_height": 1.8,
+      "shelf_depth": 0.4,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_H",
+      "type": "storage",
+      "nodes": [
+        "Zone_H_C1",
+        "Zone_H_C2",
+        "Zone_H_entry",
+        "Zone_H_A0_entry",
+        "Zone_H_A0_S0",
+        "Zone_H_A0_S1",
+        "Zone_H_A0_S2",
+        "Zone_H_A0_S3",
+        "Zone_H_A0_S4",
+        "Zone_H_A0_S5",
+        "Zone_H_A0_S6",
+        "Zone_H_A0_S7",
+        "Zone_H_A0_exit",
+        "Zone_H_A1_entry",
+        "Zone_H_A1_S0",
+        "Zone_H_A1_S1",
+        "Zone_H_A1_S2",
+        "Zone_H_A1_S3",
+        "Zone_H_A1_S4",
+        "Zone_H_A1_S5",
+        "Zone_H_A1_S6",
+        "Zone_H_A1_S7",
+        "Zone_H_A1_exit",
+        "Zone_H_A2_entry",
+        "Zone_H_A2_S0",
+        "Zone_H_A2_S1",
+        "Zone_H_A2_S2",
+        "Zone_H_A2_S3",
+        "Zone_H_A2_S4",
+        "Zone_H_A2_S5",
+        "Zone_H_A2_S6",
+        "Zone_H_A2_S7",
+        "Zone_H_A2_exit",
+        "Zone_H_A3_entry",
+        "Zone_H_A3_S0",
+        "Zone_H_A3_S1",
+        "Zone_H_A3_S2",
+        "Zone_H_A3_S3",
+        "Zone_H_A3_S4",
+        "Zone_H_A3_S5",
+        "Zone_H_A3_S6",
+        "Zone_H_A3_S7",
+        "Zone_H_A3_exit",
+        "Zone_H_A4_entry",
+        "Zone_H_A4_S0",
+        "Zone_H_A4_S1",
+        "Zone_H_A4_S2",
+        "Zone_H_A4_S3",
+        "Zone_H_A4_S4",
+        "Zone_H_A4_S5",
+        "Zone_H_A4_S6",
+        "Zone_H_A4_S7",
+        "Zone_H_A4_exit"
+      ],
+      "shelf_height": 2.2,
+      "shelf_depth": 0.6,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_I",
+      "type": "storage",
+      "nodes": [
+        "Zone_I_C1",
+        "Zone_I_C2",
+        "Zone_I_entry",
+        "Zone_I_A0_entry",
+        "Zone_I_A0_S0",
+        "Zone_I_A0_S1",
+        "Zone_I_A0_S2",
+        "Zone_I_A0_S3",
+        "Zone_I_A0_S4",
+        "Zone_I_A0_S5",
+        "Zone_I_A0_S6",
+        "Zone_I_A0_S7",
+        "Zone_I_A0_exit",
+        "Zone_I_A1_entry",
+        "Zone_I_A1_S0",
+        "Zone_I_A1_S1",
+        "Zone_I_A1_S2",
+        "Zone_I_A1_S3",
+        "Zone_I_A1_S4",
+        "Zone_I_A1_S5",
+        "Zone_I_A1_S6",
+        "Zone_I_A1_S7",
+        "Zone_I_A1_exit",
+        "Zone_I_A2_entry",
+        "Zone_I_A2_S0",
+        "Zone_I_A2_S1",
+        "Zone_I_A2_S2",
+        "Zone_I_A2_S3",
+        "Zone_I_A2_S4",
+        "Zone_I_A2_S5",
+        "Zone_I_A2_S6",
+        "Zone_I_A2_S7",
+        "Zone_I_A2_exit",
+        "Zone_I_A3_entry",
+        "Zone_I_A3_S0",
+        "Zone_I_A3_S1",
+        "Zone_I_A3_S2",
+        "Zone_I_A3_S3",
+        "Zone_I_A3_S4",
+        "Zone_I_A3_S5",
+        "Zone_I_A3_S6",
+        "Zone_I_A3_S7",
+        "Zone_I_A3_exit",
+        "Zone_I_A4_entry",
+        "Zone_I_A4_S0",
+        "Zone_I_A4_S1",
+        "Zone_I_A4_S2",
+        "Zone_I_A4_S3",
+        "Zone_I_A4_S4",
+        "Zone_I_A4_S5",
+        "Zone_I_A4_S6",
+        "Zone_I_A4_S7",
+        "Zone_I_A4_exit"
+      ],
+      "shelf_height": 2.8,
+      "shelf_depth": 0.5,
+      "has_gaps": true
+    },
+    {
+      "name": "Zone_J",
+      "type": "pick",
+      "nodes": [
+        "Zone_J_P0_approach",
+        "Zone_J_P0",
+        "Zone_J_P1_approach",
+        "Zone_J_P1",
+        "Zone_J_P2_approach",
+        "Zone_J_P2",
+        "Zone_J_P3_approach",
+        "Zone_J_P3",
+        "Zone_J_C1",
+        "Zone_J_C2"
+      ],
+      "shelf_height": 0.8,
+      "shelf_depth": 0.5,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_K",
+      "type": "drop",
+      "nodes": [
+        "Zone_K_D0_approach",
+        "Zone_K_D0",
+        "Zone_K_D1_approach",
+        "Zone_K_D1",
+        "Zone_K_D2_approach",
+        "Zone_K_D2",
+        "Zone_K_D3_approach",
+        "Zone_K_D3",
+        "Zone_K_C1",
+        "Zone_K_C2"
+      ],
+      "shelf_height": 0.8,
+      "shelf_depth": 0.5,
+      "has_gaps": false
+    },
+    {
+      "name": "Zone_L",
+      "type": "ops",
+      "nodes": [
+        "Zone_L_W0",
+        "Zone_L_W1",
+        "Zone_L_W2",
+        "Zone_L_W3",
+        "Zone_L_W4",
+        "Zone_L_W5",
+        "Zone_L_C1",
+        "Zone_L_C2"
+      ],
+      "shelf_height": 1.5,
+      "shelf_depth": 0.4,
+      "has_gaps": false
+    }
+  ]
+}
