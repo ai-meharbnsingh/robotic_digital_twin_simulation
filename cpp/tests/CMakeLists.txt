@@ -8,6 +8,10 @@ add_executable(rdt_tests
     test_timer.cpp
     test_types.cpp
     test_config.cpp
+    test_reservation.cpp
+    test_graph.cpp
+    test_astar.cpp
+    test_quadtree.cpp
 )
 target_include_directories(rdt_tests PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../include

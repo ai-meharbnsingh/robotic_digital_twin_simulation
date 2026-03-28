@@ -27,11 +27,15 @@ set(BTCPP_EXAMPLES OFF CACHE BOOL "" FORCE)
 set(BTCPP_UNIT_TESTS OFF CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(behaviortree_cpp)
 
-# ── rdt_core static library (Logger, Timer, Config + Types) ──
+# ── rdt_core static library (Logger, Timer, Config, Types, Navigation) ──
 add_library(rdt_core STATIC
     src/core/Logger.cpp
     src/core/Timer.cpp
     src/core/Config.cpp
+    src/navigation/GraphMap.cpp
+    src/navigation/AStar.cpp
+    src/navigation/QuadTree.cpp
+    src/navigation/NodeReservation.cpp
 )
 target_include_directories(rdt_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

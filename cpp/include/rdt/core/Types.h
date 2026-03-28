@@ -254,8 +254,14 @@ inline Json::Value to_json(const MapNode& n) {
 inline MapNode map_node_from_json(const Json::Value& v) {
     MapNode n;
     n.name = v.get("name", "").asString();
-    n.x    = v.get("x",    0.0).asDouble();
-    n.y    = v.get("y",    0.0).asDouble();
+    // Support both flat {x, y} and nested {pose: {position: {x, y}}} formats
+    if (v.isMember("pose") && v["pose"].isMember("position")) {
+        n.x = v["pose"]["position"].get("x", 0.0).asDouble();
+        n.y = v["pose"]["position"].get("y", 0.0).asDouble();
+    } else {
+        n.x = v.get("x", 0.0).asDouble();
+        n.y = v.get("y", 0.0).asDouble();
+    }
     n.type = v.get("type", "").asString();
     return n;
 }
@@ -284,9 +290,14 @@ inline Json::Value to_json(const MapEdge& e) {
 
 inline MapEdge map_edge_from_json(const Json::Value& v) {
     MapEdge e;
-    e.from          = v.get("from", "").asString();
-    e.to            = v.get("to",   "").asString();
-    e.bidirectional = v.get("bidirectional", true).asBool();
+    e.from = v.get("from", "").asString();
+    e.to   = v.get("to",   "").asString();
+    // Support both "bidirectional" (simple_grid) and "isUniDirectional" (botvalley) formats
+    if (v.isMember("isUniDirectional")) {
+        e.bidirectional = !v.get("isUniDirectional", false).asBool();
+    } else {
+        e.bidirectional = v.get("bidirectional", true).asBool();
+    }
     return e;
 }
 
