@@ -33,7 +33,7 @@
 |-------|---------|--------|--------|-------|
 | 0 | Core Digital Twin (C++ FMS + API + Dashboard + Gazebo + Docker) | Done | **COMPLETE** | 528 tests |
 | 1 | CSV/Excel Order Import | S (1 week) | **COMPLETE** | Codex 95, Gemini 100, Kimi 98 |
-| 2 | Mixed Fleet Types | S (1 week) | **COMPLETE** | 571 tests |
+| 2 | Mixed Fleet Types | S (1 week) | **COMPLETE** | Gemini 97, Kimi 88, Codex 83→fix→reaudit |
 | 3 | Heat Map Visualization | S-M (1-2 weeks) | PENDING | — |
 | 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | PENDING | — |
 | 5 | 3D Web Simulation (Three.js browser visualization) | L (3-4 weeks) | PENDING | — |
@@ -128,7 +128,10 @@
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| 2026-03-29 | Phase 2 implemented (Session 7) | Fleet manifest, --fleet flag, type-aware REST, frontend badges, Gazebo multi-type, 571 tests passing |
+| 2026-03-29 | Phase 2 implemented (Session 7) | Fleet manifest, --fleet flag, type-aware REST, frontend badges, Gazebo multi-type, 572 tests passing |
+| 2026-03-30 | Gemini audit | 97/100 — 4 MINOR findings |
+| 2026-03-30 | Kimi audit | 88/100 — 2 MAJOR (docstring, dead imports), fixed |
+| 2026-03-30 | Codex audit | 83/100 — 2 MAJOR (HTTP test gap, ROADMAP file list), fixed |
 
 ---
 
