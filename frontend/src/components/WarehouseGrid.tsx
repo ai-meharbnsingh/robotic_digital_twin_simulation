@@ -16,12 +16,13 @@ const NODE_COLORS: Record<string, string> = {
   hub: '#cba6f7',
 }
 
-const ROBOT_TYPE_COLORS: Record<RobotType, string> = {
+const ROBOT_TYPE_COLORS: Record<string, string> = {
   differential_drive: '#89dceb',  // cyan — AMR
   unidirectional:     '#fab387',  // orange — AGV
   omnidirectional:    '#cba6f7',  // purple — OMNI
 }
 
+const ROBOT_UNKNOWN_COLOR = '#6c7086'  // gray — unknown type
 const ROBOT_ERROR_COLOR = '#f38ba8'
 
 /**
@@ -122,7 +123,7 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
 
           {/* Robots — color-coded by type */}
           {robotPositions.map((r) => {
-            const typeColor = ROBOT_TYPE_COLORS[r.robot_type] || ROBOT_TYPE_COLORS.differential_drive
+            const typeColor = ROBOT_TYPE_COLORS[r.robot_type] || ROBOT_UNKNOWN_COLOR
             const fillColor = r.status === 'error' ? ROBOT_ERROR_COLOR : typeColor
             return (
               <g key={r.id}>

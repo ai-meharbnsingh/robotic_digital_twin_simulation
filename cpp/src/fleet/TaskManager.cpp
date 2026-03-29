@@ -217,6 +217,12 @@ std::string TaskManager::validate(const TaskRecord& task,
 }
 
 bool TaskManager::isTypeCompatible(RobotType robot_type, TaskType task_type) {
+    // Type-capability rules for the 3 supported robot types.
+    // Deliberately hardcoded: with only 3 types and 5 task types, a lookup table
+    // in C++ is clearer and faster than YAML-driven capabilities. If the robot
+    // type count grows beyond ~5, migrate to a "capabilities" list in the robot
+    // YAML config and check task_type membership at runtime.
+
     // All robot types can do MOVE, CHARGE, PARK
     if (task_type == TaskType::MOVE || task_type == TaskType::CHARGE ||
         task_type == TaskType::PARK) {
@@ -224,7 +230,7 @@ bool TaskManager::isTypeCompatible(RobotType robot_type, TaskType task_type) {
     }
 
     // PICK and PLACE require DIFFERENTIAL_DRIVE or OMNIDIRECTIONAL
-    // (unidirectional AGVs typically can't do fine pick/place maneuvers)
+    // (unidirectional AGVs can't rotate in place for fine pick/place maneuvers)
     if (task_type == TaskType::PICK || task_type == TaskType::PLACE) {
         return robot_type == RobotType::DIFFERENTIAL_DRIVE ||
                robot_type == RobotType::OMNIDIRECTIONAL;

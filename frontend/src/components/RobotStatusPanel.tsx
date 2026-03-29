@@ -17,11 +17,13 @@ const STATUS_DOT: Record<string, string> = {
   waiting: 'bg-yellow-300',
 }
 
-const TYPE_BADGE: Record<RobotType, { label: string; color: string }> = {
+const TYPE_BADGE: Record<string, { label: string; color: string }> = {
   differential_drive: { label: 'AMR', color: 'bg-sky-700 text-sky-200' },
   unidirectional:     { label: 'AGV', color: 'bg-orange-700 text-orange-200' },
   omnidirectional:    { label: 'OMNI', color: 'bg-purple-700 text-purple-200' },
 }
+
+const UNKNOWN_BADGE = { label: '???', color: 'bg-gray-700 text-gray-300' }
 
 /**
  * List of robots with type badge, state, battery, and current position.
@@ -37,7 +39,7 @@ export function RobotStatusPanel({ robots }: RobotStatusPanelProps) {
       ) : (
         <div className="flex-1 overflow-y-auto space-y-1.5">
           {robots.map((r) => {
-            const badge = TYPE_BADGE[r.robot_type] || TYPE_BADGE.differential_drive
+            const badge = TYPE_BADGE[r.robot_type] || UNKNOWN_BADGE
             return (
               <div
                 key={r.robot_id}

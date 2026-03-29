@@ -109,7 +109,7 @@ def generate_fleet(fleet_manifest_path: str, warehouse_path: str,
     # Step 2: Build spawn list — assign each robot instance to a dock position
     spawn_list = []
     dock_idx = 0
-    spacing = 1.5  # meters between robots at same dock
+    spacing = 1.5  # meters between robots sharing a dock
 
     for entry in entries:
         id_prefix = entry["id_prefix"]
@@ -126,16 +126,18 @@ def generate_fleet(fleet_manifest_path: str, warehouse_path: str,
             # Assign to a dock position (cycle through available docks)
             dock = docks[dock_idx % len(docks)]
 
-            # Offset within dock to avoid overlap when multiple robots share a dock
-            robots_at_dock = dock_idx // len(docks)
-            x_offset = robots_at_dock * spacing
+            # Grid offset when multiple robots share a dock: alternate x/y
+            # to avoid spawning in a long line that could clip wall geometry
+            overflow = dock_idx // len(docks)
+            x_offset = (overflow % 3) * spacing
+            y_offset = (overflow // 3) * spacing
 
             spawn_list.append({
                 "robot_id": robot_id,
                 "model_name": model_name,
                 "model_uri": f"model://{model_name}",
                 "x": dock["x"] + x_offset,
-                "y": dock["y"],
+                "y": dock["y"] + y_offset,
                 "z": 0.0,
                 "dock_node": dock["name"],
             })

@@ -29,6 +29,7 @@
 #include <vector>
 #include <csignal>
 #include <cstdlib>
+#include <filesystem>
 
 #include <spdlog/spdlog.h>
 #include "rdt/version.h"
@@ -174,9 +175,15 @@ int main(int argc, char* argv[]) {
             spdlog::info("Loaded fleet manifest '{}' ({} fleet entries)",
                          manifest.name, manifest.robots.size());
 
-            // Config paths in manifest are relative to CWD (same as --warehouse/--robot).
-            // Server must be launched from the project root directory.
-            robot_configs = rdt::Config::expandFleetManifest(manifest);
+            // Resolve config paths relative to the fleet manifest's directory.
+            // This allows launching fms_server from any directory as long as the
+            // manifest and its referenced configs share a common ancestor.
+            std::string fleet_base = std::filesystem::absolute(fleet_path)
+                                         .parent_path()   // configs/fleets/
+                                         .parent_path()   // configs/
+                                         .parent_path()   // project root
+                                         .string();
+            robot_configs = rdt::Config::expandFleetManifest(manifest, fleet_base);
             spdlog::info("Expanded fleet to {} individual robots", robot_configs.size());
 
             for (const auto& rc : robot_configs) {

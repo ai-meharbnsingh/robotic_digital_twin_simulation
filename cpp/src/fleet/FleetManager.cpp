@@ -233,7 +233,7 @@ void FleetManager::updateRobotStates(double dt_seconds) {
 
         // Update battery model
         bool is_moving = agent->state_machine->getCurrentState() == RobotState::MOVING;
-        bool is_attachment = false;  // TODO: track from telemetry
+        bool is_attachment = (agent->config.attachment.type != "none");
         agent->battery->update(dt_seconds, is_moving, is_attachment);
 
         // Update BT context
