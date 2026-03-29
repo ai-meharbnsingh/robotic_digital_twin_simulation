@@ -119,7 +119,7 @@
 - MODIFY: `cpp/src/apps/fms_server.cpp` (--fleet flag, mutual exclusion with --robot)
 - MODIFY: `cpp/src/fleet/FleetManager.cpp` (robot_type in REST API responses)
 - MODIFY: `cpp/tests/test_config.cpp` (12 fleet manifest tests)
-- MODIFY: `cpp/tests/test_fleet.cpp` (8 mixed fleet tests)
+- MODIFY: `cpp/tests/test_fleet.cpp` (9 mixed fleet tests incl. HTTP contract)
 - MODIFY: `frontend/src/components/RobotStatusPanel.tsx` (type badge)
 - MODIFY: `frontend/src/components/WarehouseGrid.tsx` (color by type)
 
