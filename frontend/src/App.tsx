@@ -37,7 +37,7 @@ export default function App() {
   const { data: health } = useApi<Health>('/health', 5000)
   const { data: fleetAnalytics } = useApi<FleetAnalytics>('/api/analytics/fleet', POLL_MS)
   const { data: wesKpi } = useApi<WesKpi>('/api/wes/kpi', POLL_MS)
-  const { data: waves } = useApi<WavesResponse>('/api/wes/waves', POLL_MS)
+  const { data: waves, error: wavesErr } = useApi<WavesResponse>('/api/wes/waves', POLL_MS)
 
   // Heat map state
   const [heatmapEnabled, setHeatmapEnabled] = useState(false)
@@ -54,7 +54,7 @@ export default function App() {
   const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
 
   // Aggregate errors
-  const apiErrors = [robotsErr, tasksErr].filter(Boolean)
+  const apiErrors = [robotsErr, tasksErr, wavesErr].filter(Boolean)
 
   return (
     <div className="min-h-screen bg-surface text-gray-200 flex flex-col">

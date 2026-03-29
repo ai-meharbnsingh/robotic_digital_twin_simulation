@@ -1,5 +1,5 @@
 """
-Test ALL 37 API endpoints with real assertions.
+Test ALL 40 API endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 37
+        assert data["endpoints"] == 40
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -408,7 +408,7 @@ class TestReservations:
 
 
 class TestEndpointCount:
-    async def test_all_37_endpoints_exist(self, client: AsyncClient):
+    async def test_all_40_endpoints_exist(self, client: AsyncClient):
         """Verify all 32 contracted endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
@@ -464,9 +464,13 @@ class TestEndpointCount:
             ("POST", "/api/wes/waves/test-id/release"),
             ("POST", "/api/wes/wave-rules"),
             ("GET", "/api/wes/wave-rules"),
+            # io-gita (3)
+            ("GET", "/api/iogita/zones"),
+            ("GET", "/api/iogita/status"),
+            ("POST", "/api/iogita/cold-start/test_robot"),
         ]
 
-        assert len(endpoints) == 37, f"Expected 37 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 40, f"Expected 40 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":

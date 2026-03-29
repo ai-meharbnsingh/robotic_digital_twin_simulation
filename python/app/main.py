@@ -328,7 +328,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 37,
+        "endpoints": 40,
     }
 
 

@@ -34,10 +34,6 @@ def _get_task_generator():
     return app_state.get("wes_task_generator")
 
 
-def _get_warehouse_config():
-    from app.main import app_state
-    return app_state.get("warehouse_config") or {}
-
 
 # ── Pydantic models ──────────────────────────────────────
 
@@ -46,10 +42,6 @@ class WaveCreate(BaseModel):
     order_ids: list[str] = Field(..., min_length=1, description="Order IDs to include")
     zone_affinity: Optional[str] = None
     max_robots: int = Field(default=5, ge=1, le=50)
-
-
-class AutoWaveRequest(BaseModel):
-    pass  # Uses current pending orders + active rules
 
 
 class WaveRuleCreate(BaseModel):
@@ -84,39 +76,50 @@ async def create_or_auto_wave(body: Optional[WaveCreate] = None):
             max_robots=body.max_robots,
         )
 
-        # Persist to MongoDB
+        # Persist to MongoDB (graceful if unavailable)
+        persisted = False
         if db is not None:
-            await db["waves"].insert_one(dict(wave))
+            try:
+                await db["waves"].insert_one(dict(wave))
+                persisted = True
+            except Exception:
+                pass
 
-        return {"wave": _strip_id(wave), "mode": "manual"}
+        return {"wave": _strip_id(wave), "mode": "manual", "persisted": persisted}
 
     else:
         # Auto-wave from rules + pending orders (exclude already-waved orders)
         pending_orders = []
         if db is not None:
-            # Get order IDs already in pending/active waves
-            existing_waves = await db["waves"].find(
-                {"status": {"$in": ["pending", "active"]}},
-                {"order_ids": 1, "_id": 0},
-            ).to_list(length=10000)
-            waved_ids = set()
-            for w in existing_waves:
-                waved_ids.update(w.get("order_ids", []))
+            try:
+                # Get order IDs already in pending/active waves
+                existing_waves = await db["waves"].find(
+                    {"status": {"$in": ["pending", "active"]}},
+                    {"order_ids": 1, "_id": 0},
+                ).to_list(length=10000)
+                waved_ids = set()
+                for w in existing_waves:
+                    waved_ids.update(w.get("order_ids", []))
 
-            # Only fetch truly pending, un-waved orders
-            query = {"status": "pending"}
-            if waved_ids:
-                query["order_id"] = {"$nin": list(waved_ids)}
-            pending_orders = await db["orders"].find(
-                query, {"_id": 0}
-            ).to_list(length=10000)
+                # Only fetch truly pending, un-waved orders
+                query = {"status": "pending"}
+                if waved_ids:
+                    query["order_id"] = {"$nin": list(waved_ids)}
+                pending_orders = await db["orders"].find(
+                    query, {"_id": 0}
+                ).to_list(length=10000)
+            except Exception:
+                pending_orders = []
 
         waves = engine.auto_wave(pending_orders)
 
-        # Persist waves
+        # Persist waves (graceful)
         if db is not None and waves:
-            for w in waves:
-                await db["waves"].insert_one(dict(w))
+            try:
+                for w in waves:
+                    await db["waves"].insert_one(dict(w))
+            except Exception:
+                pass
 
         return {
             "waves": [_strip_id(w) for w in waves],
@@ -131,9 +134,13 @@ async def list_waves():
     """List all waves with status."""
     db = _get_db()
     if db is None:
-        return {"waves": []}
+        return {"waves": [], "count": 0, "summary": {"pending": 0, "active": 0, "completed": 0}}
 
-    waves = await db["waves"].find({}, {"_id": 0}).to_list(length=1000)
+    try:
+        waves = await db["waves"].find({}, {"_id": 0}).to_list(length=1000)
+    except Exception:
+        waves = []
+
     return {
         "waves": waves,
         "count": len(waves),

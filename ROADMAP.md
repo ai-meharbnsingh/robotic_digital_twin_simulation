@@ -185,14 +185,16 @@
 **What to build:**
 - `python/wes/wave_engine.py` — WaveEngine class
   - Wave: id, status, order_ids, zone_affinity, max_robots, deadline
-  - WaveRule: condition + action (zone match, priority range, time window, batch size)
+  - WaveRule: condition + action (zone match, priority range, batch size)
   - Rule evaluation pipeline: pending orders → rule matching → wave assignment
+  - Order exclusion: already-waved orders skip auto-wave; release marks orders "waved"
 - REST routes:
-  - `POST /api/wes/waves` (create wave manually or auto-generate)
-  - `GET /api/wes/waves` (list waves with status)
-  - `POST /api/wes/wave-rules` (CRUD for rules)
-  - `POST /api/wes/waves/{id}/release` (release wave → generate tasks)
-- TaskGenerator.from_wave() — batch convert wave orders to tasks
+  - `POST /api/wes/waves` (create wave manually or auto-generate from rules)
+  - `GET /api/wes/waves` (list waves with status summary)
+  - `POST /api/wes/wave-rules` (create rules)
+  - `GET /api/wes/wave-rules` (list rules)
+  - `POST /api/wes/waves/{id}/release` (release wave → generate tasks via TaskGenerator.from_orders)
+- TaskGenerator.from_orders() — batch convert wave orders to tasks (reuses existing method)
 - Frontend: wave status panel showing active/pending/completed waves
 
 **Acceptance Criteria:**
