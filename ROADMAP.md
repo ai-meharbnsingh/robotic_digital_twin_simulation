@@ -260,7 +260,7 @@
 - [ ] 30fps with 50 robots — deferred to E2E browser benchmark (no synthetic claim)
 
 **Files created/modified:**
-- NEW: `frontend/src/components/Warehouse3D.tsx` (R3F Canvas: instanced nodes, merged heatmap, camera follow)
+- NEW: `frontend/src/components/Warehouse3D.tsx` (R3F Canvas: merged heatmap geometry, ref-based WS data flow, camera follow)
 - NEW: `frontend/src/components/Robot3DModel.tsx` (animated mesh: type shapes, battery bar, path lines, LOD labels)
 - NEW: `frontend/src/hooks/useRobotPositions.ts` (position interpolation: REST → target, WS → update, frame-rate independent lerp)
 - NEW: `python/tests/test_3d_contracts.py` (22 tests: map shape, robot shape, heatmap shape, WS connect+broadcast, config parsing)

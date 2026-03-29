@@ -1,6 +1,7 @@
-import { useCallback, useState, lazy, Suspense } from 'react'
+import { useCallback, useRef, useState, lazy, Suspense } from 'react'
 import { useApi } from './hooks/useApi'
 import { useFleetWebSocket } from './hooks/useFleetWebSocket'
+import type { FleetWSEvent } from './types'
 import { WarehouseGrid } from './components/WarehouseGrid'
 
 // Lazy-load 3D scene (Three.js is ~1MB — only load when user clicks 3D tab)
@@ -64,7 +65,12 @@ export default function App() {
     heatmapEnabled ? 5000 : 0,
   )
 
-  const { connected: wsConnected, lastEvent: lastWSEvent } = useFleetWebSocket()
+  // WS events go to 3D scene via ref callback — avoids React re-render storm
+  const wsHandlerRef = useRef<((event: FleetWSEvent) => void) | null>(null)
+  const handleWSEvent = useCallback((event: FleetWSEvent) => {
+    wsHandlerRef.current?.(event)
+  }, [])
+  const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
 
   // Aggregate errors
   const apiErrors = [robotsErr, tasksErr, wavesErr].filter(Boolean)
@@ -206,7 +212,7 @@ export default function App() {
                 selectedRobotId={selectedRobotId}
                 onSelectRobot={handleSelectRobot}
                 followMode={followMode}
-                lastWSEvent={lastWSEvent ?? null}
+                wsHandlerRef={wsHandlerRef}
               />
             </Suspense>
           </div>

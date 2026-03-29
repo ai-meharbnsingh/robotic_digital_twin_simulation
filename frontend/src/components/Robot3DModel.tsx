@@ -115,7 +115,6 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
             position={[0, 0.6, 0]}
             center
             distanceFactor={12}
-            occlude
             style={{ pointerEvents: 'none' }}
           >
             <div

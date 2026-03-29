@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef } from 'react'
+import { useEffect, useMemo, useRef, type RefObject } from 'react'
 import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { OrbitControls, Grid } from '@react-three/drei'
 import * as THREE from 'three'
@@ -181,7 +181,7 @@ function CameraFollow({
   selectedRobotId,
   enabled,
 }: {
-  positionsRef: React.RefObject<Map<string, { current: THREE.Vector3 }>>
+  positionsRef: RefObject<Map<string, { current: THREE.Vector3 }>>
   selectedRobotId: string | null
   enabled: boolean
 }) {
@@ -214,7 +214,7 @@ interface SceneProps {
   selectedRobotId: string | null
   onSelectRobot: (id: string | null) => void
   followMode: boolean
-  lastWSEvent: FleetWSEvent | null
+  wsHandlerRef: React.MutableRefObject<((event: FleetWSEvent) => void) | null>
 }
 
 function Scene({
@@ -227,7 +227,7 @@ function Scene({
   selectedRobotId,
   onSelectRobot,
   followMode,
-  lastWSEvent,
+  wsHandlerRef,
 }: SceneProps) {
   const nodeMap = useMemo(() => {
     const m = new Map<string, { x: number; y: number }>()
@@ -237,15 +237,16 @@ function Scene({
 
   const { positionsRef, updateFromRest, handleWSEvent } = useRobotPositions()
 
+  // Register WS handler ref — events flow directly to position system (no React re-render)
+  useEffect(() => {
+    wsHandlerRef.current = handleWSEvent
+    return () => { wsHandlerRef.current = null }
+  }, [wsHandlerRef, handleWSEvent])
+
   // Sync REST data into position system
   useEffect(() => {
     if (robots.length > 0) updateFromRest(robots)
   }, [robots, updateFromRest])
-
-  // Forward WS events to position system
-  useEffect(() => {
-    if (lastWSEvent) handleWSEvent(lastWSEvent)
-  }, [lastWSEvent, handleWSEvent])
 
   const bounds = useMemo(() => {
     if (nodes.length === 0) return { cx: 0, cz: 0, size: 20 }
@@ -352,7 +353,7 @@ interface Warehouse3DProps {
   selectedRobotId: string | null
   onSelectRobot: (id: string | null) => void
   followMode: boolean
-  lastWSEvent: FleetWSEvent | null
+  wsHandlerRef: React.MutableRefObject<((event: FleetWSEvent) => void) | null>
 }
 
 export function Warehouse3D({
@@ -365,7 +366,7 @@ export function Warehouse3D({
   selectedRobotId,
   onSelectRobot,
   followMode,
-  lastWSEvent,
+  wsHandlerRef,
 }: Warehouse3DProps) {
   const camPos = useMemo((): [number, number, number] => {
     if (nodes.length === 0) return [10, 12, 10]
@@ -406,7 +407,7 @@ export function Warehouse3D({
           selectedRobotId={selectedRobotId}
           onSelectRobot={onSelectRobot}
           followMode={followMode}
-          lastWSEvent={lastWSEvent}
+          wsHandlerRef={wsHandlerRef}
         />
       </Canvas>
 
