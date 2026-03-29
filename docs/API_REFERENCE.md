@@ -42,7 +42,7 @@ curl http://localhost:8029/
   "service": "Robotic Digital Twin API",
   "version": "0.1.0",
   "docs": "/docs",
-  "endpoints": 34
+  "endpoints": 30
 }
 ```
 
