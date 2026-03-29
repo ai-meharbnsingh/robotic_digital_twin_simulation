@@ -174,6 +174,8 @@ int main(int argc, char* argv[]) {
             spdlog::info("Loaded fleet manifest '{}' ({} fleet entries)",
                          manifest.name, manifest.robots.size());
 
+            // Config paths in manifest are relative to CWD (same as --warehouse/--robot).
+            // Server must be launched from the project root directory.
             robot_configs = rdt::Config::expandFleetManifest(manifest);
             spdlog::info("Expanded fleet to {} individual robots", robot_configs.size());
 

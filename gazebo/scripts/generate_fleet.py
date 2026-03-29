@@ -13,11 +13,10 @@ Usage:
 
 Output:
   gazebo/models/{robot_type}/model.sdf   — one per unique robot config
-  gazebo/fleet_spawn.sdf                 — <include> snippet for each robot instance
+  gazebo/fleet_spawn.json                — spawn positions for each robot instance
 """
 
 import json
-import os
 import sys
 from pathlib import Path
 
