@@ -45,6 +45,7 @@ add_library(rdt_core STATIC
 target_include_directories(rdt_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
+target_compile_options(rdt_core PRIVATE -Wall -Wextra -Wpedantic)
 target_link_libraries(rdt_core PUBLIC
     spdlog::spdlog
     fmt::fmt

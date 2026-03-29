@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 import type { FleetWSEvent } from '../types'
 
-const WS_URL = 'ws://localhost:8029/ws/fleet'
+const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws/fleet`
 const MAX_BACKOFF_MS = 30_000
 const INITIAL_BACKOFF_MS = 1_000
 

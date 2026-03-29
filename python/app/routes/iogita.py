@@ -100,4 +100,4 @@ async def cold_start_recovery(robot_id: str):
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Cold start failed: {str(e)}")
+        raise HTTPException(status_code=500, detail="Cold start recovery failed")

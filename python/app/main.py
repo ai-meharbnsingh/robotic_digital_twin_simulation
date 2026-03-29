@@ -14,17 +14,20 @@ On startup:
 No hardcoded True values.
 """
 
+import logging
 import time
 from contextlib import asynccontextmanager
+from pathlib import Path
 from typing import Any
 
 import httpx
 import redis.asyncio as aioredis
-from pathlib import Path
-
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from motor.motor_asyncio import AsyncIOMotorClient
+
+logger = logging.getLogger(__name__)
 
 from app.config import Settings, get_settings, load_robot_config, load_warehouse_config
 
@@ -43,7 +46,6 @@ app_state: dict[str, Any] = {
     "iogita_zone_identifier": None,
     "iogita_cold_start": None,
     "iogita_fleet_atlas": None,
-    "sg_engine": None,
     "bottleneck_predictor": None,
     # WES
     "wes_order_generator": None,
@@ -224,6 +226,15 @@ app = FastAPI(
     description="REST API for fleet state, intelligence, and monitoring",
     version="0.1.0",
     lifespan=lifespan,
+)
+
+# --- CORS middleware (allow dashboard and external clients) ---
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 

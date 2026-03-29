@@ -18,7 +18,11 @@ def _get_db():
 
 def _get_wes():
     from app.main import app_state
-    return app_state.get("wes_order_generator"), app_state.get("wes_kpi_tracker")
+    return (
+        app_state.get("wes_order_generator"),
+        app_state.get("wes_task_generator"),
+        app_state.get("wes_kpi_tracker"),
+    )
 
 
 class OrderInjection(BaseModel):
@@ -30,7 +34,7 @@ class OrderInjection(BaseModel):
 async def inject_orders(injection: OrderInjection):
     """Inject orders into the WES order generator."""
     db = _get_db()
-    order_gen, _ = _get_wes()
+    order_gen, task_gen, _ = _get_wes()
 
     if order_gen is None:
         return {"injected": 0, "error": "WES order generator not available"}
@@ -38,23 +42,32 @@ async def inject_orders(injection: OrderInjection):
     try:
         orders = order_gen.generate_batch(injection.num_orders)
 
+        # Generate tasks from orders if TaskGenerator available
+        tasks = []
+        if task_gen is not None:
+            tasks = task_gen.from_orders(orders)
+
         if db is not None:
             for order in orders:
                 await db["orders"].insert_one(order.copy())
+            for task in tasks:
+                await db["tasks"].insert_one(task.copy())
 
         # Strip _id before returning
         for order in orders:
             order.pop("_id", None)
+        for task in tasks:
+            task.pop("_id", None)
 
-        return {"injected": len(orders), "orders": orders}
-    except Exception as e:
-        return {"injected": 0, "error": str(e)}
+        return {"injected": len(orders), "orders": orders, "tasks_created": len(tasks)}
+    except Exception:
+        return {"injected": 0, "error": "Order injection failed"}
 
 
 @router.get("/kpi")
 async def wes_kpi():
     """Return WES KPI metrics."""
-    _, kpi_tracker = _get_wes()
+    _, _, kpi_tracker = _get_wes()
     db = _get_db()
 
     if kpi_tracker is None:

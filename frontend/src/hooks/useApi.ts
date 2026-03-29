@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const API_BASE = 'http://localhost:8029'
+const API_BASE = window.location.origin
 
 interface UseApiResult<T> {
   data: T | null
