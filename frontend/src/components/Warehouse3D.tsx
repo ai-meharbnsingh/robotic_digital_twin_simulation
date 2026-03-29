@@ -263,10 +263,12 @@ function Scene({
     return { cx, cz, size }
   }, [nodes])
 
-  // Robot ID list — derived from robots array length to avoid ref dependency
+  // Robot ID list — union of REST robots + WS-provisional entries in positionsRef
   const robotIds = useMemo(() => {
-    return robots.map((r) => r.robot_id)
-  }, [robots])
+    const ids = new Set(robots.map((r) => r.robot_id))
+    for (const key of positionsRef.current.keys()) ids.add(key)
+    return Array.from(ids)
+  }, [robots, positionsRef])
 
   return (
     <>

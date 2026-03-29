@@ -127,6 +127,19 @@ class TestRobotContractFor3D:
         for r in robots:
             assert "path" in r
             assert isinstance(r["path"], list)
+            # Path entries must be string node IDs (3D renders them via nodeMap)
+            for entry in r["path"]:
+                assert isinstance(entry, str), f"Path entry not a string: {entry}"
+
+    async def test_robot_has_current_task_id(self, client: AsyncClient):
+        """3D scene uses current_task_id for destination marker visibility."""
+        resp = await client.get("/api/robots")
+        robots = resp.json()
+        if len(robots) == 0:
+            pytest.skip("No robots in test environment")
+        for r in robots:
+            assert "current_task_id" in r
+            assert r["current_task_id"] is None or isinstance(r["current_task_id"], str)
 
     async def test_robot_has_current_and_target_node(self, client: AsyncClient):
         resp = await client.get("/api/robots")
@@ -216,53 +229,57 @@ class TestWebSocketContractFor3D:
         assert hasattr(ws_manager, 'broadcast')
         assert hasattr(ws_manager, 'connection_count')
 
-    async def test_websocket_connect_and_receive(self, client: AsyncClient):
+    def test_websocket_connect_and_receive(self):
         """Actually connect to /ws/fleet and verify the connection confirmation shape."""
         from starlette.testclient import TestClient
         from app.main import app as fastapi_app
 
-        # Use Starlette's sync TestClient which supports WebSocket
         with TestClient(fastapi_app) as tc:
             with tc.websocket_connect("/ws/fleet") as ws:
-                # Server sends connection confirmation on connect
                 msg = ws.receive_json()
                 assert msg["type"] == "connected", f"Expected 'connected', got {msg}"
                 assert "active_connections" in msg
                 assert isinstance(msg["active_connections"], int)
 
-    async def test_websocket_broadcast_event_shape(self, client: AsyncClient):
-        """Verify broadcast event has the shape the 3D scene expects."""
+    def test_websocket_broadcast_and_receive(self):
+        """Connect, broadcast a robot_position event, and verify client receives correct shape."""
+        from starlette.testclient import TestClient
+        from app.main import app as fastapi_app
         from app.websocket import ws_manager
         import asyncio
 
-        # Simulate a robot_position broadcast and verify shape
-        test_event = {
-            "event": "robot_position",
-            "data": {
-                "robot_id": "AMR_01",
-                "pose": {"x": 2.0, "y": 4.0, "theta": 1.57},
-                "status": "moving",
-                "current_node": "N_01",
-            },
-        }
-        # Verify the event structure matches what the frontend expects
-        assert "event" in test_event
-        assert test_event["event"] == "robot_position"
-        data = test_event["data"]
-        assert "robot_id" in data
-        assert "pose" in data
-        assert "x" in data["pose"]
-        assert "y" in data["pose"]
-        assert "theta" in data["pose"]
-        assert "status" in data
-        assert "current_node" in data
+        with TestClient(fastapi_app) as tc:
+            with tc.websocket_connect("/ws/fleet") as ws:
+                # Consume connection confirmation
+                ws.receive_json()
 
-        # Verify broadcast adds _seq and _ts metadata
-        await ws_manager.broadcast(test_event)
-        assert "_seq" in test_event
-        assert "_ts" in test_event
-        assert isinstance(test_event["_seq"], int)
-        assert isinstance(test_event["_ts"], float)
+                # Broadcast a robot_position event via the manager
+                test_event = {
+                    "event": "robot_position",
+                    "data": {
+                        "robot_id": "AMR_01",
+                        "pose": {"x": 2.0, "y": 4.0, "theta": 1.57},
+                        "status": "moving",
+                        "current_node": "N_01",
+                    },
+                }
+                loop = asyncio.new_event_loop()
+                loop.run_until_complete(ws_manager.broadcast(test_event))
+                loop.close()
+
+                # Client should receive the event with _seq and _ts metadata
+                received = ws.receive_json()
+                assert received["event"] == "robot_position"
+                assert received["data"]["robot_id"] == "AMR_01"
+                assert received["data"]["pose"]["x"] == 2.0
+                assert received["data"]["pose"]["y"] == 4.0
+                assert received["data"]["pose"]["theta"] == 1.57
+                assert received["data"]["status"] == "moving"
+                assert received["data"]["current_node"] == "N_01"
+                assert "_seq" in received
+                assert "_ts" in received
+                assert isinstance(received["_seq"], int)
+                assert isinstance(received["_ts"], float)
 
 
 class TestWarehouseConfigFor3D:
