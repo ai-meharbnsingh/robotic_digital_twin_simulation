@@ -5,16 +5,16 @@ import { WarehouseGrid } from './components/WarehouseGrid'
 import { RobotStatusPanel } from './components/RobotStatusPanel'
 import { TaskQueue } from './components/TaskQueue'
 import { BatteryLevels } from './components/BatteryLevels'
-import { IoGitaZones } from './components/IoGitaZones'
-import { SGPredictions } from './components/SGPredictions'
+import { FleetAnalyticsPanel } from './components/FleetAnalyticsPanel'
+import { WesKpiPanel } from './components/WesKpiPanel'
 import type {
   Robot,
   Task,
   MapNode,
   MapEdge,
   Health,
-  IoGitaZoneStatus,
-  SGPrediction,
+  FleetAnalytics,
+  WesKpi,
   FleetWSEvent,
 } from './types'
 
@@ -31,8 +31,8 @@ export default function App() {
   const { data: tasks, error: tasksErr } = useApi<Task[]>('/api/tasks', POLL_MS)
   const { data: mapData } = useApi<MapData>('/api/map', 0) // Fetch once
   const { data: health } = useApi<Health>('/health', 5000)
-  const { data: zones } = useApi<IoGitaZoneStatus[]>('/api/iogita/zones', POLL_MS)
-  const { data: predictions } = useApi<SGPrediction[]>('/api/analytics/predictions', POLL_MS)
+  const { data: fleetAnalytics } = useApi<FleetAnalytics>('/api/analytics/fleet', POLL_MS)
+  const { data: wesKpi } = useApi<WesKpi>('/api/wes/kpi', POLL_MS)
 
   // Track WS event count for header indicator
   const wsEventCount = useRef(0)
@@ -125,8 +125,8 @@ export default function App() {
 
         {/* Row 2 */}
         <BatteryLevels robots={robots ?? []} />
-        <IoGitaZones zones={zones ?? []} />
-        <SGPredictions predictions={predictions ?? []} />
+        <FleetAnalyticsPanel analytics={fleetAnalytics} />
+        <WesKpiPanel kpi={wesKpi} />
       </main>
     </div>
   )

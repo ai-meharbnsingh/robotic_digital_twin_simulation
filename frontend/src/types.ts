@@ -119,29 +119,27 @@ export interface Health {
   rabbitmq_ok: boolean
   warehouse_loaded: boolean
   robot_loaded: boolean
-  iogita_loaded: boolean
-  sg_loaded: boolean
   wes_loaded: boolean
   check_duration_ms: number
 }
 
-export interface IoGitaZoneStatus {
-  robot_id: string
-  zone: ZoneType | string
-  confidence: number
-  fallback_active: boolean
-  last_updated: string
+export interface FleetAnalytics {
+  total_tasks: number
+  completed_tasks: number
+  failed_tasks: number
+  avg_task_time_s: number
+  total_robots: number
+  avg_battery_pct: number
+  throughput_tasks_per_hour: number
 }
 
-export interface SGPrediction {
-  prediction_id: string
-  prediction_type: 'bottleneck' | 'deadlock' | 'congestion' | 'battery_critical'
-  severity: EventSeverity
-  affected_robots: string[]
-  affected_nodes: string[]
-  message: string
-  confidence: number
-  timestamp: string
+export interface WesKpi {
+  orders_per_hour: number
+  pick_accuracy_pct: number
+  throughput_items_per_hour: number
+  avg_order_cycle_time_s: number
+  pending_orders: number
+  completed_orders: number
 }
 
 // --- WebSocket Events ---
@@ -170,9 +168,4 @@ export interface TaskUpdateEvent {
   }
 }
 
-export interface SGPredictionEvent {
-  event: 'sg_prediction'
-  data: SGPrediction
-}
-
-export type FleetWSEvent = RobotPositionEvent | TaskUpdateEvent | SGPredictionEvent | WSEvent
+export type FleetWSEvent = RobotPositionEvent | TaskUpdateEvent | WSEvent

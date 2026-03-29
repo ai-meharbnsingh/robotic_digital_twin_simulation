@@ -6,11 +6,9 @@ Broadcasts these event types:
   - robot_state_change
   - task_update
   - collision_alert
-  - iogita_zone_update
   - deadlock_event
   - fleet_metrics
   - wcs_event
-  - sg_prediction
 
 Usage:
   ws_manager = ConnectionManager()
