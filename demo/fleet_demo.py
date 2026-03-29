@@ -4,9 +4,9 @@ fleet_demo.py — 10-minute narrated demo using REST API calls.
 
 Demonstrates the full Robotic Digital Twin capability:
   Act 1: Normal fleet operations (inject 10 orders)
-  Act 2: Cold start recovery (inject fault on robot_01)
-  Act 3: Surge handling (inject 50 orders, show SG prediction)
-  Act 4: SG learning (show prediction accuracy improving)
+  Act 2: Fault injection and recovery
+  Act 3: Surge handling (inject 50 orders)
+  Act 4: Fleet analytics
 
 Requirements:
   - API running at localhost:8029 (docker compose up, or uvicorn)
@@ -79,10 +79,6 @@ def print_json(data: dict, indent: int = 4):
 
 def run_standalone():
     """Run the demo using direct Python imports (no API server needed)."""
-    from intelligence.iogita.zone_identifier import ZoneIdentifier
-    from intelligence.iogita.cold_start import ColdStartRecovery
-    from intelligence.iogita.fleet_atlas import FleetAtlas
-    from intelligence.sg_prediction.bottleneck_predictor import BottleneckPredictor
     from wes.order_generator import OrderGenerator
     from wes.kpi_tracker import KPITracker
     from app.config import load_warehouse_config, load_robot_config
@@ -102,15 +98,11 @@ def run_standalone():
     narrate(f"Loaded warehouse: {warehouse['name']} ({len(nodes)} nodes)")
     narrate(f"Loaded robot config: {robot_config['name']}")
 
-    # Initialize intelligence
-    zone_id = ZoneIdentifier(zones=zones, nodes=nodes)
-    cold_start = ColdStartRecovery()
-    fleet_atlas = FleetAtlas(zones=zones, nodes=nodes)
-    predictor = BottleneckPredictor()
+    # Initialize WES
     order_gen = OrderGenerator(pick_nodes=pick_nodes, drop_nodes=drop_nodes, seed=42)
     kpi = KPITracker()
 
-    narrate(f"Intelligence layer ready (backend: {zone_id.backend})")
+    narrate("WES layer ready")
     pause(0.5)
 
     # ── ACT 1: Normal Fleet Operations ──
@@ -130,9 +122,7 @@ def run_standalone():
             "current_node": node["name"],
         }
         robots.append(robot)
-        zone = zone_id.identify([node["x"], node["y"]])
-        fleet_atlas.update_fingerprint(robot["robot_id"], zone, robot["pose"])
-        narrate(f"  {robot['robot_id']} at {node['name']} -> zone: {zone} "
+        narrate(f"  {robot['robot_id']} at {node['name']} "
                 f"(battery: {robot['battery']['charge_pct']}%)")
     pause(0.5)
 
@@ -145,63 +135,22 @@ def run_standalone():
     narrate(f"  ... and {len(orders) - 3} more orders")
     pause(0.5)
 
-    narrate("Fleet snapshot:")
-    snapshot = fleet_atlas.get_fleet_snapshot()
-    narrate(f"  Total robots: {snapshot['total_robots']}")
-    narrate(f"  Zone occupation: {json.dumps(snapshot['zone_occupation'])}")
-    pause(0.5)
-
-    narrate("SG Bottleneck prediction (normal operations):")
-    preds, pred_ms = predictor.predict_timed(robots)
-    for p in preds:
-        narrate(f"  [{p['severity'].upper()}] {p['pattern']}: {p['description']}")
-    narrate(f"  Prediction time: {pred_ms:.2f}ms")
-
-    # ── ACT 2: Cold Start Recovery ──
+    # ── ACT 2: Fault Injection ──
     print("\n" + "=" * 70)
-    print("  ACT 2: Cold Start — Robot Crash & Recovery")
+    print("  ACT 2: Fault Injection — Motor Failure")
     print("=" * 70)
 
     crash_robot = robots[0]
-    narrate(f"FAULT INJECTED: {crash_robot['robot_id']} crashes at {crash_robot['current_node']}!")
+    narrate(f"FAULT INJECTED: {crash_robot['robot_id']} motor failure at {crash_robot['current_node']}!")
     pause(0.5)
 
-    # Save state before crash
-    cold_start.save_state(crash_robot["robot_id"], {
-        "pose": crash_robot["pose"],
-        "current_node": crash_robot["current_node"],
-        "battery": crash_robot["battery"],
-        "current_task_id": "task_001",
-        "status": "moving",
-    })
-
-    narrate(f"  State saved. Simulating power cycle...")
+    narrate(f"  Robot {crash_robot['robot_id']} stopped. Awaiting recovery via fleet manager.")
+    narrate(f"  Fleet manager will reassign tasks and route robot to dock.")
     pause(0.5)
-
-    # Cold start recovery
-    narrate(f"  Robot {crash_robot['robot_id']} rebooting...")
-    start = time.perf_counter()
-
-    # Step 1: Zone identification
-    zone, zone_ms = zone_id.identify_timed([
-        crash_robot["pose"]["x"],
-        crash_robot["pose"]["y"],
-    ])
-    narrate(f"  Zone identified: {zone} ({zone_ms:.3f}ms)")
-
-    # Step 2: Recovery hints
-    hints = cold_start.generate_recovery_hints(crash_robot["robot_id"], crash_robot)
-    total_ms = (time.perf_counter() - start) * 1000
-
-    narrate(f"  Recovery hints generated ({len(hints['steps'])} steps):")
-    for step in hints["steps"]:
-        narrate(f"    -> {step['action']}: {step['description']}")
-    narrate(f"  Total cold start recovery: {total_ms:.2f}ms")
-    narrate(f"  Target: <2000ms   Actual: {total_ms:.2f}ms   STATUS: PASS")
 
     # ── ACT 3: Surge Handling ──
     print("\n" + "=" * 70)
-    print("  ACT 3: Order Surge — 50 Orders, SG Prediction")
+    print("  ACT 3: Order Surge — 50 Orders")
     print("=" * 70)
 
     narrate("Injecting 50 orders (5x normal load)...")
@@ -209,82 +158,33 @@ def run_standalone():
     narrate(f"  Generated {len(surge_orders)} orders (total: {order_gen.order_count})")
     pause(0.5)
 
-    # Simulate congestion: move robots to same area
-    narrate("Simulating congestion: 5 robots converging on Storage zone...")
-    storage_nodes = [n for n in nodes if n.get("type") == "shelf"]
-    congested_robots = []
-    for i in range(5):
-        node = storage_nodes[i % len(storage_nodes)]
-        robot = {
-            "robot_id": f"robot_{i+1:02d}",
-            "pose": {"x": node["x"], "y": node["y"], "theta": 0.0},
-            "velocity": {"linear": 0.3},
-            "battery": {"charge_pct": 60 - i * 10},
-            "status": "moving",
-            "current_node": node["name"],
-        }
-        congested_robots.append(robot)
-    # Add remaining robots in normal positions
-    for i in range(5, 10):
-        congested_robots.append(robots[i])
-
-    narrate("SG Bottleneck prediction (congested state):")
-    preds, pred_ms = predictor.predict_timed(congested_robots)
-    for p in preds:
-        severity_icon = {"info": "  ", "warning": "!!", "critical": "XX"}
-        icon = severity_icon.get(p["severity"], "??")
-        narrate(f"  [{icon}] {p['pattern']}: {p['description']}")
-        if p.get("mitigation") and p["severity"] != "info":
-            narrate(f"       Mitigation: {p['mitigation']}")
-    narrate(f"  Prediction time: {pred_ms:.2f}ms (target: <25ms)")
-    narrate(f"  STATUS: {'PASS' if pred_ms < 25 else 'SLOW'}")
-
-    # ── ACT 4: SG Learning ──
-    print("\n" + "=" * 70)
-    print("  ACT 4: SG Learning — Prediction Accuracy Improving")
-    print("=" * 70)
-
-    narrate("Running 10 prediction cycles to show learning convergence...")
-    accuracies = []
-    for cycle in range(10):
-        # Vary the fleet state slightly each cycle
-        cycle_robots = []
-        for i, r in enumerate(congested_robots):
-            modified = dict(r)
-            modified["pose"] = {
-                "x": r["pose"]["x"] + (cycle * 0.1 * ((-1) ** i)),
-                "y": r["pose"]["y"] + (cycle * 0.05),
-                "theta": 0.0,
-            }
-            modified["battery"] = {"charge_pct": max(10, r["battery"]["charge_pct"] - cycle)}
-            cycle_robots.append(modified)
-
-        preds, _ = predictor.predict_timed(cycle_robots)
-        # Track the primary prediction confidence
-        primary = preds[0] if preds else {"confidence": 0, "pattern": "unknown"}
-        accuracies.append(primary["confidence"])
-
-        narrate(f"  Cycle {cycle+1:2d}: pattern={primary['pattern']:<25s} "
-                f"confidence={primary['confidence']:.3f}")
+    narrate("Fleet under load — task queue growing:")
+    narrate(f"  Active robots: {sum(1 for r in robots if r['status'] == 'moving')}")
+    narrate(f"  Idle robots: {sum(1 for r in robots if r['status'] == 'idle')}")
+    narrate(f"  Total pending orders: {len(orders) + len(surge_orders)}")
     pause(0.5)
 
-    narrate(f"  Prediction count: {predictor.prediction_count}")
-    narrate(f"  Final confidence: {accuracies[-1]:.3f}")
+    # ── ACT 4: Analytics ──
+    print("\n" + "=" * 70)
+    print("  ACT 4: Fleet Analytics")
+    print("=" * 70)
+
+    narrate("Computing WES KPIs...")
+    kpi_result = kpi.compute(orders + surge_orders, [])
+    narrate(f"  Orders per hour:  {kpi_result['orders_per_hour']:.0f}")
+    narrate(f"  Total orders:     {len(orders) + len(surge_orders)}")
+    pause(0.5)
 
     # ── Summary ──
     print("\n" + "=" * 70)
     print("  DEMO COMPLETE — Summary")
     print("=" * 70)
 
-    kpi_result = kpi.compute(orders + surge_orders, [])
     narrate(f"Total orders generated: {len(orders) + len(surge_orders)}")
     narrate(f"Orders per hour:        {kpi_result['orders_per_hour']:.0f}")
-    narrate(f"io-gita zone ID:        <1ms per identification")
-    narrate(f"Cold start recovery:    {total_ms:.2f}ms (target: <2000ms)")
-    narrate(f"SG prediction:          {pred_ms:.2f}ms (target: <25ms)")
-    narrate(f"SG prediction cycles:   {predictor.prediction_count}")
+    narrate(f"Robots simulated:       {len(robots)}")
     print()
-    print("  All performance targets met. Demo complete.")
+    print("  Demo complete.")
     print("=" * 70)
 
 
@@ -343,14 +243,9 @@ def run_api_mode():
     narrate(f"  Injected: {result.get('injected', 0)} orders")
     pause(0.5)
 
-    narrate("Checking io-gita status...")
-    iogita = api_get("/api/iogita/status")
-    print_json(iogita)
-    pause(0.5)
-
-    # ACT 2: Cold start
+    # ACT 2: Fault injection
     print("\n" + "=" * 70)
-    print("  ACT 2: Cold Start — Robot Crash & Recovery")
+    print("  ACT 2: Fault Injection — Motor Failure")
     print("=" * 70)
 
     narrate("Injecting motor failure fault on robot_01...")
@@ -362,11 +257,6 @@ def run_api_mode():
     print_json(fault)
     pause(0.5)
 
-    narrate("Triggering cold start recovery for robot_01...")
-    recovery = api_post("/api/iogita/cold-start/robot_01")
-    print_json(recovery)
-    pause(0.5)
-
     # ACT 3: Surge
     print("\n" + "=" * 70)
     print("  ACT 3: Order Surge — 50 Orders")
@@ -375,13 +265,6 @@ def run_api_mode():
     narrate("Injecting 50 orders (surge)...")
     surge = api_post("/api/wes/inject-orders", {"num_orders": 50})
     narrate(f"  Injected: {surge.get('injected', 0)} orders")
-    pause(0.5)
-
-    narrate("SG Bottleneck predictions:")
-    predictions = api_get("/api/analytics/predictions")
-    for p in predictions.get("predictions", []):
-        narrate(f"  [{p.get('severity', '?').upper()}] {p.get('pattern', '?')}: "
-                f"{p.get('description', '')}")
     pause(0.5)
 
     narrate("WES KPIs:")

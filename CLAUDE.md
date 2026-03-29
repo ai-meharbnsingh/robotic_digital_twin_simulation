@@ -7,7 +7,7 @@ Use `mv` to archive. Never `rm`.
 
 1. **C++ for FMS core.** FleetManager, PathPlanner, NodeReservation, BehaviorTree, MPC, TCP — ALL C++. No Python reimplementations.
 
-2. **Python for API + Intelligence only.** FastAPI reads MongoDB. io-gita and SG prediction are Python. Nothing else.
+2. **Python for API + Monitoring only.** FastAPI reads MongoDB. WES and monitoring are Python. Nothing else.
 
 3. **No faking.** No MagicMock databases. No hardcoded responses. If MongoDB isn't running, the endpoint returns empty data but /health reports mongodb_ok=False. Tests must test REAL behavior.
 

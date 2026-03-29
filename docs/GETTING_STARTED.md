@@ -70,8 +70,6 @@ Expected output:
   "influxdb_ok": true,
   "warehouse_loaded": true,
   "robot_loaded": true,
-  "iogita_loaded": true,
-  "sg_loaded": true,
   "wes_loaded": true
 }
 ```
@@ -96,29 +94,15 @@ curl http://localhost:8029/api/map
 # Compute a path
 curl "http://localhost:8029/api/map/path?start=DOCK_1&end=DROP_1"
 
-# io-gita intelligence status
-curl http://localhost:8029/api/iogita/status
-
 # Inject 5 orders
 curl -X POST http://localhost:8029/api/wes/inject-orders \
   -H "Content-Type: application/json" \
   -d '{"num_orders": 5}'
-
-# Get SG predictions
-curl http://localhost:8029/api/analytics/predictions
 ```
 
 ## 5. Run the Demo
 
-The standalone cold start demo runs without Docker:
-
-```bash
-cd robotic_digital_twin_simulation
-pip install numpy pyyaml
-python3 demo/cold_start_demo.py
-```
-
-The full fleet demo (with running API):
+The fleet demo (with running API):
 
 ```bash
 python3 demo/fleet_demo.py
@@ -153,6 +137,6 @@ docker compose -f docker/docker-compose.yml down -v
 
 ## Next Steps
 
-- [API Reference](API_REFERENCE.md) — All 34 endpoints with examples
+- [API Reference](API_REFERENCE.md) — All 30 endpoints with examples
 - [Configuration Guide](CONFIGURATION.md) — Custom warehouses, robots, behavior trees
 - [Architecture](ARCHITECTURE.md) — System design and data flow

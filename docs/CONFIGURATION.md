@@ -74,7 +74,7 @@ For unidirectional edges (one-way aisles):
 
 ### Zones
 
-Zones group nodes into logical areas for io-gita intelligence.
+Zones group nodes into logical areas for zone grouping for warehouse layout.
 
 ```json
 {

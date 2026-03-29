@@ -13,7 +13,6 @@ Interactive docs: `http://localhost:8029/docs`
 - [Robots](#robots)
 - [Tasks](#tasks)
 - [Map](#map)
-- [io-gita Intelligence](#io-gita-intelligence)
 - [Analytics and Predictions](#analytics-and-predictions)
 - [Telemetry](#telemetry)
 - [Events](#events)
@@ -63,8 +62,6 @@ curl http://localhost:8029/health
   "rabbitmq_ok": true,
   "warehouse_loaded": true,
   "robot_loaded": true,
-  "iogita_loaded": true,
-  "sg_loaded": true,
   "wes_loaded": true,
   "check_duration_ms": 45.2
 }
@@ -306,72 +303,6 @@ curl http://localhost:8029/api/map/zones
 
 ---
 
-## io-gita Intelligence
-
-### GET /api/iogita/status
-
-io-gita intelligence layer status.
-
-```bash
-curl http://localhost:8029/api/iogita/status
-```
-
-```json
-{
-  "engine": "io-gita",
-  "zone_identifier_loaded": true,
-  "cold_start_loaded": true,
-  "backend": "hopfield_fallback",
-  "num_zones": 3
-}
-```
-
-### GET /api/iogita/zones
-
-Zone identification results for each robot (reads robot positions from MongoDB, classifies into zones).
-
-```bash
-curl http://localhost:8029/api/iogita/zones
-```
-
-```json
-{
-  "zones": [
-    {"robot_id": "robot_01", "zone": "Storage", "pose": {"x": 4.0, "y": 2.0}},
-    {"robot_id": "robot_02", "zone": "Charging", "pose": {"x": 0.0, "y": 0.0}}
-  ],
-  "engine": "hopfield_fallback"
-}
-```
-
-### POST /api/iogita/cold-start/{robot_id}
-
-Trigger cold start recovery for a robot.
-
-```bash
-curl -X POST http://localhost:8029/api/iogita/cold-start/robot_01
-```
-
-```json
-{
-  "robot_id": "robot_01",
-  "recovery_hints": {
-    "robot_id": "robot_01",
-    "has_prior_state": true,
-    "steps": [
-      {"action": "restore_position", "description": "Restore to last known position (4.0, 2.0)"},
-      {"action": "localize_to_node", "description": "Localize to node S_12"},
-      {"action": "resume_task", "description": "Resume task task_abc123"}
-    ],
-    "state_age_s": 12.5,
-    "recovery_time_ms": 0.45
-  },
-  "cold_start_engine": "io-gita"
-}
-```
-
----
-
 ## Analytics and Predictions
 
 ### GET /api/analytics/fleet
@@ -391,31 +322,6 @@ curl http://localhost:8029/api/analytics/fleet
   "total_robots": 10,
   "avg_battery_pct": 72.5,
   "throughput_tasks_per_hour": 120.0
-}
-```
-
-### GET /api/analytics/predictions
-
-SG-engine bottleneck predictions.
-
-```bash
-curl http://localhost:8029/api/analytics/predictions
-```
-
-```json
-{
-  "predictions": [
-    {
-      "pattern": "congestion_forming",
-      "confidence": 0.82,
-      "description": "Multiple robots converging on same zone",
-      "severity": "warning",
-      "mitigation": "Reroute incoming robots to alternate paths",
-      "prediction_ms": 12.3
-    }
-  ],
-  "engine": "sg_prediction",
-  "num_robots_analyzed": 10
 }
 ```
 
@@ -738,11 +644,9 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 | `robot_state_change` | Robot status changed (idle -> moving, etc.) |
 | `task_update` | Task status changed |
 | `collision_alert` | Near-collision detected |
-| `iogita_zone_update` | Robot changed zones |
 | `deadlock_event` | Deadlock detected |
 | `fleet_metrics` | Periodic fleet-wide metrics |
 | `wcs_event` | Warehouse control event |
-| `sg_prediction` | New SG prediction |
 
 **Send ping:**
 ```json
@@ -779,23 +683,19 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 | 13 | GET | `/api/map/nodes` | List nodes |
 | 14 | GET | `/api/map/path` | Compute path |
 | 15 | GET | `/api/map/zones` | List zones |
-| 16 | GET | `/api/iogita/status` | io-gita status |
-| 17 | GET | `/api/iogita/zones` | Zone identifications |
-| 18 | POST | `/api/iogita/cold-start/{id}` | Cold start recovery |
-| 19 | GET | `/api/analytics/fleet` | Fleet analytics |
-| 20 | GET | `/api/analytics/predictions` | SG predictions |
-| 21 | GET | `/api/analytics/ab-comparison` | A/B comparison |
-| 22 | GET | `/api/telemetry/{id}` | Robot telemetry |
-| 23 | GET | `/api/events` | System events |
-| 24 | GET | `/api/simulation/status` | Simulation status |
-| 25 | POST | `/api/simulation/start` | Start simulation |
-| 26 | POST | `/api/simulation/stop` | Stop simulation |
-| 27 | POST | `/api/simulation/inject-fault` | Inject fault |
-| 28 | POST | `/api/wes/inject-orders` | Inject orders |
-| 29 | GET | `/api/wes/kpi` | WES KPIs |
-| 30 | GET | `/api/wcs/conveyors` | Conveyor status |
-| 31 | GET | `/api/wcs/lanes` | Lane occupancy |
-| 32 | GET | `/api/config/robots` | Robot config |
-| 33 | GET | `/api/stats/throughput` | Throughput stats |
-| 34 | GET | `/api/reservations/active` | Active reservations |
+| 16 | GET | `/api/analytics/fleet` | Fleet analytics |
+| 17 | GET | `/api/analytics/ab-comparison` | A/B comparison |
+| 18 | GET | `/api/telemetry/{id}` | Robot telemetry |
+| 19 | GET | `/api/events` | System events |
+| 20 | GET | `/api/simulation/status` | Simulation status |
+| 21 | POST | `/api/simulation/start` | Start simulation |
+| 22 | POST | `/api/simulation/stop` | Stop simulation |
+| 23 | POST | `/api/simulation/inject-fault` | Inject fault |
+| 24 | POST | `/api/wes/inject-orders` | Inject orders |
+| 25 | GET | `/api/wes/kpi` | WES KPIs |
+| 26 | GET | `/api/wcs/conveyors` | Conveyor status |
+| 27 | GET | `/api/wcs/lanes` | Lane occupancy |
+| 28 | GET | `/api/config/robots` | Robot config |
+| 29 | GET | `/api/stats/throughput` | Throughput stats |
+| 30 | GET | `/api/reservations/active` | Active reservations |
 | WS | WS | `/ws/fleet` | Real-time updates |

@@ -130,7 +130,7 @@ Open browser:
 |-----|------|
 | http://localhost:5199 | React Dashboard — live warehouse grid, robot positions, tasks |
 | http://localhost:8029/docs | REST API — Swagger docs, try endpoints |
-| http://localhost:3000 | Grafana — throughput, battery, io-gita accuracy |
+| http://localhost:3000 | Grafana — throughput, battery metrics |
 | Gazebo GUI (X11) | 3D warehouse with robots moving |
 
 ---
@@ -145,16 +145,6 @@ Open browser:
 - Collision avoidance
 - Battery management (charge when low)
 - Behavior trees (dock, charge, pick, move, drop)
-
-### With io-gita intelligence:
-- **Cold start recovery** — robot restarts, knows its zone in <1ms
-- **Barcode failure resilience** — damaged floor barcodes, robot navigates through
-- **Zone identification** — every robot knows which zone it's in
-
-### With Semantic Gravity:
-- **Bottleneck prediction** — flags congestion 2-5 minutes before it happens
-- **Deadlock prevention** — identifies traps before robots enter
-- **Energy optimization** — optimal charging schedule
 
 ---
 
@@ -176,12 +166,9 @@ curl http://localhost:8029/api/robots
 curl -X POST http://localhost:8029/api/wes/inject-orders \
   -d '{"count": 50, "priority": "HIGH"}'
 
-# Check io-gita zone status
-curl http://localhost:8029/api/iogita/status
-
-# Inject a fault (cold start test)
+# Inject a fault
 curl -X POST http://localhost:8029/api/simulation/inject-fault \
-  -d '{"robot_id": "robot_01", "fault_type": "restart"}'
+  -d '{"robot_id": "robot_01", "fault_type": "motor_failure"}'
 ```
 
 ---
@@ -210,12 +197,3 @@ cp my_export.json configs/warehouses/my_site.json
 WAREHOUSE=my_site docker compose up
 ```
 
-### "I want to test io-gita cold start on my layout"
-```bash
-# After docker compose up:
-curl -X POST http://localhost:8029/api/simulation/inject-fault \
-  -d '{"robot_id": "robot_01", "fault_type": "restart"}'
-
-# Watch dashboard — io-gita recovers in <2 sec
-# Compare: disable io-gita and try again — blind search takes 10-30 sec
-```

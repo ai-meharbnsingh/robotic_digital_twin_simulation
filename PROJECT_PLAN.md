@@ -1,9 +1,11 @@
 # Robotic Digital Twin Simulation — Project Plan
 
 ## Vision
-Open source warehouse robotics digital twin. Any robotics company loads their warehouse map + robot YAML config → gets a full simulation with io-gita cold start recovery and Semantic Gravity predictive intelligence.
+Open source warehouse robotics digital twin. Any robotics company loads their warehouse map + robot YAML config → gets a full simulation with real-time fleet management, task allocation, and warehouse execution.
 
-Written from scratch. C++ where it matters (real-time FMS), Python where it helps (API + intelligence). No proprietary dependencies.
+Written from scratch. C++ where it matters (real-time FMS), Python where it helps (API + monitoring). No proprietary dependencies.
+
+> **Note:** The io-gita intelligence layer and SG prediction were dropped. All related code has been archived. See ARCHITECTURE.md for details.
 
 ---
 
@@ -19,7 +21,7 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 | 6. Communication | DONE | 319 C++ | TCP Protocol V1 + CRC32, REST server |
 | 7. Fleet Manager | DONE | 319 C++ | 15Hz main loop, COPP, TaskManager |
 | 8. Gazebo | DONE | 319 C++ | Physics sim, sensor plugins |
-| 9. Python API | DONE | 129 Python | 34 endpoints, io-gita, SG prediction |
+| 9. Python API | DONE | 129 Python | 30 endpoints, WES, monitoring |
 | 10. Dashboard | DONE | 129 Python | React + Grafana |
 | 11. Integration | DONE | 182 Python | Demo, integration tests, docs |
 
@@ -49,10 +51,8 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 │              │ JSON file output (fleet_state.json)               │
 │  ┌───────────▼────────────────────────────────────────────────┐ │
 │  │ PYTHON PROCESS: FastAPI (python/app/main.py :8029)          │ │
-│  │ ├── REST API (34 endpoints — reads MongoDB)                 │ │
+│  │ ├── REST API (30 endpoints — reads MongoDB)                 │ │
 │  │ ├── WebSocket (/ws/fleet)                                   │ │
-│  │ ├── [Phase 9] io-gita ZoneIdentifier                        │ │
-│  │ ├── [Phase 9] SG Prediction                                 │ │
 │  │ └── [Phase 9] WES OrderGenerator                            │ │
 │  └────────────────────────────────────────────────────────────┘ │
 │                                                                  │
@@ -89,8 +89,6 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 | FastAPI | Python | FastAPI | DONE (scaffold) |
 | Health Checks | Python | Real probes | DONE |
 | Pydantic Models | Python | Pydantic v2 | DONE |
-| io-gita | Python | sg_engine / Hopfield | DONE |
-| SG Prediction | Python | Custom (Hopfield attractor) | DONE |
 | WES (Order/Task/KPI) | Python | Custom (Poisson) | DONE |
 | Monitoring | Python | InfluxDB + Redis | DONE |
 | Gazebo World | C++ | Gazebo Fortress | DONE |
@@ -135,7 +133,7 @@ robotic_digital_twin_simulation/
 │   └── tests/          15 test files (319 tests)
 │
 ├── python/                            # Python API + intelligence
-│   ├── app/            main.py config.py models.py
+│   ├── app/            main.py config.py
 │   ├── tests/          conftest.py test_config.py test_health.py
 │   └── requirements.txt
 │
@@ -150,13 +148,12 @@ robotic_digital_twin_simulation/
 │   └── start.sh        (graceful shutdown)
 │
 ├── demo/                              # Demo scripts
-│   ├── cold_start_demo.py             # io-gita cold start demonstration
 │   └── fleet_demo.py                  # Full fleet operations demo (API + standalone)
 │
 ├── docs/                              # Documentation
 │   ├── USER_EXPERIENCE.md
 │   ├── GETTING_STARTED.md             # 5-minute quickstart
-│   ├── API_REFERENCE.md               # All 34 endpoints with curl examples
+│   ├── API_REFERENCE.md               # All 30 endpoints with curl examples
 │   ├── CONFIGURATION.md               # Warehouse, robot, BT customization guide
 │   └── ARCHITECTURE.md                # System diagram, data flow, tech stack
 │
@@ -172,9 +169,6 @@ robotic_digital_twin_simulation/
 | A* pathfinding (63 nodes) | <10ms | Tested <10ms ✓ |
 | MPC solve | <50ms | Proportional controller (Phase 4), MPC upgrade Phase 7 |
 | Node reservation | <15ms | Tested <15ms for 10 robots ✓ |
-| io-gita zone ID | <1ms | Proven <0.05ms avg in Phase 11 ✓ |
-| Cold start recovery | <2s | Proven <0.12ms in Phase 11 ✓ |
-| SG prediction | <25ms | Proven <0.6ms in Phase 11 ✓ |
 | TCP throughput | 150 msg/s | Phase 7 integration test |
 | Protocol V1 parse | <0.1ms | Tested ✓ |
 | REST API p95 | <200ms | Proven via test suite ✓ |
@@ -183,6 +177,6 @@ robotic_digital_twin_simulation/
 
 - No Addverb proprietary code — everything written from scratch
 - No ROS2/Nav2 — custom navigation stack
-- No AMCL — barcode grid + io-gita zone identification
+- No AMCL — barcode grid navigation
 - No proprietary dependencies — all open source
 - No GUI compilation needed by end user — Docker handles everything
