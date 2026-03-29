@@ -63,6 +63,16 @@ PICK_1,DROP_1,7,15.0
 
 BOM_CSV = "\ufeff" + VALID_CSV  # Excel BOM prefix
 
+NEGATIVE_PAYLOAD_CSV = """\
+source_node,destination_node,priority,payload_kg
+PICK_1,DROP_1,5,-3.5
+"""
+
+SAME_SRC_DEST_CSV = """\
+source_node,destination_node,priority,payload_kg
+PICK_1,PICK_1,5,2.0
+"""
+
 
 class TestOrderImport:
     """Test CSV order import endpoint."""
@@ -76,12 +86,10 @@ class TestOrderImport:
         assert data["imported"] == 3
         assert data["tasks_created"] >= 3  # pick_and_drop = 1 task each
         assert len(data["errors"]) == 0
-        assert len(data["orders"]) == 3
-        # Verify order contents
-        assert data["orders"][0]["source_node"] == "PICK_1"
-        assert data["orders"][0]["destination_node"] == "DROP_1"
-        assert data["orders"][0]["priority"] == 5
-        assert data["orders"][0]["payload_kg"] == 2.5
+        # Finding #5: response no longer includes full orders
+        assert "orders" not in data
+        assert len(data["order_ids"]) == 3
+        assert isinstance(data["persisted"], bool)
 
     async def test_upload_minimal_csv(self, client: AsyncClient):
         """Upload CSV with only required columns — defaults applied."""
@@ -90,9 +98,8 @@ class TestOrderImport:
         assert resp.status_code == 200
         data = resp.json()
         assert data["imported"] == 2
-        assert data["orders"][0]["priority"] == 0  # default
-        assert data["orders"][0]["payload_kg"] == 0.0  # default
-        assert data["orders"][0]["order_type"] == "pick_and_drop"  # default
+        # Defaults are applied internally; response now only has summary
+        assert len(data["order_ids"]) == 2
 
     async def test_invalid_nodes_rejected(self, client: AsyncClient):
         """Invalid node names produce row-level errors."""
@@ -166,13 +173,52 @@ class TestOrderImport:
         """Each imported order gets a unique order_id."""
         files = {"file": ("orders.csv", io.BytesIO(VALID_CSV.encode()), "text/csv")}
         resp = await client.post("/api/wes/orders/import", files=files)
-        data = resp.json()
-        order_ids = [o["order_id"] for o in data["orders"]]
-        assert len(order_ids) == len(set(order_ids))  # all unique
-
-    async def test_endpoint_count_updated(self, client: AsyncClient):
-        """Root endpoint reflects updated count."""
-        resp = await client.get("/")
+        # Finding #9: assert status before reading JSON
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 31
+        order_ids = data["order_ids"]
+        assert len(order_ids) == len(set(order_ids))  # all unique
+
+    # Finding #10: Removed brittle test_endpoint_count_updated test
+
+    async def test_binary_file_upload_rejected(self, client: AsyncClient):
+        """Finding #7: Uploading a binary file should fail gracefully."""
+        binary_content = bytes(range(256)) * 4  # 1KB of binary data
+        files = {"file": ("image.png", io.BytesIO(binary_content), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 400
+        assert "not valid UTF-8" in resp.json()["detail"]
+
+    async def test_file_size_limit(self, client: AsyncClient):
+        """Finding #8: Files over 10MB return 413."""
+        # Build a CSV just over 10 MB
+        header = "source_node,destination_node\n"
+        row = "PICK_1,DROP_1\n"
+        # 10 MB + a bit extra
+        repeat_count = (10 * 1024 * 1024) // len(row) + 100
+        huge_csv = header + (row * repeat_count)
+        files = {"file": ("huge.csv", io.BytesIO(huge_csv.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 413
+        assert "10MB" in resp.json()["detail"]
+
+    async def test_negative_payload_rejected(self, client: AsyncClient):
+        """Finding #11: Negative payload_kg produces row-level error."""
+        files = {"file": ("orders.csv", io.BytesIO(NEGATIVE_PAYLOAD_CSV.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 0
+        assert len(data["errors"]) == 1
+        assert "payload_kg" in data["errors"][0]["error"]
+        assert ">= 0" in data["errors"][0]["error"]
+
+    async def test_same_source_destination_rejected(self, client: AsyncClient):
+        """Finding #12: source_node == destination_node is rejected."""
+        files = {"file": ("orders.csv", io.BytesIO(SAME_SRC_DEST_CSV.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 0
+        assert len(data["errors"]) == 1
+        assert "must differ" in data["errors"][0]["error"]

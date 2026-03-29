@@ -1,7 +1,8 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useRef } from 'react'
 import type { WesKpi } from '../types'
 
 const API_BASE = window.location.origin
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10 MB — must match backend
 
 interface Props {
   kpi: WesKpi | null
@@ -17,8 +18,21 @@ export function WesKpiPanel({ kpi }: Props) {
   const [importing, setImporting] = useState(false)
   const [result, setResult] = useState<ImportResult | null>(null)
   const [dragOver, setDragOver] = useState(false)
+  // Finding #13: useRef instead of global DOM id
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   const handleUpload = useCallback(async (file: File) => {
+    // Finding #15: client-side file type check
+    if (!file.name.endsWith('.csv')) {
+      setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: 'Only .csv files are accepted' }] })
+      return
+    }
+    // Finding #15: client-side file size check
+    if (file.size > MAX_FILE_SIZE) {
+      setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: `File exceeds ${MAX_FILE_SIZE / (1024 * 1024)}MB limit` }] })
+      return
+    }
+
     setImporting(true)
     setResult(null)
     try {
@@ -28,11 +42,18 @@ export function WesKpiPanel({ kpi }: Props) {
         method: 'POST',
         body: formData,
       })
-      const data = await resp.json()
+      // Finding #14: wrap resp.json() in try/catch for non-JSON error responses
+      let data: Record<string, unknown>
+      try {
+        data = await resp.json()
+      } catch {
+        setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: `Server error (${resp.status})` }] })
+        return
+      }
       if (!resp.ok) {
-        setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: data.detail || 'Upload failed' }] })
+        setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: (data.detail as string) || 'Upload failed' }] })
       } else {
-        setResult(data)
+        setResult(data as ImportResult)
       }
     } catch {
       setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: 'Upload failed' }] })
@@ -82,12 +103,12 @@ export function WesKpiPanel({ kpi }: Props) {
         onDragOver={(e) => { e.preventDefault(); setDragOver(true) }}
         onDragLeave={() => setDragOver(false)}
         onDrop={onDrop}
-        onClick={() => document.getElementById('csv-upload')?.click()}
+        onClick={() => fileInputRef.current?.click()}
       >
         <input
-          id="csv-upload"
+          ref={fileInputRef}
           type="file"
-          accept=".csv,.txt"
+          accept=".csv"
           className="hidden"
           onChange={onFileSelect}
         />
