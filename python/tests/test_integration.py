@@ -1,7 +1,7 @@
 """
 Integration tests for Phase 11 — verifies the full stack works together.
 
-TEST: All 30 API endpoints return 200 (or expected error for missing resources)
+TEST: All 32 API endpoints return 200 (or expected error for missing resources)
 TEST: WebSocket connects and receives events
 TEST: Config loads both warehouse formats (simple_grid, botvalley)
 """
@@ -30,10 +30,10 @@ async def client():
             yield c
 
 
-# ── TEST: All 30 API endpoints return expected status ──────────────────
+# ── TEST: All 32 API endpoints return expected status ──────────────────
 
 class TestAllEndpoints:
-    """Verify all 30 API endpoints respond correctly."""
+    """Verify all 32 API endpoints respond correctly."""
 
     async def test_root(self, client):
         resp = await client.get("/")

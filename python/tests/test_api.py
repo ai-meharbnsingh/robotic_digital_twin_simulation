@@ -1,5 +1,5 @@
 """
-Test ALL 30 API endpoints with real assertions.
+Test ALL 32 API endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
