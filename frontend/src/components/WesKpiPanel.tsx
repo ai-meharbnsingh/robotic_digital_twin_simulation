@@ -29,7 +29,11 @@ export function WesKpiPanel({ kpi }: Props) {
         body: formData,
       })
       const data = await resp.json()
-      setResult(data)
+      if (!resp.ok) {
+        setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: data.detail || 'Upload failed' }] })
+      } else {
+        setResult(data)
+      }
     } catch {
       setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: 'Upload failed' }] })
     } finally {

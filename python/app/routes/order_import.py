@@ -19,7 +19,10 @@ router = APIRouter(prefix="/api/wes", tags=["wes"])
 
 # Required CSV columns
 REQUIRED_COLUMNS = {"source_node", "destination_node"}
-OPTIONAL_COLUMNS = {"priority", "payload_kg", "order_type", "order_id"}
+
+# Safety limits
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10 MB
+MAX_ROWS = 10_000
 
 
 def _get_db():
@@ -65,6 +68,9 @@ def _parse_and_validate(
     errors = []
 
     for row_num, row in enumerate(reader, start=2):  # row 1 = header
+        if row_num > MAX_ROWS + 1:
+            errors.append({"row": row_num, "error": f"Exceeded {MAX_ROWS} row limit"})
+            break
         source = row.get("source_node", "").strip()
         dest = row.get("destination_node", "").strip()
 
@@ -131,9 +137,11 @@ async def import_orders(file: UploadFile = File(...)):
     ):
         raise HTTPException(status_code=400, detail=f"Expected CSV file, got {file.content_type}")
 
-    # Read file content
+    # Read file content with size limit
     try:
         raw = await file.read()
+        if len(raw) > MAX_FILE_SIZE:
+            raise HTTPException(status_code=413, detail=f"File exceeds {MAX_FILE_SIZE // (1024*1024)}MB limit")
         content = raw.decode("utf-8-sig")  # Handle BOM from Excel
     except UnicodeDecodeError:
         raise HTTPException(status_code=400, detail="File is not valid UTF-8 text")
