@@ -185,6 +185,35 @@ export interface HeatMapData {
   query_ms: number
 }
 
+// --- Waves ---
+
+export type WaveStatus = 'pending' | 'active' | 'completed'
+
+export interface Wave {
+  wave_id: string
+  status: WaveStatus
+  order_ids: string[]
+  zone_affinity: string | null
+  max_robots: number
+  deadline: number | null
+  created_at: number
+  released_at: number | null
+  completed_at: number | null
+  task_ids: string[]
+}
+
+export interface WaveSummary {
+  pending: number
+  active: number
+  completed: number
+}
+
+export interface WavesResponse {
+  waves: Wave[]
+  count: number
+  summary: WaveSummary
+}
+
 // --- WebSocket Events ---
 
 export interface WSEvent {

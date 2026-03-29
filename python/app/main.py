@@ -115,6 +115,7 @@ def _init_wes(warehouse_config: dict):
         from wes.order_generator import OrderGenerator
         from wes.task_generator import TaskGenerator
         from wes.kpi_tracker import KPITracker
+        from wes.wave_engine import WaveEngine
 
         app_state["wes_order_generator"] = OrderGenerator(
             pick_nodes=pick_nodes,
@@ -122,6 +123,7 @@ def _init_wes(warehouse_config: dict):
         )
         app_state["wes_task_generator"] = TaskGenerator()
         app_state["wes_kpi_tracker"] = KPITracker()
+        app_state["wes_wave_engine"] = WaveEngine(warehouse_config)
     except Exception:
         pass
 
@@ -242,6 +244,7 @@ from app.routes.maps import router as maps_router
 from app.routes.telemetry import router as telemetry_router
 from app.routes.analytics import router as analytics_router
 from app.routes.heatmap import router as heatmap_router
+from app.routes.waves import router as waves_router
 from app.routes.events import router as events_router
 from app.routes.wcs import router as wcs_router
 from app.routes.wes import router as wes_router
@@ -261,6 +264,7 @@ app.include_router(maps_router)
 app.include_router(telemetry_router)
 app.include_router(analytics_router)
 app.include_router(heatmap_router)
+app.include_router(waves_router)
 app.include_router(events_router)
 app.include_router(wcs_router)
 app.include_router(wes_router)
@@ -311,7 +315,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 32,
+        "endpoints": 37,
     }
 
 

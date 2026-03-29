@@ -8,6 +8,7 @@ import { BatteryLevels } from './components/BatteryLevels'
 import { FleetAnalyticsPanel } from './components/FleetAnalyticsPanel'
 import { WesKpiPanel } from './components/WesKpiPanel'
 import { HeatMapControls } from './components/HeatMapControls'
+import { WaveStatusPanel } from './components/WaveStatusPanel'
 import type {
   Robot,
   Task,
@@ -17,6 +18,7 @@ import type {
   FleetAnalytics,
   WesKpi,
   HeatMapData,
+  WavesResponse,
   FleetWSEvent,
 } from './types'
 
@@ -35,6 +37,7 @@ export default function App() {
   const { data: health } = useApi<Health>('/health', 5000)
   const { data: fleetAnalytics } = useApi<FleetAnalytics>('/api/analytics/fleet', POLL_MS)
   const { data: wesKpi } = useApi<WesKpi>('/api/wes/kpi', POLL_MS)
+  const { data: waves } = useApi<WavesResponse>('/api/wes/waves', POLL_MS)
 
   // Heat map state
   const [heatmapEnabled, setHeatmapEnabled] = useState(false)
@@ -142,6 +145,7 @@ export default function App() {
         <BatteryLevels robots={robots ?? []} />
         <FleetAnalyticsPanel analytics={fleetAnalytics} />
         <WesKpiPanel kpi={wesKpi} />
+        <WaveStatusPanel waves={waves ?? null} />
       </main>
     </div>
   )

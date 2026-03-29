@@ -2,7 +2,7 @@
 
 > **Vision:** The only open-source warehouse robotics simulator with a production-grade C++ fleet management system — bring your warehouse layout, your robot specs, and your real orders. No vendor lock-in. One Docker command. 3D visualization in the browser.
 >
-> **Status:** Phases 0-3 COMPLETE. 600 tests, 0 failures.
+> **Status:** Phases 0-4 COMPLETE. 629 tests, 0 failures.
 >
 > **Last Updated:** 2026-03-30
 
@@ -35,7 +35,7 @@
 | 1 | CSV/Excel Order Import | S (1 week) | **COMPLETE** | Codex 95, Gemini 100, Kimi 98 |
 | 2 | Mixed Fleet Types | S (1 week) | **COMPLETE** | Gemini 97, Kimi 88, Codex 83→fix→reaudit |
 | 3 | Heat Map Visualization | S-M (1-2 weeks) | **COMPLETE** | 600 tests |
-| 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | PENDING | — |
+| 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | **COMPLETE** | 629 tests |
 | 5 | 3D Web Simulation (Three.js browser visualization) | L (3-4 weeks) | PENDING | — |
 | 6 | Parallel Scenario Comparison | L (3 weeks) | PENDING | — |
 | 7 | Warehouse Designer (GUI MVP) | XL (4 weeks) | PENDING | — |
@@ -196,25 +196,27 @@
 - Frontend: wave status panel showing active/pending/completed waves
 
 **Acceptance Criteria:**
-- [ ] Auto-wave groups orders by zone affinity
-- [ ] Manual wave creation works via API
-- [ ] Wave release generates correct tasks
-- [ ] KPI improvement measurable: throughput up with wave vs no-wave
-- [ ] Rules persist across restarts (MongoDB)
+- [x] Auto-wave groups orders by zone affinity
+- [x] Manual wave creation works via API
+- [x] Wave release generates correct tasks
+- [x] KPI improvement measurable: throughput up with wave vs no-wave
+- [x] Rules persist across restarts (MongoDB)
 
 **Files to create/modify:**
-- NEW: `python/wes/wave_engine.py`
-- NEW: `python/app/routes/waves.py`
-- NEW: `python/tests/test_waves.py`
-- MODIFY: `python/wes/task_generator.py` (from_wave method)
-- NEW: `frontend/src/components/WaveStatusPanel.tsx`
+- NEW: `python/wes/wave_engine.py` (WaveEngine: create, auto_wave, release, rules)
+- NEW: `python/app/routes/waves.py` (5 endpoints: waves CRUD, rules CRUD, release)
+- NEW: `python/tests/test_waves.py` (21 tests: engine unit + REST routes)
+- NEW: `frontend/src/components/WaveStatusPanel.tsx` (wave list with status badges)
+- MODIFY: `python/app/main.py` (register waves router, init WaveEngine, endpoint count 32→37)
+- MODIFY: `frontend/src/App.tsx` (waves data hook, WaveStatusPanel in grid)
+- MODIFY: `frontend/src/types.ts` (Wave, WaveSummary, WavesResponse)
 
 **Review Gate:** Codex + Gemini + Kimi audit → all must PASS before Phase 5.
 
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| — | — | — |
+| 2026-03-30 | Phase 4 implemented (Session 7) | WaveEngine + 5 routes + frontend panel, 629 tests passing |
 
 ---
 
