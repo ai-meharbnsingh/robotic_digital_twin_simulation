@@ -112,8 +112,14 @@
 
 **Files to create/modify:**
 - NEW: `configs/fleets/default_mixed.json`
-- MODIFY: `cpp/src/apps/fms_server.cpp` (load fleet manifest)
-- MODIFY: `gazebo/scripts/generate_robot.py` (multi-type spawning)
+- NEW: `gazebo/scripts/generate_fleet.py` (multi-type spawning from fleet manifest)
+- NEW: `python/tests/test_mixed_fleet.py` (35 tests)
+- MODIFY: `cpp/include/rdt/core/Config.h` (FleetManifest, FleetEntry, loadFleetManifest, expandFleetManifest)
+- MODIFY: `cpp/src/core/Config.cpp` (fleet manifest loader + expansion)
+- MODIFY: `cpp/src/apps/fms_server.cpp` (--fleet flag, mutual exclusion with --robot)
+- MODIFY: `cpp/src/fleet/FleetManager.cpp` (robot_type in REST API responses)
+- MODIFY: `cpp/tests/test_config.cpp` (12 fleet manifest tests)
+- MODIFY: `cpp/tests/test_fleet.cpp` (8 mixed fleet tests)
 - MODIFY: `frontend/src/components/RobotStatusPanel.tsx` (type badge)
 - MODIFY: `frontend/src/components/WarehouseGrid.tsx` (color by type)
 
