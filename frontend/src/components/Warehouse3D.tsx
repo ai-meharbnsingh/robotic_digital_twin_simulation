@@ -194,7 +194,7 @@ function CameraFollow({
     if (!rp) return
     // Read LIVE interpolated position from ref (not stale useMemo snapshot)
     const dest = rp.current.clone().add(offsetRef.current)
-    camera.position.lerp(dest, 0.03)
+    camera.position.lerp(dest, 0.08)
     camera.lookAt(rp.current)
   })
 

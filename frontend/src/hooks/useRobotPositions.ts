@@ -74,9 +74,12 @@ export function useRobotPositions() {
         }
       }
 
-      // Remove robots that no longer appear in REST
-      for (const key of map.keys()) {
-        if (!seen.has(key)) map.delete(key)
+      // Remove robots that no longer appear in REST — but only if REST
+      // returned a non-empty list (empty = transient API failure, not fleet deletion)
+      if (robots.length > 0) {
+        for (const key of map.keys()) {
+          if (!seen.has(key)) map.delete(key)
+        }
       }
     },
     [],

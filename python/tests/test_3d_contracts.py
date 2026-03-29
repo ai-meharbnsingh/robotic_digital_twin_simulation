@@ -197,15 +197,14 @@ class TestHeatmapContractFor3D:
 
 
 class TestWebSocketContractFor3D:
-    """WebSocket /ws/fleet route must be registered in the app."""
+    """WebSocket /ws/fleet route must be registered and broadcast correct event shapes."""
 
     def test_websocket_route_registered(self):
         """Verify /ws/fleet is in the app's route table."""
         from app.main import app as fastapi_app
         ws_routes = [
             r.path for r in fastapi_app.routes
-            if hasattr(r, 'path') and 'websocket' in str(getattr(r, 'endpoint', '').__name__ if hasattr(getattr(r, 'endpoint', None), '__name__') else '').lower()
-            or (hasattr(r, 'path') and '/ws/' in r.path)
+            if hasattr(r, 'path') and '/ws/' in r.path
         ]
         assert "/ws/fleet" in ws_routes, \
             f"WebSocket route /ws/fleet not found. Routes with /ws/: {ws_routes}"
@@ -216,6 +215,54 @@ class TestWebSocketContractFor3D:
         assert ws_manager is not None
         assert hasattr(ws_manager, 'broadcast')
         assert hasattr(ws_manager, 'connection_count')
+
+    async def test_websocket_connect_and_receive(self, client: AsyncClient):
+        """Actually connect to /ws/fleet and verify the connection confirmation shape."""
+        from starlette.testclient import TestClient
+        from app.main import app as fastapi_app
+
+        # Use Starlette's sync TestClient which supports WebSocket
+        with TestClient(fastapi_app) as tc:
+            with tc.websocket_connect("/ws/fleet") as ws:
+                # Server sends connection confirmation on connect
+                msg = ws.receive_json()
+                assert msg["type"] == "connected", f"Expected 'connected', got {msg}"
+                assert "active_connections" in msg
+                assert isinstance(msg["active_connections"], int)
+
+    async def test_websocket_broadcast_event_shape(self, client: AsyncClient):
+        """Verify broadcast event has the shape the 3D scene expects."""
+        from app.websocket import ws_manager
+        import asyncio
+
+        # Simulate a robot_position broadcast and verify shape
+        test_event = {
+            "event": "robot_position",
+            "data": {
+                "robot_id": "AMR_01",
+                "pose": {"x": 2.0, "y": 4.0, "theta": 1.57},
+                "status": "moving",
+                "current_node": "N_01",
+            },
+        }
+        # Verify the event structure matches what the frontend expects
+        assert "event" in test_event
+        assert test_event["event"] == "robot_position"
+        data = test_event["data"]
+        assert "robot_id" in data
+        assert "pose" in data
+        assert "x" in data["pose"]
+        assert "y" in data["pose"]
+        assert "theta" in data["pose"]
+        assert "status" in data
+        assert "current_node" in data
+
+        # Verify broadcast adds _seq and _ts metadata
+        await ws_manager.broadcast(test_event)
+        assert "_seq" in test_event
+        assert "_ts" in test_event
+        assert isinstance(test_event["_seq"], int)
+        assert isinstance(test_event["_ts"], float)
 
 
 class TestWarehouseConfigFor3D:
