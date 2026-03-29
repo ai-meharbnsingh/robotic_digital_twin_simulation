@@ -287,11 +287,10 @@ class TestDeterministicValues:
         assert resp.json()["data_source"] == "simulated"
 
     async def test_exact_cell_count_at_1m(self, client: AsyncClient):
-        """At 1.0m resolution, cell count is deterministic from seed=42."""
+        """At 1.0m resolution, cell count is exactly 84 (seed=42, simple_grid)."""
         resp = await client.get("/api/analytics/heatmap?resolution=1.0")
         cell_count = resp.json()["cell_count"]
-        assert cell_count > 20, f"Expected >20 cells at 1.0m, got {cell_count}"
-        assert cell_count < 200, f"Expected <200 cells at 1.0m, got {cell_count}"
+        assert cell_count == 84, f"Expected exactly 84 cells at 1.0m, got {cell_count}"
 
     async def test_hottest_cell_intensity_is_1(self, client: AsyncClient):
         """The hottest cell must have intensity=1.0 (max normalization)."""

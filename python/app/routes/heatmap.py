@@ -8,6 +8,7 @@ or simulated data from warehouse config when services are unavailable.
 Phase 3: Heat Map Visualization.
 """
 
+import asyncio
 import math
 import time
 from typing import Optional
@@ -315,13 +316,19 @@ async def get_heatmap(
         if positions:
             data_source = "influxdb"
 
-    # 2. Try MongoDB telemetry (only if connected)
+    # 2. Try MongoDB telemetry (only if connected, with 200ms timeout)
     if positions is None:
         db = _get_db()
         if db is not None:
-            positions = await _get_positions_from_mongo(db, duration_hours)
-            if positions:
-                data_source = "mongodb"
+            try:
+                positions = await asyncio.wait_for(
+                    _get_positions_from_mongo(db, duration_hours),
+                    timeout=0.2,
+                )
+                if positions:
+                    data_source = "mongodb"
+            except (asyncio.TimeoutError, Exception):
+                positions = None
 
     # 3. Fall back to simulated data (instant, no I/O)
     if positions is None:
