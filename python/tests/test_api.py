@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 30
+        assert data["endpoints"] == 31
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -455,9 +455,11 @@ class TestEndpointCount:
             ("GET", "/api/stats/throughput"),
             # Reservations (1)
             ("GET", "/api/reservations/active"),
+            # Order Import (1)
+            ("POST", "/api/wes/orders/import"),
         ]
 
-        assert len(endpoints) == 30, f"Expected 30 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 31, f"Expected 31 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":
@@ -477,6 +479,10 @@ class TestEndpointCount:
                     resp = await client.post(path, json={"num_orders": 1})
                 elif "inject-fault" in path:
                     resp = await client.post(path, json={"fault_type": "test"})
+                elif "orders/import" in path:
+                    import io
+                    csv_data = b"source_node,destination_node\nPICK_1,DROP_1"
+                    resp = await client.post(path, files={"file": ("test.csv", io.BytesIO(csv_data), "text/csv")})
                 else:
                     resp = await client.post(path)
             elif method == "DELETE":

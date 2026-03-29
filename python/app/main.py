@@ -210,6 +210,7 @@ from app.routes.analytics import router as analytics_router
 from app.routes.events import router as events_router
 from app.routes.wcs import router as wcs_router
 from app.routes.wes import router as wes_router
+from app.routes.order_import import router as order_import_router
 from app.routes.simulation import router as simulation_router
 from app.routes.config_routes import router as config_router
 from app.routes.stats import router as stats_router
@@ -226,6 +227,7 @@ app.include_router(analytics_router)
 app.include_router(events_router)
 app.include_router(wcs_router)
 app.include_router(wes_router)
+app.include_router(order_import_router)
 app.include_router(simulation_router)
 app.include_router(config_router)
 app.include_router(stats_router)
@@ -271,7 +273,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 30,
+        "endpoints": 31,
     }
 
 
