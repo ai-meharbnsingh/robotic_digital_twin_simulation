@@ -698,4 +698,6 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 | 28 | GET | `/api/config/robots` | Robot config |
 | 29 | GET | `/api/stats/throughput` | Throughput stats |
 | 30 | GET | `/api/reservations/active` | Active reservations |
+| 31 | POST | `/api/wes/orders/import` | CSV order import |
+| 32 | GET | `/api/analytics/heatmap` | Traffic density heat map |
 | WS | WS | `/ws/fleet` | Real-time updates |
