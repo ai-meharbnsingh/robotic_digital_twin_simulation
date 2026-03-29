@@ -53,7 +53,7 @@ export function WesKpiPanel({ kpi }: Props) {
       if (!resp.ok) {
         setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: (data.detail as string) || 'Upload failed' }] })
       } else {
-        setResult(data as ImportResult)
+        setResult(data as unknown as ImportResult)
       }
     } catch {
       setResult({ imported: 0, tasks_created: 0, errors: [{ row: 0, error: 'Upload failed' }] })

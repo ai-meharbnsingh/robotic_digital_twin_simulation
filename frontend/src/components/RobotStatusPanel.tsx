@@ -1,4 +1,4 @@
-import type { Robot, RobotType } from '../types'
+import type { Robot } from '../types'
 
 interface RobotStatusPanelProps {
   robots: Robot[]
