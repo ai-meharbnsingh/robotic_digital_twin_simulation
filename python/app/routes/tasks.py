@@ -10,9 +10,11 @@ POST /api/tasks/{id}/cancel — cancel a running task
 import time
 import uuid
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+
+from app.auth import require_api_key
 
 router = APIRouter(prefix="/api/tasks", tags=["tasks"])
 
@@ -44,7 +46,7 @@ async def list_tasks():
         return []
 
 
-@router.post("")
+@router.post("", dependencies=[Depends(require_api_key)])
 async def create_task(task: TaskCreate):
     """Create a new task."""
     db = _get_db()
@@ -93,7 +95,7 @@ async def get_task(task_id: str):
         raise HTTPException(status_code=503, detail="Database error")
 
 
-@router.delete("/{task_id}")
+@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
 async def delete_task(task_id: str):
     """Delete a task (mark as cancelled if in progress)."""
     db = _get_db()
@@ -114,7 +116,7 @@ async def delete_task(task_id: str):
         raise HTTPException(status_code=503, detail="Database error")
 
 
-@router.post("/{task_id}/cancel")
+@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
 async def cancel_task(task_id: str):
     """Cancel a running task."""
     db = _get_db()

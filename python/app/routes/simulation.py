@@ -8,9 +8,11 @@ POST /api/simulation/inject-fault — inject a fault for testing
 
 import time
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+
+from app.auth import require_api_key
 
 router = APIRouter(prefix="/api/simulation", tags=["simulation"])
 
@@ -52,7 +54,7 @@ async def simulation_status():
     }
 
 
-@router.post("/start")
+@router.post("/start", dependencies=[Depends(require_api_key)])
 async def simulation_start():
     """Start the simulation."""
     state = _get_sim_state()
@@ -84,7 +86,7 @@ async def simulation_start():
     return {"status": "started", "started_at": new_state["started_at"]}
 
 
-@router.post("/stop")
+@router.post("/stop", dependencies=[Depends(require_api_key)])
 async def simulation_stop():
     """Stop the simulation."""
     state = _get_sim_state()
@@ -96,7 +98,7 @@ async def simulation_stop():
     return {"status": "stopped", "elapsed_s": state.get("elapsed_s", 0.0)}
 
 
-@router.post("/inject-fault")
+@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
 async def inject_fault(fault: FaultInjection):
     """Inject a fault into the simulation for testing resilience."""
     state = _get_sim_state()

@@ -4,9 +4,11 @@ POST /api/wes/inject-orders — inject orders into the system
 GET /api/wes/kpi — WES key performance indicators
 """
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 from pydantic import BaseModel
 from typing import Optional
+
+from app.auth import require_api_key
 
 router = APIRouter(prefix="/api/wes", tags=["wes"])
 
@@ -30,7 +32,7 @@ class OrderInjection(BaseModel):
     order_type: Optional[str] = "pick_and_drop"
 
 
-@router.post("/inject-orders")
+@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
 async def inject_orders(injection: OrderInjection):
     """Inject orders into the WES order generator."""
     db = _get_db()

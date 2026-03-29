@@ -88,11 +88,29 @@ if(GZ_MSGS_LIB)
 endif()
 
 # ---------------------------------------------------------------------------
+# Conveyor Belt Plugin
+# ---------------------------------------------------------------------------
+add_library(conveyor_belt SHARED conveyor_belt.cpp)
+
+target_link_libraries(conveyor_belt
+    PRIVATE
+        ${GZ_SIM_LIB}
+        ${GZ_PLUGIN_LIB}
+)
+
+if(GZ_TRANSPORT_LIB)
+    target_link_libraries(conveyor_belt PRIVATE ${GZ_TRANSPORT_LIB})
+endif()
+if(GZ_MSGS_LIB)
+    target_link_libraries(conveyor_belt PRIVATE ${GZ_MSGS_LIB})
+endif()
+
+# ---------------------------------------------------------------------------
 # Install
 # ---------------------------------------------------------------------------
-install(TARGETS lidar_sensor barcode_sensor
+install(TARGETS lidar_sensor barcode_sensor conveyor_belt
     LIBRARY DESTINATION lib/gazebo_plugins
     ARCHIVE DESTINATION lib/gazebo_plugins
 )
 
-message(STATUS "Gazebo plugins configured: lidar_sensor, barcode_sensor")
+message(STATUS "Gazebo plugins configured: lidar_sensor, barcode_sensor, conveyor_belt")

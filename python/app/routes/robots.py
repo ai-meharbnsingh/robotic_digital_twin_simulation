@@ -5,9 +5,11 @@ GET /api/robots/{id} — single robot detail
 POST /api/robots/{id}/command — send command to robot
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import Optional
+
+from app.auth import require_api_key
 
 router = APIRouter(prefix="/api/robots", tags=["robots"])
 
@@ -55,7 +57,7 @@ async def get_robot(robot_id: str):
         raise HTTPException(status_code=503, detail="Database error")
 
 
-@router.post("/{robot_id}/command")
+@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
 async def send_command(robot_id: str, cmd: RobotCommand):
     """Send a command to a specific robot. Writes to MongoDB command queue."""
     db = _get_db()

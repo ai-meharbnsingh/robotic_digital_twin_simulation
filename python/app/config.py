@@ -46,6 +46,9 @@ class Settings(BaseSettings):
     # --- FMS TCP ---
     fms_tcp_port: int = Field(default=65123)
 
+    # --- Auth ---
+    api_key: str = Field(default="", description="API key for write endpoints. Empty = no auth.")
+
     model_config = {"env_prefix": "", "case_sensitive": False}
 
 
