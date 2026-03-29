@@ -7,7 +7,7 @@ approval: never
 sandbox: read-only
 reasoning effort: medium
 reasoning summaries: none
-session id: 019d3882-30b8-7630-9228-80ac7190848f
+session id: 019d3888-c781-7971-82f3-358ab1dd3ebd
 --------
 user
 You are reviewing the Robotic Digital Twin Simulation project as an independent brutal auditor. Score 0-100, no mercy.
@@ -35,23 +35,26 @@ Start by reading: CLAUDE.md, EXECUTION_PLAN.md, python/app/main.py, cpp/include/
 Score each dimension. List every issue found with file:line references. Final score = sum of all dimensions. Write your full report to CODEX_SESSION6_AUDIT.md.
 mcp startup: no servers
 codex
-Reviewing the repository now as a Phase-style independent audit, starting with the six files you specified and then expanding to the related directories for each scoring dimension. I’ll verify claims directly from code/tests/configs and then compute a strict 0-100 score with file/line evidence.
+I’m running a full artifact-based audit now: I’ll read the required files first, then inspect each dimension with concrete evidence and line references, and compute a strict 0–100 score.
 exec
-/bin/zsh -lc 'pwd && ls -la' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'rg --files | wc -l' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     197
+exec
+/bin/zsh -lc 'pwd; ls -la' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
 /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation
-total 392
-drwxr-xr-x  42 meharban  staff   1344 Mar 29 13:01 .
+total 384
+drwxr-xr-x  42 meharban  staff   1344 Mar 29 13:08 .
 drwxr-xr-x  29 meharban  staff    928 Mar 29 12:44 ..
 drwxr-x---   3 meharban  staff     96 Mar 28 10:38 .cache
 -rw-r--r--   1 meharban  staff   1617 Mar 28 10:07 .env.example
-drwxr-xr-x  12 meharban  staff    384 Mar 29 12:58 .git
--rw-r--r--   1 meharban  staff    354 Mar 28 12:02 .gitignore
+drwxr-xr-x  12 meharban  staff    384 Mar 29 13:09 .git
+-rw-r--r--   1 meharban  staff    366 Mar 29 13:08 .gitignore
 drwxr-xr-x   6 meharban  staff    192 Mar 28 10:10 .pytest_cache
 -rw-r--r--   1 meharban  staff   3752 Mar 28 11:31 CLAUDE.md
 -rw-r--r--   1 meharban  staff    463 Mar 28 10:05 CMakeLists.txt
 -rw-r--r--   1 meharban  staff  13517 Mar 28 12:07 CODEX_BRUTAL_AUDIT.md
 -rw-r--r--   1 meharban  staff   3883 Mar 28 12:32 CODEX_REAUDIT.md
--rw-r--r--   1 meharban  staff   2824 Mar 29 13:02 CODEX_SESSION6_AUDIT.md
+-rw-r--r--   1 meharban  staff   2719 Mar 29 13:09 CODEX_SESSION6_AUDIT.md
 -rw-r--r--   1 meharban  staff   4941 Mar 29 01:37 COLD_START_CLOSED.md
 -rw-r--r--@  1 meharban  staff   7750 Mar 28 16:57 COLD_START_RCA_FINAL.md
 -rw-r--r--   1 meharban  staff   6980 Mar 28 14:14 COLD_START_TEST_REQUIREMENTS.md
@@ -59,11 +62,31 @@ drwxr-xr-x   6 meharban  staff    192 Mar 28 10:10 .pytest_cache
 -rw-r--r--   1 meharban  staff  10353 Mar 28 11:44 GEMINI_FULL_AUDIT.md
 -rw-r--r--   1 meharban  staff   5609 Mar 28 12:28 GEMINI_REAUDIT.md
 exec
-/bin/zsh -lc 'rg --files | wc -l' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     197
+/bin/zsh -lc 'rg --files | head -n 200' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+CLAUDE.md
+CODEX_BRUTAL_AUDIT.md
+GEMINI_REAUDIT.md
+PHASE3_KIMI_AUDIT.md
+GEMINI_SESSION6_AUDIT.md
+CODEX_REAUDIT.md
+scripts/generate_realistic_warehouse.py
+configs/behavior_trees/default_agv.xml
+configs/behavior_trees/default_amr.xml
+configs/robots/differential_drive.yaml
+configs/robots/README.md
+configs/robots/unidirectional.yaml
+configs/README.md
+configs/warehouses/README.md
+configs/warehouses/realistic.json
+configs/warehouses/simple_grid.json
+configs/warehouses/botvalley.json
+cpp/src/apps/fms_server.cpp
+cpp/src/fleet/FleetManager.cpp
+cpp/src/fleet/TaskManager.cpp
+codex
+I confirmed the repository has all major layers present; next I’m reading the mandated seed files and then drilling into tests, configs, Docker, and intelligence wiring for evidence-based scoring.
 exec
-/bin/zsh -lc "nl -ba EXECUTION_PLAN.md | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba CLAUDE.md | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba CLAUDE.md' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	# Robotic Digital Twin Simulation — Project Rules
      2	
      3	## NO `rm` COMMAND — EVER
@@ -84,7 +107,52 @@ exec
     18	6. **External review after every phase.** Kimi, Gemini, or Codex. No skipping. Fix all findings before next phase.
     19	
     20	7. **Tests run and pass.** gtest for C++. pytest for Python. Playwright for E2E. All must actually execute.
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/fleet/FleetManager.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/main.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/fleet/FleetManager.h — The 15Hz orchestration loop
+     5	//
+     6	// Ties together ALL Phase 1-6 components:
+     7	//   - GraphMap (navigation)
+     8	//   - AStar (pathfinding)
+     9	//   - NodeReservation (conflict prevention)
+    10	//   - RobotStateMachine (state tracking)
+    11	//   - BatteryModel (energy)
+    12	//   - MotionController (velocity)
+    13	//   - BTEngine (behavior trees)
+    14	//   - TCPServer (robot comms)
+    15	//   - RESTServer (HTTP API)
+    16	//   - Timer (15Hz enforcement)
+    17	//   - TaskManager (task allocation)
+    18	//   - COPPController (cooperative paths)
+    19	//
+    20	// The main loop (67ms budget per cycle):
  succeeded in 0ms:
+     1	"""
+     2	FastAPI application — the Python API + Intelligence layer.
+     3	
+     4	On startup:
+     5	  - Loads warehouse config from JSON
+     6	  - Loads robot config from YAML
+     7	  - Connects to MongoDB (REAL connection, fails if unavailable)
+     8	  - Initializes io-gita ZoneIdentifier + ColdStartRecovery
+     9	  - Initializes SG BottleneckPredictor
+    10	  - Initializes WES OrderGenerator + KPITracker
+    11	  - Connects to Redis (graceful if unavailable)
+    12	
+    13	/health endpoint ACTUALLY checks MongoDB, Redis, InfluxDB connectivity.
+    14	No hardcoded True values.
+    15	"""
+    16	
+    17	import logging
+    18	import time
+    19	from contextlib import asynccontextmanager
+    20	from pathlib import Path
+exec
+/bin/zsh -lc 'nl -ba EXECUTION_PLAN.md' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	# Execution Plan — Phase by Phase TODO List
      2	
      3	Every task has: RED (write test first) → GREEN (make it pass) → Kimi Review.
@@ -106,97 +174,7 @@ exec
     19	- [x] 1.9 Create `docker/Dockerfile` — multi-stage: C++ build + Python runtime
     20	- [x] 1.10 Create `docker/docker-compose.yml` — fms + mongodb + rabbitmq + redis + influxdb + grafana
 exec
-/bin/zsh -lc "nl -ba python/app/main.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	FastAPI application — the Python API + Intelligence layer.
-     3	
-     4	On startup:
-     5	  - Loads warehouse config from JSON
-     6	  - Loads robot config from YAML
-     7	  - Connects to MongoDB (REAL connection, fails if unavailable)
-     8	  - Initializes io-gita ZoneIdentifier + ColdStartRecovery
-     9	  - Initializes SG BottleneckPredictor
-    10	  - Initializes WES OrderGenerator + KPITracker
-    11	  - Connects to Redis (graceful if unavailable)
-    12	
-    13	/health endpoint ACTUALLY checks MongoDB, Redis, InfluxDB connectivity.
-    14	No hardcoded True values.
-    15	"""
-    16	
-    17	import logging
-    18	import time
-    19	from contextlib import asynccontextmanager
-    20	from pathlib import Path
-codex
-I’ve confirmed the initial required files and already spotted high-impact security/config concerns in `main.py`; next I’m extracting the rest of the API wiring, C++ headers, Docker, tests, and intelligence modules for line-accurate scoring.
-exec
-/bin/zsh -lc "nl -ba python/app/main.py | sed -n '261,520p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-   261	app.include_router(maps_router)
-   262	app.include_router(iogita_router)
-   263	app.include_router(telemetry_router)
-   264	app.include_router(analytics_router)
-   265	app.include_router(events_router)
-   266	app.include_router(wcs_router)
-   267	app.include_router(wes_router)
-   268	app.include_router(simulation_router)
-   269	app.include_router(config_router)
-   270	app.include_router(stats_router)
-   271	app.include_router(reservations_router)
-   272	app.include_router(ws_router)
-   273	
-   274	
-   275	@app.get("/health")
-   276	async def health_check():
-   277	    """
-   278	    Health endpoint — ACTUALLY checks each service.
-   279	
-   280	    Returns a dict with boolean status for each dependency.
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/fleet/FleetManager.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/fleet/FleetManager.h — The 15Hz orchestration loop
-     5	//
-     6	// Ties together ALL Phase 1-6 components:
-     7	//   - GraphMap (navigation)
-     8	//   - AStar (pathfinding)
-     9	//   - NodeReservation (conflict prevention)
-    10	//   - RobotStateMachine (state tracking)
-    11	//   - BatteryModel (energy)
-    12	//   - MotionController (velocity)
-    13	//   - BTEngine (behavior trees)
-    14	//   - TCPServer (robot comms)
-    15	//   - RESTServer (HTTP API)
-    16	//   - Timer (15Hz enforcement)
-    17	//   - TaskManager (task allocation)
-    18	//   - COPPController (cooperative paths)
-    19	//
-    20	// The main loop (67ms budget per cycle):
-exec
-/bin/zsh -lc "nl -ba docker/Dockerfile | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	# ============================================================
-     2	# Stage 1: C++ Builder — compile FMS server with vcpkg deps
-     3	# ============================================================
-     4	FROM ubuntu:22.04 AS cpp-builder
-     5	
-     6	# Prevent interactive prompts during apt install
-     7	ENV DEBIAN_FRONTEND=noninteractive
-     8	
-     9	# Install build toolchain
-    10	RUN apt-get update && apt-get install -y --no-install-recommends \
-    11	    build-essential \
-    12	    ca-certificates \
-    13	    cmake \
-    14	    git \
-    15	    curl \
-    16	    zip \
-    17	    unzip \
-    18	    tar \
-    19	    pkg-config \
-    20	    libssl-dev \
-exec
-/bin/zsh -lc "nl -ba python/tests/test_api.py | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba python/tests/test_api.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
      2	Test ALL 34 API endpoints with real assertions.
      3	
@@ -218,76 +196,47 @@ exec
     19	    async with lifespan(app):
     20	        transport = ASGITransport(app=app)
 exec
-/bin/zsh -lc "nl -ba python/tests/test_api.py | sed -n '321,700p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-   321	    async def test_list_lanes(self, client: AsyncClient):
-   322	        """GET /api/wcs/lanes — returns lane list."""
-   323	        resp = await client.get("/api/wcs/lanes")
-   324	        assert resp.status_code == 200
-   325	        data = resp.json()
-   326	        assert isinstance(data, list)
-   327	
-   328	
-   329	# ─── 11. WES (2 endpoints) ───
-   330	
-   331	
-   332	class TestWES:
-   333	    async def test_inject_orders(self, client: AsyncClient):
-   334	        """POST /api/wes/inject-orders — injects orders."""
-   335	        resp = await client.post("/api/wes/inject-orders", json={"num_orders": 3})
-   336	        assert resp.status_code == 200
-   337	        data = resp.json()
-   338	        assert "injected" in data
-   339	        # If WES is loaded, should inject 3 orders
-   340	        if data["injected"] > 0:
-exec
-/bin/zsh -lc 'rg --files cpp/include/rdt | sort' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-cpp/include/rdt/behavior/ActionNodes.h
-cpp/include/rdt/behavior/BTEngine.h
-cpp/include/rdt/behavior/ConditionNodes.h
-cpp/include/rdt/core/Config.h
-cpp/include/rdt/core/Logger.h
-cpp/include/rdt/core/Timer.h
-cpp/include/rdt/core/Types.h
-cpp/include/rdt/fleet/AgentInterface.h
-cpp/include/rdt/fleet/COPPController.h
-cpp/include/rdt/fleet/FleetManager.h
-cpp/include/rdt/fleet/TaskManager.h
-cpp/include/rdt/navigation/AStar.h
-cpp/include/rdt/navigation/GraphMap.h
-cpp/include/rdt/navigation/NodeReservation.h
-cpp/include/rdt/navigation/QuadTree.h
-cpp/include/rdt/network/ProtocolV1.h
-cpp/include/rdt/network/RESTServer.h
-cpp/include/rdt/network/TCPServer.h
-cpp/include/rdt/robot/BatteryModel.h
-cpp/include/rdt/robot/MotionController.h
-exec
-/bin/zsh -lc "rg --files python/app/routes python/intelligence frontend/src configs docker cpp/tests python/tests | sort | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-configs/README.md
-configs/behavior_trees/default_agv.xml
-configs/behavior_trees/default_amr.xml
-configs/robots/README.md
-configs/robots/differential_drive.yaml
-configs/robots/unidirectional.yaml
-configs/warehouses/README.md
-configs/warehouses/botvalley.json
-configs/warehouses/realistic.json
-configs/warehouses/simple_grid.json
-cpp/tests/CMakeLists.txt
-cpp/tests/test_astar.cpp
-cpp/tests/test_battery.cpp
-cpp/tests/test_bt.cpp
-cpp/tests/test_config.cpp
-cpp/tests/test_fleet.cpp
-cpp/tests/test_graph.cpp
-cpp/tests/test_hello.cpp
-cpp/tests/test_logger.cpp
-cpp/tests/test_motion.cpp
+/bin/zsh -lc 'nl -ba docker/Dockerfile' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# ============================================================
+     2	# Stage 1: C++ Builder — compile FMS server with vcpkg deps
+     3	# ============================================================
+     4	FROM ubuntu:22.04 AS cpp-builder
+     5	
+     6	# Prevent interactive prompts during apt install
+     7	ENV DEBIAN_FRONTEND=noninteractive
+     8	
+     9	# Install build toolchain
+    10	RUN apt-get update && apt-get install -y --no-install-recommends \
+    11	    build-essential \
+    12	    ca-certificates \
+    13	    cmake \
+    14	    git \
+    15	    curl \
+    16	    zip \
+    17	    unzip \
+    18	    tar \
+    19	    pkg-config \
+    20	    libssl-dev \
 codex
-I’m now auditing C++ quality in depth: compiler flags, all public headers, and key implementations for concurrency/RAII claims before scoring architecture and code quality.
+I’ve read the required starting set; now I’m validating claims against implementation details (router contracts, C++ build flags/threading patterns, intelligence internals, and Docker compose health orchestration).
 exec
-/bin/zsh -lc "nl -ba cpp/tests/CMakeLists.txt | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/CMakeLists.txt | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba CMakeLists.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba cpp/CMakeLists.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	cmake_minimum_required(VERSION 3.21)
+     2	project(robotic_digital_twin VERSION 0.1.0 LANGUAGES CXX)
+     3	
+     4	set(CMAKE_CXX_STANDARD 17)
+     5	set(CMAKE_CXX_STANDARD_REQUIRED ON)
+     6	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+     7	
+     8	# Use vcpkg toolchain if VCPKG_ROOT is set
+     9	if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+    10	    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+    11	        CACHE STRING "Vcpkg toolchain file")
+    12	endif()
+    13	
+    14	add_subdirectory(cpp)
+ succeeded in 0ms:
      1	# ──────────────────────────────────────────────────────────
      2	# cpp/CMakeLists.txt — C++ build for robotic_digital_twin
      3	# ──────────────────────────────────────────────────────────
@@ -308,407 +257,52 @@ exec
     18	# BTCPP has a compile error (lexy typo) in v4.6.2.
     19	# We use a lightweight custom BT engine instead (src/behavior/).
     20	# It parses the same BTCPP v4 XML format using tinyxml2.
- succeeded in 0ms:
-     1	# ──────────────────────────────────────────────────────────
-     2	# cpp/tests/CMakeLists.txt — GTest test runner
-     3	# ──────────────────────────────────────────────────────────
-     4	
-     5	add_executable(rdt_tests
-     6	    test_hello.cpp
-     7	    test_logger.cpp
-     8	    test_timer.cpp
-     9	    test_types.cpp
-    10	    test_config.cpp
-    11	    test_reservation.cpp
-    12	    test_graph.cpp
-    13	    test_astar.cpp
-    14	    test_quadtree.cpp
-    15	    test_robot_state.cpp
-    16	    test_motion.cpp
-    17	    test_battery.cpp
-    18	    test_obstacle.cpp
-    19	    test_bt.cpp
-    20	    test_protocol.cpp
 exec
-/bin/zsh -lc "nl -ba CMakeLists.txt | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	cmake_minimum_required(VERSION 3.21)
-     2	project(robotic_digital_twin VERSION 0.1.0 LANGUAGES CXX)
+/bin/zsh -lc 'nl -ba python/app/config.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba docker/docker-compose.yml' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/auth.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# ============================================================
+     2	# Robotic Digital Twin — Full Stack Services
+     3	# ============================================================
+     4	# Usage: cp docker/.env.docker.example docker/.env && docker compose -f docker/docker-compose.yml up --build
+     5	# All secrets are read from docker/.env (not committed to git).
+     6	
+     7	services:
+     8	  # ── Main application: C++ FMS + Python API ──
+     9	  rdt:
+    10	    build:
+    11	      context: ..
+    12	      dockerfile: docker/Dockerfile
+    13	    container_name: rdt-app
+    14	    ports:
+    15	      - "65123:65123"  # C++ TCP server (robot protocol V1)
+    16	      - "7012:7012"    # C++ REST server (fleet API)
+    17	      - "8029:8029"    # Python FastAPI (API + intelligence)
+    18	    depends_on:
+    19	      mongodb:
+    20	        condition: service_healthy
+ succeeded in 0ms:
+     1	"""
+     2	API key authentication for write endpoints.
      3	
-     4	set(CMAKE_CXX_STANDARD 17)
-     5	set(CMAKE_CXX_STANDARD_REQUIRED ON)
-     6	set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-     7	
-     8	# Use vcpkg toolchain if VCPKG_ROOT is set
-     9	if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-    10	    set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-    11	        CACHE STRING "Vcpkg toolchain file")
-    12	endif()
-    13	
-    14	add_subdirectory(cpp)
-exec
-/bin/zsh -lc "for f in cpp/include/rdt/*.h; do echo '===== '\""'$f"; nl -ba "$f" | sed -n '"'1,120p'; done" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-===== cpp/include/rdt/version.h
-     1	#pragma once
-     2	
-     3	#define RDT_VERSION_MAJOR 0
-     4	#define RDT_VERSION_MINOR 1
-     5	#define RDT_VERSION_PATCH 0
-exec
-/bin/zsh -lc "for f in cpp/include/rdt/**/*.h; do echo '===== '\""'$f"; nl -ba "$f" | sed -n '"'1,220p'; done" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-===== cpp/include/rdt/behavior/ActionNodes.h
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/behavior/ActionNodes.h — BT action node handlers
-     5	//
-     6	// Each handler takes a RobotStateMachine reference (+ optional
-     7	// BatteryModel, ObstacleHandler) and returns BTStatus.
-     8	//
-     9	// Action handlers:
-    10	//   NavigateToNode    — transitions to MOVING, returns RUNNING until done
-    11	//   DockAtCharger     — transitions to DOCKING
-    12	//   StartCharging     — transitions DOCKING→CHARGING, starts battery charge
-    13	//   UndockFromCharger — transitions CHARGING→IDLE (via stop charging)
-    14	//   ExecuteAttachment — LOADING or UNLOADING based on action_code
-    15	//   ReportTaskComplete— marks task done, returns SUCCESS
-    16	//   SendActionCode    — generic action code dispatch (reset_errors, etc.)
-    17	//   WaitSeconds       — returns RUNNING for N seconds
-    18	//   WaitUntilCharged  — returns RUNNING until battery >= target_pct
-    19	//   AcceptTask        — accepts a task assignment
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/core/Timer.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/include/rdt/core/Types.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/core/Timer.h — High-resolution cycle timer for the FMS main loop
-     5	// ──────────────────────────────────────────────────────────
+     4	When API_KEY env var is set, all mutating endpoints (POST, PUT, DELETE)
+     5	require the header: X-API-Key: <key>
      6	
-     7	#include <chrono>
-     8	
-     9	namespace rdt {
-    10	namespace core {
-    11	
-    12	/// @brief Deterministic cycle timer using std::chrono::steady_clock.
-    13	///
-    14	/// Designed for the 15Hz FMS main loop (67ms per cycle).
-    15	///
-    16	/// Usage:
-    17	/// @code
-    18	///     Timer timer;
-    19	///     while (running) {
-    20	///         timer.tick();
- succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/core/Types.h — Core domain types for the FMS
-     5	//
-     6	// All structs provide operator== for testing and
-     7	// to_json() / from_json() for jsoncpp serialization.
-     8	// ──────────────────────────────────────────────────────────
+     7	When API_KEY is empty (default), auth is disabled (open simulation mode).
+     8	"""
      9	
-    10	#include <string>
-    11	#include <vector>
-    12	#include <json/json.h>
-    13	
-    14	namespace rdt {
-    15	
-    16	// ── Pose ────────────────────────────────────────────────
-    17	
-    18	struct Pose {
-    19	    double x     = 0.0;
-    20	    double y     = 0.0;
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/fleet/AgentInterface.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/include/rdt/fleet/TaskManager.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	// ──────────────────────────────────────────────────────────
-     2	// rdt/fleet/AgentInterface.h — Per-robot tracking interface
-     3	//
-     4	// Wraps AgentState with query/mutation methods so callers
-     5	// don't reach into struct internals.  FleetManager owns
-     6	// AgentInterface instances (one per robot).
-     7	// ──────────────────────────────────────────────────────────
-     8	#pragma once
-     9	
-    10	#include <string>
-    11	#include <vector>
-    12	#include <cstdint>
-    13	
-    14	#include "rdt/core/Types.h"
-    15	#include "rdt/core/Config.h"
-    16	#include "rdt/robot/RobotState.h"
-    17	#include "rdt/robot/BatteryModel.h"
-    18	#include "rdt/network/ProtocolV1.h"
-    19	
-    20	#include <json/json.h>
- succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/fleet/TaskManager.h — Task allocation and lifecycle
-     5	//
-     6	// FIFO allocation with priority ordering: highest priority
-     7	// first, then oldest within same priority level.
-     8	//
-     9	// 9-check validation before assignment:
-    10	//   1. Task exists
-    11	//   2. Task not already assigned
-    12	//   3. Robot is IDLE
-    13	//   4. Robot battery > critical
-    14	//   5. Source node exists in graph
-    15	//   6. Dest node exists in graph
-    16	//   7. Path exists (A* check)
-    17	//   8. No node reservation conflicts
-    18	//   9. Robot type compatible with task type
-    19	// ──────────────────────────────────────────────────────────
-    20	
-codex
-Header audit is underway; next I’m checking navigation/fleet/network headers plus C++ implementations to validate whether the thread-safety and lifecycle guarantees in interfaces are actually honored.
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/navigation/GraphMap.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/include/rdt/fleet/COPPController.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/navigation/GraphMap.h — Warehouse graph representation
-     5	//
-     6	// Builds an adjacency list from WarehouseConfig (nodes + edges).
-     7	// Used by A* and other path planners.
-     8	// ──────────────────────────────────────────────────────────
-     9	
-    10	#include <string>
-    11	#include <vector>
-    12	#include <unordered_map>
-    13	
-    14	#include "rdt/core/Types.h"
-    15	#include "rdt/core/Config.h"
-    16	
-    17	namespace rdt {
-    18	
-    19	class GraphMap {
-    20	public:
- succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/fleet/COPPController.h — Cooperative Path Planning
-     5	//
-     6	// Plans non-conflicting paths for multiple robots using:
-     7	//   1. A* for each robot individually
-     8	//   2. NodeReservation to detect conflicts
-     9	//   3. Re-planning with penalty on conflicting nodes
-    10	//
-    11	// Full ILP optimization is deferred — this is the greedy
-    12	// sequential planner that ships in Phase 7.
-    13	// ──────────────────────────────────────────────────────────
-    14	
-    15	#include <string>
-    16	#include <vector>
-    17	#include <unordered_map>
-    18	#include <unordered_set>
-    19	
-    20	#include "rdt/navigation/GraphMap.h"
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/navigation/NodeReservation.h | sed -n '1,300p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/navigation/NodeReservation.h — Greedy node reservation
-     5	// with mutual exclusion, lookahead, and deadlock detection.
-     6	//
-     7	// Phase 3: greedy reservation table.
-     8	// Phase 7: OSQP-based ILP optimization replaces resolve logic.
-     9	// ──────────────────────────────────────────────────────────
-    10	
-    11	#include <string>
-    12	#include <vector>
-    13	#include <optional>
-    14	#include <unordered_map>
-    15	#include <unordered_set>
-    16	#include <mutex>
-    17	
-    18	namespace rdt {
-    19	namespace nav {
-    20	
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/navigation/AStar.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/navigation/AStar.h — A* pathfinding on GraphMap
-     5	//
-     6	// Supports Manhattan, Euclidean, and Chebyshev heuristics.
-     7	// Optional turn-cost penalty for direction changes.
-     8	// ──────────────────────────────────────────────────────────
-     9	
-    10	#include <string>
-    11	#include <vector>
+    10	from fastapi import Depends, HTTPException, Security
+    11	from fastapi.security import APIKeyHeader
     12	
-    13	#include "rdt/navigation/GraphMap.h"
+    13	from app.config import get_settings
     14	
-    15	namespace rdt {
+    15	_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
     16	
-    17	/// Heuristic function selector for A*
-    18	enum class Heuristic {
-    19	    MANHATTAN,
-    20	    EUCLIDEAN,
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/navigation/QuadTree.h | sed -n '1,300p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/include/rdt/core/Logger.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/navigation/QuadTree.h — Spatial index for map nodes
-     5	//
-     6	// Supports nearest-node queries and radius searches.
-     7	// Can be built from a GraphMap for spatial lookups.
-     8	// ──────────────────────────────────────────────────────────
-     9	
-    10	#include <string>
-    11	#include <vector>
-    12	#include <memory>
-    13	#include <limits>
-    14	
-    15	#include "rdt/navigation/GraphMap.h"
-    16	
-    17	namespace rdt {
-    18	
-    19	/// A point stored in the quad tree
-    20	struct QTPoint {
- succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/core/Logger.h — Thread-safe spdlog wrapper with JSON file output
-     5	// ──────────────────────────────────────────────────────────
-     6	
-     7	#include <string>
-     8	#include <memory>
-     9	#include <spdlog/spdlog.h>
-    10	#include <spdlog/sinks/stdout_color_sinks.h>
-    11	#include <spdlog/sinks/basic_file_sink.h>
-    12	
-    13	namespace rdt {
-    14	namespace core {
-    15	
-    16	/// @brief Centralized logger for the Robotic Digital Twin system.
-    17	///
-    18	/// Wraps spdlog with two sinks:
-    19	///   - Console: human-readable colored output
-    20	///   - File (optional): structured JSON format for machine parsing
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/fleet/FleetManager.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#pragma once
-     2	
-     3	// ──────────────────────────────────────────────────────────
-     4	// rdt/fleet/FleetManager.h — The 15Hz orchestration loop
-     5	//
-     6	// Ties together ALL Phase 1-6 components:
-     7	//   - GraphMap (navigation)
-     8	//   - AStar (pathfinding)
-     9	//   - NodeReservation (conflict prevention)
-    10	//   - RobotStateMachine (state tracking)
-    11	//   - BatteryModel (energy)
-    12	//   - MotionController (velocity)
-    13	//   - BTEngine (behavior trees)
-    14	//   - TCPServer (robot comms)
-    15	//   - RESTServer (HTTP API)
-    16	//   - Timer (15Hz enforcement)
-    17	//   - TaskManager (task allocation)
-    18	//   - COPPController (cooperative paths)
-    19	//
-    20	// The main loop (67ms budget per cycle):
-exec
-/bin/zsh -lc "nl -ba cpp/src/fleet/FleetManager.cpp | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	// ──────────────────────────────────────────────────────────
-     2	// rdt/fleet/FleetManager.cpp — The 15Hz orchestration loop
-     3	//
-     4	// Ties together ALL Phase 1-6 components into a single
-     5	// deterministic cycle that runs at 15Hz (67ms budget).
-     6	// ──────────────────────────────────────────────────────────
-     7	
-     8	#include "rdt/fleet/FleetManager.h"
-     9	#include "rdt/core/Logger.h"
-    10	
-    11	#include <json/json.h>
-    12	#include <chrono>
-    13	#include <fstream>
-    14	#include <sstream>
-    15	
-    16	namespace rdt {
-    17	namespace fleet {
-    18	
-    19	FleetManager::FleetManager(const WarehouseConfig& warehouse_config,
-    20	                           const std::vector<RobotConfig>& robot_configs)
-exec
-/bin/zsh -lc "nl -ba cpp/src/network/TCPServer.cpp | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	// ──────────────────────────────────────────────────────────
-     2	// rdt/network/TCPServer.cpp — Synchronous TCP server (POSIX)
-     3	//
-     4	// Uses plain POSIX sockets for Phase 6 simplicity.
-     5	// Async ASIO upgrade planned for Phase 7.
-     6	// ──────────────────────────────────────────────────────────
-     7	
-     8	#include "rdt/network/TCPServer.h"
-     9	#include "rdt/core/Logger.h"
-    10	
-    11	#include <sys/socket.h>
-    12	#include <netinet/in.h>
-    13	#include <arpa/inet.h>
-    14	#include <unistd.h>
-    15	#include <fcntl.h>
-    16	#include <cerrno>
-    17	#include <cstring>
-    18	#include <sstream>
-    19	
-    20	namespace rdt {
-exec
-/bin/zsh -lc "nl -ba cpp/src/fleet/AgentInterface.cpp | sed -n '1,300p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba cpp/src/network/RESTServer.cpp | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	// ──────────────────────────────────────────────────────────
-     2	// AgentInterface.cpp — Per-robot tracking implementation
-     3	// ──────────────────────────────────────────────────────────
-     4	
-     5	#include "rdt/fleet/AgentInterface.h"
-     6	
-     7	namespace rdt {
-     8	namespace fleet {
-     9	
-    10	AgentInterface::AgentInterface(const std::string& robot_id,
-    11	                               const RobotConfig& config)
-    12	    : id_(robot_id), config_(config) {}
-    13	
-    14	double AgentInterface::batteryPct() const {
-    15	    return last_telemetry_.battery_pct;
-    16	}
     17	
-    18	bool AgentInterface::isCriticalBattery() const {
-    19	    return batteryPct() < static_cast<double>(config_.battery.critical_threshold_pct);
-    20	}
+    18	async def require_api_key(
+    19	    api_key: str | None = Security(_api_key_header),
+    20	) -> None:
  succeeded in 0ms:
-     1	// ──────────────────────────────────────────────────────────
-     2	// rdt/network/RESTServer.cpp — Minimal HTTP/1.1 GET server
-     3	//
-     4	// Phase 6: POSIX sockets, synchronous accept, per-request
-     5	// thread. Supports GET only. Returns JSON.
-     6	// ──────────────────────────────────────────────────────────
-     7	
-     8	#include "rdt/network/RESTServer.h"
-     9	#include "rdt/core/Logger.h"
-    10	
-    11	#include <sys/socket.h>
-    12	#include <netinet/in.h>
-    13	#include <arpa/inet.h>
-    14	#include <unistd.h>
-    15	#include <cerrno>
-    16	#include <cstring>
-    17	#include <sstream>
-    18	#include <algorithm>
-    19	
-    20	namespace rdt {
-exec
-/bin/zsh -lc "nl -ba python/app/config.py | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
      2	Configuration loader for the Robotic Digital Twin Simulation.
      3	
@@ -730,15 +324,204 @@ exec
     19	# Project root: robotic_digital_twin_simulation/
     20	PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 exec
-/bin/zsh -lc "for f in python/app/routes/*.py; do echo '===== '\""'$f"; nl -ba "$f" | sed -n '"'1,260p'; done" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-===== python/app/routes/__init__.py
+/bin/zsh -lc "rg -n \"allow_origins|APIKey|X-API-Key|Depends\\(|security|auth|Authorization|CORSMiddleware\" python/app -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/app/routes/robots.py:12:from app.auth import require_api_key
+python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
+python/app/routes/wes.py:11:from app.auth import require_api_key
+python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:17:from app.auth import require_api_key
+python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
+python/app/routes/iogita.py:10:from app.auth import require_api_key
+python/app/routes/iogita.py:77:@router.post("/cold-start/{robot_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:15:from app.auth import require_api_key
+python/app/routes/simulation.py:57:@router.post("/start", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:89:@router.post("/stop", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:101:@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
+python/app/main.py:26:from fastapi.middleware.cors import CORSMiddleware
+python/app/main.py:233:    CORSMiddleware,
+python/app/main.py:234:    allow_origins=["*"],
+python/app/main.py:237:    allow_headers=["X-API-Key", "Content-Type"],
+python/app/config.py:50:    api_key: str = Field(default="", description="API key for write endpoints. Empty = no auth.")
+python/app/auth.py:2:API key authentication for write endpoints.
+exec
+/bin/zsh -lc 'for f in python/intelligence/iogita/*.py python/intelligence/sg_prediction/*.py; do wc -l "$f"; done | sort -n' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+      13 python/intelligence/sg_prediction/__init__.py
+      16 python/intelligence/iogita/__init__.py
+     122 python/intelligence/sg_prediction/state_encoder.py
+     132 python/intelligence/iogita/fleet_atlas.py
+     140 python/intelligence/sg_prediction/sg_engine.py
+     177 python/intelligence/sg_prediction/bottleneck_predictor.py
+     181 python/intelligence/iogita/cold_start.py
+     961 python/intelligence/iogita/zone_identifier.py
+exec
+/bin/zsh -lc 'for f in python/app/routes/*.py; do wc -l "$f"; done | sort -n' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+       6 python/app/routes/__init__.py
+      23 python/app/routes/config_routes.py
+      33 python/app/routes/reservations.py
+      39 python/app/routes/telemetry.py
+      42 python/app/routes/wcs.py
+      43 python/app/routes/events.py
+      61 python/app/routes/stats.py
+      86 python/app/routes/fleet.py
+      92 python/app/routes/robots.py
+      99 python/app/routes/wes.py
+     105 python/app/routes/iogita.py
+     113 python/app/routes/maps.py
+     117 python/app/routes/analytics.py
+     126 python/app/routes/simulation.py
+     145 python/app/routes/tasks.py
+exec
+/bin/zsh -lc 'for f in frontend/src/*.tsx frontend/src/*.ts frontend/src/hooks/*.ts frontend/src/components/*.tsx; do wc -l "$f"; done | sort -n' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+       1 frontend/src/vite-env.d.ts
+      10 frontend/src/main.tsx
+      63 frontend/src/hooks/useApi.ts
+      67 frontend/src/components/BatteryLevels.tsx
+      68 frontend/src/components/IoGitaZones.tsx
+      74 frontend/src/components/RobotStatusPanel.tsx
+      80 frontend/src/components/SGPredictions.tsx
+      87 frontend/src/components/TaskQueue.tsx
+      98 frontend/src/hooks/useFleetWebSocket.ts
+     133 frontend/src/App.tsx
+     146 frontend/src/components/WarehouseGrid.tsx
+     178 frontend/src/types.ts
+codex
+I’m now verifying endpoint behavior and auth/error handling route-by-route, then I’ll cross-check intelligence internals (Hopfield ODE, ColdStartRecovery, FleetAtlas wiring) and frontend runtime URL handling.
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/fleet.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
-     2	Route module — all 34 API endpoints for the Robotic Digital Twin.
-     3	
-     4	Each router reads from MongoDB via motor async driver.
-     5	Graceful degradation: if MongoDB unavailable, return empty data with 200.
+     2	Fleet status endpoint.
+     3	GET /api/fleet/status — aggregate fleet overview from MongoDB.
+     4	GET /api/fleet/atlas — fleet atlas zone snapshot (io-gita).
+     5	"""
+     6	
+     7	import logging
+     8	
+     9	from fastapi import APIRouter
+    10	
+    11	logger = logging.getLogger(__name__)
+    12	router = APIRouter(prefix="/api/fleet", tags=["fleet"])
+    13	
+    14	
+    15	def _get_db():
+    16	    """Get MongoDB database from app state. Returns None if unavailable."""
+    17	    from app.main import app_state
+    18	    return app_state.get("mongo_db")
+    19	
+    20	
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/tasks.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Task endpoints.
+     3	GET /api/tasks — list all tasks
+     4	POST /api/tasks — create a new task
+     5	GET /api/tasks/{id} — single task detail
+     6	DELETE /api/tasks/{id} — delete/cancel a task
+     7	POST /api/tasks/{id}/cancel — cancel a running task
+     8	"""
+     9	
+    10	import time
+    11	import uuid
+    12	
+    13	from fastapi import APIRouter, Depends, HTTPException
+    14	from pydantic import BaseModel
+    15	from typing import Optional
+    16	
+    17	from app.auth import require_api_key
+    18	
+    19	router = APIRouter(prefix="/api/tasks", tags=["tasks"])
+    20	
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/maps.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Map endpoints.
+     3	GET /api/map — full map (nodes + edges + zones)
+     4	GET /api/map/nodes — list nodes
+     5	GET /api/map/path — compute path between two nodes (A* from MongoDB)
+     6	GET /api/map/zones — list zones
+     7	"""
+     8	
+     9	from fastapi import APIRouter, Query
+    10	
+    11	router = APIRouter(prefix="/api/map", tags=["map"])
+    12	
+    13	
+    14	def _get_warehouse_config() -> dict:
+    15	    from app.main import app_state
+    16	    return app_state.get("warehouse_config") or {}
+    17	
+    18	
+    19	def _get_db():
+    20	    from app.main import app_state
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/iogita.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	io-gita endpoints.
+     3	GET /api/iogita/status — io-gita intelligence layer status
+     4	GET /api/iogita/zones — zone identification results
+     5	POST /api/iogita/cold-start/{id} — trigger cold start recovery for a robot
      6	"""
-===== python/app/routes/analytics.py
+     7	
+     8	from fastapi import APIRouter, Depends, HTTPException
+     9	
+    10	from app.auth import require_api_key
+    11	
+    12	router = APIRouter(prefix="/api/iogita", tags=["iogita"])
+    13	
+    14	
+    15	def _get_db():
+    16	    from app.main import app_state
+    17	    return app_state.get("mongo_db")
+    18	
+    19	
+    20	def _get_iogita():
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/robots.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Robot endpoints.
+     3	GET /api/robots — list all robots
+     4	GET /api/robots/{id} — single robot detail
+     5	POST /api/robots/{id}/command — send command to robot
+     6	"""
+     7	
+     8	from fastapi import APIRouter, Depends, HTTPException
+     9	from pydantic import BaseModel
+    10	from typing import Optional
+    11	
+    12	from app.auth import require_api_key
+    13	
+    14	router = APIRouter(prefix="/api/robots", tags=["robots"])
+    15	
+    16	
+    17	def _get_db():
+    18	    from app.main import app_state
+    19	    return app_state.get("mongo_db")
+    20	
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/telemetry.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/routes/analytics.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Telemetry endpoint.
+     3	GET /api/telemetry/{id} — recent telemetry for a specific robot
+     4	"""
+     5	
+     6	from fastapi import APIRouter, Query
+     7	
+     8	router = APIRouter(prefix="/api/telemetry", tags=["telemetry"])
+     9	
+    10	
+    11	def _get_db():
+    12	    from app.main import app_state
+    13	    return app_state.get("mongo_db")
+    14	
+    15	
+    16	@router.get("/{robot_id}")
+    17	async def get_telemetry(
+    18	    robot_id: str,
+    19	    limit: int = Query(default=100, ge=1, le=10000, description="Max points to return"),
+    20	):
+ succeeded in 0ms:
      1	"""
      2	Analytics endpoints.
      3	GET /api/analytics/fleet — fleet-wide analytics
@@ -751,257 +534,170 @@ exec
     10	router = APIRouter(prefix="/api/analytics", tags=["analytics"])
     11	
     12	
-exec
-/bin/zsh -lc "nl -ba python/app/dependencies.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-nl: python/app/dependencies.py: No such file or directory
-exec
-/bin/zsh -lc "nl -ba python/app/auth.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	API key authentication for write endpoints.
-     3	
-     4	When API_KEY env var is set, all mutating endpoints (POST, PUT, DELETE)
-     5	require the header: X-API-Key: <key>
-     6	
-     7	When API_KEY is empty (default), auth is disabled (open simulation mode).
-     8	"""
-     9	
-    10	from fastapi import Depends, HTTPException, Security
-    11	from fastapi.security import APIKeyHeader
-    12	
-    13	from app.config import get_settings
-    14	
-    15	_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
+    13	def _get_db():
+    14	    from app.main import app_state
+    15	    return app_state.get("mongo_db")
     16	
     17	
-    18	async def require_api_key(
-    19	    api_key: str | None = Security(_api_key_header),
-    20	) -> None:
-codex
-I’ve finished route-level inspection and found concrete auth/CORS and exception-handling risks; now validating intelligence modules (`zone_identifier`, `cold_start`, `fleet_atlas`, `bottleneck_predictor`) against the blueprint claims like Hopfield ODE and SG wiring.
+    18	def _get_bottleneck_predictor():
+    19	    from app.main import app_state
+    20	    return app_state.get("bottleneck_predictor")
 exec
-/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba python/intelligence/iogita/cold_start.py | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba python/app/routes/wes.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/routes/wcs.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/routes/events.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
-     2	ColdStartRecovery — saves/loads robot state for fast recovery.
-     3	
-     4	When a robot restarts (power cycle, firmware update, error recovery),
-     5	this module provides hints to quickly restore context:
-     6	- Last known position and zone
-     7	- Active task state
-     8	- Battery profile
-     9	- Recommended re-initialization steps
+     2	WCS (Warehouse Control System) endpoints.
+     3	GET /api/wcs/conveyors — conveyor belt status
+     4	GET /api/wcs/lanes — lane status
+     5	"""
+     6	
+     7	from fastapi import APIRouter
+     8	
+     9	router = APIRouter(prefix="/api/wcs", tags=["wcs"])
     10	
-    11	Performance target: full recovery < 2s.
-    12	"""
-    13	
-    14	import json
-    15	import time
-    16	from pathlib import Path
-    17	from typing import Any, Optional
-    18	
-    19	
-    20	class ColdStartRecovery:
+    11	
+    12	def _get_db():
+    13	    from app.main import app_state
+    14	    return app_state.get("mongo_db")
+    15	
+    16	
+    17	@router.get("/conveyors")
+    18	async def list_conveyors():
+    19	    """List all conveyor belts and their current status."""
+    20	    db = _get_db()
  succeeded in 0ms:
      1	"""
-     2	ZoneIdentifier -- identifies which warehouse zone a robot occupies.
-     3	
-     4	Uses P22's proven 360-ray LiDAR scan + 16-feature extraction method.
-     5	P22 achieved 100% accuracy on 25 zones; this ports the exact approach
-     6	into the robotic digital twin simulation context.
-     7	
-     8	Two modes:
-     9	  1. LiDAR scan mode: identify_from_scan() -- uses 360-ray scan + 16 features
-    10	     + graph disambiguation (P22 method, >95% accuracy)
-    11	  2. Position mode: identify() -- uses (x,y) nearest centroid
-    12	     (legacy API, kept for backward compatibility)
-    13	
-    14	Performance targets:
-    15	  - ODE identification: <1ms
-    16	  - Cold start recovery: <2s
-    17	"""
-    18	
-    19	import math
-    20	import time
-exec
-/bin/zsh -lc "nl -ba python/intelligence/iogita/fleet_atlas.py | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba python/intelligence/sg_prediction/bottleneck_predictor.py | sed -n '1,360p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	FleetAtlas — multi-robot fingerprint aggregation and map change detection.
-     3	
-     4	Aggregates individual robot zone identifications into a fleet-level
-     5	"atlas" that tracks:
-     6	- Which zones are occupied
-     7	- Zone transition patterns
-     8	- Map drift / change detection (nodes added/removed)
-     9	"""
+     2	WES (Warehouse Execution System) endpoints.
+     3	POST /api/wes/inject-orders — inject orders into the system
+     4	GET /api/wes/kpi — WES key performance indicators
+     5	"""
+     6	
+     7	from fastapi import APIRouter, Depends
+     8	from pydantic import BaseModel
+     9	from typing import Optional
     10	
-    11	import time
-    12	import numpy as np
-    13	from typing import Any, Optional
+    11	from app.auth import require_api_key
+    12	
+    13	router = APIRouter(prefix="/api/wes", tags=["wes"])
     14	
     15	
-    16	class FleetAtlas:
-    17	    """
-    18	    Aggregates zone identification results across the entire fleet.
-    19	    Detects when the map has changed (nodes added/removed).
-    20	    """
+    16	def _get_db():
+    17	    from app.main import app_state
+    18	    return app_state.get("mongo_db")
+    19	
+    20	
  succeeded in 0ms:
      1	"""
-     2	BottleneckPredictor — predicts fleet bottlenecks 2-5 minutes in advance.
-     3	
-     4	Uses the SGEngine to classify current fleet state and detect
-     5	patterns that historically lead to bottlenecks (congestion, deadlocks,
-     6	battery depletion cascades).
+     2	Events endpoint.
+     3	GET /api/events — list system events from MongoDB
+     4	"""
+     5	
+     6	from fastapi import APIRouter, Query
      7	
-     8	Performance target: prediction < 25ms.
-     9	"""
+     8	router = APIRouter(prefix="/api/events", tags=["events"])
+     9	
     10	
-    11	import time
-    12	import numpy as np
-    13	from typing import Any
+    11	def _get_db():
+    12	    from app.main import app_state
+    13	    return app_state.get("mongo_db")
     14	
-    15	from intelligence.sg_prediction.state_encoder import StateEncoder
-    16	from intelligence.sg_prediction.sg_engine import SGEngine
-    17	
+    15	
+    16	@router.get("")
+    17	async def list_events(
+    18	    limit: int = Query(default=100, ge=1, le=10000),
+    19	    severity: str = Query(default=None, description="Filter by severity"),
+    20	    robot_id: str = Query(default=None, description="Filter by robot"),
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/simulation.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/routes/config_routes.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Simulation control endpoints.
+     3	GET /api/simulation/status — current simulation status
+     4	POST /api/simulation/start — start the simulation
+     5	POST /api/simulation/stop — stop the simulation
+     6	POST /api/simulation/inject-fault — inject a fault for testing
+     7	"""
+     8	
+     9	import time
+    10	
+    11	from fastapi import APIRouter, Depends, HTTPException
+    12	from pydantic import BaseModel
+    13	from typing import Optional
+    14	
+    15	from app.auth import require_api_key
+    16	
+    17	router = APIRouter(prefix="/api/simulation", tags=["simulation"])
     18	
-    19	# Known bottleneck patterns
-    20	BOTTLENECK_PATTERNS = {
-exec
-/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '361,760p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-   361	            self.pat_names.append(name)
-   362	            encoded.append(self._encode(feat))
-   363	
-   364	        if encoded:
-   365	            self.P_mat = np.array(encoded)  # (N, D)
-   366	            self.n_patterns = len(encoded)
-   367	        else:
-   368	            self.P_mat = np.array([])
-   369	            self.n_patterns = 0
-   370	
-   371	    def run_dynamics(self, query: np.ndarray) -> tuple[np.ndarray, int]:
-   372	        """Run ODE in D-dimensional space.
-   373	
-   374	        Uses Hebbian recall WITHOUT materializing D×D weight matrix:
-   375	        W @ Q = P^T @ (P @ Q / D)
-   376	
-   377	        This is O(N×D) per step, not O(D²).
-   378	        """
-   379	        if self.n_patterns == 0:
-   380	            return query.copy(), 0
-exec
-/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '761,1120p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-   761	        # restrict to nearby zones
-   762	        if distance_since_last_known > 0 and use_prev:
-   763	            # More travel = more zones reachable
-   764	            max_zone_hops = max(1, int(distance_since_last_known / 2.0))
-   765	        else:
-   766	            max_zone_hops = None
-   767	
-   768	        zone, method, confidence = self._disambiguate(
-   769	            fp_distances, use_prev, max_zone_hops
-   770	        )
-   771	
-   772	        self._last_zone = zone
-   773	
-   774	        return {
-   775	            "zone": zone,
-   776	            "method": method,
-   777	            "confidence": confidence,
-   778	            "ode_time_ms": round(ode_time_ms, 4),
-   779	            "features": features,
-   780	            "candidates": fp_distances[:5],
-codex
-Intelligence layer includes substantial logic, including Hopfield dynamics and SG predictor hooks. I’m now auditing frontend code paths (TypeScript typing, WebSocket handling, API URL construction, and failure states) plus Docker compose and config consistency.
-exec
-/bin/zsh -lc "for f in frontend/src/*.tsx frontend/src/*.ts frontend/src/hooks/*.ts frontend/src/components/*.tsx; do echo '===== '\""'$f"; nl -ba "$f" | sed -n '"'1,260p'; done" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-===== frontend/src/App.tsx
-     1	import { useCallback, useRef } from 'react'
-     2	import { useApi } from './hooks/useApi'
-     3	import { useFleetWebSocket } from './hooks/useFleetWebSocket'
-     4	import { WarehouseGrid } from './components/WarehouseGrid'
-     5	import { RobotStatusPanel } from './components/RobotStatusPanel'
-     6	import { TaskQueue } from './components/TaskQueue'
-     7	import { BatteryLevels } from './components/BatteryLevels'
-     8	import { IoGitaZones } from './components/IoGitaZones'
-     9	import { SGPredictions } from './components/SGPredictions'
-    10	import type {
-    11	  Robot,
-    12	  Task,
-    13	  MapNode,
-    14	  MapEdge,
-    15	  Health,
-    16	  IoGitaZoneStatus,
-    17	  SGPrediction,
-    18	  FleetWSEvent,
-    19	} from './types'
-exec
-/bin/zsh -lc "nl -ba docker/start.sh | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	#!/usr/bin/env bash
-     2	# ============================================================
-     3	# start.sh — Launch C++ FMS server + Python FastAPI
-     4	# ============================================================
-     5	# Runs inside the Docker container. Manages both processes
-     6	# and forwards SIGTERM/SIGINT for clean shutdown.
+    19	
+    20	def _get_db():
+ succeeded in 0ms:
+     1	"""
+     2	Config endpoint.
+     3	GET /api/config/robots — return robot configuration from YAML
+     4	"""
+     5	
+     6	from fastapi import APIRouter
      7	
-     8	set -euo pipefail
+     8	router = APIRouter(prefix="/api/config", tags=["config"])
      9	
-    10	# --- PIDs for cleanup ---
-    11	FMS_PID=""
-    12	API_PID=""
-    13	
-    14	# --- Clean shutdown handler ---
-    15	shutdown() {
-    16	    echo "[start.sh] Received shutdown signal — stopping services..."
+    10	
+    11	def _get_robot_config() -> dict:
+    12	    from app.main import app_state
+    13	    return app_state.get("robot_config") or {}
+    14	
+    15	
+    16	@router.get("/robots")
+    17	async def robot_config():
+    18	    """Return the loaded robot configuration (from YAML)."""
+    19	    config = _get_robot_config()
+    20	    return {
+exec
+/bin/zsh -lc 'nl -ba python/app/routes/reservations.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/app/routes/stats.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Reservations endpoint.
+     3	GET /api/reservations/active — list active node reservations
+     4	"""
+     5	
+     6	from fastapi import APIRouter
+     7	
+     8	router = APIRouter(prefix="/api/reservations", tags=["reservations"])
+     9	
+    10	
+    11	def _get_db():
+    12	    from app.main import app_state
+    13	    return app_state.get("mongo_db")
+    14	
+    15	
+    16	@router.get("/active")
+    17	async def active_reservations():
+    18	    """
+    19	    List active node reservations from the fleet manager.
+    20	    Each reservation locks a node for a specific robot to prevent collisions.
+ succeeded in 0ms:
+     1	"""
+     2	Stats endpoint.
+     3	GET /api/stats/throughput — throughput statistics over time
+     4	"""
+     5	
+     6	import time
+     7	
+     8	from fastapi import APIRouter, Query
+     9	
+    10	router = APIRouter(prefix="/api/stats", tags=["stats"])
+    11	
+    12	
+    13	def _get_db():
+    14	    from app.main import app_state
+    15	    return app_state.get("mongo_db")
+    16	
     17	
-    18	    if [ -n "$API_PID" ] && kill -0 "$API_PID" 2>/dev/null; then
-    19	        echo "[start.sh] Stopping Python FastAPI (PID $API_PID)..."
-    20	        kill -TERM "$API_PID" 2>/dev/null || true
+    18	@router.get("/throughput")
+    19	async def throughput_stats(
+    20	    window_s: int = Query(default=3600, ge=60, le=86400, description="Time window in seconds"),
 exec
-/bin/zsh -lc "nl -ba docker/docker-compose.yml | sed -n '1,340p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	# ============================================================
-     2	# Robotic Digital Twin — Full Stack Services
-     3	# ============================================================
-     4	# Usage: docker compose -f docker/docker-compose.yml up --build
-     5	# Context is parent directory (..) so all source is accessible.
-     6	
-     7	services:
-     8	  # ── Main application: C++ FMS + Python API ──
-     9	  rdt:
-    10	    build:
-    11	      context: ..
-    12	      dockerfile: docker/Dockerfile
-    13	    container_name: rdt-app
-    14	    ports:
-    15	      - "65123:65123"  # C++ TCP server (robot protocol V1)
-    16	      - "7012:7012"    # C++ REST server (fleet API)
-    17	      - "8029:8029"    # Python FastAPI (API + intelligence)
-    18	      - "5199:5199"    # React Dashboard
-    19	    depends_on:
-    20	      mongodb:
-exec
-/bin/zsh -lc "for f in configs/robots/*.yaml configs/warehouses/*.json; do echo '===== '\""'$f"; nl -ba "$f" | sed -n '"'1,220p'; done" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-===== configs/robots/differential_drive.yaml
-     1	# Differential Drive AMR — Generic Preset
-     2	# Copy this file and change values for YOUR robot.
-     3	#
-     4	# Usage: ROBOT=my_robot docker compose up
-     5	# Place your file at: configs/robots/my_robot.yaml
-     6	
-     7	name: "DiffDrive_AMR"
-     8	type: differential_drive         # Options: differential_drive, unidirectional, omnidirectional
-     9	
-    10	motion:
-    11	  max_linear_velocity: 2.0       # m/s — max forward speed
-    12	  min_linear_velocity: 0.02      # m/s — minimum before stopping
-    13	  max_angular_velocity: 2.5      # rad/s — max rotation speed
-    14	  min_angular_velocity: 0.02     # rad/s
-    15	  linear_acceleration: 0.8       # m/s² — how fast it speeds up
-    16	  linear_deceleration: 0.8       # m/s² — how fast it slows down
-    17	  jerk_max: 10.0                 # m/s³ — smoothness of acceleration
-    18	  position_tolerance: 0.07       # m — "close enough" to target
-    19	  angular_tolerance: 0.025       # rad — "close enough" heading
-exec
-/bin/zsh -lc "nl -ba python/app/websocket.py | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba python/app/websocket.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
      2	WebSocket manager for real-time fleet updates.
      3	
@@ -1023,239 +719,999 @@ exec
     19	
     20	import json
 exec
-/bin/zsh -lc "rg -n \"assert\\s+|EXPECT_|ASSERT_\" python/tests cpp/tests | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "rg -n \"MagicMock|mock|patch\\(\" python/tests cpp/tests | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'rg -n "-Wall|-Wextra|-Wpedantic|CMAKE_CXX_STANDARD|thread" cpp/CMakeLists.txt CMakeLists.txt cpp/tests/CMakeLists.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation exited 2 in 0ms:
+rg: unrecognized flag -W
+exec
+/bin/zsh -lc 'find cpp/include/rdt -type f | sort' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+cpp/include/rdt/behavior/ActionNodes.h
+cpp/include/rdt/behavior/BTEngine.h
+cpp/include/rdt/behavior/ConditionNodes.h
+cpp/include/rdt/core/Config.h
+cpp/include/rdt/core/Logger.h
+cpp/include/rdt/core/Timer.h
+cpp/include/rdt/core/Types.h
+cpp/include/rdt/fleet/AgentInterface.h
+cpp/include/rdt/fleet/COPPController.h
+cpp/include/rdt/fleet/FleetManager.h
+cpp/include/rdt/fleet/TaskManager.h
+cpp/include/rdt/navigation/AStar.h
+cpp/include/rdt/navigation/GraphMap.h
+cpp/include/rdt/navigation/NodeReservation.h
+cpp/include/rdt/navigation/QuadTree.h
+cpp/include/rdt/network/ProtocolV1.h
+cpp/include/rdt/network/RESTServer.h
+cpp/include/rdt/network/TCPServer.h
+cpp/include/rdt/robot/BatteryModel.h
+cpp/include/rdt/robot/MotionController.h
+exec
+/bin/zsh -lc "rg -n \"std::mutex|std::atomic|const |constexpr|~[A-Za-z]|delete;|shared_ptr|unique_ptr\" cpp/include/rdt -g'*.h'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+cpp/include/rdt/fleet/AgentInterface.h:29:    explicit AgentInterface(const std::string& robot_id,
+cpp/include/rdt/fleet/AgentInterface.h:30:                            const RobotConfig& config);
+cpp/include/rdt/fleet/AgentInterface.h:33:    const std::string& id() const { return id_; }
+cpp/include/rdt/fleet/AgentInterface.h:34:    const RobotConfig& config() const { return config_; }
+cpp/include/rdt/fleet/AgentInterface.h:37:    const Pose&     pose()     const { return pose_; }
+cpp/include/rdt/fleet/AgentInterface.h:38:    const Velocity& velocity() const { return velocity_; }
+cpp/include/rdt/fleet/AgentInterface.h:39:    const std::string& currentNode() const { return current_node_; }
+cpp/include/rdt/fleet/AgentInterface.h:40:    void setPose(const Pose& p) { pose_ = p; }
+cpp/include/rdt/fleet/AgentInterface.h:41:    void setVelocity(const Velocity& v) { velocity_ = v; }
+cpp/include/rdt/fleet/AgentInterface.h:42:    void setCurrentNode(const std::string& n) { current_node_ = n; }
+cpp/include/rdt/fleet/AgentInterface.h:53:    uint64_t currentTaskId() const { return current_task_id_; }
+cpp/include/rdt/fleet/AgentInterface.h:54:    void assignTask(uint64_t task_id, const std::vector<std::string>& path);
+cpp/include/rdt/fleet/AgentInterface.h:57:    bool hasPath() const { return !planned_path_.empty() && path_index_ < planned_path_.size(); }
+cpp/include/rdt/fleet/AgentInterface.h:60:    void updateFromTelemetry(const network::ProtocolV1Message& msg);
+cpp/include/rdt/fleet/AgentInterface.h:61:    bool hasFreshTelemetry() const { return telemetry_fresh_; }
+cpp/include/rdt/fleet/COPPController.h:47:    static constexpr int MAX_REPLANS = 3;
+cpp/include/rdt/fleet/COPPController.h:50:    static constexpr double CONFLICT_PENALTY = 100.0;
+cpp/include/rdt/fleet/COPPController.h:53:    ~COPPController() = default;
+cpp/include/rdt/fleet/COPPController.h:72:                         const GraphMap& graph,
+cpp/include/rdt/fleet/COPPController.h:78:    PlanResult planSingleRobot(const PlanRequest& request,
+exec
+/bin/zsh -lc 'rg -n -- "-Wall|-Wextra|-Wpedantic|CMAKE_CXX_STANDARD|thread" cpp/CMakeLists.txt CMakeLists.txt cpp/tests/CMakeLists.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+CMakeLists.txt:4:set(CMAKE_CXX_STANDARD 17)
+CMakeLists.txt:5:set(CMAKE_CXX_STANDARD_REQUIRED ON)
+cpp/CMakeLists.txt:48:target_compile_options(rdt_core PRIVATE -Wall -Wextra -Wpedantic)
+exec
+/bin/zsh -lc 'nl -ba cpp/tests/CMakeLists.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# ──────────────────────────────────────────────────────────
+     2	# cpp/tests/CMakeLists.txt — GTest test runner
+     3	# ──────────────────────────────────────────────────────────
+     4	
+     5	add_executable(rdt_tests
+     6	    test_hello.cpp
+     7	    test_logger.cpp
+     8	    test_timer.cpp
+     9	    test_types.cpp
+    10	    test_config.cpp
+    11	    test_reservation.cpp
+    12	    test_graph.cpp
+    13	    test_astar.cpp
+    14	    test_quadtree.cpp
+    15	    test_robot_state.cpp
+    16	    test_motion.cpp
+    17	    test_battery.cpp
+    18	    test_obstacle.cpp
+    19	    test_bt.cpp
+    20	    test_protocol.cpp
+exec
+/bin/zsh -lc "rg -n \"MagicMock|mock|patch\\(|monkeypatch|assert .* is not None|TODO|pass\" python/tests cpp/tests -g'*.py' -g'*.cpp'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
 python/tests/test_config.py:5:No MagicMock. No hardcoded True.
- succeeded in 0ms:
+python/tests/test_iogita.py:114:        assert cs is not None
+python/tests/test_iogita.py:132:            assert loaded is not None
+python/tests/test_iogita.py:205:        assert atlas is not None
+cpp/tests/test_protocol.cpp:160:// ── Test: validateCRC32 passes after serialize ───────────
+cpp/tests/test_bt.cpp:779:// 20. XML params are passed to action callbacks
+exec
+/bin/zsh -lc 'ls -la cpp/tests; ls -la python/tests' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+total 432
+drwxr-xr-x  21 meharban  staff    672 Mar 29 04:16 .
+drwxr-xr-x   6 meharban  staff    192 Mar 29 12:48 ..
+-rw-r--r--   1 meharban  staff   1197 Mar 28 11:19 CMakeLists.txt
+-rw-r--r--   1 meharban  staff   7203 Mar 28 10:47 test_astar.cpp
+-rw-r--r--   1 meharban  staff  12045 Mar 28 10:54 test_battery.cpp
+-rw-r--r--   1 meharban  staff  31382 Mar 28 12:15 test_bt.cpp
+-rw-r--r--   1 meharban  staff  13389 Mar 29 04:16 test_config.cpp
+-rw-r--r--   1 meharban  staff  18982 Mar 28 11:18 test_fleet.cpp
+-rw-r--r--   1 meharban  staff   5933 Mar 28 10:46 test_graph.cpp
+-rw-r--r--   1 meharban  staff   1000 Mar 28 12:18 test_hello.cpp
+-rw-r--r--   1 meharban  staff   6976 Mar 28 10:33 test_logger.cpp
+-rw-r--r--   1 meharban  staff   7693 Mar 28 10:53 test_motion.cpp
+-rw-r--r--   1 meharban  staff   7977 Mar 28 10:54 test_obstacle.cpp
+-rw-r--r--   1 meharban  staff  12546 Mar 28 11:01 test_protocol.cpp
+-rw-r--r--   1 meharban  staff   5210 Mar 28 10:47 test_quadtree.cpp
+-rw-r--r--   1 meharban  staff  13354 Mar 28 10:44 test_reservation.cpp
+-rw-r--r--   1 meharban  staff   9830 Mar 28 11:02 test_rest.cpp
+-rw-r--r--   1 meharban  staff  10899 Mar 28 10:52 test_robot_state.cpp
+-rw-r--r--   1 meharban  staff   6245 Mar 28 11:01 test_tcp.cpp
+exec
+/bin/zsh -lc "rg -n \"TEST\\(|EXPECT_|ASSERT_|chrono|ms|15Hz|67|timing|performance|latency\" cpp/tests -g'*.cpp'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+cpp/tests/test_hello.cpp:10:TEST(HelloTest, VersionDefined) {
 cpp/tests/test_hello.cpp:11:    EXPECT_GE(RDT_VERSION_MAJOR, 0);
 cpp/tests/test_hello.cpp:12:    EXPECT_GE(RDT_VERSION_MINOR, 0);
 cpp/tests/test_hello.cpp:13:    EXPECT_GE(RDT_VERSION_PATCH, 0);
+cpp/tests/test_hello.cpp:16:TEST(HelloTest, PoseDefaultsToOrigin) {
 cpp/tests/test_hello.cpp:18:    EXPECT_DOUBLE_EQ(pose.x, 0.0);
 cpp/tests/test_hello.cpp:19:    EXPECT_DOUBLE_EQ(pose.y, 0.0);
 cpp/tests/test_hello.cpp:20:    EXPECT_DOUBLE_EQ(pose.yaw, 0.0);
+cpp/tests/test_hello.cpp:23:TEST(HelloTest, VelocityDefaultsToZero) {
 cpp/tests/test_hello.cpp:25:    EXPECT_DOUBLE_EQ(vel.linear, 0.0);
 cpp/tests/test_hello.cpp:26:    EXPECT_DOUBLE_EQ(vel.angular, 0.0);
-python/tests/test_wes.py:21:        assert og.order_count == 0
-python/tests/test_wes.py:22:        assert og.arrival_rate == 2.0
-python/tests/test_wes.py:33:        assert "order_id" in order
-python/tests/test_wes.py:34:        assert order["source_node"] == "PICK_1"
-python/tests/test_wes.py:35:        assert order["destination_node"] == "DROP_1"
-python/tests/test_wes.py:36:        assert 0 <= order["priority"] <= 10
-python/tests/test_wes.py:37:        assert order["payload_kg"] > 0
-python/tests/test_wes.py:38:        assert order["status"] == "pending"
-python/tests/test_wes.py:39:        assert order["order_type"] == "pick_and_drop"
-python/tests/test_wes.py:40:        assert og.order_count == 1
-python/tests/test_wes.py:51:        assert len(orders) == 10
-python/tests/test_wes.py:52:        assert og.order_count == 10
+cpp/tests/test_logger.cpp:43:    EXPECT_TRUE(result) << "Logger::init() should return true on success";
+cpp/tests/test_logger.cpp:44:    EXPECT_TRUE(rdt::core::Logger::is_initialized())
+cpp/tests/test_logger.cpp:56:        EXPECT_TRUE(result) << "Logger::init(\"" << level << "\") should succeed";
+cpp/tests/test_logger.cpp:63:    ASSERT_NE(logger, nullptr) << "Logger::get() must return non-null after init";
+cpp/tests/test_logger.cpp:64:    EXPECT_EQ(logger->name(), "rdt") << "Logger name should be 'rdt'";
+cpp/tests/test_logger.cpp:73:    EXPECT_NO_THROW({
+cpp/tests/test_logger.cpp:83:    EXPECT_NO_THROW({
+cpp/tests/test_logger.cpp:99:    ASSERT_TRUE(result) << "Logger::init() with file path should succeed";
+cpp/tests/test_logger.cpp:106:    ASSERT_NE(logger, nullptr);
+codex
+I’m now auditing the C++ headers directly for ownership/lifetime patterns, synchronization boundaries, and const correctness, then I’ll correlate with source usage to verify thread-safety claims are real.
 exec
-/bin/zsh -lc "rg -n \"15Hz|67ms|<25ms|<2s|timing|elapsed|prediction_ms|sleep\" python/tests cpp/tests | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-python/tests/test_api.py:374:        assert "elapsed_s" in data
-cpp/tests/test_timer.cpp:16:// ── TEST: tick() + elapsed_ms() returns > 0 ────────────────
-cpp/tests/test_timer.cpp:19:    // Before any tick(), elapsed should be 0
-cpp/tests/test_timer.cpp:21:    EXPECT_DOUBLE_EQ(timer.elapsed_ms(), 0.0)
-cpp/tests/test_timer.cpp:22:        << "elapsed_ms() should return 0.0 before any tick()";
-cpp/tests/test_timer.cpp:27:    // Sleep a small amount so elapsed is measurably > 0
-cpp/tests/test_timer.cpp:28:    std::this_thread::sleep_for(std::chrono::milliseconds(5));
-cpp/tests/test_timer.cpp:29:    double elapsed = timer.elapsed_ms();
-cpp/tests/test_timer.cpp:31:    EXPECT_GT(elapsed, 0.0)
-cpp/tests/test_timer.cpp:32:        << "elapsed_ms() should be positive after tick() + sleep";
-cpp/tests/test_timer.cpp:33:    EXPECT_GE(elapsed, 4.0)
-cpp/tests/test_timer.cpp:34:        << "After 5ms sleep, elapsed should be at least 4ms (accounting for OS jitter)";
-cpp/tests/test_timer.cpp:35:    EXPECT_LT(elapsed, 50.0)
-cpp/tests/test_timer.cpp:36:        << "After 5ms sleep, elapsed should be well under 50ms";
-cpp/tests/test_timer.cpp:51:    std::this_thread::sleep_for(std::chrono::milliseconds(20));
-cpp/tests/test_timer.cpp:52:    double elapsed_before = timer.elapsed_ms();
-cpp/tests/test_timer.cpp:53:    EXPECT_GE(elapsed_before, 15.0) << "Should have ~20ms elapsed";
-cpp/tests/test_timer.cpp:57:    double elapsed_after = timer.elapsed_ms();
-cpp/tests/test_timer.cpp:58:    EXPECT_LT(elapsed_after, 5.0)
-cpp/tests/test_timer.cpp:59:        << "Immediately after tick(), elapsed should be near 0";
-exec
-/bin/zsh -lc "nl -ba python/tests/test_iogita_accuracy.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba python/tests/test_integration.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	Integration tests for Phase 11 — verifies the full stack works together.
-     3	
-     4	TEST: Cold start demo runs without error
-     5	TEST: All 34 API endpoints return 200 (or expected error for missing resources)
-     6	TEST: WebSocket connects and receives events
-     7	TEST: Config loads both warehouse formats (simple_grid, botvalley)
-     8	TEST: io-gita + SG pipeline works end-to-end
-     9	"""
+/bin/zsh -lc 'nl -ba cpp/include/rdt/navigation/NodeReservation.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/navigation/NodeReservation.h — Greedy node reservation
+     5	// with mutual exclusion, lookahead, and deadlock detection.
+     6	//
+     7	// Phase 3: greedy reservation table.
+     8	// Phase 7: OSQP-based ILP optimization replaces resolve logic.
+     9	// ──────────────────────────────────────────────────────────
     10	
-    11	import json
-    12	import subprocess
-    13	import sys
-    14	import time
-    15	from pathlib import Path
-    16	
-    17	import pytest
-    18	import pytest_asyncio
-    19	from httpx import ASGITransport, AsyncClient
+    11	#include <string>
+    12	#include <vector>
+    13	#include <optional>
+    14	#include <unordered_map>
+    15	#include <unordered_set>
+    16	#include <mutex>
+    17	
+    18	namespace rdt {
+    19	namespace nav {
     20	
- succeeded in 0ms:
-     1	"""
-     2	Tests for io-gita accuracy using P22's proven 360-ray LiDAR + 16-feature method.
-     3	
-     4	Tests:
-     5	  1. Zone accuracy on simple_grid (25 nodes) with P22 method -- must exceed 95%
-     6	  2. Zone accuracy on BotValley-style zones (dock/aisle/shelf/cross/hub/lane/mid) -- must exceed 90%
-     7	  3. Feature extraction produces 16 distinct values per zone type
-     8	  4. FMS timing features reduce candidates from 3 to 1 on identical aisles
-     9	  5. Cold start recovery time still <2s
-    10	  6. ODE timing still <1ms
-    11	"""
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/fleet/TaskManager.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/fleet/TaskManager.h — Task allocation and lifecycle
+     5	//
+     6	// FIFO allocation with priority ordering: highest priority
+     7	// first, then oldest within same priority level.
+     8	//
+     9	// 9-check validation before assignment:
+    10	//   1. Task exists
+    11	//   2. Task not already assigned
+    12	//   3. Robot is IDLE
+    13	//   4. Robot battery > critical
+    14	//   5. Source node exists in graph
+    15	//   6. Dest node exists in graph
+    16	//   7. Path exists (A* check)
+    17	//   8. No node reservation conflicts
+    18	//   9. Robot type compatible with task type
+    19	// ──────────────────────────────────────────────────────────
+    20	
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/network/TCPServer.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/network/TCPServer.h — Synchronous TCP server for
+     5	//                            robot↔FMS communication.
+     6	//
+     7	// Phase 6: Simple synchronous implementation using ASIO.
+     8	// Phase 7+: May be upgraded to fully async accept/read.
+     9	//
+    10	// The server listens on a given port. Each accepted connection
+    11	// is handled in its own thread. Incoming data is framed by
+    12	// newline ('\n'). Complete lines are dispatched to the
+    13	// registered onMessage callback.
+    14	// ──────────────────────────────────────────────────────────
+    15	
+    16	#include <string>
+    17	#include <functional>
+    18	#include <unordered_map>
+    19	#include <mutex>
+    20	#include <thread>
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/fleet/AgentInterface.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// rdt/fleet/AgentInterface.h — Per-robot tracking interface
+     3	//
+     4	// Wraps AgentState with query/mutation methods so callers
+     5	// don't reach into struct internals.  FleetManager owns
+     6	// AgentInterface instances (one per robot).
+     7	// ──────────────────────────────────────────────────────────
+     8	#pragma once
+     9	
+    10	#include <string>
+    11	#include <vector>
+    12	#include <cstdint>
+    13	
+    14	#include "rdt/core/Types.h"
+    15	#include "rdt/core/Config.h"
+    16	#include "rdt/robot/RobotState.h"
+    17	#include "rdt/robot/BatteryModel.h"
+    18	#include "rdt/network/ProtocolV1.h"
+    19	
+    20	#include <json/json.h>
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/fleet/COPPController.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/fleet/COPPController.h — Cooperative Path Planning
+     5	//
+     6	// Plans non-conflicting paths for multiple robots using:
+     7	//   1. A* for each robot individually
+     8	//   2. NodeReservation to detect conflicts
+     9	//   3. Re-planning with penalty on conflicting nodes
+    10	//
+    11	// Full ILP optimization is deferred — this is the greedy
+    12	// sequential planner that ships in Phase 7.
+    13	// ──────────────────────────────────────────────────────────
+    14	
+    15	#include <string>
+    16	#include <vector>
+    17	#include <unordered_map>
+    18	#include <unordered_set>
+    19	
+    20	#include "rdt/navigation/GraphMap.h"
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/network/RESTServer.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/network/RESTServer.h — Minimal HTTP/1.1 GET server
+     5	//
+     6	// Phase 6: Uses POSIX sockets. Handles GET requests only.
+     7	// Serves JSON responses for fleet status, robot list, health.
+     8	//
+     9	// Routes:
+    10	//   GET /api/fleet/status  — fleet overview JSON
+    11	//   GET /api/robots        — robot list JSON
+    12	//   GET /health            — service health JSON
+    13	// ──────────────────────────────────────────────────────────
+    14	
+    15	#include <string>
+    16	#include <functional>
+    17	#include <unordered_map>
+    18	#include <mutex>
+    19	#include <thread>
+    20	#include <atomic>
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/core/Timer.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/core/Timer.h — High-resolution cycle timer for the FMS main loop
+     5	// ──────────────────────────────────────────────────────────
+     6	
+     7	#include <chrono>
+     8	
+     9	namespace rdt {
+    10	namespace core {
+    11	
+    12	/// @brief Deterministic cycle timer using std::chrono::steady_clock.
+    13	///
+    14	/// Designed for the 15Hz FMS main loop (67ms per cycle).
+    15	///
+    16	/// Usage:
+    17	/// @code
+    18	///     Timer timer;
+    19	///     while (running) {
+    20	///         timer.tick();
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/core/Config.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/core/Config.h — Configuration loader for robots (YAML)
+     5	//                      and warehouses (JSON)
+     6	//
+     7	// Robot params come from configs/robots/*.yaml at runtime.
+     8	// Warehouse maps come from configs/warehouses/*.json.
+     9	// No hardcoded robot parameters in C++.
+    10	// ──────────────────────────────────────────────────────────
+    11	
+    12	#include <string>
+    13	#include <vector>
+    14	#include <map>
+    15	#include <stdexcept>
+    16	
+    17	#include "rdt/core/Types.h"
+    18	
+    19	namespace rdt {
+    20	
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/core/Logger.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/core/Logger.h — Thread-safe spdlog wrapper with JSON file output
+     5	// ──────────────────────────────────────────────────────────
+     6	
+     7	#include <string>
+     8	#include <memory>
+     9	#include <spdlog/spdlog.h>
+    10	#include <spdlog/sinks/stdout_color_sinks.h>
+    11	#include <spdlog/sinks/basic_file_sink.h>
     12	
-    13	import json
-    14	import math
+    13	namespace rdt {
+    14	namespace core {
+    15	
+    16	/// @brief Centralized logger for the Robotic Digital Twin system.
+    17	///
+    18	/// Wraps spdlog with two sinks:
+    19	///   - Console: human-readable colored output
+    20	///   - File (optional): structured JSON format for machine parsing
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/robot/MotionController.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/robot/MotionController.h — Proportional motion controller
+     5	//
+     6	// Phase 4: Simple proportional controller that:
+     7	//   - Computes velocity toward a target pose
+     8	//   - Respects max_linear_velocity, max_angular_velocity
+     9	//   - Respects linear_acceleration / linear_deceleration limits
+    10	//   - Returns zero velocity within position_tolerance
+    11	//
+    12	// Phase 7 upgrade: MPC + OSQP for optimal trajectory tracking.
+    13	// ──────────────────────────────────────────────────────────
+    14	
+    15	#include "rdt/core/Types.h"
+    16	#include "rdt/core/Config.h"
+    17	
+    18	namespace rdt {
+    19	
+    20	class MotionController {
+exec
+/bin/zsh -lc 'nl -ba cpp/src/network/RESTServer.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba cpp/src/network/TCPServer.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// rdt/network/RESTServer.cpp — Minimal HTTP/1.1 GET server
+     3	//
+     4	// Phase 6: POSIX sockets, synchronous accept, per-request
+     5	// thread. Supports GET only. Returns JSON.
+     6	// ──────────────────────────────────────────────────────────
+     7	
+     8	#include "rdt/network/RESTServer.h"
+     9	#include "rdt/core/Logger.h"
+    10	
+    11	#include <sys/socket.h>
+    12	#include <netinet/in.h>
+    13	#include <arpa/inet.h>
+    14	#include <unistd.h>
+    15	#include <cerrno>
+    16	#include <cstring>
+    17	#include <sstream>
+    18	#include <algorithm>
+    19	
+    20	namespace rdt {
+ succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// rdt/network/TCPServer.cpp — Synchronous TCP server (POSIX)
+     3	//
+     4	// Uses plain POSIX sockets for Phase 6 simplicity.
+     5	// Async ASIO upgrade planned for Phase 7.
+     6	// ──────────────────────────────────────────────────────────
+     7	
+     8	#include "rdt/network/TCPServer.h"
+     9	#include "rdt/core/Logger.h"
+    10	
+    11	#include <sys/socket.h>
+    12	#include <netinet/in.h>
+    13	#include <arpa/inet.h>
+    14	#include <unistd.h>
+    15	#include <fcntl.h>
+    16	#include <cerrno>
+    17	#include <cstring>
+    18	#include <sstream>
+    19	
+    20	namespace rdt {
+exec
+/bin/zsh -lc 'nl -ba cpp/src/fleet/FleetManager.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// rdt/fleet/FleetManager.cpp — The 15Hz orchestration loop
+     3	//
+     4	// Ties together ALL Phase 1-6 components into a single
+     5	// deterministic cycle that runs at 15Hz (67ms budget).
+     6	// ──────────────────────────────────────────────────────────
+     7	
+     8	#include "rdt/fleet/FleetManager.h"
+     9	#include "rdt/core/Logger.h"
+    10	
+    11	#include <json/json.h>
+    12	#include <chrono>
+    13	#include <fstream>
+    14	#include <sstream>
+    15	
+    16	namespace rdt {
+    17	namespace fleet {
+    18	
+    19	FleetManager::FleetManager(const WarehouseConfig& warehouse_config,
+    20	                           const std::vector<RobotConfig>& robot_configs)
+exec
+/bin/zsh -lc 'nl -ba cpp/src/fleet/AgentInterface.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// AgentInterface.cpp — Per-robot tracking implementation
+     3	// ──────────────────────────────────────────────────────────
+     4	
+     5	#include "rdt/fleet/AgentInterface.h"
+     6	
+     7	namespace rdt {
+     8	namespace fleet {
+     9	
+    10	AgentInterface::AgentInterface(const std::string& robot_id,
+    11	                               const RobotConfig& config)
+    12	    : id_(robot_id), config_(config) {}
+    13	
+    14	double AgentInterface::batteryPct() const {
+    15	    return last_telemetry_.battery_pct;
+    16	}
+    17	
+    18	bool AgentInterface::isCriticalBattery() const {
+    19	    return batteryPct() < static_cast<double>(config_.battery.critical_threshold_pct);
+    20	}
+exec
+/bin/zsh -lc 'nl -ba cpp/src/navigation/NodeReservation.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// navigation/NodeReservation.cpp — Greedy node reservation
+     3	// ──────────────────────────────────────────────────────────
+     4	
+     5	#include "rdt/navigation/NodeReservation.h"
+     6	
+     7	#include <algorithm>
+     8	
+     9	namespace rdt {
+    10	namespace nav {
+    11	
+    12	bool NodeReservation::reserve(const std::string& robot_id,
+    13	                              const std::vector<std::string>& path_nodes,
+    14	                              size_t lookahead) {
+    15	    std::lock_guard<std::mutex> lock(mtx_);
+    16	
+    17	    // Determine how many nodes to actually reserve
+    18	    size_t count = std::min(path_nodes.size(), lookahead);
+    19	
+    20	    // Phase 1: conflict check — if ANY node in the lookahead window
+exec
+/bin/zsh -lc 'nl -ba cpp/include/rdt/network/ProtocolV1.h' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/network/ProtocolV1.h — Wire protocol for robot↔FMS
+     5	//
+     6	// Format: 33 pipe-delimited fields + CRC32 checksum.
+     7	// Example: "1719500000.123|robot_01|1.5|2.3|0.78|MOVING|..."
+     8	//
+     9	// Field order is FIXED and must match the struct layout.
+    10	// The checksum field (index 32) is a CRC32 over fields 0–31.
+    11	// ──────────────────────────────────────────────────────────
+    12	
+    13	#include <string>
+    14	#include <optional>
+    15	#include <cstdint>
+    16	
+    17	namespace rdt {
+    18	namespace network {
+    19	
+    20	/// Total number of pipe-delimited fields in a V1 message.
+exec
+/bin/zsh -lc "nl -ba cpp/include/rdt/core/Types.h | sed -n '1,220p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#pragma once
+     2	
+     3	// ──────────────────────────────────────────────────────────
+     4	// rdt/core/Types.h — Core domain types for the FMS
+     5	//
+     6	// All structs provide operator== for testing and
+     7	// to_json() / from_json() for jsoncpp serialization.
+     8	// ──────────────────────────────────────────────────────────
+     9	
+    10	#include <string>
+    11	#include <vector>
+    12	#include <json/json.h>
+    13	
+    14	namespace rdt {
+    15	
+    16	// ── Pose ────────────────────────────────────────────────
+    17	
+    18	struct Pose {
+    19	    double x     = 0.0;
+    20	    double y     = 0.0;
+exec
+/bin/zsh -lc "nl -ba cpp/include/rdt/core/Types.h | sed -n '220,420p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+   220	inline std::string task_type_to_string(TaskType t) {
+   221	    switch (t) {
+   222	        case TaskType::MOVE:   return "MOVE";
+   223	        case TaskType::PICK:   return "PICK";
+   224	        case TaskType::PLACE:  return "PLACE";
+   225	        case TaskType::CHARGE: return "CHARGE";
+   226	        case TaskType::PARK:   return "PARK";
+   227	    }
+   228	    return "UNKNOWN";
+   229	}
+   230	
+   231	// ── MapNode ─────────────────────────────────────────────
+   232	
+   233	struct MapNode {
+   234	    std::string name;
+   235	    double x    = 0.0;
+   236	    double y    = 0.0;
+   237	    std::string type;
+   238	
+   239	    bool operator==(const MapNode& o) const {
+exec
+/bin/zsh -lc 'nl -ba test_output.txt' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	=== C++ Tests (352 passed) ===
+     2	[----------] Global test environment tear-down
+     3	[==========] 352 tests from 25 test suites ran. (33321 ms total)
+     4	[  PASSED  ] 352 tests.
+     5	
+     6	=== Python Tests (193 passed) ===
+     7	
+     8	-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+     9	====================== 193 passed, 84 warnings in 21.42s =======================
+    10	
+    11	=== Gazebo Tests (52 passed) ===
+    12	gazebo/tests/test_world_gen.py ........................                  [100%]
+    13	
+    14	============================== 52 passed in 1.04s ==============================
+    15	
+    16	=== TOTAL: 597 passed, 0 failed ===
+    17	Date: Sun Mar 29 04:21:35 IST 2026
+exec
+/bin/zsh -lc 'nl -ba python/intelligence/iogita/cold_start.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	ColdStartRecovery — saves/loads robot state for fast recovery.
+     3	
+     4	When a robot restarts (power cycle, firmware update, error recovery),
+     5	this module provides hints to quickly restore context:
+     6	- Last known position and zone
+     7	- Active task state
+     8	- Battery profile
+     9	- Recommended re-initialization steps
+    10	
+    11	Performance target: full recovery < 2s.
+    12	"""
+    13	
+    14	import json
     15	import time
     16	from pathlib import Path
-    17	
-    18	import numpy as np
-    19	import pytest
-    20	
+    17	from typing import Any, Optional
+    18	
+    19	
+    20	class ColdStartRecovery:
 exec
-/bin/zsh -lc "nl -ba python/tests/test_sg.py | sed -n '1,300p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "nl -ba python/tests/test_health.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc "rg -n \"Hopfield|ODE|cold start|ColdStartRecovery|FleetAtlas|Bottleneck|identify\\(|zone|lyapunov|adjacency|distance|feature|rays|360|extract_16|generate_zone_scan\" python/intelligence/iogita/zone_identifier.py python/intelligence/iogita/cold_start.py python/intelligence/iogita/fleet_atlas.py python/intelligence/sg_prediction/bottleneck_predictor.py python/intelligence/sg_prediction/sg_engine.py" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/intelligence/sg_prediction/sg_engine.py:7:Uses a Hopfield-style energy function for attractor dynamics.
+python/intelligence/sg_prediction/sg_engine.py:27:            max_iterations: Max Hopfield iterations.
+python/intelligence/sg_prediction/sg_engine.py:56:        """Rebuild Hopfield weight matrix from attractors."""
+python/intelligence/sg_prediction/sg_engine.py:93:        # Hopfield dynamics
+python/intelligence/sg_prediction/sg_engine.py:131:        """Compute Hopfield energy: E = -0.5 * s^T W s."""
+python/intelligence/iogita/cold_start.py:2:ColdStartRecovery — saves/loads robot state for fast recovery.
+python/intelligence/iogita/cold_start.py:6:- Last known position and zone
+python/intelligence/iogita/cold_start.py:20:class ColdStartRecovery:
+python/intelligence/iogita/cold_start.py:23:    for cold start scenarios.
+python/intelligence/sg_prediction/bottleneck_predictor.py:2:BottleneckPredictor — predicts fleet bottlenecks 2-5 minutes in advance.
+python/intelligence/sg_prediction/bottleneck_predictor.py:22:        "description": "Multiple robots converging on same zone — congestion likely in 2-3 min",
+python/intelligence/sg_prediction/bottleneck_predictor.py:49:class BottleneckPredictor:
+python/intelligence/sg_prediction/bottleneck_predictor.py:57:    def __init__(self, feature_dim: int = 128, max_robots: int = 50):
+python/intelligence/sg_prediction/bottleneck_predictor.py:58:        self.encoder = StateEncoder(max_robots=max_robots, feature_dim=feature_dim)
+python/intelligence/sg_prediction/bottleneck_predictor.py:59:        self.engine = SGEngine(dim=feature_dim)
+python/intelligence/sg_prediction/bottleneck_predictor.py:73:            base = rng.randn(self.encoder.feature_dim)
+python/intelligence/iogita/fleet_atlas.py:2:FleetAtlas — multi-robot fingerprint aggregation and map change detection.
+python/intelligence/iogita/fleet_atlas.py:4:Aggregates individual robot zone identifications into a fleet-level
+python/intelligence/iogita/fleet_atlas.py:6:- Which zones are occupied
+python/intelligence/iogita/fleet_atlas.py:16:class FleetAtlas:
+exec
+/bin/zsh -lc 'nl -ba python/intelligence/iogita/fleet_atlas.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba python/intelligence/sg_prediction/bottleneck_predictor.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	"""
-     2	Tests for the /health endpoint.
+     2	BottleneckPredictor — predicts fleet bottlenecks 2-5 minutes in advance.
      3	
-     4	REAL checks — the health endpoint ACTUALLY probes each service.
-     5	We prove checks are real by:
-     6	1. Verifying all fields exist with correct types
-     7	2. Verifying services that ARE running return True
-     8	3. Verifying that pointing at a WRONG port returns False (not hardcoded True)
+     4	Uses the SGEngine to classify current fleet state and detect
+     5	patterns that historically lead to bottlenecks (congestion, deadlocks,
+     6	battery depletion cascades).
+     7	
+     8	Performance target: prediction < 25ms.
      9	"""
     10	
-    11	import os
-    12	
-    13	import pytest
-    14	import pytest_asyncio
-    15	from httpx import ASGITransport, AsyncClient
-    16	
-    17	
-    18	@pytest_asyncio.fixture
-    19	async def async_client_bad_mongo():
-    20	    """
- succeeded in 0ms:
-     1	"""
-     2	Tests for SG (Semantic Gravity) prediction module.
-     3	
-     4	- StateEncoder: encode fleet state into feature vector
-     5	- SGEngine: attractor classification
-     6	- BottleneckPredictor: prediction < 25ms
-     7	"""
-     8	
-     9	import time
-    10	
-    11	import numpy as np
-    12	import pytest
-    13	
+    11	import time
+    12	import numpy as np
+    13	from typing import Any
     14	
-    15	# Sample robot states for testing
-    16	SAMPLE_ROBOTS = [
-    17	    {
-    18	        "robot_id": f"robot_{i:03d}",
-    19	        "status": "moving" if i % 3 == 0 else ("idle" if i % 3 == 1 else "charging"),
-    20	        "pose": {"x": float(i * 2), "y": float(i % 5 * 2), "theta": 0.0},
-exec
-/bin/zsh -lc "nl -ba python/tests/conftest.py | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	Shared test fixtures for the Python test suite.
-     3	Sets environment variables and provides the FastAPI TestClient.
-     4	"""
-     5	
-     6	import os
-     7	from contextlib import asynccontextmanager
-     8	from pathlib import Path
-     9	
-    10	import pytest
-    11	import pytest_asyncio
-    12	from httpx import ASGITransport, AsyncClient
-    13	
-    14	# Set env vars BEFORE importing app — config reads them at import time
-    15	os.environ["WAREHOUSE_CONFIG"] = "simple_grid"
-    16	os.environ["ROBOT_CONFIG"] = "differential_drive"
-    17	os.environ["MONGODB_URL"] = "mongodb://localhost:27017"
-    18	os.environ["REDIS_URL"] = "redis://localhost:6379"
-    19	os.environ["INFLUXDB_URL"] = "http://localhost:8086"
-    20	
-exec
-/bin/zsh -lc "rg -n \"@router\\.(get|post|delete|put|patch)\\(\" python/app/routes | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-python/app/routes/reservations.py:16:@router.get("/active")
-python/app/routes/robots.py:28:@router.get("")
-python/app/routes/robots.py:42:@router.get("/{robot_id}")
-python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
-python/app/routes/analytics.py:23:@router.get("/fleet")
-python/app/routes/analytics.py:66:@router.get("/predictions")
-python/app/routes/analytics.py:91:@router.get("/ab-comparison")
-python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
-python/app/routes/wes.py:69:@router.get("/kpi")
-python/app/routes/stats.py:18:@router.get("/throughput")
-python/app/routes/wcs.py:17:@router.get("/conveyors")
-python/app/routes/wcs.py:31:@router.get("/lanes")
-python/app/routes/telemetry.py:16:@router.get("/{robot_id}")
-python/app/routes/config_routes.py:16:@router.get("/robots")
-python/app/routes/maps.py:24:@router.get("")
-python/app/routes/maps.py:38:@router.get("/nodes")
-python/app/routes/maps.py:45:@router.get("/path")
-python/app/routes/maps.py:109:@router.get("/zones")
-python/app/routes/fleet.py:26:@router.get("/status")
-python/app/routes/fleet.py:69:@router.get("/atlas")
-exec
-/bin/zsh -lc "rg -n \"@router\\.websocket\\(\" python/app | sed -n '1,120p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "rg -n \"@app\\.(get|post|delete|put|patch)\\(\" python/app/main.py python/app/websocket.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-python/app/websocket.py:83:@router.websocket("/ws/fleet")
+    15	from intelligence.sg_prediction.state_encoder import StateEncoder
+    16	from intelligence.sg_prediction.sg_engine import SGEngine
+    17	
+    18	
+    19	# Known bottleneck patterns
+    20	BOTTLENECK_PATTERNS = {
  succeeded in 0ms:
-python/app/main.py:275:@app.get("/health")
-python/app/main.py:308:@app.get("/")
-exec
-/bin/zsh -lc "nl -ba .gitignore | sed -n '1,220p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	# C++ build
-     2	build/
-     3	cmake-build-*/
-     4	*.o
-     5	*.so
-     6	*.a
-     7	*.dylib
-     8	
-     9	# Python
-    10	__pycache__/
-    11	*.py[cod]
-    12	*.egg-info/
-    13	dist/
-    14	.venv/
+     1	"""
+     2	FleetAtlas — multi-robot fingerprint aggregation and map change detection.
+     3	
+     4	Aggregates individual robot zone identifications into a fleet-level
+     5	"atlas" that tracks:
+     6	- Which zones are occupied
+     7	- Zone transition patterns
+     8	- Map drift / change detection (nodes added/removed)
+     9	"""
+    10	
+    11	import time
+    12	import numpy as np
+    13	from typing import Any, Optional
+    14	
     15	
-    16	# IDE
-    17	.vscode/
-    18	.idea/
-    19	*.swp
+    16	class FleetAtlas:
+    17	    """
+    18	    Aggregates zone identification results across the entire fleet.
+    19	    Detects when the map has changed (nodes added/removed).
+    20	    """
+exec
+/bin/zsh -lc 'nl -ba python/intelligence/sg_prediction/sg_engine.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	SGEngine — Semantic Gravity attractor landscape for fleet state patterns.
+     3	
+     4	Stores known patterns (attractors) and classifies new states by
+     5	finding the closest attractor in the energy landscape.
+     6	
+     7	Uses a Hopfield-style energy function for attractor dynamics.
+     8	"""
+     9	
+    10	import numpy as np
+    11	from typing import Any, Optional
+    12	
+    13	
+    14	class SGEngine:
+    15	    """
+    16	    Semantic Gravity engine — attractor landscape for fleet state classification.
+    17	
+    18	    Stores fleet state patterns as attractors. Given a new state vector,
+    19	    finds which attractor basin it belongs to (pattern matching).
+    20	    """
+exec
+/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	ZoneIdentifier -- identifies which warehouse zone a robot occupies.
+     3	
+     4	Uses P22's proven 360-ray LiDAR scan + 16-feature extraction method.
+     5	P22 achieved 100% accuracy on 25 zones; this ports the exact approach
+     6	into the robotic digital twin simulation context.
+     7	
+     8	Two modes:
+     9	  1. LiDAR scan mode: identify_from_scan() -- uses 360-ray scan + 16 features
+    10	     + graph disambiguation (P22 method, >95% accuracy)
+    11	  2. Position mode: identify() -- uses (x,y) nearest centroid
+    12	     (legacy API, kept for backward compatibility)
+    13	
+    14	Performance targets:
+    15	  - ODE identification: <1ms
+    16	  - Cold start recovery: <2s
+    17	"""
+    18	
+    19	import math
+    20	import time
+exec
+/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '260,560p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+   260	
+   261	    # For each horizontal column, compute max obstacle height seen
+   262	    # height = lidar_z + range * tan(v_angle)
+   263	    # A "return" exists where range < max_range * 0.95 (not hitting infinity)
+   264	    col_max_heights = np.zeros(n_h)
+   265	    for h_idx in range(n_h):
+   266	        max_h = 0.0
+   267	        for v_idx in range(n_v):
+   268	            r = scan_3d[h_idx, v_idx]
+   269	            if r < max_range * 0.95:  # valid return
+   270	                height = lidar_z + r * math.tan(v_angles[v_idx])
+   271	                if height > max_h:
+   272	                    max_h = height
+   273	        col_max_heights[h_idx] = max_h
+   274	
+   275	    # Sector definitions (same as base features)
+   276	    front_idx = list(range(345, 360)) + list(range(0, 15))
+   277	    back_idx = list(range(165, 195))
+   278	    left_idx = list(range(255, 285))
+   279	    right_idx = list(range(75, 105))
+exec
+/bin/zsh -lc "nl -ba python/intelligence/iogita/zone_identifier.py | sed -n '560,980p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+   560	
+   561	            # Use zone type if available, otherwise node type
+   562	            if zone_name:
+   563	                scan_type = self._zone_types.get(zone_name, node_type)
+   564	            else:
+   565	                scan_type = node_type
+   566	
+   567	            # Compute distance and DIRECTION to nearest dock
+   568	            x, y = node["x"], node["y"]
+   569	            heading_deg, dist_from_dock = self._compute_node_dock_features(
+   570	                x, y, dock_nodes, node
+   571	            )
+   572	
+   573	            # Grid position for turns_since_dock estimate
+   574	            turns_estimate = dist_from_dock / 2.0  # rough estimate
+   575	
+   576	            # Average multiple scans for robustness
+   577	            features_list = []
+   578	            for _ in range(n_scans):
+   579	                scan = generate_zone_scan(scan_type, rng, heading_deg, dist_from_dock)
+exec
+/bin/zsh -lc 'nl -ba frontend/src/types.ts' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba frontend/src/App.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import { useCallback, useRef } from 'react'
+     2	import { useApi } from './hooks/useApi'
+     3	import { useFleetWebSocket } from './hooks/useFleetWebSocket'
+     4	import { WarehouseGrid } from './components/WarehouseGrid'
+     5	import { RobotStatusPanel } from './components/RobotStatusPanel'
+     6	import { TaskQueue } from './components/TaskQueue'
+     7	import { BatteryLevels } from './components/BatteryLevels'
+     8	import { IoGitaZones } from './components/IoGitaZones'
+     9	import { SGPredictions } from './components/SGPredictions'
+    10	import type {
+    11	  Robot,
+    12	  Task,
+    13	  MapNode,
+    14	  MapEdge,
+    15	  Health,
+    16	  IoGitaZoneStatus,
+    17	  SGPrediction,
+    18	  FleetWSEvent,
+    19	} from './types'
+    20	
+ succeeded in 0ms:
+     1	/**
+     2	 * TypeScript interfaces matching python/app/models.py
+     3	 * Used by all dashboard components and hooks.
+     4	 */
+     5	
+     6	// --- Enums ---
+     7	
+     8	export type RobotStatus =
+     9	  | 'idle'
+    10	  | 'moving'
+    11	  | 'charging'
+    12	  | 'loading'
+    13	  | 'unloading'
+    14	  | 'error'
+    15	  | 'offline'
+    16	  | 'docking'
+    17	  | 'undocking'
+    18	  | 'waiting'
+    19	
+    20	export type TaskStatus =
+exec
+/bin/zsh -lc 'nl -ba frontend/src/hooks/useApi.ts' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba frontend/src/main.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import { StrictMode } from 'react'
+     2	import { createRoot } from 'react-dom/client'
+     3	import './index.css'
+     4	import App from './App'
+     5	
+     6	createRoot(document.getElementById('root')!).render(
+     7	  <StrictMode>
+     8	    <App />
+     9	  </StrictMode>,
+    10	)
+ succeeded in 0ms:
+     1	import { useState, useEffect, useRef, useCallback } from 'react'
+     2	
+     3	const API_BASE = window.location.origin
+     4	
+     5	interface UseApiResult<T> {
+     6	  data: T | null
+     7	  loading: boolean
+     8	  error: string | null
+     9	  refetch: () => void
+    10	}
+    11	
+    12	/**
+    13	 * Generic REST fetcher with polling interval.
+    14	 * @param path - API path (e.g., "/api/robots")
+    15	 * @param intervalMs - Polling interval in ms. 0 = no polling (fetch once).
+    16	 */
+    17	export function useApi<T>(path: string, intervalMs: number = 0): UseApiResult<T> {
+    18	  const [data, setData] = useState<T | null>(null)
+    19	  const [loading, setLoading] = useState(true)
+    20	  const [error, setError] = useState<string | null>(null)
+exec
+/bin/zsh -lc 'nl -ba frontend/src/hooks/useFleetWebSocket.ts' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import { useState, useEffect, useRef, useCallback } from 'react'
+     2	import type { FleetWSEvent } from '../types'
+     3	
+     4	const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws/fleet`
+     5	const MAX_BACKOFF_MS = 30_000
+     6	const INITIAL_BACKOFF_MS = 1_000
+     7	
+     8	interface UseFleetWebSocketResult {
+     9	  connected: boolean
+    10	  lastEvent: FleetWSEvent | null
+    11	  error: string | null
+    12	}
+    13	
+    14	/**
+    15	 * WebSocket hook for fleet real-time updates.
+    16	 * Auto-reconnects with exponential backoff.
+    17	 */
+    18	export function useFleetWebSocket(
+    19	  onEvent?: (event: FleetWSEvent) => void
+    20	): UseFleetWebSocketResult {
+exec
+/bin/zsh -lc 'nl -ba frontend/src/components/IoGitaZones.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import type { IoGitaZoneStatus } from '../types'
+     2	
+     3	interface IoGitaZonesProps {
+     4	  zones: IoGitaZoneStatus[]
+     5	}
+     6	
+     7	const ZONE_COLORS: Record<string, string> = {
+     8	  dock: 'text-purple-400',
+     9	  shelf: 'text-accent',
+    10	  ops: 'text-warning',
+    11	  aisle: 'text-muted',
+    12	}
+    13	
+    14	/**
+    15	 * io-gita zone identification status per robot.
+    16	 * Shows zone, confidence, and fallback indicator.
+    17	 */
+    18	export function IoGitaZones({ zones }: IoGitaZonesProps) {
+    19	  return (
+    20	    <div className="bg-panel border border-border rounded-lg p-3 h-full flex flex-col">
+exec
+/bin/zsh -lc 'nl -ba frontend/src/components/SGPredictions.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import type { SGPrediction } from '../types'
+     2	
+     3	interface SGPredictionsProps {
+     4	  predictions: SGPrediction[]
+     5	}
+     6	
+     7	const SEVERITY_STYLE: Record<string, string> = {
+     8	  info: 'border-l-accent bg-accent/5',
+     9	  warning: 'border-l-warning bg-warning/5',
+    10	  error: 'border-l-danger bg-danger/5',
+    11	  critical: 'border-l-danger bg-danger/10',
+    12	}
+    13	
+    14	const TYPE_LABEL: Record<string, string> = {
+    15	  bottleneck: 'BOTTLENECK',
+    16	  deadlock: 'DEADLOCK',
+    17	  congestion: 'CONGESTION',
+    18	  battery_critical: 'BATTERY',
+    19	}
     20	
 exec
-/bin/zsh -lc "rg -n \"(token|password|secret|api[_-]?key|guest:guest|adminpass|rdt-influx-token)\" python/app python/intelligence docker | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-docker/docker-compose.yml:32:      - INFLUXDB_TOKEN=rdt-influx-token
-docker/docker-compose.yml:96:      DOCKER_INFLUXDB_INIT_PASSWORD: adminpass
-docker/docker-compose.yml:99:      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: rdt-influx-token
-python/app/routes/robots.py:12:from app.auth import require_api_key
-python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:17:from app.auth import require_api_key
-python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
-python/app/routes/wes.py:11:from app.auth import require_api_key
-python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
-python/app/config.py:31:    influxdb_token: str = Field(default="")
-python/app/config.py:34:    rabbitmq_url: str = Field(default="amqp://guest:guest@localhost:5672/")
-python/app/config.py:50:    api_key: str = Field(default="", description="API key for write endpoints. Empty = no auth.")
-python/app/routes/simulation.py:15:from app.auth import require_api_key
-python/app/routes/simulation.py:57:@router.post("/start", dependencies=[Depends(require_api_key)])
-python/app/routes/simulation.py:89:@router.post("/stop", dependencies=[Depends(require_api_key)])
-python/app/routes/simulation.py:101:@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
-python/app/main.py:169:            token=settings.influxdb_token,
-python/app/auth.py:15:_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
-codex
-I found a likely architecture mismatch: the fleet loop appears to write JSON state locally while MongoDBWriter exists separately. I’m verifying whether the runtime actually wires C++ output into MongoDB, because that directly impacts Architecture and Blueprint Compliance scores.
+/bin/zsh -lc 'nl -ba frontend/src/components/RobotStatusPanel.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba frontend/src/components/WarehouseGrid.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import type { Robot } from '../types'
+     2	
+     3	interface RobotStatusPanelProps {
+     4	  robots: Robot[]
+     5	}
+     6	
+     7	const STATUS_DOT: Record<string, string> = {
+     8	  idle: 'bg-muted',
+     9	  moving: 'bg-accent',
+    10	  charging: 'bg-success',
+    11	  loading: 'bg-warning',
+    12	  unloading: 'bg-warning',
+    13	  error: 'bg-danger',
+    14	  offline: 'bg-gray-600',
+    15	  docking: 'bg-purple-400',
+    16	  undocking: 'bg-purple-400',
+    17	  waiting: 'bg-yellow-300',
+    18	}
+    19	
+    20	/**
+ succeeded in 0ms:
+     1	import { useMemo } from 'react'
+     2	import type { MapNode, MapEdge, Robot } from '../types'
+     3	
+     4	interface WarehouseGridProps {
+     5	  nodes: MapNode[]
+     6	  edges: MapEdge[]
+     7	  robots: Robot[]
+     8	}
+     9	
+    10	const NODE_COLORS: Record<string, string> = {
+    11	  aisle: '#6c7086',
+    12	  shelf: '#89b4fa',
+    13	  charge: '#a6e3a1',
+    14	  pick: '#f9e2af',
+    15	  drop: '#fab387',
+    16	  hub: '#cba6f7',
+    17	}
+    18	
+    19	const ROBOT_COLOR = '#f38ba8'
+    20	
 exec
-/bin/zsh -lc "nl -ba cpp/src/apps/fms_server.cpp | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc 'nl -ba frontend/src/components/TaskQueue.tsx' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	import { useMemo } from 'react'
+     2	import type { Task } from '../types'
+     3	
+     4	interface TaskQueueProps {
+     5	  tasks: Task[]
+     6	}
+     7	
+     8	const STATUS_BADGE: Record<string, string> = {
+     9	  pending: 'bg-muted/30 text-muted',
+    10	  assigned: 'bg-accent/20 text-accent',
+    11	  in_progress: 'bg-warning/20 text-warning',
+    12	  completed: 'bg-success/20 text-success',
+    13	  failed: 'bg-danger/20 text-danger',
+    14	  cancelled: 'bg-gray-600/20 text-gray-500',
+    15	}
+    16	
+    17	/**
+    18	 * Task queue showing pending, active, and completed tasks.
+    19	 */
+    20	export function TaskQueue({ tasks }: TaskQueueProps) {
+exec
+/bin/zsh -lc 'nl -ba cpp/src/core/Config.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// core/Config.cpp — Loads robot YAML + warehouse JSON
+     3	// ──────────────────────────────────────────────────────────
+     4	
+     5	#include "rdt/core/Config.h"
+     6	
+     7	#include <fstream>
+     8	#include <sstream>
+     9	#include <stdexcept>
+    10	
+    11	#include <yaml-cpp/yaml.h>
+    12	#include <json/json.h>
+    13	
+    14	namespace rdt {
+    15	
+    16	// ── Robot config (YAML) ─────────────────────────────────
+    17	
+    18	RobotConfig Config::loadRobotConfig(const std::string& yaml_path) {
+    19	    YAML::Node root;
+    20	    try {
+exec
+/bin/zsh -lc 'ls -la configs; find configs -maxdepth 3 -type f | sort' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+total 8
+drwxr-xr-x   6 meharban  staff   192 Mar 28 10:09 .
+drwxr-xr-x  42 meharban  staff  1344 Mar 29 13:08 ..
+-rw-r--r--   1 meharban  staff  1958 Mar 28 10:09 README.md
+drwxr-xr-x   4 meharban  staff   128 Mar 28 10:07 behavior_trees
+drwxr-xr-x   5 meharban  staff   160 Mar 28 10:08 robots
+drwxr-xr-x   6 meharban  staff   192 Mar 28 14:34 warehouses
+configs/README.md
+configs/behavior_trees/default_agv.xml
+configs/behavior_trees/default_amr.xml
+configs/robots/README.md
+configs/robots/differential_drive.yaml
+configs/robots/unidirectional.yaml
+configs/warehouses/README.md
+configs/warehouses/botvalley.json
+configs/warehouses/realistic.json
+configs/warehouses/simple_grid.json
+exec
+/bin/zsh -lc "rg -n \"simple_grid|differential_drive|botvalley|configs/|/configs|hardcod|localhost|127\\.0\\.0\\.1|mongodb://|redis://|influxdb|rabbitmq|api_key\" cpp/src cpp/include python/app python/intelligence frontend/src docker -g'*.cpp' -g'*.h' -g'*.py' -g'*.ts' -g'*.tsx' -g'*.yml' -g'*.yaml' -g'*.json' -g'Dockerfile'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+docker/docker-compose.yml:21:      rabbitmq:
+docker/docker-compose.yml:25:      influxdb:
+docker/docker-compose.yml:28:      - MONGODB_URL=mongodb://${MONGO_USER:-rdt}:${MONGO_PASSWORD:-changeme}@mongodb:27017
+docker/docker-compose.yml:29:      - REDIS_URL=redis://:${REDIS_PASSWORD:-changeme}@redis:6379
+docker/docker-compose.yml:30:      - INFLUXDB_URL=http://influxdb:8086
+docker/docker-compose.yml:34:      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-fms}:${RABBITMQ_PASSWORD:-changeme}@rabbitmq:5672/
+docker/docker-compose.yml:35:      - WAREHOUSE_CONFIG=simple_grid
+docker/docker-compose.yml:36:      - ROBOT_CONFIG=differential_drive
+docker/docker-compose.yml:44:      test: ["CMD", "curl", "-f", "http://localhost:8029/health"]
+docker/docker-compose.yml:55:      - "127.0.0.1:27017:27017"  # localhost only
+docker/docker-compose.yml:68:  rabbitmq:
+docker/docker-compose.yml:69:    image: rabbitmq:3-management
+docker/docker-compose.yml:70:    container_name: rdt-rabbitmq
+docker/docker-compose.yml:72:      - "127.0.0.1:5672:5672"    # localhost only
+docker/docker-compose.yml:73:      - "127.0.0.1:15672:15672"  # Management UI
+docker/docker-compose.yml:78:      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+docker/docker-compose.yml:89:      - "127.0.0.1:6379:6379"  # localhost only
+docker/docker-compose.yml:92:  influxdb:
+docker/docker-compose.yml:93:    image: influxdb:2
+docker/docker-compose.yml:94:    container_name: rdt-influxdb
+exec
+/bin/zsh -lc 'nl -ba cpp/src/apps/fms_server.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
      1	// ──────────────────────────────────────────────────────────
      2	// fms_server.cpp — Fleet Management Server entry point
      3	//
@@ -1277,181 +1733,429 @@ exec
     19	//   RDT_REST_PORT   — REST port (default 7012)
     20	// ──────────────────────────────────────────────────────────
 exec
-/bin/zsh -lc "nl -ba cpp/src/database/MongoDBWriter.cpp | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-nl: cpp/src/database/MongoDBWriter.cpp: No such file or directory
-exec
-/bin/zsh -lc "nl -ba cpp/include/rdt/database/MongoDBWriter.h | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-nl: cpp/include/rdt/database/MongoDBWriter.h: No such file or directory
-exec
-/bin/zsh -lc "rg -n \"MongoDBWriter|mongo|fleet_state.json|writeState\\(|state_file\" cpp/src cpp/include | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-cpp/src/apps/fms_server.cpp:13://              [--state-file fleet_state.json]
-cpp/src/apps/fms_server.cpp:54:              << "  --state-file <path>  JSON state output file (default fleet_state.json)\n"
-cpp/src/apps/fms_server.cpp:67:    std::string state_file = "fleet_state.json";
-cpp/src/apps/fms_server.cpp:81:            state_file = argv[++i];
-cpp/src/apps/fms_server.cpp:167:    if (!fm.init(tcp_port, rest_port, state_file)) {
-cpp/include/rdt/fleet/FleetManager.h:122:    /// @param state_file Path for JSON state output (default "fleet_state.json")
-cpp/include/rdt/fleet/FleetManager.h:126:              const std::string& state_file = "fleet_state.json");
-cpp/include/rdt/fleet/FleetManager.h:164:    void writeState();
-cpp/include/rdt/fleet/FleetManager.h:174:    std::string state_file_path_;
-cpp/src/fleet/FleetManager.cpp:31:                        const std::string& state_file) {
-cpp/src/fleet/FleetManager.cpp:32:    state_file_path_ = state_file;
-cpp/src/fleet/FleetManager.cpp:158:    writeState();
-cpp/src/fleet/FleetManager.cpp:360:void FleetManager::writeState() {
-cpp/src/fleet/FleetManager.cpp:361:    if (state_file_path_.empty()) return;
-cpp/src/fleet/FleetManager.cpp:369:    std::ofstream out(state_file_path_);
-exec
-/bin/zsh -lc "nl -ba cpp/src/fleet/FleetManager.cpp | sed -n '360,520p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-   360	void FleetManager::writeState() {
-   361	    if (state_file_path_.empty()) return;
-   362	
-   363	    Json::Value root = getFleetStatusJson();
-   364	
-   365	    Json::StreamWriterBuilder builder;
-   366	    builder["indentation"] = "  ";
-   367	    std::string json_str = Json::writeString(builder, root);
-   368	
-   369	    std::ofstream out(state_file_path_);
-   370	    if (out.is_open()) {
-   371	        out << json_str;
-   372	    }
-   373	}
-   374	
-   375	// ── Setup helpers ────────────────────────────────────────
-   376	
-   377	void FleetManager::setupRobot(const RobotConfig& config) {
-   378	    auto agent = std::make_unique<AgentState>();
-   379	    agent->id     = config.name;
-exec
-/bin/zsh -lc 'rg --files gazebo/plugins | sort' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-gazebo/plugins/CMakeLists.txt
-gazebo/plugins/barcode_sensor.cpp
-gazebo/plugins/conveyor_belt.cpp
-gazebo/plugins/lidar_sensor.cpp
-exec
-/bin/zsh -lc "nl -ba gazebo/plugins/conveyor_belt.cpp | sed -n '1,220p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	/*
-     2	 * conveyor_belt.cpp — Gazebo Fortress System Plugin
-     3	 *
-     4	 * Simulates a conveyor belt surface that moves items along a
-     5	 * configurable direction at a given speed.  The FMS/WCS can
-     6	 * start/stop the belt via a gz-transport command topic.
-     7	 *
-     8	 * SDF parameters:
-     9	 *   <speed>      — belt speed in m/s (default 0.3)
-    10	 *   <direction>  — movement yaw in radians (default 0, +X)
-    11	 *   <topic_cmd>  — command topic to start/stop (default /conveyor/cmd)
-    12	 *   <topic_status> — status topic (default /conveyor/status)
-    13	 *
-    14	 * Build: see CMakeLists.txt in this directory.
-    15	 */
-    16	
-    17	#include <atomic>
-    18	#include <chrono>
-    19	#include <cmath>
-    20	#include <string>
-exec
-/bin/zsh -lc "rg --files cpp/src | sort | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-cpp/src/apps/fms_server.cpp
-cpp/src/behavior/ActionNodes.cpp
-cpp/src/behavior/BTEngine.cpp
-cpp/src/behavior/ConditionNodes.cpp
-cpp/src/core/Config.cpp
-cpp/src/core/Logger.cpp
-cpp/src/core/Timer.cpp
-cpp/src/fleet/AgentInterface.cpp
-cpp/src/fleet/COPPController.cpp
-cpp/src/fleet/FleetManager.cpp
-cpp/src/fleet/TaskManager.cpp
-cpp/src/navigation/AStar.cpp
-cpp/src/navigation/GraphMap.cpp
-cpp/src/navigation/NodeReservation.cpp
-cpp/src/navigation/QuadTree.cpp
-cpp/src/network/ProtocolV1.cpp
-cpp/src/network/RESTServer.cpp
-cpp/src/network/TCPServer.cpp
-cpp/src/robot/BatteryModel.cpp
-cpp/src/robot/MotionController.cpp
-exec
-/bin/zsh -lc "rg --files gazebo | sort | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-gazebo/cold_start_proven_results.json
-gazebo/cold_start_proven_results.md
-gazebo/cold_start_results.json
-gazebo/full_flow_cold_start.py
-gazebo/full_flow_results.json
-gazebo/launch.py
-gazebo/models/diffdrive_amr/model.config
-gazebo/models/diffdrive_amr/model.sdf
-gazebo/models/uni_agv/model.config
-gazebo/models/uni_agv/model.sdf
-gazebo/plugins/CMakeLists.txt
-gazebo/plugins/barcode_sensor.cpp
-gazebo/plugins/conveyor_belt.cpp
-gazebo/plugins/lidar_sensor.cpp
-gazebo/ril_cold_start_results.json
-gazebo/scripts/generate_robot.py
-gazebo/scripts/generate_world.py
-gazebo/tests/__init__.py
-gazebo/tests/test_robot_gen.py
-gazebo/tests/test_world_gen.py
+/bin/zsh -lc 'nl -ba docker/start.sh' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	#!/usr/bin/env bash
+     2	# ============================================================
+     3	# start.sh — Launch C++ FMS server + Python FastAPI
+     4	# ============================================================
+     5	# Runs inside the Docker container. Manages both processes
+     6	# and forwards SIGTERM/SIGINT for clean shutdown.
+     7	
+     8	set -euo pipefail
+     9	
+    10	# --- PIDs for cleanup ---
+    11	FMS_PID=""
+    12	API_PID=""
+    13	
+    14	# --- Clean shutdown handler ---
+    15	shutdown() {
+    16	    echo "[start.sh] Received shutdown signal — stopping services..."
+    17	
+    18	    if [ -n "$API_PID" ] && kill -0 "$API_PID" 2>/dev/null; then
+    19	        echo "[start.sh] Stopping Python FastAPI (PID $API_PID)..."
+    20	        kill -TERM "$API_PID" 2>/dev/null || true
 codex
-I’m now cross-checking `EXECUTION_PLAN.md` claims mechanically against the filesystem to quantify blueprint drift (missing files/tests despite `[x]`), since this is likely the biggest score impact.
+I’ve gathered config/deployment evidence; next I’m doing a strict security pass (write-endpoint auth coverage, CORS, secret handling, and exception exposure) before final scoring.
 exec
-/bin/zsh -lc "python -c \"import re,pathlib;root=pathlib.Path('.');text=pathlib.Path('EXECUTION_PLAN.md').read_text();entries=[]
-for i,line in enumerate(text.splitlines(),1):
-  if '- [x]' in line:
-    for f in re.findall(r'"'`([''^`]+)`'"',line):
-      if '&&' in f or f.startswith('http') or ' ' in f: continue
-      fs=[]
-      m=re.match(r'(.+)\\.h/\\.cpp"'$'"',f)
-      if m: fs=[m.group(1)+'.h',m.group(1)+'.cpp']
-      elif '/.cpp' in f or '/.h' in f: fs=[f.replace('/.cpp','.cpp').replace('/.h','.h')]
-      else: fs=[f]
-      for ff in fs:
-        if '/' not in ff and ff not in ('CMakeLists.txt','Dockerfile'): continue
-        entries.append((i,ff,(root/ff).exists()))
-seen=set();out=[]
-for e in entries:
-  if e[1] in seen: continue
-  seen.add(e[1]); out.append(e)
-missing=[e for e in out if not e[2]]
-print('TOTAL_REFERENCED',len(out));print('MISSING',len(missing));
-[print(f'{i}: {ff}') for i,ff,_ in missing]\"" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation exited 1 in 0ms:
-zsh:20: unmatched "
+/bin/zsh -lc 'nl -ba .gitignore; nl -ba .env.example' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# C++ build
+     2	build/
+     3	cmake-build-*/
+     4	*.o
+     5	*.so
+     6	*.a
+     7	*.dylib
+     8	
+     9	# Python
+    10	__pycache__/
+    11	*.py[cod]
+    12	*.egg-info/
+    13	dist/
+    14	.venv/
+    15	
+    16	# IDE
+    17	.vscode/
+    18	.idea/
+    19	*.swp
+    20	
 exec
-/bin/zsh -lc "rg --files | rg 'MongoDBWriter|test_mongodb|test_timing|test_bt_lifecycle|python/wes|python/monitoring|docs/API_REFERENCE.md|docs/ARCHITECTURE.md|docs/CONFIGURATION.md|demo/fleet_demo.py|gazebo/scripts/generate_world.py|cpp/src/fleet/AgentInterface.h|cpp/src/fleet/AgentInterface.cpp|cpp/include/rdt/fleet/AgentInterface.h'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
-/bin/zsh -lc "ls docs && ls demo && ls python | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-cpp/src/fleet/AgentInterface.cpp
-demo/fleet_demo.py
-docs/ARCHITECTURE.md
-docs/CONFIGURATION.md
-docs/API_REFERENCE.md
-python/monitoring/redis_cache.py
-python/monitoring/__init__.py
-python/monitoring/influx_writer.py
-python/wes/kpi_tracker.py
-python/wes/order_generator.py
-python/wes/task_generator.py
-python/wes/__init__.py
-cpp/include/rdt/fleet/AgentInterface.h
-gazebo/scripts/generate_world.py
+/bin/zsh -lc "rg -n \"@router\\.(post|put|delete|patch)\" python/app/routes -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
+python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
+python/app/routes/iogita.py:77:@router.post("/cold-start/{robot_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:57:@router.post("/start", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:89:@router.post("/stop", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:101:@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
+exec
+/bin/zsh -lc "rg -n \"dependencies=\\[Depends\\(require_api_key\\)\\]\" python/app/routes -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc "rg -n \"password|secret|token|api[_-]?key|changeme|hardcoded\" python/app python/intelligence docker frontend/src -g'*.py' -g'*.yml' -g'*.ts' -g'*.tsx' -g'Dockerfile'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
+python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
+python/app/routes/iogita.py:77:@router.post("/cold-start/{robot_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:57:@router.post("/start", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:89:@router.post("/stop", dependencies=[Depends(require_api_key)])
+python/app/routes/simulation.py:101:@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
  succeeded in 0ms:
-API_REFERENCE.md
-ARCHITECTURE.md
-CONFIGURATION.md
-GETTING_STARTED.md
-USER_EXPERIENCE.md
-cold_start_demo.py
-fleet_demo.py
-app
-intelligence
-monitoring
-pytest.ini
-requirements.txt
-test_output.txt
-tests
-wes
+docker/docker-compose.yml:5:# All secrets are read from docker/.env (not committed to git).
+docker/docker-compose.yml:28:      - MONGODB_URL=mongodb://${MONGO_USER:-rdt}:${MONGO_PASSWORD:-changeme}@mongodb:27017
+docker/docker-compose.yml:29:      - REDIS_URL=redis://:${REDIS_PASSWORD:-changeme}@redis:6379
+docker/docker-compose.yml:31:      - INFLUXDB_TOKEN=${INFLUXDB_TOKEN:-changeme}
+docker/docker-compose.yml:34:      - RABBITMQ_URL=amqp://${RABBITMQ_USER:-fms}:${RABBITMQ_PASSWORD:-changeme}@rabbitmq:5672/
+docker/docker-compose.yml:58:      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:-changeme}
+docker/docker-compose.yml:62:      test: ["CMD", "mongosh", "-u", "${MONGO_USER:-rdt}", "-p", "${MONGO_PASSWORD:-changeme}", "--eval", "db.adminCommand('ping')"]
+docker/docker-compose.yml:76:      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-changeme}
+docker/docker-compose.yml:87:    command: redis-server --requirepass ${REDIS_PASSWORD:-changeme}
+docker/docker-compose.yml:100:      DOCKER_INFLUXDB_INIT_PASSWORD: ${INFLUXDB_PASSWORD:-changeme}
+docker/docker-compose.yml:103:      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${INFLUXDB_TOKEN:-changeme}
+docker/docker-compose.yml:114:      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_PASSWORD:-changeme}
+python/app/routes/robots.py:12:from app.auth import require_api_key
+python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
+python/app/routes/wes.py:11:from app.auth import require_api_key
+python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:17:from app.auth import require_api_key
+python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
+python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
 exec
-/bin/zsh -lc "rg -n \"AgentInterface\" cpp/CMakeLists.txt cpp/src cpp/include cpp/tests | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+/bin/zsh -lc "rg -n \"traceback|exc_info|logger.exception|HTTPException\\(status_code=500|detail=|except Exception as e|print\\(\" python/app -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/app/routes/robots.py:47:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/robots.py:52:            raise HTTPException(status_code=404, detail=f"Robot {robot_id} not found")
+python/app/routes/robots.py:57:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/robots.py:65:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/robots.py:71:            raise HTTPException(status_code=404, detail=f"Robot {robot_id} not found")
+python/app/routes/robots.py:92:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/fleet.py:65:        logger.exception("fleet_status failed")
+python/app/routes/tasks.py:54:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/tasks.py:77:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/tasks.py:85:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/tasks.py:90:            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+python/app/routes/tasks.py:95:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/tasks.py:103:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/tasks.py:111:            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+python/app/routes/tasks.py:116:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/tasks.py:124:        raise HTTPException(status_code=503, detail="Database unavailable")
+python/app/routes/tasks.py:129:            raise HTTPException(status_code=404, detail=f"Task {task_id} not found")
+python/app/routes/tasks.py:134:                detail=f"Task {task_id} already {task.get('status')}",
+python/app/routes/tasks.py:145:        raise HTTPException(status_code=503, detail="Database error")
+python/app/routes/iogita.py:84:        raise HTTPException(status_code=503, detail="Cold start engine not available")
+exec
+/bin/zsh -lc 'git status --short' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+ M CODEX_SESSION6_AUDIT.md
+ M GEMINI_SESSION6_AUDIT.md
+ M KIMI_SESSION6_AUDIT.md
+exec
+/bin/zsh -lc "rg -n \"@router\\.(get|post|put|delete|patch)\\(\" python/app/routes -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/app/routes/reservations.py:16:@router.get("/active")
+python/app/routes/robots.py:28:@router.get("")
+python/app/routes/robots.py:42:@router.get("/{robot_id}")
+python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
+python/app/routes/analytics.py:23:@router.get("/fleet")
+python/app/routes/analytics.py:66:@router.get("/predictions")
+python/app/routes/analytics.py:91:@router.get("/ab-comparison")
+python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
+python/app/routes/wes.py:69:@router.get("/kpi")
+python/app/routes/stats.py:18:@router.get("/throughput")
+python/app/routes/wcs.py:17:@router.get("/conveyors")
+python/app/routes/wcs.py:31:@router.get("/lanes")
+python/app/routes/telemetry.py:16:@router.get("/{robot_id}")
+python/app/routes/config_routes.py:16:@router.get("/robots")
+python/app/routes/events.py:16:@router.get("")
+python/app/routes/maps.py:24:@router.get("")
+python/app/routes/maps.py:38:@router.get("/nodes")
+python/app/routes/maps.py:45:@router.get("/path")
+python/app/routes/maps.py:109:@router.get("/zones")
+python/app/routes/fleet.py:26:@router.get("/status")
+exec
+/bin/zsh -lc "rg -n \"@app\\.get\\(\" python/app/main.py && rg -n \"@router\\.websocket\\(\" python/app/websocket.py" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+275:@app.get("/health")
+308:@app.get("/")
+91:@router.websocket("/ws/fleet")
+exec
+/bin/zsh -lc "rg -n \"\\- \\[x\\].*"'`[''^`]+`" EXECUTION_PLAN.md' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation exited 1 in 0ms:
+zsh:1: unmatched "
+exec
+/bin/zsh -lc 'test -f gazebo/plugins/conveyor_belt.cpp && echo exists || echo missing; test -f cpp/include/rdt/fleet/AgentInterface.h && echo agent_exists || echo agent_missing' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+exists
+agent_exists
+exec
+/bin/zsh -lc "rg -n \"test_mpc|test_timing|test_bt_lifecycle|test_mongodb|database/MongoDBWriter|MongoDBWriter\" EXECUTION_PLAN.md cpp/tests cpp/src cpp/include -g'*'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+EXECUTION_PLAN.md:65:- [x] 4.3 **TEST RED:** `test_mpc.cpp` — OSQP solve <50ms, 12 opt vars
+EXECUTION_PLAN.md:80:- [x] 5.5 **TEST RED:** `test_bt_lifecycle.cpp` — full AGV cycle: idle→pick→move→drop→charge
+EXECUTION_PLAN.md:90:- [x] 6.5 **TEST RED:** `test_mongodb.cpp` — write agent state, read back
+EXECUTION_PLAN.md:91:- [x] 6.6 **GREEN:** `cpp/src/database/MongoDBWriter.h/.cpp`
+EXECUTION_PLAN.md:105:- [x] 7.7 **TEST RED:** `test_timing.cpp` — 15Hz loop stays <67ms
+exec
+/bin/zsh -lc 'for f in python/tests/test_hello.py cpp/tests/test_mpc.cpp cpp/tests/test_bt_lifecycle.cpp cpp/tests/test_mongodb.cpp cpp/src/database/MongoDBWriter.h cpp/src/database/MongoDBWriter.cpp cpp/tests/test_timing.cpp; do if [ -f "$f" ]; then echo "FOUND $f"; else echo "MISSING $f"; fi; done' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+MISSING python/tests/test_hello.py
+MISSING cpp/tests/test_mpc.cpp
+MISSING cpp/tests/test_bt_lifecycle.cpp
+MISSING cpp/tests/test_mongodb.cpp
+MISSING cpp/src/database/MongoDBWriter.h
+MISSING cpp/src/database/MongoDBWriter.cpp
+MISSING cpp/tests/test_timing.cpp
+codex
+I’m validating test rigor now: endpoint contract coverage, performance/timing assertions, and whether tests are genuinely behavioral versus weak shape checks.
+exec
+/bin/zsh -lc 'nl -ba python/tests/test_iogita.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Tests for io-gita intelligence layer.
+     3	
+     4	- ZoneIdentifier: zone ID < 1ms
+     5	- ColdStartRecovery: recovery < 2s
+     6	- FleetAtlas: fingerprint aggregation
+     7	"""
+     8	
+     9	import time
+    10	import tempfile
+    11	from pathlib import Path
+    12	
+    13	import numpy as np
+    14	import pytest
+    15	
+    16	# Sample warehouse config for testing
+    17	SAMPLE_ZONES = [
+    18	    {"name": "Charging", "type": "dock", "nodes": ["DOCK_1", "DOCK_2"]},
+    19	    {"name": "Storage", "type": "shelf", "nodes": ["S_11", "S_12", "S_13", "S_21", "S_23", "S_31", "S_32", "S_33"]},
+    20	    {"name": "Operations", "type": "ops", "nodes": ["PICK_1", "DROP_1", "HUB"]},
+exec
+/bin/zsh -lc 'nl -ba python/tests/test_sg.py' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Tests for SG (Semantic Gravity) prediction module.
+     3	
+     4	- StateEncoder: encode fleet state into feature vector
+     5	- SGEngine: attractor classification
+     6	- BottleneckPredictor: prediction < 25ms
+     7	"""
+     8	
+     9	import time
+    10	
+    11	import numpy as np
+    12	import pytest
+    13	
+    14	
+    15	# Sample robot states for testing
+    16	SAMPLE_ROBOTS = [
+    17	    {
+    18	        "robot_id": f"robot_{i:03d}",
+    19	        "status": "moving" if i % 3 == 0 else ("idle" if i % 3 == 1 else "charging"),
+    20	        "pose": {"x": float(i * 2), "y": float(i % 5 * 2), "theta": 0.0},
+exec
+/bin/zsh -lc "nl -ba python/tests/test_iogita_accuracy.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	"""
+     2	Tests for io-gita accuracy using P22's proven 360-ray LiDAR + 16-feature method.
+     3	
+     4	Tests:
+     5	  1. Zone accuracy on simple_grid (25 nodes) with P22 method -- must exceed 95%
+     6	  2. Zone accuracy on BotValley-style zones (dock/aisle/shelf/cross/hub/lane/mid) -- must exceed 90%
+     7	  3. Feature extraction produces 16 distinct values per zone type
+     8	  4. FMS timing features reduce candidates from 3 to 1 on identical aisles
+     9	  5. Cold start recovery time still <2s
+    10	  6. ODE timing still <1ms
+    11	"""
+    12	
+    13	import json
+    14	import math
+    15	import time
+    16	from pathlib import Path
+    17	
+    18	import numpy as np
+    19	import pytest
+    20	
+exec
+/bin/zsh -lc "nl -ba cpp/tests/test_fleet.cpp | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc "nl -ba python/tests/test_integration.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	// ──────────────────────────────────────────────────────────
+     2	// test_fleet.cpp — Phase 7 tests for FleetManager, TaskManager,
+     3	//                  COPPController
+     4	//
+     5	// 20+ tests with REAL assertions. No assert-is-not-null.
+     6	// ──────────────────────────────────────────────────────────
+     7	
+     8	#include <gtest/gtest.h>
+     9	
+    10	#include "rdt/core/Config.h"
+    11	#include "rdt/core/Types.h"
+    12	#include "rdt/core/Logger.h"
+    13	#include "rdt/navigation/GraphMap.h"
+    14	#include "rdt/navigation/AStar.h"
+    15	#include "rdt/navigation/NodeReservation.h"
+    16	#include "rdt/fleet/TaskManager.h"
+    17	#include "rdt/fleet/COPPController.h"
+    18	#include "rdt/fleet/FleetManager.h"
+    19	
+    20	#include <chrono>
+ succeeded in 0ms:
+     1	"""
+     2	Integration tests for Phase 11 — verifies the full stack works together.
+     3	
+     4	TEST: Cold start demo runs without error
+     5	TEST: All 34 API endpoints return 200 (or expected error for missing resources)
+     6	TEST: WebSocket connects and receives events
+     7	TEST: Config loads both warehouse formats (simple_grid, botvalley)
+     8	TEST: io-gita + SG pipeline works end-to-end
+     9	"""
+    10	
+    11	import json
+    12	import subprocess
+    13	import sys
+    14	import time
+    15	from pathlib import Path
+    16	
+    17	import pytest
+    18	import pytest_asyncio
+    19	from httpx import ASGITransport, AsyncClient
+    20	
+exec
+/bin/zsh -lc 'rg -n "67|15Hz|timing|ms|runOneCycle|CYCLE_MS|EXPECT_LT|EXPECT_LE" cpp/tests/test_fleet.cpp' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+421:    auto timing = fm.runOneCycle();
+423:    EXPECT_EQ(timing.cycle_number, 0);
+424:    EXPECT_GE(timing.total_ms, 0.0);
+425:    EXPECT_GE(timing.tcp_process_ms, 0.0);
+426:    EXPECT_GE(timing.state_update_ms, 0.0);
+427:    EXPECT_GE(timing.bt_tick_ms, 0.0);
+428:    EXPECT_GE(timing.allocation_ms, 0.0);
+429:    EXPECT_GE(timing.path_plan_ms, 0.0);
+430:    EXPECT_GE(timing.command_ms, 0.0);
+436:TEST_F(FleetManagerTest, CycleTimingUnder67ms) {
+438:    // completes well under the 67ms budget
+444:    // Run several cycles and check timing
+445:    double max_ms = 0.0;
+447:        auto timing = fm.runOneCycle();
+448:        if (timing.total_ms > max_ms) max_ms = timing.total_ms;
+451:    // Without real TCP traffic, each cycle should be well under 67ms
+452:    EXPECT_LT(max_ms, 67.0) << "Max cycle time exceeded 67ms budget: " << max_ms << "ms";
+462:    fm.runOneCycle();
+470:    EXPECT_TRUE(status.isMember("timing"));
+exec
+/bin/zsh -lc "rg -n \"mongo|mongodb|Mongo\" cpp/src cpp/include -g'*.cpp' -g'*.h'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+cpp/include/rdt/fleet/FleetManager.h:27://   g. Write state to JSON file (MongoDB deferred)
+exec
+/bin/zsh -lc "nl -ba CODEX_SESSION6_AUDIT.md | sed -n '1,240p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	OpenAI Codex v0.116.0 (research preview)
+     2	--------
+     3	workdir: /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation
+     4	model: gpt-5.3-codex
+     5	provider: openai
+     6	approval: never
+     7	sandbox: read-only
+     8	reasoning effort: medium
+     9	reasoning summaries: none
+    10	session id: 019d3888-c781-7971-82f3-358ab1dd3ebd
+    11	--------
+    12	user
+    13	You are reviewing the Robotic Digital Twin Simulation project as an independent brutal auditor. Score 0-100, no mercy.
+    14	
+    15	Repository root is the current working directory.
+    16	Stack: C++ FMS core (FleetManager, PathPlanner, BehaviorTree, MPC, TCP) + Python FastAPI (34 endpoints + io-gita intelligence) + React dashboard + Gazebo simulation + Docker (6-service compose)
+    17	
+    18	Test results: 597 tests pass (352 C++, 193 Python, 52 Gazebo), 0 failures.
+    19	
+    20	Review these dimensions (10 points each):
+exec
+/bin/zsh -lc "rg -n \"update_fingerprint\\(|get_fleet_snapshot\\(\" python -g'*.py'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+python/monitoring/redis_cache.py:101:    async def get_fleet_snapshot(self) -> Optional[dict[str, Any]]:
+python/tests/test_integration.py:520:        atlas.update_fingerprint("r1", "Charging", {"x": 0, "y": 0, "theta": 0})
+python/tests/test_integration.py:521:        atlas.update_fingerprint("r2", "Storage", {"x": 4, "y": 4, "theta": 0})
+python/tests/test_integration.py:523:        snapshot = atlas.get_fleet_snapshot()
+python/tests/test_integration.py:529:        atlas.update_fingerprint("r1", "Storage", {"x": 2, "y": 2, "theta": 0})
+python/tests/test_integration.py:530:        snapshot2 = atlas.get_fleet_snapshot()
+python/tests/test_integration.py:612:            atlas.update_fingerprint(robot["robot_id"], zone, robot["pose"])
+python/tests/test_integration.py:615:        snapshot = atlas.get_fleet_snapshot()
+python/tests/test_iogita.py:207:    def test_update_fingerprint(self):
+python/tests/test_iogita.py:211:        atlas.update_fingerprint("robot_001", "Charging", {"x": 0, "y": 0, "theta": 0})
+python/tests/test_iogita.py:212:        snapshot = atlas.get_fleet_snapshot()
+python/tests/test_iogita.py:220:        atlas.update_fingerprint("robot_001", "Charging", {"x": 0, "y": 0})
+python/tests/test_iogita.py:221:        atlas.update_fingerprint("robot_001", "Storage", {"x": 4, "y": 4})
+python/tests/test_iogita.py:222:        snapshot = atlas.get_fleet_snapshot()
+python/tests/test_iogita.py:247:        atlas.update_fingerprint("r1", "Charging", {"x": 0, "y": 0})
+python/tests/test_iogita.py:248:        atlas.update_fingerprint("r1", "Storage", {"x": 4, "y": 4})
+python/tests/test_iogita.py:249:        atlas.update_fingerprint("r1", "Operations", {"x": 4, "y": 8})
+python/intelligence/iogita/fleet_atlas.py:40:    def update_fingerprint(self, robot_id: str, zone: str, pose: dict[str, float]):
+python/intelligence/iogita/fleet_atlas.py:68:    def get_fleet_snapshot(self) -> dict[str, Any]:
+python/app/routes/fleet.py:75:    return atlas.get_fleet_snapshot()
+exec
+/bin/zsh -lc 'nl -ba frontend/package.json' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulationexec
+/bin/zsh -lc 'nl -ba frontend/tsconfig.json' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	{
+     2	  "compilerOptions": {
+     3	    "target": "ES2020",
+     4	    "useDefineForClassFields": true,
+     5	    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+     6	    "module": "ESNext",
+     7	    "skipLibCheck": true,
+     8	    "moduleResolution": "bundler",
+     9	    "allowImportingTsExtensions": true,
+    10	    "isolatedModules": true,
+    11	    "moduleDetection": "force",
+    12	    "noEmit": true,
+    13	    "jsx": "react-jsx",
+    14	    "strict": true,
+    15	    "noUnusedLocals": true,
+    16	    "noUnusedParameters": true,
+    17	    "noFallthroughCasesInSwitch": true,
+    18	    "noUncheckedSideEffectImports": true,
+    19	    "forceConsistentCasingInFileNames": true
+    20	  },
+ succeeded in 0ms:
+     1	{
+     2	  "name": "rdt-dashboard",
+     3	  "private": true,
+     4	  "version": "0.1.0",
+     5	  "type": "module",
+     6	  "scripts": {
+     7	    "dev": "vite",
+     8	    "build": "tsc -b && vite build",
+     9	    "preview": "vite preview"
+    10	  },
+    11	  "dependencies": {
+    12	    "react": "^19.1.0",
+    13	    "react-dom": "^19.1.0"
+    14	  },
+    15	  "devDependencies": {
+    16	    "@types/react": "^19.1.2",
+    17	    "@types/react-dom": "^19.1.2",
+    18	    "@vitejs/plugin-react": "^4.4.1",
+    19	    "autoprefixer": "^10.4.21",
+    20	    "postcss": "^8.5.3",
+exec
+/bin/zsh -lc "rg -n \"@router.get\\(\\\"/atlas\\\"\\)|endpoints\\\": 34|/api/fleet/atlas\" python/app/main.py python/app/routes/fleet.py python/tests/test_api.py python/tests/test_integration.py docs/API_REFERENCE.md -g'*.py' -g'*.md'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+docs/API_REFERENCE.md:43:  "endpoints": 34
+python/app/main.py:315:        "endpoints": 34,
+python/app/routes/fleet.py:4:GET /api/fleet/atlas — fleet atlas zone snapshot (io-gita).
+python/app/routes/fleet.py:69:@router.get("/atlas")
+exec
+/bin/zsh -lc "rg -n \"playwright|e2e|cypress|vitest|jest\" frontend -g'*'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 19ms:
+
+exec
+/bin/zsh -lc "nl -ba docs/API_REFERENCE.md | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# API Reference
+     2	
+     3	The Python FastAPI server runs on port **8029** and exposes 34 REST endpoints plus 1 WebSocket endpoint.
+     4	
+     5	Interactive docs: `http://localhost:8029/docs`
+     6	
+     7	## Table of Contents
+     8	
+     9	- [Health and Root](#health-and-root)
+    10	- [Fleet](#fleet)
+    11	- [Robots](#robots)
+    12	- [Tasks](#tasks)
+    13	- [Map](#map)
+    14	- [io-gita Intelligence](#io-gita-intelligence)
+    15	- [Analytics and Predictions](#analytics-and-predictions)
+    16	- [Telemetry](#telemetry)
+    17	- [Events](#events)
+    18	- [Simulation](#simulation)
+    19	- [WES (Warehouse Execution)](#wes-warehouse-execution)
+    20	- [WCS (Warehouse Control)](#wcs-warehouse-control)
+exec
+/bin/zsh -lc "rg -n \"AgentInterface\" cpp/src cpp/include cpp/tests -g'*.cpp' -g'*.h'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
 cpp/include/rdt/fleet/AgentInterface.h:2:// rdt/fleet/AgentInterface.h — Per-robot tracking interface
 cpp/include/rdt/fleet/AgentInterface.h:6:// AgentInterface instances (one per robot).
 cpp/include/rdt/fleet/AgentInterface.h:27:class AgentInterface {
@@ -1469,353 +2173,185 @@ cpp/src/fleet/AgentInterface.cpp:44:void AgentInterface::advancePath() {
 cpp/src/fleet/AgentInterface.cpp:50:void AgentInterface::updateFromTelemetry(const network::ProtocolV1Message& msg) {
 cpp/src/fleet/AgentInterface.cpp:61:Json::Value AgentInterface::toJson() const {
 exec
-/bin/zsh -lc "rg -n \"simple_grid|differential_drive|localhost|7012|65123|8029|5199|/api/|DOCK_1|PICK_1|DROP_1|rdt-influx-token|adminpass\" cpp python frontend docker | sed -n '1,320p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-docker/start.sh:54:echo "[start.sh] Starting Python FastAPI on port ${API_PORT:-8029}..."
-docker/start.sh:58:    --port "${API_PORT:-8029}" \
-docker/start.sh:66:echo "[start.sh]   API:       http://localhost:${API_PORT:-8029}"
-docker/start.sh:67:echo "[start.sh]   Dashboard: http://localhost:${API_PORT:-8029}/dashboard"
-docker/start.sh:68:echo "[start.sh]   Docs:      http://localhost:${API_PORT:-8029}/docs"
-python/monitoring/redis_cache.py:23:            redis_url: Redis connection URL (e.g., redis://localhost:6379).
-docker/docker-compose.yml:15:      - "65123:65123"  # C++ TCP server (robot protocol V1)
-docker/docker-compose.yml:16:      - "7012:7012"    # C++ REST server (fleet API)
-docker/docker-compose.yml:17:      - "8029:8029"    # Python FastAPI (API + intelligence)
-docker/docker-compose.yml:18:      - "5199:5199"    # React Dashboard
-docker/docker-compose.yml:32:      - INFLUXDB_TOKEN=rdt-influx-token
-docker/docker-compose.yml:36:      - WAREHOUSE_CONFIG=simple_grid
-docker/docker-compose.yml:37:      - ROBOT_CONFIG=differential_drive
-docker/docker-compose.yml:38:      - FMS_TCP_PORT=65123
-docker/docker-compose.yml:39:      - FMS_REST_PORT=7012
-docker/docker-compose.yml:40:      - API_PORT=8029
-docker/docker-compose.yml:44:      test: ["CMD", "curl", "-f", "http://localhost:8029/health"]
-docker/docker-compose.yml:96:      DOCKER_INFLUXDB_INIT_PASSWORD: adminpass
-docker/docker-compose.yml:99:      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: rdt-influx-token
-frontend/src/hooks/useApi.ts:14: * @param path - API path (e.g., "/api/robots")
-exec
-/bin/zsh -lc "rg -n \"allow_origins|CORSMiddleware|allow_credentials|X-API-Key|require_api_key\" python/app | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-python/app/routes/robots.py:12:from app.auth import require_api_key
-python/app/routes/robots.py:60:@router.post("/{robot_id}/command", dependencies=[Depends(require_api_key)])
-python/app/routes/wes.py:11:from app.auth import require_api_key
-python/app/routes/wes.py:35:@router.post("/inject-orders", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:17:from app.auth import require_api_key
-python/app/routes/tasks.py:49:@router.post("", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:98:@router.delete("/{task_id}", dependencies=[Depends(require_api_key)])
-python/app/routes/tasks.py:119:@router.post("/{task_id}/cancel", dependencies=[Depends(require_api_key)])
-python/app/routes/simulation.py:15:from app.auth import require_api_key
-python/app/routes/simulation.py:57:@router.post("/start", dependencies=[Depends(require_api_key)])
-python/app/routes/simulation.py:89:@router.post("/stop", dependencies=[Depends(require_api_key)])
-python/app/routes/simulation.py:101:@router.post("/inject-fault", dependencies=[Depends(require_api_key)])
-python/app/main.py:26:from fastapi.middleware.cors import CORSMiddleware
-python/app/main.py:233:    CORSMiddleware,
-python/app/main.py:234:    allow_origins=["*"],
-python/app/main.py:235:    allow_credentials=True,
-python/app/auth.py:5:require the header: X-API-Key: <key>
-python/app/auth.py:15:_api_key_header = APIKeyHeader(name="X-API-Key", auto_error=False)
-python/app/auth.py:18:async def require_api_key(
-exec
-/bin/zsh -lc "rg -n \"API_KEY|X-API-Key|403|auth\" python/tests | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-
-exec
-/bin/zsh -lc "nl -ba CODEX_SESSION6_AUDIT.md | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	OpenAI Codex v0.116.0 (research preview)
-     2	--------
-     3	workdir: /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation
-     4	model: gpt-5.3-codex
-     5	provider: openai
-     6	approval: never
-     7	sandbox: read-only
-     8	reasoning effort: medium
-     9	reasoning summaries: none
-    10	session id: 019d3882-30b8-7630-9228-80ac7190848f
-    11	--------
-    12	user
-    13	You are reviewing the Robotic Digital Twin Simulation project as an independent brutal auditor. Score 0-100, no mercy.
-    14	
-    15	Repository root is the current working directory.
-    16	Stack: C++ FMS core (FleetManager, PathPlanner, BehaviorTree, MPC, TCP) + Python FastAPI (34 endpoints + io-gita intelligence) + React dashboard + Gazebo simulation + Docker (6-service compose)
-    17	
-    18	Test results: 597 tests pass (352 C++, 193 Python, 52 Gazebo), 0 failures.
-    19	
-    20	Review these dimensions (10 points each):
-exec
-/bin/zsh -lc 'ls python/tests | sort && ls cpp/tests | sort' in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-__init__.py
-__pycache__
-conftest.py
-test_api.py
-test_config.py
-test_health.py
-test_integration.py
-test_iogita.py
-test_iogita_accuracy.py
-test_sg.py
-test_wes.py
-CMakeLists.txt
-test_astar.cpp
-test_battery.cpp
-test_bt.cpp
-test_config.cpp
-test_fleet.cpp
-test_graph.cpp
-test_hello.cpp
-test_logger.cpp
-exec
-/bin/zsh -lc "rg -n \"update_fingerprint\\(|get_fleet_snapshot\\(|detect_map_change\\(\" python | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-python/monitoring/redis_cache.py:101:    async def get_fleet_snapshot(self) -> Optional[dict[str, Any]]:
-python/tests/test_integration.py:520:        atlas.update_fingerprint("r1", "Charging", {"x": 0, "y": 0, "theta": 0})
-python/tests/test_integration.py:521:        atlas.update_fingerprint("r2", "Storage", {"x": 4, "y": 4, "theta": 0})
-python/tests/test_integration.py:523:        snapshot = atlas.get_fleet_snapshot()
-python/tests/test_integration.py:529:        atlas.update_fingerprint("r1", "Storage", {"x": 2, "y": 2, "theta": 0})
-python/tests/test_integration.py:530:        snapshot2 = atlas.get_fleet_snapshot()
-python/tests/test_integration.py:612:            atlas.update_fingerprint(robot["robot_id"], zone, robot["pose"])
-python/tests/test_integration.py:615:        snapshot = atlas.get_fleet_snapshot()
-python/tests/test_iogita.py:207:    def test_update_fingerprint(self):
-python/tests/test_iogita.py:211:        atlas.update_fingerprint("robot_001", "Charging", {"x": 0, "y": 0, "theta": 0})
-python/tests/test_iogita.py:212:        snapshot = atlas.get_fleet_snapshot()
-python/tests/test_iogita.py:220:        atlas.update_fingerprint("robot_001", "Charging", {"x": 0, "y": 0})
-python/tests/test_iogita.py:221:        atlas.update_fingerprint("robot_001", "Storage", {"x": 4, "y": 4})
-python/tests/test_iogita.py:222:        snapshot = atlas.get_fleet_snapshot()
-python/tests/test_iogita.py:231:        result = atlas.detect_map_change(SAMPLE_NODES)
-python/tests/test_iogita.py:239:        result = atlas.detect_map_change(new_nodes)
-python/tests/test_iogita.py:247:        atlas.update_fingerprint("r1", "Charging", {"x": 0, "y": 0})
-python/tests/test_iogita.py:248:        atlas.update_fingerprint("r1", "Storage", {"x": 4, "y": 4})
-python/tests/test_iogita.py:249:        atlas.update_fingerprint("r1", "Operations", {"x": 4, "y": 8})
-python/intelligence/iogita/fleet_atlas.py:40:    def update_fingerprint(self, robot_id: str, zone: str, pose: dict[str, float]):
-exec
-/bin/zsh -lc "nl -ba python/wes/order_generator.py | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
-     1	"""
-     2	OrderGenerator — generates warehouse orders using a Poisson arrival process.
-     3	
-     4	Produces realistic order patterns with configurable arrival rate (lambda).
-     5	Each order has a source node (pick), destination node (drop), and priority.
-     6	"""
-     7	
-     8	import time
-     9	import uuid
-    10	from typing import Any
-    11	
-    12	import numpy as np
-    13	
-    14	
-    15	class OrderGenerator:
-    16	    """
-    17	    Generates orders with Poisson-distributed inter-arrival times.
-    18	    """
-    19	
-    20	    def __init__(
+/bin/zsh -lc "nl -ba docs/ARCHITECTURE.md | sed -n '1,260p'" in /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation succeeded in 0ms:
+     1	# Architecture
+     2	
+     3	## System Diagram
+     4	
+     5	The simulation runs as three primary processes plus supporting infrastructure services, all orchestrated by Docker Compose.
+     6	
+     7	```
+     8	                              DOCKER (Ubuntu 22.04)
+     9	  ┌─────────────────────────────────────────────────────────────────────┐
+    10	  │                                                                     │
+    11	  │  ┌──────────────────────────────────────────────────────────────┐  │
+    12	  │  │  C++ PROCESS: fms_server                                     │  │
+    13	  │  │  Ports: :65123 (TCP), :7012 (REST)                           │  │
+    14	  │  │                                                              │  │
+    15	  │  │  rdt_core static library (C++17):                            │  │
+    16	  │  │  ├── core/        Logger, Timer, Config, Types               │  │
+    17	  │  │  ├── navigation/  GraphMap, A*, QuadTree, NodeReservation    │  │
+    18	  │  │  ├── robot/       StateMachine, MotionController, Battery    │  │
+    19	  │  │  ├── behavior/    BTEngine, ActionNodes, ConditionNodes      │  │
+    20	  │  │  ├── network/     TCPServer, RESTServer, ProtocolV1          │  │
 codex
-I’ve completed the evidence pass across C++/Python/frontend/docker/tests and computed draft scores. Final step is assembling the full issue ledger with file:line references; I also need to flag that the workspace is read-only, so I can’t write `CODEX_SESSION6_AUDIT.md` directly and will provide the exact report content here.
-codex
-Could not write to `CODEX_SESSION6_AUDIT.md` because the workspace is read-only (`operation not permitted`).  
-Full audit report content is below.
+I completed the audit, but I could not write to `CODEX_SESSION6_AUDIT.md` because the workspace is mounted read-only (`operation not permitted` on write).
 
-✓ Done: Reviewed `CLAUDE.md`, `EXECUTION_PLAN.md`, C++ headers and key C++ sources, all FastAPI routes/intelligence modules, frontend `src`, Docker artifacts, and test suites with line-level evidence.  
-→ Decision: REJECT — major architecture, security, deployment wiring, and blueprint-delta failures despite substantial implementation depth.  
-⚠ Review: Fix critical contract/wiring gaps first (C++→Mongo pipeline, API/frontend schema mismatch, auth/CORS hardening, blueprint false-positive `[x]` claims).
+✓ Done: Reviewed `CLAUDE.md`, `EXECUTION_PLAN.md`, C++ headers/sources, FastAPI routes/intelligence, frontend, Docker, tests, and docs with direct file evidence.  
+→ Decision: **REJECT** (brutal audit).  
+⚠ Review: Major contract and blueprint deltas, broken deployment path, and dataflow inconsistencies make this non-passable.
 
-## Brutal Scorecard (0-100)
+**Scorecard (0-10 each)**  
+1. Architecture: **3/10**  
+2. C++ Code Quality: **5/10**  
+3. Python Code Quality: **4/10**  
+4. Test Quality: **6/10**  
+5. Config Management: **6/10**  
+6. Docker & Deployment: **3/10**  
+7. Security: **5/10**  
+8. Blueprint Compliance: **2/10**  
+9. Intelligence Layer: **5/10**  
+10. Frontend: **4/10**
 
-1. ARCHITECTURE: **4/10**  
-2. C++ CODE QUALITY: **6/10**  
-3. PYTHON CODE QUALITY: **5/10**  
-4. TEST QUALITY: **7/10**  
-5. CONFIG MANAGEMENT: **5/10**  
-6. DOCKER & DEPLOYMENT: **5/10**  
-7. SECURITY: **3/10**  
-8. BLUEPRINT COMPLIANCE: **2/10**  
-9. INTELLIGENCE LAYER: **6/10**  
-10. FRONTEND: **4/10**
-
-**Final: 47/100**
+**Final Score: 43/100**
 
 ## Issues Found (with evidence)
 
-1. C++ runtime data flow does **not** implement `C++ FMS → MongoDB`; it writes local JSON file instead.  
-[cpp/src/fleet/FleetManager.cpp:360](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/FleetManager.cpp:360)
+- **Core dataflow claim is not implemented (C++ -> MongoDB missing).**  
+  C++ writes JSON file, not MongoDB: [FleetManager.h](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/include/rdt/fleet/FleetManager.h:27), [FleetManager.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/FleetManager.cpp:360).  
+  No Mongo usage in C++ codebase (`rg mongo` finds only comment).  
+  Architecture doc still claims Mongo IPC from C++: [ARCHITECTURE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/ARCHITECTURE.md:61), [ARCHITECTURE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/ARCHITECTURE.md:256).
 
-2. Blueprint marks MongoDB writer/test complete, but those files are missing.  
-[EXECUTION_PLAN.md:90](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:90)  
-[EXECUTION_PLAN.md:91](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:91)
+- **Deployment start path is broken (container likely exits).**  
+  `start.sh` launches `fms_server` with no required args: [start.sh](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:45).  
+  `fms_server` requires warehouse/robot args or `RDT_WAREHOUSE`/`RDT_ROBOT`: [fms_server.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/apps/fms_server.cpp:112).  
+  Compose sets `WAREHOUSE_CONFIG`/`ROBOT_CONFIG`, not `RDT_WAREHOUSE`/`RDT_ROBOT`: [docker-compose.yml](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:35).
 
-3. Blueprint marks `test_timing.cpp` complete but file is missing (C++ test list has `test_timer.cpp`, not `test_timing.cpp`).  
-[EXECUTION_PLAN.md:105](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:105)
+- **Blueprint `[x]` items missing from repository.**  
+  Marked done in plan: [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:65), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:80), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:90), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:91), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:105).  
+  Missing files:
+  - `cpp/tests/test_mpc.cpp`
+  - `cpp/tests/test_bt_lifecycle.cpp`
+  - `cpp/tests/test_mongodb.cpp`
+  - `cpp/src/database/MongoDBWriter.h`
+  - `cpp/src/database/MongoDBWriter.cpp`
+  - `cpp/tests/test_timing.cpp`
+  - `python/tests/test_hello.py`
 
-4. Blueprint marks `test_bt_lifecycle.cpp` complete but file is missing.  
-[EXECUTION_PLAN.md:80](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:80)
+- **Endpoint contract inconsistency: claims 34, actual REST endpoints are 35.**  
+  Root reports 34: [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:315).  
+  Extra endpoint exists: `/api/fleet/atlas`: [fleet.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:69).  
+  Docs also say 34: [API_REFERENCE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/API_REFERENCE.md:3).
 
-5. Blueprint marks `python/tests/test_hello.py` complete but file is missing.  
-[EXECUTION_PLAN.md:18](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:18)
+- **Frontend/backend schema mismatch (dashboard likely broken at runtime).**  
+  App expects `zones` endpoint returns array: [App.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:34).  
+  Backend returns object `{zones: [...], engine: ...}`: [iogita.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:72).  
+  App expects predictions array: [App.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:35).  
+  Backend returns object `{predictions: [...], engine: ...}`: [analytics.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/analytics.py:82).  
+  Component expects fields not provided by backend (`confidence`, `fallback_active`, etc.): [IoGitaZones.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/components/IoGitaZones.tsx:49), [types.ts](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/types.ts:128).
 
-6. `AgentInterface.cpp` is internally broken (type/field mismatches) and appears dead code.  
-[cpp/src/fleet/AgentInterface.cpp:23](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:23)  
-[cpp/src/fleet/AgentInterface.cpp:28](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:28)  
-[cpp/src/fleet/AgentInterface.cpp:55](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:55)
+- **Intelligence layer is present but partially unwired.**  
+  `ZoneIdentifier` initialized without graph edges (adjacency logic degraded): [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:115).  
+  `FleetAtlas` snapshot route exists but no runtime `update_fingerprint` wiring in app routes/workers (only tests invoke updates): [fleet.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:75).
 
-7. `AgentInterface.cpp` is not compiled into `rdt_core` (code drift between blueprint and build reality).  
-[cpp/CMakeLists.txt:23](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/CMakeLists.txt:23)
+- **C++ dead code rot: `AgentInterface` not integrated and appears stale.**  
+  `AgentInterface.cpp` has field names inconsistent with current types/protocol (`pose_.theta`, `linear_velocity`, `node_id`): [AgentInterface.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:55).  
+  No production/test references to `AgentInterface` usage.
 
-8. CORS is insecure/misconfigured: `allow_origins=["*"]` with `allow_credentials=True`.  
-[python/app/main.py:234](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:234)  
-[python/app/main.py:235](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:235)
+- **Thread-safety concerns in C++ networking.**  
+  `TCPServer::worker_threads_` is appended in accept thread and iterated/joined in `stop()` without synchronization: [TCPServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/TCPServer.cpp:177), [TCPServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/TCPServer.cpp:86).  
+  `RESTServer::getRouteCount` uses `const_cast` mutex workaround: [RESTServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/RESTServer.cpp:89).
 
-9. API key protection is effectively optional by default (`api_key=""`), leaving writes open unless operator sets secret.  
-[python/app/config.py:50](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:50)  
-[python/app/auth.py:26](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/auth.py:26)
+- **Security posture is permissive by default.**  
+  CORS wildcard origin: [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:234).  
+  API key auth disabled when `API_KEY` empty (default): [config.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:50), [auth.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/auth.py:26).
 
-10. Hardcoded default credential in Python source (`guest:guest` RabbitMQ URL).  
-[python/app/config.py:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:34)
+- **Error handling often hides failures as empty-success responses.**  
+  Example broad catches returning empty 200 payloads: [robots.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/robots.py:38), [events.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/events.py:42), [wcs.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/wcs.py:27).
 
-11. Hardcoded secrets in compose (`adminpass`, static token) weaken deployment security posture.  
-[docker/docker-compose.yml:96](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:96)  
-[docker/docker-compose.yml:99](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:99)
+- **Test suite is large, but coverage claims are overstated.**  
+  Endpoint tests omit `/api/fleet/atlas` despite “all 34”: [test_api.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:457).  
+  No frontend E2E framework configured in `frontend/package.json`: [package.json](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/package.json:6).
 
-12. Port/env contract mismatch: compose exports `FMS_*`, but C++ expects `RDT_*`; start script passes no args, so runtime likely defaults unexpectedly.  
-[docker/docker-compose.yml:38](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:38)  
-[cpp/src/apps/fms_server.cpp:16](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/apps/fms_server.cpp:16)  
-[docker/start.sh:45](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:45)
-
-13. Docker exposes port `5199` but runtime serves dashboard under FastAPI `/dashboard` on API port; deployment contract is inconsistent.  
-[docker/Dockerfile:108](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/Dockerfile:108)  
-[docker/start.sh:67](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:67)
-
-14. Missing healthchecks for several services (redis/influxdb/grafana), while dependencies use weaker `service_started`.  
-[docker/docker-compose.yml:80](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:80)  
-[docker/docker-compose.yml:87](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:87)  
-[docker/docker-compose.yml:103](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:103)
-
-15. Frontend/API schema mismatch likely breaks UI: frontend expects arrays for `/api/iogita/zones` and `/api/analytics/predictions`, API returns wrapper objects.  
-[frontend/src/App.tsx:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:34)  
-[python/app/routes/iogita.py:70](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:70)  
-[frontend/src/App.tsx:35](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:35)  
-[python/app/routes/analytics.py:82](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/analytics.py:82)
-
-16. Intelligence route `/api/iogita/zones` uses legacy 2D centroid identify path, not LiDAR/Hopfield pipeline; core advanced method is not wired into API behavior.  
-[python/app/routes/iogita.py:62](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:62)  
-[python/intelligence/iogita/zone_identifier.py:684](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/intelligence/iogita/zone_identifier.py:684)
-
-17. `FleetAtlas` exists, but app routes never update fingerprints; `/api/fleet/atlas` can remain stale/empty in runtime.  
-[python/intelligence/iogita/fleet_atlas.py:40](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/intelligence/iogita/fleet_atlas.py:40)  
-[python/app/routes/fleet.py:75](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:75)
-
-18. API contract inconsistency: app advertises 34 endpoints but route set includes additional endpoint (`/api/fleet/atlas`), and this extra endpoint is not covered in 34-endpoint test contract.  
-[python/app/main.py:315](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:315)  
-[python/app/routes/fleet.py:69](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:69)  
-[python/tests/test_api.py:511](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:511)
-
-19. Const-correctness/thread-safety smell: `getRouteCount() const` uses `const_cast` to lock mutable state.  
-[cpp/src/network/RESTServer.cpp:89](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/RESTServer.cpp:89)
-
-20. Config single-source-of-truth violated in WES fallback behavior with hardcoded nodes (`PICK_1`, `DROP_1`).  
-[python/wes/order_generator.py:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/wes/order_generator.py:34)
-
-21. Tests do not validate auth enforcement path (no `API_KEY`/`X-API-Key` negative/positive tests), leaving critical security path unverified.  
-[python/tests/test_api.py:113](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:113)
-
-If you switch sandbox to writable, I can write this verbatim into `CODEX_SESSION6_AUDIT.md`.
+If you want, I can provide this same report as a ready-to-save markdown block once write access is enabled.
 tokens used
-1,85,910
-Could not write to `CODEX_SESSION6_AUDIT.md` because the workspace is read-only (`operation not permitted`).  
-Full audit report content is below.
+2,08,887
+I completed the audit, but I could not write to `CODEX_SESSION6_AUDIT.md` because the workspace is mounted read-only (`operation not permitted` on write).
 
-✓ Done: Reviewed `CLAUDE.md`, `EXECUTION_PLAN.md`, C++ headers and key C++ sources, all FastAPI routes/intelligence modules, frontend `src`, Docker artifacts, and test suites with line-level evidence.  
-→ Decision: REJECT — major architecture, security, deployment wiring, and blueprint-delta failures despite substantial implementation depth.  
-⚠ Review: Fix critical contract/wiring gaps first (C++→Mongo pipeline, API/frontend schema mismatch, auth/CORS hardening, blueprint false-positive `[x]` claims).
+✓ Done: Reviewed `CLAUDE.md`, `EXECUTION_PLAN.md`, C++ headers/sources, FastAPI routes/intelligence, frontend, Docker, tests, and docs with direct file evidence.  
+→ Decision: **REJECT** (brutal audit).  
+⚠ Review: Major contract and blueprint deltas, broken deployment path, and dataflow inconsistencies make this non-passable.
 
-## Brutal Scorecard (0-100)
+**Scorecard (0-10 each)**  
+1. Architecture: **3/10**  
+2. C++ Code Quality: **5/10**  
+3. Python Code Quality: **4/10**  
+4. Test Quality: **6/10**  
+5. Config Management: **6/10**  
+6. Docker & Deployment: **3/10**  
+7. Security: **5/10**  
+8. Blueprint Compliance: **2/10**  
+9. Intelligence Layer: **5/10**  
+10. Frontend: **4/10**
 
-1. ARCHITECTURE: **4/10**  
-2. C++ CODE QUALITY: **6/10**  
-3. PYTHON CODE QUALITY: **5/10**  
-4. TEST QUALITY: **7/10**  
-5. CONFIG MANAGEMENT: **5/10**  
-6. DOCKER & DEPLOYMENT: **5/10**  
-7. SECURITY: **3/10**  
-8. BLUEPRINT COMPLIANCE: **2/10**  
-9. INTELLIGENCE LAYER: **6/10**  
-10. FRONTEND: **4/10**
-
-**Final: 47/100**
+**Final Score: 43/100**
 
 ## Issues Found (with evidence)
 
-1. C++ runtime data flow does **not** implement `C++ FMS → MongoDB`; it writes local JSON file instead.  
-[cpp/src/fleet/FleetManager.cpp:360](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/FleetManager.cpp:360)
+- **Core dataflow claim is not implemented (C++ -> MongoDB missing).**  
+  C++ writes JSON file, not MongoDB: [FleetManager.h](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/include/rdt/fleet/FleetManager.h:27), [FleetManager.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/FleetManager.cpp:360).  
+  No Mongo usage in C++ codebase (`rg mongo` finds only comment).  
+  Architecture doc still claims Mongo IPC from C++: [ARCHITECTURE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/ARCHITECTURE.md:61), [ARCHITECTURE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/ARCHITECTURE.md:256).
 
-2. Blueprint marks MongoDB writer/test complete, but those files are missing.  
-[EXECUTION_PLAN.md:90](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:90)  
-[EXECUTION_PLAN.md:91](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:91)
+- **Deployment start path is broken (container likely exits).**  
+  `start.sh` launches `fms_server` with no required args: [start.sh](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:45).  
+  `fms_server` requires warehouse/robot args or `RDT_WAREHOUSE`/`RDT_ROBOT`: [fms_server.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/apps/fms_server.cpp:112).  
+  Compose sets `WAREHOUSE_CONFIG`/`ROBOT_CONFIG`, not `RDT_WAREHOUSE`/`RDT_ROBOT`: [docker-compose.yml](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:35).
 
-3. Blueprint marks `test_timing.cpp` complete but file is missing (C++ test list has `test_timer.cpp`, not `test_timing.cpp`).  
-[EXECUTION_PLAN.md:105](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:105)
+- **Blueprint `[x]` items missing from repository.**  
+  Marked done in plan: [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:65), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:80), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:90), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:91), [EXECUTION_PLAN.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:105).  
+  Missing files:
+  - `cpp/tests/test_mpc.cpp`
+  - `cpp/tests/test_bt_lifecycle.cpp`
+  - `cpp/tests/test_mongodb.cpp`
+  - `cpp/src/database/MongoDBWriter.h`
+  - `cpp/src/database/MongoDBWriter.cpp`
+  - `cpp/tests/test_timing.cpp`
+  - `python/tests/test_hello.py`
 
-4. Blueprint marks `test_bt_lifecycle.cpp` complete but file is missing.  
-[EXECUTION_PLAN.md:80](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:80)
+- **Endpoint contract inconsistency: claims 34, actual REST endpoints are 35.**  
+  Root reports 34: [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:315).  
+  Extra endpoint exists: `/api/fleet/atlas`: [fleet.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:69).  
+  Docs also say 34: [API_REFERENCE.md](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docs/API_REFERENCE.md:3).
 
-5. Blueprint marks `python/tests/test_hello.py` complete but file is missing.  
-[EXECUTION_PLAN.md:18](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/EXECUTION_PLAN.md:18)
+- **Frontend/backend schema mismatch (dashboard likely broken at runtime).**  
+  App expects `zones` endpoint returns array: [App.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:34).  
+  Backend returns object `{zones: [...], engine: ...}`: [iogita.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:72).  
+  App expects predictions array: [App.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:35).  
+  Backend returns object `{predictions: [...], engine: ...}`: [analytics.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/analytics.py:82).  
+  Component expects fields not provided by backend (`confidence`, `fallback_active`, etc.): [IoGitaZones.tsx](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/components/IoGitaZones.tsx:49), [types.ts](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/types.ts:128).
 
-6. `AgentInterface.cpp` is internally broken (type/field mismatches) and appears dead code.  
-[cpp/src/fleet/AgentInterface.cpp:23](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:23)  
-[cpp/src/fleet/AgentInterface.cpp:28](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:28)  
-[cpp/src/fleet/AgentInterface.cpp:55](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:55)
+- **Intelligence layer is present but partially unwired.**  
+  `ZoneIdentifier` initialized without graph edges (adjacency logic degraded): [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:115).  
+  `FleetAtlas` snapshot route exists but no runtime `update_fingerprint` wiring in app routes/workers (only tests invoke updates): [fleet.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:75).
 
-7. `AgentInterface.cpp` is not compiled into `rdt_core` (code drift between blueprint and build reality).  
-[cpp/CMakeLists.txt:23](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/CMakeLists.txt:23)
+- **C++ dead code rot: `AgentInterface` not integrated and appears stale.**  
+  `AgentInterface.cpp` has field names inconsistent with current types/protocol (`pose_.theta`, `linear_velocity`, `node_id`): [AgentInterface.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/fleet/AgentInterface.cpp:55).  
+  No production/test references to `AgentInterface` usage.
 
-8. CORS is insecure/misconfigured: `allow_origins=["*"]` with `allow_credentials=True`.  
-[python/app/main.py:234](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:234)  
-[python/app/main.py:235](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:235)
+- **Thread-safety concerns in C++ networking.**  
+  `TCPServer::worker_threads_` is appended in accept thread and iterated/joined in `stop()` without synchronization: [TCPServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/TCPServer.cpp:177), [TCPServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/TCPServer.cpp:86).  
+  `RESTServer::getRouteCount` uses `const_cast` mutex workaround: [RESTServer.cpp](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/RESTServer.cpp:89).
 
-9. API key protection is effectively optional by default (`api_key=""`), leaving writes open unless operator sets secret.  
-[python/app/config.py:50](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:50)  
-[python/app/auth.py:26](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/auth.py:26)
+- **Security posture is permissive by default.**  
+  CORS wildcard origin: [main.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:234).  
+  API key auth disabled when `API_KEY` empty (default): [config.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:50), [auth.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/auth.py:26).
 
-10. Hardcoded default credential in Python source (`guest:guest` RabbitMQ URL).  
-[python/app/config.py:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/config.py:34)
+- **Error handling often hides failures as empty-success responses.**  
+  Example broad catches returning empty 200 payloads: [robots.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/robots.py:38), [events.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/events.py:42), [wcs.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/wcs.py:27).
 
-11. Hardcoded secrets in compose (`adminpass`, static token) weaken deployment security posture.  
-[docker/docker-compose.yml:96](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:96)  
-[docker/docker-compose.yml:99](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:99)
+- **Test suite is large, but coverage claims are overstated.**  
+  Endpoint tests omit `/api/fleet/atlas` despite “all 34”: [test_api.py](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:457).  
+  No frontend E2E framework configured in `frontend/package.json`: [package.json](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/package.json:6).
 
-12. Port/env contract mismatch: compose exports `FMS_*`, but C++ expects `RDT_*`; start script passes no args, so runtime likely defaults unexpectedly.  
-[docker/docker-compose.yml:38](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:38)  
-[cpp/src/apps/fms_server.cpp:16](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/apps/fms_server.cpp:16)  
-[docker/start.sh:45](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:45)
-
-13. Docker exposes port `5199` but runtime serves dashboard under FastAPI `/dashboard` on API port; deployment contract is inconsistent.  
-[docker/Dockerfile:108](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/Dockerfile:108)  
-[docker/start.sh:67](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/start.sh:67)
-
-14. Missing healthchecks for several services (redis/influxdb/grafana), while dependencies use weaker `service_started`.  
-[docker/docker-compose.yml:80](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:80)  
-[docker/docker-compose.yml:87](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:87)  
-[docker/docker-compose.yml:103](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/docker/docker-compose.yml:103)
-
-15. Frontend/API schema mismatch likely breaks UI: frontend expects arrays for `/api/iogita/zones` and `/api/analytics/predictions`, API returns wrapper objects.  
-[frontend/src/App.tsx:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:34)  
-[python/app/routes/iogita.py:70](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:70)  
-[frontend/src/App.tsx:35](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/frontend/src/App.tsx:35)  
-[python/app/routes/analytics.py:82](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/analytics.py:82)
-
-16. Intelligence route `/api/iogita/zones` uses legacy 2D centroid identify path, not LiDAR/Hopfield pipeline; core advanced method is not wired into API behavior.  
-[python/app/routes/iogita.py:62](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/iogita.py:62)  
-[python/intelligence/iogita/zone_identifier.py:684](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/intelligence/iogita/zone_identifier.py:684)
-
-17. `FleetAtlas` exists, but app routes never update fingerprints; `/api/fleet/atlas` can remain stale/empty in runtime.  
-[python/intelligence/iogita/fleet_atlas.py:40](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/intelligence/iogita/fleet_atlas.py:40)  
-[python/app/routes/fleet.py:75](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:75)
-
-18. API contract inconsistency: app advertises 34 endpoints but route set includes additional endpoint (`/api/fleet/atlas`), and this extra endpoint is not covered in 34-endpoint test contract.  
-[python/app/main.py:315](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/main.py:315)  
-[python/app/routes/fleet.py:69](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/app/routes/fleet.py:69)  
-[python/tests/test_api.py:511](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:511)
-
-19. Const-correctness/thread-safety smell: `getRouteCount() const` uses `const_cast` to lock mutable state.  
-[cpp/src/network/RESTServer.cpp:89](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/cpp/src/network/RESTServer.cpp:89)
-
-20. Config single-source-of-truth violated in WES fallback behavior with hardcoded nodes (`PICK_1`, `DROP_1`).  
-[python/wes/order_generator.py:34](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/wes/order_generator.py:34)
-
-21. Tests do not validate auth enforcement path (no `API_KEY`/`X-API-Key` negative/positive tests), leaving critical security path unverified.  
-[python/tests/test_api.py:113](/Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python/tests/test_api.py:113)
-
-If you switch sandbox to writable, I can write this verbatim into `CODEX_SESSION6_AUDIT.md`.
+If you want, I can provide this same report as a ready-to-save markdown block once write access is enabled.

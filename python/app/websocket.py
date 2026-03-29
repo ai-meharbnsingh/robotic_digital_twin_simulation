@@ -88,12 +88,26 @@ class ConnectionManager:
 ws_manager = ConnectionManager()
 
 
+def _check_ws_origin(websocket: WebSocket) -> bool:
+    """Validate WebSocket origin against CORS_ORIGINS config."""
+    from app.config import get_settings
+    settings = get_settings()
+    if settings.cors_origins == "*":
+        return True
+    allowed = {o.strip() for o in settings.cors_origins.split(",")}
+    origin = websocket.headers.get("origin", "")
+    return origin in allowed or not origin  # no origin = same-origin
+
+
 @router.websocket("/ws/fleet")
 async def websocket_fleet(websocket: WebSocket):
     """
     WebSocket endpoint for real-time fleet updates.
     Clients connect here to receive streaming updates.
     """
+    if not _check_ws_origin(websocket):
+        await websocket.close(code=4003, reason="Origin not allowed")
+        return
     connected = await ws_manager.connect(websocket)
     if not connected:
         return

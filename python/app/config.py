@@ -49,6 +49,12 @@ class Settings(BaseSettings):
     # --- Auth ---
     api_key: str = Field(default="", description="API key for write endpoints. Empty = no auth.")
 
+    # --- CORS ---
+    cors_origins: str = Field(
+        default="*",
+        description="Comma-separated allowed origins. '*' for dev, 'https://your-domain.com' for prod.",
+    )
+
     model_config = {"env_prefix": "", "case_sensitive": False}
 
 

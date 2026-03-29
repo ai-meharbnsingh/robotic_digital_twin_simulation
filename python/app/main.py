@@ -228,10 +228,12 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
-# --- CORS middleware (allow dashboard and external clients) ---
+# --- CORS middleware (configurable via CORS_ORIGINS env var) ---
+_cors_settings = get_settings()
+_cors_origins = [o.strip() for o in _cors_settings.cors_origins.split(",")]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=_cors_origins,
     allow_credentials=False,
     allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allow_headers=["X-API-Key", "Content-Type"],
