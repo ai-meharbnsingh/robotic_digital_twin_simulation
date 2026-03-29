@@ -91,11 +91,24 @@ async def create_or_auto_wave(body: Optional[WaveCreate] = None):
         return {"wave": _strip_id(wave), "mode": "manual"}
 
     else:
-        # Auto-wave from rules + pending orders
+        # Auto-wave from rules + pending orders (exclude already-waved orders)
         pending_orders = []
         if db is not None:
+            # Get order IDs already in pending/active waves
+            existing_waves = await db["waves"].find(
+                {"status": {"$in": ["pending", "active"]}},
+                {"order_ids": 1, "_id": 0},
+            ).to_list(length=10000)
+            waved_ids = set()
+            for w in existing_waves:
+                waved_ids.update(w.get("order_ids", []))
+
+            # Only fetch truly pending, un-waved orders
+            query = {"status": "pending"}
+            if waved_ids:
+                query["order_id"] = {"$nin": list(waved_ids)}
             pending_orders = await db["orders"].find(
-                {"status": "pending"}, {"_id": 0}
+                query, {"_id": 0}
             ).to_list(length=10000)
 
         waves = engine.auto_wave(pending_orders)
@@ -185,6 +198,15 @@ async def release_wave(wave_id: str):
         )
         if tasks:
             await db["tasks"].insert_many([dict(t) for t in tasks])
+
+        # Mark orders as "waved" to prevent duplicate task generation
+        # and infinite re-waving
+        order_ids = wave.get("order_ids", [])
+        if order_ids:
+            await db["orders"].update_many(
+                {"order_id": {"$in": order_ids}},
+                {"$set": {"status": "waved"}},
+            )
 
     return {
         "wave_id": wave_id,

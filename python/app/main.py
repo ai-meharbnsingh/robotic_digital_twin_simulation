@@ -124,6 +124,19 @@ def _init_wes(warehouse_config: dict):
         app_state["wes_task_generator"] = TaskGenerator()
         app_state["wes_kpi_tracker"] = KPITracker()
         app_state["wes_wave_engine"] = WaveEngine(warehouse_config)
+
+        # Hydrate wave rules from MongoDB (if available)
+        db = app_state.get("mongo_db")
+        if db is not None:
+            try:
+                import asyncio
+                rules = asyncio.get_event_loop().run_until_complete(
+                    db["wave_rules"].find({}, {"_id": 0}).to_list(length=1000)
+                )
+                if rules:
+                    app_state["wes_wave_engine"].set_rules(rules)
+            except Exception:
+                pass  # Graceful — rules will be empty until created
     except Exception:
         pass
 
