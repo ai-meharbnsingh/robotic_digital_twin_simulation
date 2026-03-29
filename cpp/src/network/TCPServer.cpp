@@ -83,12 +83,15 @@ void TCPServer::stop() {
     }
 
     // Join all worker threads
-    for (auto& t : worker_threads_) {
-        if (t.joinable()) {
-            t.join();
+    {
+        std::lock_guard<std::mutex> lock(workers_mutex_);
+        for (auto& t : worker_threads_) {
+            if (t.joinable()) {
+                t.join();
+            }
         }
+        worker_threads_.clear();
     }
-    worker_threads_.clear();
 
     RDT_LOG_INFO("TCPServer stopped");
 }
@@ -174,7 +177,10 @@ void TCPServer::acceptLoop(uint16_t port) {
         RDT_LOG_INFO("TCPServer: new connection from {}", addr_str);
 
         // Spawn a worker thread for this client
-        worker_threads_.emplace_back(&TCPServer::clientLoop, this, client_fd, addr_str);
+        {
+            std::lock_guard<std::mutex> lock(workers_mutex_);
+            worker_threads_.emplace_back(&TCPServer::clientLoop, this, client_fd, addr_str);
+        }
     }
 }
 

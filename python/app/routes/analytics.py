@@ -1,7 +1,6 @@
 """
 Analytics endpoints.
 GET /api/analytics/fleet — fleet-wide analytics
-GET /api/analytics/predictions — SG prediction results
 GET /api/analytics/ab-comparison — A/B comparison of strategies
 """
 
@@ -13,11 +12,6 @@ router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 def _get_db():
     from app.main import app_state
     return app_state.get("mongo_db")
-
-
-def _get_bottleneck_predictor():
-    from app.main import app_state
-    return app_state.get("bottleneck_predictor")
 
 
 @router.get("/fleet")
@@ -61,31 +55,6 @@ async def fleet_analytics():
         }
     except Exception:
         return _empty_analytics()
-
-
-@router.get("/predictions")
-async def sg_predictions():
-    """Return SG-engine bottleneck predictions."""
-    predictor = _get_bottleneck_predictor()
-    db = _get_db()
-
-    if predictor is None:
-        return {"predictions": [], "engine": "none"}
-
-    try:
-        robots = []
-        if db is not None:
-            robots = await db["robots"].find({}, {"_id": 0}).to_list(length=1000)
-
-        # Encode fleet state and predict
-        predictions = predictor.predict(robots)
-        return {
-            "predictions": predictions,
-            "engine": "sg_prediction",
-            "num_robots_analyzed": len(robots),
-        }
-    except Exception:
-        return {"predictions": [], "engine": "error"}
 
 
 @router.get("/ab-comparison")

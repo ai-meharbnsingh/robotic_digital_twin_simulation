@@ -91,6 +91,7 @@ private:
     std::unordered_map<std::string, int> clients_;
 
     // Worker threads for each client connection
+    mutable std::mutex           workers_mutex_;
     std::vector<std::thread>     worker_threads_;
 };
 

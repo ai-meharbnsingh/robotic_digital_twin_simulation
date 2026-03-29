@@ -1,7 +1,6 @@
 """
 Fleet status endpoint.
 GET /api/fleet/status — aggregate fleet overview from MongoDB.
-GET /api/fleet/atlas — fleet atlas zone snapshot (io-gita).
 """
 
 import logging
@@ -16,11 +15,6 @@ def _get_db():
     """Get MongoDB database from app state. Returns None if unavailable."""
     from app.main import app_state
     return app_state.get("mongo_db")
-
-
-def _get_fleet_atlas():
-    from app.main import app_state
-    return app_state.get("iogita_fleet_atlas")
 
 
 @router.get("/status")
@@ -64,15 +58,6 @@ async def fleet_status():
     except Exception:
         logger.exception("fleet_status failed")
         return _empty_fleet_status()
-
-
-@router.get("/atlas")
-async def fleet_atlas():
-    """Return fleet atlas zone snapshot from io-gita FleetAtlas."""
-    atlas = _get_fleet_atlas()
-    if atlas is None:
-        return {"total_robots": 0, "zone_occupation": {}, "recent_transitions": []}
-    return atlas.get_fleet_snapshot()
 
 
 def _empty_fleet_status() -> dict:

@@ -1,5 +1,5 @@
 """
-Test ALL 34 API endpoints with real assertions.
+Test ALL 30 API endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 34
+        assert data["endpoints"] == 30
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -207,45 +207,7 @@ class TestMap:
         assert "Operations" in zone_names
 
 
-# ─── 6. io-gita (3 endpoints) ───
-
-
-class TestIoGita:
-    async def test_iogita_status(self, client: AsyncClient):
-        """GET /api/iogita/status — returns intelligence layer status."""
-        resp = await client.get("/api/iogita/status")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["engine"] == "io-gita"
-        assert isinstance(data["zone_identifier_loaded"], bool)
-        assert isinstance(data["cold_start_loaded"], bool)
-        assert data["zone_identifier_loaded"] is True
-        assert data["cold_start_loaded"] is True
-
-    async def test_iogita_zones(self, client: AsyncClient):
-        """GET /api/iogita/zones — returns zone identification results."""
-        resp = await client.get("/api/iogita/zones")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "zones" in data
-        assert "engine" in data
-        assert isinstance(data["zones"], list)
-
-    async def test_iogita_cold_start(self, client: AsyncClient):
-        """POST /api/iogita/cold-start/{id} — triggers cold start recovery."""
-        resp = await client.post("/api/iogita/cold-start/robot_001")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["robot_id"] == "robot_001"
-        assert "recovery_hints" in data
-        assert data["cold_start_engine"] == "io-gita"
-        hints = data["recovery_hints"]
-        assert "steps" in hints
-        assert isinstance(hints["steps"], list)
-        assert len(hints["steps"]) > 0
-
-
-# ─── 7. Telemetry (1 endpoint) ───
+# ─── 6. Telemetry (1 endpoint) ───
 
 
 class TestTelemetry:
@@ -259,7 +221,7 @@ class TestTelemetry:
         assert isinstance(data["points"], list)
 
 
-# ─── 8. Analytics (3 endpoints) ───
+# ─── 7. Analytics (2 endpoints) ───
 
 
 class TestAnalytics:
@@ -276,14 +238,6 @@ class TestAnalytics:
         assert "avg_battery_pct" in data
         assert "throughput_tasks_per_hour" in data
 
-    async def test_sg_predictions(self, client: AsyncClient):
-        """GET /api/analytics/predictions — returns SG predictions."""
-        resp = await client.get("/api/analytics/predictions")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "predictions" in data
-        assert "engine" in data
-
     async def test_ab_comparison(self, client: AsyncClient):
         """GET /api/analytics/ab-comparison — returns A/B comparison."""
         resp = await client.get("/api/analytics/ab-comparison")
@@ -295,7 +249,7 @@ class TestAnalytics:
         assert "fifo" in data["strategies"]
 
 
-# ─── 9. Events (1 endpoint) ───
+# ─── 8. Events (1 endpoint) ───
 
 
 class TestEvents:
@@ -307,7 +261,7 @@ class TestEvents:
         assert isinstance(data, list)
 
 
-# ─── 10. WCS (2 endpoints) ───
+# ─── 9. WCS (2 endpoints) ───
 
 
 class TestWCS:
@@ -326,7 +280,7 @@ class TestWCS:
         assert isinstance(data, list)
 
 
-# ─── 11. WES (2 endpoints) ───
+# ─── 10. WES (2 endpoints) ───
 
 
 class TestWES:
@@ -359,7 +313,7 @@ class TestWES:
         assert "completed_orders" in data
 
 
-# ─── 12. Simulation (4 endpoints) ───
+# ─── 11. Simulation (4 endpoints) ───
 
 
 class TestSimulation:
@@ -405,7 +359,7 @@ class TestSimulation:
         assert data["fault"]["robot_id"] == "robot_001"
 
 
-# ─── 13. Config (1 endpoint) ───
+# ─── 12. Config (1 endpoint) ───
 
 
 class TestConfig:
@@ -422,7 +376,7 @@ class TestConfig:
         assert len(config) > 0
 
 
-# ─── 14. Stats (1 endpoint) ───
+# ─── 13. Stats (1 endpoint) ───
 
 
 class TestStats:
@@ -438,7 +392,7 @@ class TestStats:
         assert isinstance(data["tasks_completed"], int)
 
 
-# ─── 15. Reservations (1 endpoint) ───
+# ─── 14. Reservations (1 endpoint) ───
 
 
 class TestReservations:
@@ -454,8 +408,8 @@ class TestReservations:
 
 
 class TestEndpointCount:
-    async def test_all_34_endpoints_exist(self, client: AsyncClient):
-        """Verify all 34 contracted endpoints respond (not 404/405)."""
+    async def test_all_30_endpoints_exist(self, client: AsyncClient):
+        """Verify all 30 contracted endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
             ("GET", "/"),
@@ -477,15 +431,10 @@ class TestEndpointCount:
             ("GET", "/api/map/nodes"),
             ("GET", "/api/map/path"),
             ("GET", "/api/map/zones"),
-            # io-gita (3)
-            ("GET", "/api/iogita/status"),
-            ("GET", "/api/iogita/zones"),
-            ("POST", "/api/iogita/cold-start/test_id"),
             # Telemetry (1)
             ("GET", "/api/telemetry/test_id"),
-            # Analytics (3)
+            # Analytics (2)
             ("GET", "/api/analytics/fleet"),
-            ("GET", "/api/analytics/predictions"),
             ("GET", "/api/analytics/ab-comparison"),
             # Events (1)
             ("GET", "/api/events"),
@@ -508,7 +457,7 @@ class TestEndpointCount:
             ("GET", "/api/reservations/active"),
         ]
 
-        assert len(endpoints) == 34, f"Expected 34 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 30, f"Expected 30 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":
@@ -528,8 +477,6 @@ class TestEndpointCount:
                     resp = await client.post(path, json={"num_orders": 1})
                 elif "inject-fault" in path:
                     resp = await client.post(path, json={"fault_type": "test"})
-                elif "cold-start" in path:
-                    resp = await client.post(path)
                 else:
                     resp = await client.post(path)
             elif method == "DELETE":

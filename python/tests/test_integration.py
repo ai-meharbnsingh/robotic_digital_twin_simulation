@@ -1,32 +1,21 @@
 """
 Integration tests for Phase 11 — verifies the full stack works together.
 
-TEST: Cold start demo runs without error
-TEST: All 34 API endpoints return 200 (or expected error for missing resources)
+TEST: All 30 API endpoints return 200 (or expected error for missing resources)
 TEST: WebSocket connects and receives events
 TEST: Config loads both warehouse formats (simple_grid, botvalley)
-TEST: io-gita + SG pipeline works end-to-end
 """
-
-import json
-import subprocess
-import sys
-import time
-from pathlib import Path
 
 import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
-
-# Project root
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
 
 
 # ── Fixtures ──────────────────────────────────────────────────────────
 
 @pytest_asyncio.fixture
 async def client():
-    """Async test client with lifespan (starts intelligence layer)."""
+    """Async test client with lifespan."""
     import os
     os.environ["WAREHOUSE_CONFIG"] = "simple_grid"
     os.environ["ROBOT_CONFIG"] = "differential_drive"
@@ -41,68 +30,17 @@ async def client():
             yield c
 
 
-# ── TEST: Cold start demo runs without error ──────────────────────────
-
-class TestColdStartDemo:
-    """Verify the cold start demo script executes without errors."""
-
-    def test_cold_start_demo_runs(self):
-        """Run demo/cold_start_demo.py and check exit code 0."""
-        demo_path = PROJECT_ROOT / "demo" / "cold_start_demo.py"
-        assert demo_path.exists(), f"Demo script not found: {demo_path}"
-
-        result = subprocess.run(
-            [sys.executable, str(demo_path)],
-            capture_output=True,
-            text=True,
-            timeout=30,
-            cwd=str(PROJECT_ROOT),
-        )
-        assert result.returncode == 0, (
-            f"cold_start_demo.py failed with exit code {result.returncode}\n"
-            f"STDOUT:\n{result.stdout[-2000:]}\n"
-            f"STDERR:\n{result.stderr[-2000:]}"
-        )
-        # Verify key output markers
-        assert "io-gita Cold Start Demo" in result.stdout
-        assert "SPEEDUP" in result.stdout
-        assert "CONCLUSION" in result.stdout
-
-    def test_cold_start_demo_shows_speedup(self):
-        """Verify the demo reports a meaningful speedup (>5x)."""
-        demo_path = PROJECT_ROOT / "demo" / "cold_start_demo.py"
-        result = subprocess.run(
-            [sys.executable, str(demo_path)],
-            capture_output=True,
-            text=True,
-            timeout=30,
-            cwd=str(PROJECT_ROOT),
-        )
-        assert result.returncode == 0
-
-        # Find the SPEEDUP line
-        for line in result.stdout.splitlines():
-            if "SPEEDUP:" in line and "faster" in line:
-                # Extract the number (e.g., "14.2x faster")
-                parts = line.split("SPEEDUP:")[1].strip().split("x")[0].strip()
-                speedup = float(parts)
-                assert speedup > 1.5, f"Expected speedup > 1.5x, got {speedup}x"
-                break
-        else:
-            pytest.fail("SPEEDUP line not found in demo output")
-
-
-# ── TEST: All 34 API endpoints return expected status ──────────────────
+# ── TEST: All 30 API endpoints return expected status ──────────────────
 
 class TestAllEndpoints:
-    """Verify all 34 API endpoints respond correctly."""
+    """Verify all 30 API endpoints respond correctly."""
 
     async def test_root(self, client):
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
         assert data["service"] == "Robotic Digital Twin API"
-        assert data["endpoints"] == 34
+        assert data["endpoints"] == 30
 
     async def test_health(self, client):
         resp = await client.get("/health")
@@ -113,8 +51,6 @@ class TestAllEndpoints:
         assert "warehouse_loaded" in data
         assert data["warehouse_loaded"] is True
         assert data["robot_loaded"] is True
-        assert data["iogita_loaded"] is True
-        assert data["sg_loaded"] is True
 
     async def test_fleet_status(self, client):
         resp = await client.get("/api/fleet/status")
@@ -210,43 +146,12 @@ class TestAllEndpoints:
         assert "Storage" in zone_names
         assert "Operations" in zone_names
 
-    async def test_iogita_status(self, client):
-        resp = await client.get("/api/iogita/status")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["engine"] == "io-gita"
-        assert data["zone_identifier_loaded"] is True
-        assert data["cold_start_loaded"] is True
-        assert data["num_zones"] == 8
-
-    async def test_iogita_zones(self, client):
-        resp = await client.get("/api/iogita/zones")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "zones" in data
-        assert "engine" in data
-
-    async def test_cold_start(self, client):
-        resp = await client.post("/api/iogita/cold-start/robot_01")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert data["robot_id"] == "robot_01"
-        assert "recovery_hints" in data
-        assert data["cold_start_engine"] == "io-gita"
-
     async def test_analytics_fleet(self, client):
         resp = await client.get("/api/analytics/fleet")
         assert resp.status_code == 200
         data = resp.json()
         assert "total_tasks" in data
         assert "avg_battery_pct" in data
-
-    async def test_analytics_predictions(self, client):
-        resp = await client.get("/api/analytics/predictions")
-        assert resp.status_code == 200
-        data = resp.json()
-        assert "predictions" in data
-        assert "engine" in data
 
     async def test_analytics_ab_comparison(self, client):
         resp = await client.get("/api/analytics/ab-comparison")
@@ -433,189 +338,3 @@ class TestConfigLoading:
             load_warehouse_config("nonexistent_warehouse_xyz")
 
 
-# ── TEST: io-gita + SG pipeline works end-to-end ──────────────────────
-
-class TestIntelligencePipeline:
-    """Verify the full io-gita + SG prediction pipeline."""
-
-    def test_zone_identifier_classifies_all_nodes(self):
-        """ZoneIdentifier assigns a zone to every node in simple_grid."""
-        from app.config import load_warehouse_config
-        from intelligence.iogita.zone_identifier import ZoneIdentifier
-
-        config = load_warehouse_config("simple_grid")
-        zone_id = ZoneIdentifier(zones=config["zones"], nodes=config["nodes"])
-
-        for node in config["nodes"]:
-            zone = zone_id.identify([node["x"], node["y"]])
-            assert zone != "unknown", f"Node {node['name']} classified as unknown"
-            expected_zones = {
-                "Charging", "Aisle_North", "Aisle_West", "Storage",
-                "Operations", "Aisle_East", "Aisle_South", "Pick_Drop",
-            }
-            assert zone in expected_zones, (
-                f"Node {node['name']} classified as unexpected zone: {zone}"
-            )
-
-    def test_zone_identifier_performance(self):
-        """ZoneIdentifier completes in <1ms per identification."""
-        from app.config import load_warehouse_config
-        from intelligence.iogita.zone_identifier import ZoneIdentifier
-
-        config = load_warehouse_config("simple_grid")
-        zone_id = ZoneIdentifier(zones=config["zones"], nodes=config["nodes"])
-
-        for node in config["nodes"]:
-            _, elapsed_ms = zone_id.identify_timed([node["x"], node["y"]])
-            assert elapsed_ms < 1.0, (
-                f"Zone identification took {elapsed_ms:.3f}ms (target: <1ms)"
-            )
-
-    def test_cold_start_recovery_with_saved_state(self):
-        """ColdStartRecovery generates recovery hints from saved state."""
-        from intelligence.iogita.cold_start import ColdStartRecovery
-
-        cs = ColdStartRecovery()
-        cs.save_state("robot_test", {
-            "pose": {"x": 4.0, "y": 4.0, "theta": 0.0},
-            "current_node": "HUB",
-            "battery": {"charge_pct": 15.0},
-            "current_task_id": "task_abc",
-        })
-
-        hints = cs.generate_recovery_hints("robot_test", {})
-        assert hints["has_prior_state"] is True
-        assert hints["robot_id"] == "robot_test"
-        assert len(hints["steps"]) >= 2  # At least position + node recovery
-        assert hints["recovery_time_ms"] < 10.0  # Very fast
-
-        # Check specific recovery actions
-        actions = [s["action"] for s in hints["steps"]]
-        assert "restore_position" in actions
-        assert "localize_to_node" in actions
-        assert "charge_first" in actions  # Battery was 15% < 20%
-        assert "resume_task" in actions
-
-    def test_cold_start_recovery_without_state(self):
-        """ColdStartRecovery handles unknown robots gracefully."""
-        from intelligence.iogita.cold_start import ColdStartRecovery
-
-        cs = ColdStartRecovery()
-        hints = cs.generate_recovery_hints("unknown_robot_xyz", {})
-        assert hints["has_prior_state"] is False
-        assert len(hints["steps"]) >= 1
-
-        actions = [s["action"] for s in hints["steps"]]
-        assert "full_init" in actions
-
-    def test_fleet_atlas_tracks_zones(self):
-        """FleetAtlas correctly tracks robot zone transitions."""
-        from app.config import load_warehouse_config
-        from intelligence.iogita.fleet_atlas import FleetAtlas
-
-        config = load_warehouse_config("simple_grid")
-        atlas = FleetAtlas(zones=config["zones"], nodes=config["nodes"])
-
-        # Update some fingerprints
-        atlas.update_fingerprint("r1", "Charging", {"x": 0, "y": 0, "theta": 0})
-        atlas.update_fingerprint("r2", "Storage", {"x": 4, "y": 4, "theta": 0})
-
-        snapshot = atlas.get_fleet_snapshot()
-        assert snapshot["total_robots"] == 2
-        assert snapshot["zone_occupation"]["Charging"] == 1
-        assert snapshot["zone_occupation"]["Storage"] == 1
-
-        # Simulate zone transition
-        atlas.update_fingerprint("r1", "Storage", {"x": 2, "y": 2, "theta": 0})
-        snapshot2 = atlas.get_fleet_snapshot()
-        assert snapshot2["zone_occupation"].get("Charging", 0) == 0
-        assert snapshot2["zone_occupation"]["Storage"] == 2
-        assert len(snapshot2["recent_transitions"]) == 1
-
-    def test_sg_bottleneck_predictor(self):
-        """BottleneckPredictor returns predictions for fleet state."""
-        from intelligence.sg_prediction.bottleneck_predictor import BottleneckPredictor
-
-        predictor = BottleneckPredictor()
-        robots = [
-            {"robot_id": f"r{i}", "pose": {"x": i, "y": 0}, "velocity": {"linear": 0.5},
-             "battery": {"charge_pct": 80}, "status": "moving"}
-            for i in range(5)
-        ]
-
-        preds, elapsed_ms = predictor.predict_timed(robots)
-        assert len(preds) >= 1
-        assert elapsed_ms < 25.0, f"Prediction took {elapsed_ms:.2f}ms (target: <25ms)"
-        assert preds[0]["pattern"] in {
-            "congestion_forming", "battery_cascade", "deadlock_risk",
-            "throughput_drop", "normal_operation",
-        }
-        assert 0.0 <= preds[0]["confidence"] <= 1.0
-
-    def test_sg_predictor_detects_battery_cascade(self):
-        """BottleneckPredictor detects battery cascade heuristic."""
-        from intelligence.sg_prediction.bottleneck_predictor import BottleneckPredictor
-
-        predictor = BottleneckPredictor()
-        robots = [
-            {"robot_id": f"r{i}", "pose": {"x": i, "y": 0}, "velocity": {"linear": 0.1},
-             "battery": {"charge_pct": 10}, "status": "moving", "current_node": f"N_{i}"}
-            for i in range(5)
-        ]
-
-        preds = predictor.predict(robots)
-        # Should include a battery cascade warning from heuristics
-        patterns = [p["pattern"] for p in preds]
-        assert "battery_cascade_heuristic" in patterns, (
-            f"Expected battery_cascade_heuristic, got: {patterns}"
-        )
-
-    def test_state_encoder_produces_correct_dim(self):
-        """StateEncoder produces vectors of the expected dimension."""
-        from intelligence.sg_prediction.state_encoder import StateEncoder
-
-        encoder = StateEncoder(max_robots=50, feature_dim=128)
-        robots = [
-            {"robot_id": "r1", "pose": {"x": 1, "y": 2}, "velocity": {"linear": 0.5},
-             "battery": {"charge_pct": 80}, "status": "moving"}
-        ]
-
-        vec = encoder.encode(robots)
-        assert vec.shape == (128,)
-        assert vec.dtype.name.startswith("float")
-
-    def test_full_pipeline_zone_to_prediction(self):
-        """End-to-end: zone ID -> fleet atlas -> SG prediction."""
-        from app.config import load_warehouse_config
-        from intelligence.iogita.zone_identifier import ZoneIdentifier
-        from intelligence.iogita.fleet_atlas import FleetAtlas
-        from intelligence.sg_prediction.bottleneck_predictor import BottleneckPredictor
-
-        config = load_warehouse_config("simple_grid")
-        zone_id = ZoneIdentifier(zones=config["zones"], nodes=config["nodes"])
-        atlas = FleetAtlas(zones=config["zones"], nodes=config["nodes"])
-        predictor = BottleneckPredictor()
-
-        # Simulate 5 robots at known positions
-        robots = []
-        for i, node in enumerate(config["nodes"][:5]):
-            zone = zone_id.identify([node["x"], node["y"]])
-            robot = {
-                "robot_id": f"robot_{i+1:02d}",
-                "pose": {"x": node["x"], "y": node["y"]},
-                "velocity": {"linear": 0.5},
-                "battery": {"charge_pct": 90 - i * 10},
-                "status": "moving",
-                "current_node": node["name"],
-            }
-            robots.append(robot)
-            atlas.update_fingerprint(robot["robot_id"], zone, robot["pose"])
-
-        # Fleet snapshot should have 5 robots
-        snapshot = atlas.get_fleet_snapshot()
-        assert snapshot["total_robots"] == 5
-
-        # SG prediction should work
-        preds = predictor.predict(robots)
-        assert len(preds) >= 1
-        assert preds[0]["pattern"] != ""
