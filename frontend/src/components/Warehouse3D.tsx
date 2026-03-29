@@ -23,7 +23,11 @@ const STATION_HEIGHT = 0.4
 // --- Sub-components rendered inside the Canvas ---
 
 function FloorEdges({ edges, nodeMap }: { edges: MapEdge[]; nodeMap: Map<string, { x: number; y: number }> }) {
+  const geometryRef = useRef<THREE.BufferGeometry | null>(null)
+
   const geometry = useMemo(() => {
+    // Dispose previous geometry to prevent GPU memory leak
+    geometryRef.current?.dispose()
     const pts: number[] = []
     for (const e of edges) {
       const a = nodeMap.get(e.from)
@@ -33,8 +37,14 @@ function FloorEdges({ edges, nodeMap }: { edges: MapEdge[]; nodeMap: Map<string,
     }
     const geom = new THREE.BufferGeometry()
     geom.setAttribute('position', new THREE.Float32BufferAttribute(pts, 3))
+    geometryRef.current = geom
     return geom
   }, [edges, nodeMap])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => { geometryRef.current?.dispose() }
+  }, [])
 
   return (
     <lineSegments geometry={geometry}>
@@ -104,49 +114,88 @@ function NodeMarkers({ nodes }: { nodes: MapNode[] }) {
 }
 
 function HeatMapOverlay({ cells, resolution }: { cells: HeatMapCell[]; resolution: number }) {
+  const geometryRef = useRef<THREE.BufferGeometry | null>(null)
+
+  // Merge all heatmap cells into a single geometry with per-vertex colors (1 draw call)
+  const { geometry } = useMemo(() => {
+    geometryRef.current?.dispose()
+
+    const positions: number[] = []
+    const colors: number[] = []
+    const half = resolution / 2
+    const y = 0.005
+
+    for (const c of cells) {
+      const cx = c.x + half
+      const cz = c.y + half
+      const [r, g, b] = heatColorRGB(c.intensity)
+
+      // Two triangles forming a quad (6 vertices)
+      positions.push(
+        cx - half, y, cz - half,  cx + half, y, cz - half,  cx + half, y, cz + half,
+        cx - half, y, cz - half,  cx + half, y, cz + half,  cx - half, y, cz + half,
+      )
+      for (let i = 0; i < 6; i++) colors.push(r, g, b)
+    }
+
+    const geom = new THREE.BufferGeometry()
+    geom.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3))
+    geom.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3))
+    geometryRef.current = geom
+    return { geometry: geom }
+  }, [cells, resolution])
+
+  useEffect(() => {
+    return () => { geometryRef.current?.dispose() }
+  }, [])
+
+  if (cells.length === 0) return null
+
   return (
-    <group>
-      {cells.map((c, i) => {
-        const color = heatColor(c.intensity)
-        return (
-          <mesh
-            key={i}
-            position={[c.x + resolution / 2, 0.005, c.y + resolution / 2]}
-            rotation={[-Math.PI / 2, 0, 0]}
-          >
-            <planeGeometry args={[resolution, resolution]} />
-            <meshBasicMaterial color={color} transparent opacity={0.35} />
-          </mesh>
-        )
-      })}
-    </group>
+    <mesh geometry={geometry}>
+      <meshBasicMaterial vertexColors transparent opacity={0.35} />
+    </mesh>
   )
 }
 
-function heatColor(intensity: number): string {
+function heatColorRGB(intensity: number): [number, number, number] {
+  // green → yellow → red, returns normalized [0-1] values
   if (intensity <= 0.5) {
     const t = intensity * 2
-    const r = Math.round(166 + (249 - 166) * t)
-    const g = Math.round(227 + (226 - 227) * t)
-    const b = Math.round(161 + (175 - 161) * t)
-    return `rgb(${r},${g},${b})`
+    return [
+      (166 + (249 - 166) * t) / 255,
+      (227 + (226 - 227) * t) / 255,
+      (161 + (175 - 161) * t) / 255,
+    ]
   }
   const t = (intensity - 0.5) * 2
-  const r = Math.round(249 + (243 - 249) * t)
-  const g = Math.round(226 + (139 - 226) * t)
-  const b = Math.round(175 + (168 - 175) * t)
-  return `rgb(${r},${g},${b})`
+  return [
+    (249 + (243 - 249) * t) / 255,
+    (226 + (139 - 226) * t) / 255,
+    (175 + (168 - 175) * t) / 255,
+  ]
 }
 
-function CameraFollow({ target, enabled }: { target: THREE.Vector3 | null; enabled: boolean }) {
+function CameraFollow({
+  positionsRef,
+  selectedRobotId,
+  enabled,
+}: {
+  positionsRef: React.RefObject<Map<string, { current: THREE.Vector3 }>>
+  selectedRobotId: string | null
+  enabled: boolean
+}) {
   const { camera } = useThree()
   const offsetRef = useRef(new THREE.Vector3(3, 6, 3))
 
   useFrame(() => {
-    if (!enabled || !target) return
-    const dest = target.clone().add(offsetRef.current)
+    if (!enabled || !selectedRobotId) return
+    const rp = positionsRef.current?.get(selectedRobotId)
+    if (!rp) return
+    // Read LIVE interpolated position from ref (not stale useMemo snapshot)
+    const dest = rp.current.clone().add(offsetRef.current)
     camera.position.lerp(dest, 0.03)
-    camera.lookAt(target)
+    camera.lookAt(rp.current)
   })
 
   return null
@@ -211,13 +260,6 @@ function Scene({
     const size = Math.max(maxX - minX, maxZ - minZ) + 4
     return { cx, cz, size }
   }, [nodes])
-
-  // Follow target
-  const followTarget = useMemo(() => {
-    if (!selectedRobotId) return null
-    const rp = positionsRef.current.get(selectedRobotId)
-    return rp?.current ?? null
-  }, [selectedRobotId, positionsRef])
 
   // Robot ID list (re-derive when REST data changes)
   const robotIds = useMemo(() => {
@@ -292,7 +334,7 @@ function Scene({
         dampingFactor={0.1}
       />
 
-      <CameraFollow target={followTarget} enabled={followMode} />
+      <CameraFollow positionsRef={positionsRef} selectedRobotId={selectedRobotId} enabled={followMode} />
     </>
   )
 }

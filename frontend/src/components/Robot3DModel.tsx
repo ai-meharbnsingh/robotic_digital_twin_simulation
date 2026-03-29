@@ -1,6 +1,6 @@
 import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { Html } from '@react-three/drei'
+import { Html, Line } from '@react-three/drei'
 import * as THREE from 'three'
 import type { RobotPosition3D } from '../hooks/useRobotPositions'
 
@@ -32,42 +32,41 @@ interface Robot3DModelProps {
 
 export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelProps) {
   const meshRef = useRef<THREE.Mesh>(null)
-  const batteryRef = useRef<THREE.Mesh>(null)
+  const ringRef = useRef<THREE.Mesh>(null)
 
   const baseColor = TYPE_COLORS[rp.robot_type] ?? '#89dceb'
   const emissive = STATUS_EMISSIVE[rp.status] ?? (selected ? '#89b4fa' : '#000000')
 
-  // Build path line points from node names
-  const pathPoints = useMemo(() => {
+  // Build path line points from node names (for drei <Line>)
+  const pathPoints = useMemo((): [number, number, number][] | null => {
     if (!rp.path || rp.path.length < 2) return null
-    const pts: THREE.Vector3[] = []
+    const pts: [number, number, number][] = []
     for (const nodeName of rp.path) {
       const n = nodeMap.get(nodeName)
-      if (n) pts.push(new THREE.Vector3(n.x, 0.02, n.y))
+      if (n) pts.push([n.x, 0.02, n.y])
     }
     return pts.length >= 2 ? pts : null
   }, [rp.path, nodeMap])
 
-  const pathGeometry = useMemo(() => {
-    if (!pathPoints) return null
-    const geom = new THREE.BufferGeometry().setFromPoints(pathPoints)
-    return geom
-  }, [pathPoints])
-
   // Destination marker position
-  const destPos = useMemo(() => {
+  const destPos = useMemo((): [number, number, number] | null => {
     if (!rp.target_node) return null
     const n = nodeMap.get(rp.target_node)
     if (!n) return null
-    return new THREE.Vector3(n.x, 0.05, n.y)
+    return [n.x, 0.05, n.y]
   }, [rp.target_node, nodeMap])
 
-  // Animate mesh position + rotation each frame
+  // Animate mesh position + rotation + selection ring each frame
   useFrame(() => {
-    if (!meshRef.current) return
-    meshRef.current.position.copy(rp.current)
-    meshRef.current.position.y = 0.2 // lift above floor
-    meshRef.current.rotation.y = -rp.theta
+    if (meshRef.current) {
+      meshRef.current.position.copy(rp.current)
+      meshRef.current.position.y = 0.2
+      meshRef.current.rotation.y = -rp.theta
+    }
+    // Keep selection ring synced with robot position (avoids render-time lag)
+    if (ringRef.current) {
+      ringRef.current.position.set(rp.current.x, 0.02, rp.current.z)
+    }
   })
 
   const isOffline = rp.status === 'offline'
@@ -99,7 +98,7 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         />
 
         {/* Battery indicator bar on top */}
-        <mesh ref={batteryRef} position={[0, 0.2, 0]}>
+        <mesh position={[0, 0.2, 0]}>
           <boxGeometry args={[0.5, 0.05, 0.1]} />
           <meshStandardMaterial color={batteryColor(rp.battery_pct)} />
         </mesh>
@@ -135,18 +134,15 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         </Html>
       </mesh>
 
-      {/* Task path line on floor */}
-      {pathGeometry && (
-        <line>
-          <bufferGeometry attach="geometry" {...pathGeometry} />
-          <lineBasicMaterial
-            attach="material"
-            color={selected ? '#89b4fa' : '#585b70'}
-            linewidth={1}
-            transparent
-            opacity={selected ? 0.8 : 0.3}
-          />
-        </line>
+      {/* Task path line on floor — drei <Line> handles geometry lifecycle */}
+      {pathPoints && (
+        <Line
+          points={pathPoints}
+          color={selected ? '#89b4fa' : '#585b70'}
+          lineWidth={1}
+          transparent
+          opacity={selected ? 0.8 : 0.3}
+        />
       )}
 
       {/* Destination marker */}
@@ -162,9 +158,9 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         </mesh>
       )}
 
-      {/* Selection ring */}
-      {selected && meshRef.current && (
-        <mesh position={[rp.current.x, 0.02, rp.current.z]} rotation={[-Math.PI / 2, 0, 0]}>
+      {/* Selection ring — position updated in useFrame via ringRef */}
+      {selected && (
+        <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
           <ringGeometry args={[0.5, 0.6, 32]} />
           <meshBasicMaterial color="#89b4fa" transparent opacity={0.6} side={THREE.DoubleSide} />
         </mesh>

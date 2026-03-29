@@ -207,7 +207,11 @@ export default function App() {
             />
           </Suspense>
         )}
-        <RobotStatusPanel robots={robots ?? []} />
+        <RobotStatusPanel
+          robots={robots ?? []}
+          selectedRobotId={viewMode === '3d' ? selectedRobotId : undefined}
+          onSelectRobot={viewMode === '3d' ? handleSelectRobot : undefined}
+        />
         <TaskQueue tasks={tasks ?? []} />
         <HeatMapControls
           enabled={heatmapEnabled}

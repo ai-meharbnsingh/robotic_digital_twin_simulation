@@ -2,6 +2,8 @@ import type { Robot } from '../types'
 
 interface RobotStatusPanelProps {
   robots: Robot[]
+  selectedRobotId?: string | null
+  onSelectRobot?: (id: string | null) => void
 }
 
 const STATUS_DOT: Record<string, string> = {
@@ -28,7 +30,7 @@ const UNKNOWN_BADGE = { label: '???', color: 'bg-gray-700 text-gray-300' }
 /**
  * List of robots with type badge, state, battery, and current position.
  */
-export function RobotStatusPanel({ robots }: RobotStatusPanelProps) {
+export function RobotStatusPanel({ robots, selectedRobotId, onSelectRobot }: RobotStatusPanelProps) {
   return (
     <div className="bg-panel border border-border rounded-lg p-3 h-full flex flex-col">
       <h2 className="text-sm font-semibold text-accent mb-2">Robot Status</h2>
@@ -43,7 +45,14 @@ export function RobotStatusPanel({ robots }: RobotStatusPanelProps) {
             return (
               <div
                 key={r.robot_id}
-                className="flex items-center gap-2 px-2 py-1.5 bg-surface rounded text-xs"
+                className={`flex items-center gap-2 px-2 py-1.5 rounded text-xs cursor-pointer transition-colors ${
+                  selectedRobotId === r.robot_id
+                    ? 'bg-accent/20 border border-accent/40'
+                    : 'bg-surface hover:bg-surface/80'
+                }`}
+                onClick={() => onSelectRobot?.(
+                  selectedRobotId === r.robot_id ? null : r.robot_id
+                )}
               >
                 {/* Status dot */}
                 <span
