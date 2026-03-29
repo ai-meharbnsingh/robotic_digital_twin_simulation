@@ -282,6 +282,11 @@
 | 2026-03-30 | Gemini audit R2 | 86/100 CONDITIONAL PASS |
 | 2026-03-30 | Kimi audit R2 | 67/100 CONDITIONAL |
 | 2026-03-30 | Codex audit R2 | 59/100 — performance claim unproven (needs browser benchmark) |
+| 2026-03-30 | Fix R3: re-render storm, state preservation, LOD labels, WS-leads-REST |
+| 2026-03-30 | Fix R4: E2E WS test, contract coverage, render list union |
+| 2026-03-30 | Gemini R4 | **95/100 PASS** |
+| 2026-03-30 | Kimi R4 | 48/100 — hallucinated R3F reconciler behavior (inline geom ≠ recreated) |
+| 2026-03-30 | Codex R4 | 61/100 — 30fps benchmark deferred, not faked |
 
 ---
 
