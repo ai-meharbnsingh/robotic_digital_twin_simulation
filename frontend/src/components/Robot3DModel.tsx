@@ -109,29 +109,32 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
           <meshStandardMaterial color="#cdd6f4" />
         </mesh>
 
-        {/* Label (HTML overlay) */}
-        <Html
-          position={[0, 0.6, 0]}
-          center
-          distanceFactor={15}
-          style={{ pointerEvents: 'none' }}
-        >
-          <div
-            style={{
-              background: selected ? 'rgba(137,180,250,0.9)' : 'rgba(30,30,46,0.85)',
-              color: selected ? '#1e1e2e' : '#cdd6f4',
-              padding: '2px 6px',
-              borderRadius: 3,
-              fontSize: 10,
-              fontFamily: 'monospace',
-              whiteSpace: 'nowrap',
-              border: selected ? '1px solid #89b4fa' : '1px solid #313244',
-            }}
+        {/* Label — only render for selected robot or low battery to minimize DOM overhead at scale */}
+        {(selected || rp.battery_pct < 30) && (
+          <Html
+            position={[0, 0.6, 0]}
+            center
+            distanceFactor={12}
+            occlude
+            style={{ pointerEvents: 'none' }}
           >
-            {rp.name}
-            {rp.battery_pct < 30 && ' ⚡'}
-          </div>
-        </Html>
+            <div
+              style={{
+                background: selected ? 'rgba(137,180,250,0.9)' : 'rgba(30,30,46,0.85)',
+                color: selected ? '#1e1e2e' : '#cdd6f4',
+                padding: '2px 6px',
+                borderRadius: 3,
+                fontSize: 10,
+                fontFamily: 'monospace',
+                whiteSpace: 'nowrap',
+                border: selected ? '1px solid #89b4fa' : '1px solid #313244',
+              }}
+            >
+              {rp.name}
+              {rp.battery_pct < 30 && ' ⚡'}
+            </div>
+          </Html>
+        )}
       </mesh>
 
       {/* Task path line on floor — drei <Line> handles geometry lifecycle */}

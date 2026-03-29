@@ -36,10 +36,16 @@ interface MapData {
 }
 
 export default function App() {
-  // View mode toggle
+  // View mode toggle — 3D stays mounted once loaded to preserve camera/state
   const [viewMode, setViewMode] = useState<ViewMode>('2d')
+  const [has3DLoaded, setHas3DLoaded] = useState(false)
   const [selectedRobotId, setSelectedRobotId] = useState<string | null>(null)
   const [followMode, setFollowMode] = useState(false)
+
+  const handleSetViewMode = useCallback((mode: ViewMode) => {
+    setViewMode(mode)
+    if (mode === '3d') setHas3DLoaded(true)
+  }, [])
 
   // REST polling for core data
   const { data: robots, error: robotsErr } = useApi<Robot[]>('/api/robots', POLL_MS)
@@ -84,7 +90,7 @@ export default function App() {
                 ? 'bg-accent text-panel font-semibold'
                 : 'bg-panel text-muted hover:text-gray-200'
             }`}
-            onClick={() => setViewMode('2d')}
+            onClick={() => handleSetViewMode('2d')}
           >
             2D
           </button>
@@ -94,7 +100,7 @@ export default function App() {
                 ? 'bg-accent text-panel font-semibold'
                 : 'bg-panel text-muted hover:text-gray-200'
             }`}
-            onClick={() => setViewMode('3d')}
+            onClick={() => handleSetViewMode('3d')}
           >
             3D
           </button>
@@ -172,8 +178,8 @@ export default function App() {
 
       {/* 7-panel grid: 4 columns, 2 rows — col 1 row 1 switches between 2D and 3D */}
       <main className="flex-1 p-3 grid grid-cols-4 grid-rows-2 gap-3 min-h-0">
-        {/* Row 1 */}
-        {viewMode === '2d' ? (
+        {/* Row 1: 2D and 3D views — 3D stays mounted (hidden) to preserve camera/state */}
+        <div className={viewMode === '2d' ? '' : 'hidden'}>
           <WarehouseGrid
             nodes={mapData?.nodes ?? []}
             edges={mapData?.edges ?? []}
@@ -182,25 +188,28 @@ export default function App() {
             heatmapResolution={heatmap?.resolution_m}
             heatmapEnabled={heatmapEnabled}
           />
-        ) : (
-          <Suspense fallback={
-            <div className="bg-panel rounded border border-border flex items-center justify-center text-muted text-sm">
-              Loading 3D scene...
-            </div>
-          }>
-            <Warehouse3D
-              nodes={mapData?.nodes ?? []}
-              edges={mapData?.edges ?? []}
-              robots={robots ?? []}
-              heatmapCells={heatmap?.cells}
-              heatmapResolution={heatmap?.resolution_m}
-              heatmapEnabled={heatmapEnabled}
-              selectedRobotId={selectedRobotId}
-              onSelectRobot={handleSelectRobot}
-              followMode={followMode}
-              lastWSEvent={lastWSEvent ?? null}
-            />
-          </Suspense>
+        </div>
+        {has3DLoaded && (
+          <div className={viewMode === '3d' ? '' : 'hidden'}>
+            <Suspense fallback={
+              <div className="bg-panel rounded border border-border flex items-center justify-center text-muted text-sm">
+                Loading 3D scene...
+              </div>
+            }>
+              <Warehouse3D
+                nodes={mapData?.nodes ?? []}
+                edges={mapData?.edges ?? []}
+                robots={robots ?? []}
+                heatmapCells={heatmap?.cells}
+                heatmapResolution={heatmap?.resolution_m}
+                heatmapEnabled={heatmapEnabled}
+                selectedRobotId={selectedRobotId}
+                onSelectRobot={handleSelectRobot}
+                followMode={followMode}
+                lastWSEvent={lastWSEvent ?? null}
+              />
+            </Suspense>
+          </div>
         )}
         <RobotStatusPanel
           robots={robots ?? []}

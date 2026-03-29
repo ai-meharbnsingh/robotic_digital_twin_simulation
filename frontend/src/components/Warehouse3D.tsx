@@ -188,13 +188,14 @@ function CameraFollow({
   const { camera } = useThree()
   const offsetRef = useRef(new THREE.Vector3(3, 6, 3))
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!enabled || !selectedRobotId) return
     const rp = positionsRef.current?.get(selectedRobotId)
     if (!rp) return
-    // Read LIVE interpolated position from ref (not stale useMemo snapshot)
+    // Frame-rate independent lerp: ~5 units/sec convergence
+    const t = Math.min(1, delta * 5)
     const dest = rp.current.clone().add(offsetRef.current)
-    camera.position.lerp(dest, 0.08)
+    camera.position.lerp(dest, t)
     camera.lookAt(rp.current)
   })
 
@@ -261,10 +262,9 @@ function Scene({
     return { cx, cz, size }
   }, [nodes])
 
-  // Robot ID list (re-derive when REST data changes)
+  // Robot ID list — derived from robots array length to avoid ref dependency
   const robotIds = useMemo(() => {
-    return Array.from(positionsRef.current.keys())
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return robots.map((r) => r.robot_id)
   }, [robots])
 
   return (
@@ -326,6 +326,7 @@ function Scene({
 
       <OrbitControls
         makeDefault
+        enabled={!followMode}
         target={[bounds.cx, 0, bounds.cz]}
         maxPolarAngle={Math.PI / 2.1}
         minDistance={2}

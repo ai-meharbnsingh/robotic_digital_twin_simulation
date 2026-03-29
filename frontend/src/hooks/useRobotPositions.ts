@@ -98,13 +98,32 @@ export function useRobotPositions() {
       ) return
 
       const pose = d.pose as { x: number; y: number; theta: number }
-      const existing = positionsRef.current.get(d.robot_id as string)
-      if (!existing) return
+      const robotId = d.robot_id as string
+      const existing = positionsRef.current.get(robotId)
 
-      existing.target.set(pose.x, 0, pose.y)
-      if (typeof pose.theta === 'number') existing.targetTheta = pose.theta
-      if (typeof d.status === 'string') existing.status = d.status as Robot['status']
-      if (typeof d.current_node === 'string') existing.current_node = d.current_node
+      if (existing) {
+        existing.target.set(pose.x, 0, pose.y)
+        if (typeof pose.theta === 'number') existing.targetTheta = pose.theta
+        if (typeof d.status === 'string') existing.status = d.status as Robot['status']
+        if (typeof d.current_node === 'string') existing.current_node = d.current_node
+      } else {
+        // WS arrived before REST — create provisional entry so robot appears immediately
+        positionsRef.current.set(robotId, {
+          robot_id: robotId,
+          current: new THREE.Vector3(pose.x, 0, pose.y),
+          target: new THREE.Vector3(pose.x, 0, pose.y),
+          theta: pose.theta ?? 0,
+          targetTheta: pose.theta ?? 0,
+          status: (d.status as Robot['status']) ?? 'idle',
+          robot_type: 'differential_drive',
+          battery_pct: 100,
+          current_node: (d.current_node as string) ?? '',
+          target_node: '',
+          path: [],
+          name: robotId,
+          current_task_id: null,
+        })
+      }
     },
     [],
   )

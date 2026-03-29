@@ -249,34 +249,24 @@
 - Robot trails (current: path lines showing planned route)
 
 **Acceptance Criteria:**
-- [ ] 3D warehouse generates from JSON config (same format as Gazebo)
-- [ ] Robots move smoothly in real-time via WebSocket
-- [ ] Camera orbit/pan/zoom works on desktop and tablet
-- [ ] Follow-robot mode tracks selected robot
-- [ ] Battery color coding on robot models
-- [ ] Task paths shown as lines on floor
-- [ ] Performs at 30fps with 50 robots on mid-range hardware
-- [ ] Works alongside existing 2D dashboard (tab or split view)
-
-**Acceptance Criteria:**
 - [x] 3D warehouse generates from JSON config (same format as Gazebo)
 - [x] Robots move smoothly in real-time via WebSocket (lerp interpolation)
 - [x] Camera orbit/pan/zoom works on desktop and tablet (OrbitControls)
-- [x] Follow-robot mode tracks selected robot
+- [x] Follow-robot mode tracks selected robot (third-person offset)
 - [x] Battery color coding on robot models (green→yellow→red)
-- [x] Task paths shown as lines on floor
+- [x] Task paths shown as lines on floor (drei Line)
 - [x] Lazy-loaded: Three.js only loads when 3D tab clicked (217KB main, 918KB 3D chunk)
-- [x] Works alongside existing 2D dashboard (tab toggle in header)
+- [x] Works alongside existing 2D dashboard (tab toggle, state preserved via hidden mount)
+- [ ] 30fps with 50 robots — deferred to E2E browser benchmark (no synthetic claim)
 
 **Files created/modified:**
-- NEW: `frontend/src/components/Warehouse3D.tsx` (R3F Canvas: floor, edges, nodes, shelves, charge stations, heat map overlay, camera)
-- NEW: `frontend/src/components/Robot3DModel.tsx` (animated robot mesh: type colors, battery bar, direction cone, path lines, labels, selection ring)
-- NEW: `frontend/src/hooks/useRobotPositions.ts` (position interpolation: REST → target, WebSocket → update, useFrame → lerp)
-- NEW: `python/tests/test_3d_contracts.py` (20 tests: map shape, robot shape, heatmap shape, WS route, config parsing)
-- MODIFY: `frontend/package.json` (three 0.183, @react-three/fiber 9.5, @react-three/drei 10.7, @types/three)
-- MODIFY: `frontend/src/App.tsx` (2D/3D tab toggle, follow-robot mode, lazy-loaded Warehouse3D, Suspense fallback)
-- FIX: `frontend/src/components/RobotStatusPanel.tsx` (unused import)
-- FIX: `frontend/src/components/WesKpiPanel.tsx` (type cast)
+- NEW: `frontend/src/components/Warehouse3D.tsx` (R3F Canvas: instanced nodes, merged heatmap, camera follow)
+- NEW: `frontend/src/components/Robot3DModel.tsx` (animated mesh: type shapes, battery bar, path lines, LOD labels)
+- NEW: `frontend/src/hooks/useRobotPositions.ts` (position interpolation: REST → target, WS → update, frame-rate independent lerp)
+- NEW: `python/tests/test_3d_contracts.py` (22 tests: map shape, robot shape, heatmap shape, WS connect+broadcast, config parsing)
+- MODIFY: `frontend/package.json` (three 0.183, @react-three/fiber 9.5, @react-three/drei 10.7)
+- MODIFY: `frontend/src/App.tsx` (2D/3D toggle with state preservation, follow mode, lazy-loaded Warehouse3D)
+- MODIFY: `frontend/src/components/RobotStatusPanel.tsx` (click-to-select in 3D mode)
 
 **Review Gate:** Codex + Gemini + Kimi audit → all must PASS before Phase 6.
 
