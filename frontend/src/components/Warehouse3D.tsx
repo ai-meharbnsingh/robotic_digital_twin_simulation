@@ -3,7 +3,7 @@ import { Canvas, useThree, useFrame } from '@react-three/fiber'
 import { OrbitControls, Grid } from '@react-three/drei'
 import * as THREE from 'three'
 import { useRobotPositions } from '../hooks/useRobotPositions'
-import { Robot3DModel } from './Robot3DModel'
+import { Robot3DModel, type RobotGeometryPool } from './Robot3DModel'
 import type { Robot, MapNode, MapEdge, HeatMapCell, FleetWSEvent } from '../types'
 
 // --- Node type colors (matching 2D WarehouseGrid) ---
@@ -54,59 +54,74 @@ function FloorEdges({ edges, nodeMap }: { edges: MapEdge[]; nodeMap: Map<string,
 }
 
 function NodeMarkers({ nodes }: { nodes: MapNode[] }) {
+  // Shared geometry instances — one per type, reused by all nodes of that type
+  const shelfGeo = useMemo(() => new THREE.BoxGeometry(0.7, SHELF_HEIGHT, 0.7), [])
+  const chargeGeo = useMemo(() => new THREE.CylinderGeometry(0.25, 0.3, CHARGE_HEIGHT, 8), [])
+  const chargeCap = useMemo(() => new THREE.CircleGeometry(0.15, 6), [])
+  const stationGeo = useMemo(() => new THREE.BoxGeometry(0.5, STATION_HEIGHT, 0.5), [])
+  const hubGeo = useMemo(() => new THREE.OctahedronGeometry(0.35), [])
+  const aisleGeo = useMemo(() => new THREE.CircleGeometry(0.12, 12), [])
+
+  // Shared materials — one per visual style
+  const shelfMat = useMemo(() => new THREE.MeshStandardMaterial({ color: NODE_COLORS.shelf, transparent: true, opacity: 0.6 }), [])
+  const chargeMat = useMemo(() => new THREE.MeshStandardMaterial({ color: NODE_COLORS.charge, emissive: NODE_COLORS.charge, emissiveIntensity: 0.2 }), [])
+  const chargeCapMat = useMemo(() => new THREE.MeshBasicMaterial({ color: '#f9e2af' }), [])
+  const pickMat = useMemo(() => new THREE.MeshStandardMaterial({ color: NODE_COLORS.pick, emissive: NODE_COLORS.pick, emissiveIntensity: 0.15 }), [])
+  const dropMat = useMemo(() => new THREE.MeshStandardMaterial({ color: NODE_COLORS.drop, emissive: NODE_COLORS.drop, emissiveIntensity: 0.15 }), [])
+  const hubMat = useMemo(() => new THREE.MeshStandardMaterial({ color: NODE_COLORS.hub, emissive: NODE_COLORS.hub, emissiveIntensity: 0.3 }), [])
+  const aisleMat = useMemo(() => new THREE.MeshBasicMaterial({ color: NODE_COLORS.aisle, transparent: true, opacity: 0.5 }), [])
+
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      shelfGeo.dispose(); chargeGeo.dispose(); chargeCap.dispose()
+      stationGeo.dispose(); hubGeo.dispose(); aisleGeo.dispose()
+      shelfMat.dispose(); chargeMat.dispose(); chargeCapMat.dispose()
+      pickMat.dispose(); dropMat.dispose(); hubMat.dispose(); aisleMat.dispose()
+    }
+  }, [shelfGeo, chargeGeo, chargeCap, stationGeo, hubGeo, aisleGeo,
+      shelfMat, chargeMat, chargeCapMat, pickMat, dropMat, hubMat, aisleMat])
+
   return (
     <group>
       {nodes.map((n) => {
-        const color = NODE_COLORS[n.type] ?? '#6c7086'
-
         if (n.type === 'shelf') {
           return (
-            <mesh key={n.name} position={[n.x, SHELF_HEIGHT / 2, n.y]} castShadow receiveShadow>
-              <boxGeometry args={[0.7, SHELF_HEIGHT, 0.7]} />
-              <meshStandardMaterial color={color} transparent opacity={0.6} />
-            </mesh>
+            <mesh key={n.name} geometry={shelfGeo} material={shelfMat}
+              position={[n.x, SHELF_HEIGHT / 2, n.y]} castShadow receiveShadow />
           )
         }
-
         if (n.type === 'charge') {
           return (
             <group key={n.name}>
-              <mesh position={[n.x, CHARGE_HEIGHT / 2, n.y]}>
-                <cylinderGeometry args={[0.25, 0.3, CHARGE_HEIGHT, 8]} />
-                <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.2} />
-              </mesh>
-              <mesh position={[n.x, CHARGE_HEIGHT + 0.1, n.y]} rotation={[-Math.PI / 2, 0, 0]}>
-                <circleGeometry args={[0.15, 6]} />
-                <meshBasicMaterial color="#f9e2af" />
-              </mesh>
+              <mesh geometry={chargeGeo} material={chargeMat}
+                position={[n.x, CHARGE_HEIGHT / 2, n.y]} />
+              <mesh geometry={chargeCap} material={chargeCapMat}
+                position={[n.x, CHARGE_HEIGHT + 0.1, n.y]} rotation={[-Math.PI / 2, 0, 0]} />
             </group>
           )
         }
-
-        if (n.type === 'pick' || n.type === 'drop') {
+        if (n.type === 'pick') {
           return (
-            <mesh key={n.name} position={[n.x, STATION_HEIGHT / 2, n.y]}>
-              <boxGeometry args={[0.5, STATION_HEIGHT, 0.5]} />
-              <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.15} />
-            </mesh>
+            <mesh key={n.name} geometry={stationGeo} material={pickMat}
+              position={[n.x, STATION_HEIGHT / 2, n.y]} />
           )
         }
-
+        if (n.type === 'drop') {
+          return (
+            <mesh key={n.name} geometry={stationGeo} material={dropMat}
+              position={[n.x, STATION_HEIGHT / 2, n.y]} />
+          )
+        }
         if (n.type === 'hub') {
           return (
-            <mesh key={n.name} position={[n.x, 0.3, n.y]}>
-              <octahedronGeometry args={[0.35]} />
-              <meshStandardMaterial color={color} emissive={color} emissiveIntensity={0.3} />
-            </mesh>
+            <mesh key={n.name} geometry={hubGeo} material={hubMat}
+              position={[n.x, 0.3, n.y]} />
           )
         }
-
-        // Aisle: flat disc
         return (
-          <mesh key={n.name} position={[n.x, 0.01, n.y]} rotation={[-Math.PI / 2, 0, 0]}>
-            <circleGeometry args={[0.12, 12]} />
-            <meshBasicMaterial color={color} transparent opacity={0.5} />
-          </mesh>
+          <mesh key={n.name} geometry={aisleGeo} material={aisleMat}
+            position={[n.x, 0.01, n.y]} rotation={[-Math.PI / 2, 0, 0]} />
         )
       })}
     </group>
@@ -237,6 +252,22 @@ function Scene({
 
   const { positionsRef, updateFromRest, handleWSEvent } = useRobotPositions()
 
+  // Shared robot geometry pool — 1 instance per shape, shared by all 50+ robots
+  const robotGeoPool = useMemo<RobotGeometryPool>(() => ({
+    amrBody: new THREE.CylinderGeometry(0.3, 0.3, 0.3, 16),
+    agvBody: new THREE.BoxGeometry(0.6, 0.3, 0.8),
+    batteryBar: new THREE.BoxGeometry(0.5, 0.05, 0.1),
+    directionCone: new THREE.ConeGeometry(0.08, 0.15, 4),
+    destRing: new THREE.RingGeometry(0.2, 0.35, 16),
+    selectRing: new THREE.RingGeometry(0.5, 0.6, 32),
+  }), [])
+
+  useEffect(() => {
+    return () => {
+      Object.values(robotGeoPool).forEach((g) => (g as THREE.BufferGeometry).dispose())
+    }
+  }, [robotGeoPool])
+
   // Register WS handler ref — events flow directly to position system (no React re-render)
   useEffect(() => {
     wsHandlerRef.current = handleWSEvent
@@ -323,6 +354,7 @@ function Scene({
             selected={id === selectedRobotId}
             onSelect={onSelectRobot}
             nodeMap={nodeMap}
+            geoPool={robotGeoPool}
           />
         )
       })}

@@ -17,9 +17,11 @@ export interface RobotPosition3D {
   path: string[]
   name: string
   current_task_id: string | null
+  lastUpdated: number // timestamp of last REST or WS update
 }
 
 const LERP_SPEED = 6 // units per second — smooth but responsive
+const STALE_TIMEOUT_MS = 15_000 // prune robots with no update for 15s
 
 /**
  * Maintains a map of robot positions with smooth interpolation.
@@ -44,6 +46,7 @@ export function useRobotPositions() {
         const tx = r.pose.x
         const tz = r.pose.y // warehouse Y maps to 3D Z
 
+        const now = Date.now()
         if (existing) {
           existing.target.set(tx, 0, tz)
           existing.targetTheta = r.pose.theta
@@ -55,6 +58,7 @@ export function useRobotPositions() {
           existing.path = r.path
           existing.name = r.name
           existing.current_task_id = r.current_task_id
+          existing.lastUpdated = now
         } else {
           map.set(r.robot_id, {
             robot_id: r.robot_id,
@@ -70,15 +74,17 @@ export function useRobotPositions() {
             path: r.path,
             name: r.name,
             current_task_id: r.current_task_id,
+            lastUpdated: now,
           })
         }
       }
 
-      // Remove robots that no longer appear in REST — but only if REST
-      // returned a non-empty list (empty = transient API failure, not fleet deletion)
-      if (robots.length > 0) {
-        for (const key of map.keys()) {
-          if (!seen.has(key)) map.delete(key)
+      // Prune robots: remove if absent from REST AND stale (no update for 15s)
+      // This handles both genuine fleet removal and ghost robots from transient failures
+      const now2 = Date.now()
+      for (const [key, rp] of map.entries()) {
+        if (!seen.has(key) && (now2 - rp.lastUpdated) > STALE_TIMEOUT_MS) {
+          map.delete(key)
         }
       }
     },
@@ -101,11 +107,13 @@ export function useRobotPositions() {
       const robotId = d.robot_id as string
       const existing = positionsRef.current.get(robotId)
 
+      const now = Date.now()
       if (existing) {
         existing.target.set(pose.x, 0, pose.y)
         if (typeof pose.theta === 'number') existing.targetTheta = pose.theta
         if (typeof d.status === 'string') existing.status = d.status as Robot['status']
         if (typeof d.current_node === 'string') existing.current_node = d.current_node
+        existing.lastUpdated = now
       } else {
         // WS arrived before REST — create provisional entry so robot appears immediately
         positionsRef.current.set(robotId, {
@@ -122,6 +130,7 @@ export function useRobotPositions() {
           path: [],
           name: robotId,
           current_task_id: null,
+          lastUpdated: now,
         })
       }
     },

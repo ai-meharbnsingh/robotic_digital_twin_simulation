@@ -23,21 +23,31 @@ function batteryColor(pct: number): string {
   return '#f38ba8'                 // red
 }
 
+/** Shared geometry pool — created once in Scene, passed to all robot instances */
+export interface RobotGeometryPool {
+  amrBody: THREE.CylinderGeometry
+  agvBody: THREE.BoxGeometry
+  batteryBar: THREE.BoxGeometry
+  directionCone: THREE.ConeGeometry
+  destRing: THREE.RingGeometry
+  selectRing: THREE.RingGeometry
+}
+
 interface Robot3DModelProps {
   rp: RobotPosition3D
   selected: boolean
   onSelect: (id: string) => void
   nodeMap: Map<string, { x: number; y: number }>
+  geoPool: RobotGeometryPool
 }
 
-export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelProps) {
+export function Robot3DModel({ rp, selected, onSelect, nodeMap, geoPool }: Robot3DModelProps) {
   const meshRef = useRef<THREE.Mesh>(null)
   const ringRef = useRef<THREE.Mesh>(null)
 
   const baseColor = TYPE_COLORS[rp.robot_type] ?? '#89dceb'
   const emissive = STATUS_EMISSIVE[rp.status] ?? (selected ? '#89b4fa' : '#000000')
 
-  // Build path line points from node names (for drei <Line>)
   const pathPoints = useMemo((): [number, number, number][] | null => {
     if (!rp.path || rp.path.length < 2) return null
     const pts: [number, number, number][] = []
@@ -48,7 +58,6 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
     return pts.length >= 2 ? pts : null
   }, [rp.path, nodeMap])
 
-  // Destination marker position
   const destPos = useMemo((): [number, number, number] | null => {
     if (!rp.target_node) return null
     const n = nodeMap.get(rp.target_node)
@@ -56,14 +65,12 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
     return [n.x, 0.05, n.y]
   }, [rp.target_node, nodeMap])
 
-  // Animate mesh position + rotation + selection ring each frame
   useFrame(() => {
     if (meshRef.current) {
       meshRef.current.position.copy(rp.current)
       meshRef.current.position.y = 0.2
       meshRef.current.rotation.y = -rp.theta
     }
-    // Keep selection ring synced with robot position (avoids render-time lag)
     if (ringRef.current) {
       ringRef.current.position.set(rp.current.x, 0.02, rp.current.z)
     }
@@ -75,20 +82,15 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
 
   return (
     <group>
-      {/* Robot body */}
       <mesh
         ref={meshRef}
+        geometry={isAGV ? geoPool.agvBody : geoPool.amrBody}
         onClick={(e) => {
           e.stopPropagation()
           onSelect(rp.robot_id)
         }}
         castShadow
       >
-        {isAGV ? (
-          <boxGeometry args={[0.6, 0.3, 0.8]} />
-        ) : (
-          <cylinderGeometry args={[0.3, 0.3, 0.3, 16]} />
-        )}
         <meshStandardMaterial
           color={baseColor}
           emissive={emissive}
@@ -97,19 +99,17 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
           opacity={opacity}
         />
 
-        {/* Battery indicator bar on top */}
-        <mesh position={[0, 0.2, 0]}>
-          <boxGeometry args={[0.5, 0.05, 0.1]} />
+        {/* Battery indicator bar — shared geometry */}
+        <mesh geometry={geoPool.batteryBar} position={[0, 0.2, 0]}>
           <meshStandardMaterial color={batteryColor(rp.battery_pct)} />
         </mesh>
 
-        {/* Direction indicator (front arrow) */}
-        <mesh position={[0, 0.1, -0.35]} rotation={[Math.PI / 2, 0, 0]}>
-          <coneGeometry args={[0.08, 0.15, 4]} />
+        {/* Direction cone — shared geometry */}
+        <mesh geometry={geoPool.directionCone} position={[0, 0.1, -0.35]} rotation={[Math.PI / 2, 0, 0]}>
           <meshStandardMaterial color="#cdd6f4" />
         </mesh>
 
-        {/* Label — only render for selected robot or low battery to minimize DOM overhead at scale */}
+        {/* Label — only for selected or low battery */}
         {(selected || rp.battery_pct < 30) && (
           <Html
             position={[0, 0.6, 0]}
@@ -136,7 +136,6 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         )}
       </mesh>
 
-      {/* Task path line on floor — drei <Line> handles geometry lifecycle */}
       {pathPoints && (
         <Line
           points={pathPoints}
@@ -147,10 +146,8 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         />
       )}
 
-      {/* Destination marker */}
       {destPos && rp.current_task_id && (
-        <mesh position={destPos}>
-          <ringGeometry args={[0.2, 0.35, 16]} />
+        <mesh geometry={geoPool.destRing} position={destPos}>
           <meshBasicMaterial
             color={baseColor}
             transparent
@@ -160,10 +157,8 @@ export function Robot3DModel({ rp, selected, onSelect, nodeMap }: Robot3DModelPr
         </mesh>
       )}
 
-      {/* Selection ring — position updated in useFrame via ringRef */}
       {selected && (
-        <mesh ref={ringRef} rotation={[-Math.PI / 2, 0, 0]}>
-          <ringGeometry args={[0.5, 0.6, 32]} />
+        <mesh ref={ringRef} geometry={geoPool.selectRing} rotation={[-Math.PI / 2, 0, 0]}>
           <meshBasicMaterial color="#89b4fa" transparent opacity={0.6} side={THREE.DoubleSide} />
         </mesh>
       )}
