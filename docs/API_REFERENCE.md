@@ -1,6 +1,8 @@
 # API Reference
 
-The Python FastAPI server runs on port **8029** and exposes 34 REST endpoints plus 1 WebSocket endpoint.
+The Python FastAPI server runs on port **8029** and exposes 30 REST endpoints plus 1 WebSocket endpoint.
+
+> **Note:** io-gita intelligence endpoints (3) and SG predictions endpoint (1) were removed when the intelligence layer was dropped. See ARCHITECTURE.md for details.
 
 Interactive docs: `http://localhost:8029/docs`
 
