@@ -88,19 +88,23 @@ export function useRobotPositions() {
   const handleWSEvent = useCallback(
     (event: FleetWSEvent) => {
       if (event.event !== 'robot_position') return
-      const d = event.data as {
-        robot_id: string
-        pose: { x: number; y: number; theta: number }
-        status: string
-        current_node: string
-      }
-      const existing = positionsRef.current.get(d.robot_id)
+      const d = event.data as Record<string, unknown>
+      // Runtime validation — guard against malformed WS events
+      if (
+        typeof d?.robot_id !== 'string' ||
+        !d.pose ||
+        typeof (d.pose as Record<string, unknown>).x !== 'number' ||
+        typeof (d.pose as Record<string, unknown>).y !== 'number'
+      ) return
+
+      const pose = d.pose as { x: number; y: number; theta: number }
+      const existing = positionsRef.current.get(d.robot_id as string)
       if (!existing) return
 
-      existing.target.set(d.pose.x, 0, d.pose.y)
-      existing.targetTheta = d.pose.theta
-      existing.status = d.status as Robot['status']
-      existing.current_node = d.current_node
+      existing.target.set(pose.x, 0, pose.y)
+      if (typeof pose.theta === 'number') existing.targetTheta = pose.theta
+      if (typeof d.status === 'string') existing.status = d.status as Robot['status']
+      if (typeof d.current_node === 'string') existing.current_node = d.current_node
     },
     [],
   )

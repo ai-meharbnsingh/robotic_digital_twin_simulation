@@ -24,7 +24,6 @@ import type {
   WesKpi,
   HeatMapData,
   WavesResponse,
-  FleetWSEvent,
 } from './types'
 
 const POLL_MS = 3000
@@ -59,11 +58,7 @@ export default function App() {
     heatmapEnabled ? 5000 : 0,
   )
 
-  const handleWSEvent = useCallback((_event: FleetWSEvent) => {
-    // WS events forwarded to 3D scene via lastEvent from useFleetWebSocket
-  }, [])
-
-  const { connected: wsConnected, lastEvent: lastWSEvent } = useFleetWebSocket(handleWSEvent)
+  const { connected: wsConnected, lastEvent: lastWSEvent } = useFleetWebSocket()
 
   // Aggregate errors
   const apiErrors = [robotsErr, tasksErr, wavesErr].filter(Boolean)

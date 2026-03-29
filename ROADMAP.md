@@ -228,19 +228,25 @@
 
 **Inspiration:** Hai Robotics virtual warehouse tours, but INTERACTIVE and driven by LIVE simulation data.
 
-**What to build:**
-- Three.js (or React Three Fiber) 3D scene in the React dashboard
-  - Auto-generate 3D warehouse from same JSON config (shelves, aisles, stations, walls)
-  - Render robot models moving in real-time via WebSocket position updates
-  - Camera controls: orbit, pan, zoom, first-person follow-robot mode
-  - Visual elements: shelf racks, conveyor belts, charging stations, floor markings
-  - Robot trails (path visualization), task destination markers
-  - Heat map overlay in 3D (floor color)
-- Data pipeline:
-  - WebSocket pushes robot positions at 5-10Hz (subsample from 15Hz FMS)
-  - Task status updates change visual indicators (pick/drop animations)
-  - Battery level shown as color on robot model (green→yellow→red)
+**What was built:**
+- React Three Fiber 3D scene in the React dashboard
+  - Auto-generate 3D warehouse from same JSON config (shelves, aisles, charge stations)
+  - Render robot models (AMR cylinders, AGV boxes) moving in real-time via WebSocket
+  - Camera controls: orbit, pan, zoom, third-person follow-robot mode
+  - Visual elements: shelf racks (blue boxes), charging stations (green cylinders), pick/drop stations
+  - Robot task paths (floor lines), task destination markers (rings)
+  - Heat map overlay in 3D (merged vertex-colored floor geometry)
+  - Battery level shown as color bar on robot model (green→yellow→red)
+  - Robot labels (Html overlay), direction cones, selection rings
 - No Gazebo dependency — pure browser rendering from API/WebSocket data
+- Lazy-loaded: Three.js chunk (918KB) loads only when 3D tab clicked
+
+**Deferred to future iteration (not in v1 acceptance criteria):**
+- First-person camera mode (current: third-person offset follow)
+- Conveyor belt models (no conveyor data in warehouse configs yet)
+- Wall models (no wall data in warehouse configs yet)
+- Pick/drop animations (current: static markers)
+- Robot trails (current: path lines showing planned route)
 
 **Acceptance Criteria:**
 - [ ] 3D warehouse generates from JSON config (same format as Gazebo)
