@@ -198,6 +198,7 @@ class TestHeatmapContractFor3D:
 
     async def test_heatmap_grid_metadata(self, client: AsyncClient):
         resp = await client.get("/api/analytics/heatmap?duration=1h&resolution=0.5")
+        assert resp.status_code == 200
         data = resp.json()
         assert "grid" in data
         grid = data["grid"]

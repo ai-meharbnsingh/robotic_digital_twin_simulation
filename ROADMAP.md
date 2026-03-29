@@ -257,13 +257,14 @@
 - [x] Task paths shown as lines on floor (drei Line)
 - [x] Lazy-loaded: Three.js only loads when 3D tab clicked (217KB main, 918KB 3D chunk)
 - [x] Works alongside existing 2D dashboard (tab toggle, state preserved via hidden mount)
-- [x] 30fps with 50 robots — backend budget proven (API <200ms, WS broadcast 50 events <100ms, shared geometries verified). Browser FPS requires E2E Playwright test.
+- [ ] 30fps with 50 robots — backend budget proven (API <200ms, WS 50-event broadcast <100ms, shared geometries). Browser FPS needs Playwright E2E.
 
 **Files created/modified:**
 - NEW: `frontend/src/components/Warehouse3D.tsx` (R3F Canvas: merged heatmap geometry, ref-based WS data flow, camera follow)
-- NEW: `frontend/src/components/Robot3DModel.tsx` (animated mesh: type shapes, battery bar, path lines, LOD labels)
+- NEW: `frontend/src/components/Robot3DModel.tsx` (animated mesh: type shapes, battery bar, path lines, conditional labels)
 - NEW: `frontend/src/hooks/useRobotPositions.ts` (position interpolation: REST → target, WS → update, frame-rate independent lerp)
-- NEW: `python/tests/test_3d_contracts.py` (22 tests: map shape, robot shape, heatmap shape, WS connect+broadcast, config parsing)
+- NEW: `python/tests/test_3d_contracts.py` (23 tests: map shape, robot shape, heatmap shape, WS E2E connect+broadcast, config parsing)
+- NEW: `python/tests/test_3d_perf.py` (6 tests: API timing, WS throughput, serialization, shared geometry verification)
 - MODIFY: `frontend/package.json` (three 0.183, @react-three/fiber 9.5, @react-three/drei 10.7)
 - MODIFY: `frontend/src/App.tsx` (2D/3D toggle with state preservation, follow mode, lazy-loaded Warehouse3D)
 - MODIFY: `frontend/src/components/RobotStatusPanel.tsx` (click-to-select in 3D mode)
