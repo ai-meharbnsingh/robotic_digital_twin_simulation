@@ -53,6 +53,13 @@ def _get_valid_nodes() -> tuple[set[str], bool]:
     return {n["name"] for n in config.get("nodes", [])}, True
 
 
+def _sanitize_csv_value(value: str) -> str:
+    """Strip CSV formula injection prefixes (OWASP recommendation)."""
+    if value and value[0] in ("=", "+", "-", "@", "\t", "\r"):
+        return value.lstrip("=+\\-@\t\r")
+    return value
+
+
 def _parse_and_validate(
     content: str, valid_nodes: set[str], config_loaded: bool
 ) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
@@ -85,8 +92,8 @@ def _parse_and_validate(
         if row_num > MAX_ROWS + 1:
             errors.append({"row": row_num, "error": f"Exceeded {MAX_ROWS} row limit"})
             break
-        source = row.get("source_node", "").strip()
-        dest = row.get("destination_node", "").strip()
+        source = _sanitize_csv_value(row.get("source_node", "").strip())
+        dest = _sanitize_csv_value(row.get("destination_node", "").strip())
 
         # Validate required fields are non-empty
         if not source:

@@ -73,6 +73,27 @@ source_node,destination_node,priority,payload_kg
 PICK_1,PICK_1,5,2.0
 """
 
+PRIORITY_OUT_OF_RANGE_CSV = """\
+source_node,destination_node,priority
+PICK_1,DROP_1,150
+"""
+
+INVALID_ORDER_TYPE_CSV = """\
+source_node,destination_node,order_type
+PICK_1,DROP_1,invalid_type
+"""
+
+CSV_FORMULA_INJECTION = """\
+source_node,destination_node,priority
+=CMD|'/C calc'!A0,DROP_1,5
+"""
+
+DUPLICATE_ORDER_IDS_CSV = """\
+source_node,destination_node,order_id
+PICK_1,DROP_1,same_id
+PICK_1,DROP_1,same_id
+"""
+
 
 class TestOrderImport:
     """Test CSV order import endpoint."""
@@ -222,3 +243,43 @@ class TestOrderImport:
         assert data["imported"] == 0
         assert len(data["errors"]) == 1
         assert "must differ" in data["errors"][0]["error"]
+
+    async def test_priority_out_of_range_rejected(self, client: AsyncClient):
+        """Priority > 100 is rejected."""
+        files = {"file": ("orders.csv", io.BytesIO(PRIORITY_OUT_OF_RANGE_CSV.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 0
+        assert len(data["errors"]) == 1
+        assert "priority" in data["errors"][0]["error"]
+        assert "0-100" in data["errors"][0]["error"]
+
+    async def test_invalid_order_type_rejected(self, client: AsyncClient):
+        """Invalid order_type is rejected."""
+        files = {"file": ("orders.csv", io.BytesIO(INVALID_ORDER_TYPE_CSV.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 0
+        assert len(data["errors"]) == 1
+        assert "order_type" in data["errors"][0]["error"]
+
+    async def test_csv_formula_injection_rejected(self, client: AsyncClient):
+        """CSV formula injection (=CMD) is caught by node validation."""
+        files = {"file": ("orders.csv", io.BytesIO(CSV_FORMULA_INJECTION.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 0
+        assert len(data["errors"]) == 1
+        assert "not in warehouse" in data["errors"][0]["error"]
+
+    async def test_duplicate_order_ids_preserved(self, client: AsyncClient):
+        """Duplicate order_ids from CSV are preserved (user's responsibility)."""
+        files = {"file": ("orders.csv", io.BytesIO(DUPLICATE_ORDER_IDS_CSV.encode()), "text/csv")}
+        resp = await client.post("/api/wes/orders/import", files=files)
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["imported"] == 2
+        assert data["order_ids"].count("same_id") == 2
