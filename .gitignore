@@ -39,6 +39,7 @@ htmlcov/
 # Env
 .env
 .env.local
+docker/.env
 .cache/
 build/
 test_output*.txt

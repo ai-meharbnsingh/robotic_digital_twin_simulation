@@ -36,7 +36,7 @@ class FaultInjection(BaseModel):
     fault_type: str  # "battery_drain", "obstacle", "network_loss", "motor_failure"
     robot_id: Optional[str] = None
     duration_s: float = 10.0
-    parameters: dict = {}
+    parameters: dict[str, str | int | float | bool] = {}
 
 
 @router.get("/status")

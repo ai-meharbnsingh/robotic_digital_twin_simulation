@@ -22,7 +22,7 @@ def _get_db():
 class RobotCommand(BaseModel):
     action: str
     target_node: Optional[str] = None
-    parameters: dict = {}
+    parameters: dict[str, str | int | float | bool] = {}
 
 
 @router.get("")

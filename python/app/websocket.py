@@ -26,17 +26,25 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect
 router = APIRouter()
 
 
+MAX_WS_CONNECTIONS = 100  # Prevent DoS via connection flooding
+
+
 class ConnectionManager:
     """Manages WebSocket connections for /ws/fleet."""
 
-    def __init__(self):
+    def __init__(self, max_connections: int = MAX_WS_CONNECTIONS):
         self.active_connections: list[WebSocket] = []
         self._message_count: int = 0
+        self._max_connections = max_connections
 
-    async def connect(self, websocket: WebSocket):
-        """Accept a new WebSocket connection."""
+    async def connect(self, websocket: WebSocket) -> bool:
+        """Accept a new WebSocket connection. Returns False if limit reached."""
+        if len(self.active_connections) >= self._max_connections:
+            await websocket.close(code=1013, reason="Max connections reached")
+            return False
         await websocket.accept()
         self.active_connections.append(websocket)
+        return True
 
     def disconnect(self, websocket: WebSocket):
         """Remove a disconnected WebSocket."""
@@ -86,7 +94,9 @@ async def websocket_fleet(websocket: WebSocket):
     WebSocket endpoint for real-time fleet updates.
     Clients connect here to receive streaming updates.
     """
-    await ws_manager.connect(websocket)
+    connected = await ws_manager.connect(websocket)
+    if not connected:
+        return
     try:
         # Send initial connection confirmation
         await ws_manager.send_personal(websocket, {

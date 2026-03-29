@@ -5,7 +5,9 @@ GET /api/iogita/zones — zone identification results
 POST /api/iogita/cold-start/{id} — trigger cold start recovery for a robot
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+
+from app.auth import require_api_key
 
 router = APIRouter(prefix="/api/iogita", tags=["iogita"])
 
@@ -72,7 +74,7 @@ async def iogita_zones():
         return {"zones": [], "engine": "fallback"}
 
 
-@router.post("/cold-start/{robot_id}")
+@router.post("/cold-start/{robot_id}", dependencies=[Depends(require_api_key)])
 async def cold_start_recovery(robot_id: str):
     """Trigger cold start recovery for a robot."""
     db = _get_db()
