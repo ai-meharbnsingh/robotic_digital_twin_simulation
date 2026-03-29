@@ -40,7 +40,7 @@ class TestAllEndpoints:
         assert resp.status_code == 200
         data = resp.json()
         assert data["service"] == "Robotic Digital Twin API"
-        assert data["endpoints"] == 31
+        assert data["endpoints"] == 32
 
     async def test_health(self, client):
         resp = await client.get("/health")

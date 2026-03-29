@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 31
+        assert data["endpoints"] == 32
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -433,9 +433,10 @@ class TestEndpointCount:
             ("GET", "/api/map/zones"),
             # Telemetry (1)
             ("GET", "/api/telemetry/test_id"),
-            # Analytics (2)
+            # Analytics (3)
             ("GET", "/api/analytics/fleet"),
             ("GET", "/api/analytics/ab-comparison"),
+            ("GET", "/api/analytics/heatmap"),
             # Events (1)
             ("GET", "/api/events"),
             # WCS (2)
@@ -459,7 +460,7 @@ class TestEndpointCount:
             ("POST", "/api/wes/orders/import"),
         ]
 
-        assert len(endpoints) == 31, f"Expected 31 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 32, f"Expected 32 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":

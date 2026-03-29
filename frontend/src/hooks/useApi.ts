@@ -11,10 +11,10 @@ interface UseApiResult<T> {
 
 /**
  * Generic REST fetcher with polling interval.
- * @param path - API path (e.g., "/api/robots")
+ * @param path - API path (e.g., "/api/robots"). Pass null to skip fetching.
  * @param intervalMs - Polling interval in ms. 0 = no polling (fetch once).
  */
-export function useApi<T>(path: string, intervalMs: number = 0): UseApiResult<T> {
+export function useApi<T>(path: string | null, intervalMs: number = 0): UseApiResult<T> {
   const [data, setData] = useState<T | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
@@ -22,6 +22,7 @@ export function useApi<T>(path: string, intervalMs: number = 0): UseApiResult<T>
   const mountedRef = useRef(true)
 
   const fetchData = useCallback(async () => {
+    if (!path) return
     try {
       const res = await fetch(`${API_BASE}${path}`)
       if (!res.ok) {
@@ -43,6 +44,12 @@ export function useApi<T>(path: string, intervalMs: number = 0): UseApiResult<T>
 
   useEffect(() => {
     mountedRef.current = true
+
+    if (!path) {
+      setLoading(false)
+      return
+    }
+
     setLoading(true)
     fetchData()
 
@@ -57,7 +64,7 @@ export function useApi<T>(path: string, intervalMs: number = 0): UseApiResult<T>
         intervalRef.current = null
       }
     }
-  }, [fetchData, intervalMs])
+  }, [fetchData, intervalMs, path])
 
   return { data, loading, error, refetch: fetchData }
 }

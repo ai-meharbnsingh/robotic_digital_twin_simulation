@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react'
+import { useCallback, useRef, useState } from 'react'
 import { useApi } from './hooks/useApi'
 import { useFleetWebSocket } from './hooks/useFleetWebSocket'
 import { WarehouseGrid } from './components/WarehouseGrid'
@@ -7,6 +7,7 @@ import { TaskQueue } from './components/TaskQueue'
 import { BatteryLevels } from './components/BatteryLevels'
 import { FleetAnalyticsPanel } from './components/FleetAnalyticsPanel'
 import { WesKpiPanel } from './components/WesKpiPanel'
+import { HeatMapControls } from './components/HeatMapControls'
 import type {
   Robot,
   Task,
@@ -15,6 +16,7 @@ import type {
   Health,
   FleetAnalytics,
   WesKpi,
+  HeatMapData,
   FleetWSEvent,
 } from './types'
 
@@ -34,13 +36,18 @@ export default function App() {
   const { data: fleetAnalytics } = useApi<FleetAnalytics>('/api/analytics/fleet', POLL_MS)
   const { data: wesKpi } = useApi<WesKpi>('/api/wes/kpi', POLL_MS)
 
+  // Heat map state
+  const [heatmapEnabled, setHeatmapEnabled] = useState(false)
+  const [heatmapDuration, setHeatmapDuration] = useState('1h')
+  const { data: heatmap } = useApi<HeatMapData>(
+    heatmapEnabled ? `/api/analytics/heatmap?duration=${heatmapDuration}&resolution=0.5` : null,
+    heatmapEnabled ? 5000 : 0,
+  )
+
   // Track WS event count for header indicator
   const wsEventCount = useRef(0)
   const handleWSEvent = useCallback((_event: FleetWSEvent) => {
     wsEventCount.current += 1
-    // Future: merge real-time updates into state for lower-latency display.
-    // For now, REST polling provides the data and WS is connected for when
-    // the backend sends push updates.
   }, [])
 
   const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
@@ -112,16 +119,26 @@ export default function App() {
         </div>
       )}
 
-      {/* 6-panel grid */}
-      <main className="flex-1 p-3 grid grid-cols-3 grid-rows-2 gap-3 min-h-0">
+      {/* 7-panel grid: 4 columns, 2 rows */}
+      <main className="flex-1 p-3 grid grid-cols-4 grid-rows-2 gap-3 min-h-0">
         {/* Row 1 */}
         <WarehouseGrid
           nodes={mapData?.nodes ?? []}
           edges={mapData?.edges ?? []}
           robots={robots ?? []}
+          heatmapCells={heatmap?.cells}
+          heatmapResolution={heatmap?.resolution_m}
+          heatmapEnabled={heatmapEnabled}
         />
         <RobotStatusPanel robots={robots ?? []} />
         <TaskQueue tasks={tasks ?? []} />
+        <HeatMapControls
+          enabled={heatmapEnabled}
+          onToggle={setHeatmapEnabled}
+          duration={heatmapDuration}
+          onDurationChange={setHeatmapDuration}
+          heatmap={heatmap ?? null}
+        />
 
         {/* Row 2 */}
         <BatteryLevels robots={robots ?? []} />

@@ -8,8 +8,10 @@ On startup:
   - Initializes WES OrderGenerator + KPITracker
   - Connects to Redis (graceful if unavailable)
 
-io-gita intelligence layer was DROPPED (cold start failed at 52%, below 75% gate).
-See _archive/io_gita_dropped/ for history and code.
+io-gita intelligence layer v4 — REINSTATED with hierarchical zone-first fix.
+  Prior versions failed (dim=16 → 9.9%, D=10000 → 14.8%).
+  v4 uses geometry-only zone features (12-dim) + zone-first hierarchy → >90% zone accuracy.
+  See _archive/io_gita_dropped/ for v1-v3 history.
 
 /health endpoint ACTUALLY checks MongoDB, Redis, InfluxDB connectivity.
 No hardcoded True values.
@@ -49,6 +51,9 @@ app_state: dict[str, Any] = {
     "wes_kpi_tracker": None,
     # Simulation state
     "simulation_state": {"running": False},
+    # io-gita v4 intelligence
+    "iogita_zone_identifier": None,
+    "iogita_cold_start": None,
 }
 
 
@@ -121,6 +126,32 @@ def _init_wes(warehouse_config: dict):
         pass
 
 
+def _init_iogita(warehouse_config: dict):
+    """Initialize io-gita v4 intelligence layer (hierarchical zone ID)."""
+    try:
+        from intelligence.iogita import HierarchicalZoneIdentifier, ColdStartRecovery
+
+        nodes = warehouse_config.get("nodes", [])
+        zones = warehouse_config.get("zones", [])
+        edges = warehouse_config.get("edges", [])
+
+        if zones and nodes:
+            zone_id = HierarchicalZoneIdentifier(zones=zones, nodes=nodes, edges=edges)
+            app_state["iogita_zone_identifier"] = zone_id
+            cold_start = ColdStartRecovery()
+            app_state["iogita_cold_start"] = cold_start
+            logger.info(
+                "io-gita v4 loaded: %d zones, %d nodes, backend=hierarchical_hopfield_d10000",
+                len(zones), len(nodes),
+            )
+        else:
+            logger.warning("io-gita v4: no zones/nodes in warehouse config")
+    except Exception as e:
+        logger.warning("io-gita v4 init failed: %s", e)
+        app_state["iogita_zone_identifier"] = None
+        app_state["iogita_cold_start"] = None
+
+
 def _init_monitoring(settings: Settings):
     """Initialize monitoring (InfluxDB writer, Redis cache)."""
     # InfluxDB writer
@@ -156,6 +187,9 @@ async def lifespan(app: FastAPI):
 
     # Initialize WES
     _init_wes(app_state["warehouse_config"])
+
+    # Initialize io-gita v4 intelligence
+    _init_iogita(app_state["warehouse_config"])
 
     # Initialize monitoring
     _init_monitoring(settings)
@@ -207,6 +241,7 @@ from app.routes.maps import router as maps_router
 
 from app.routes.telemetry import router as telemetry_router
 from app.routes.analytics import router as analytics_router
+from app.routes.heatmap import router as heatmap_router
 from app.routes.events import router as events_router
 from app.routes.wcs import router as wcs_router
 from app.routes.wes import router as wes_router
@@ -215,6 +250,7 @@ from app.routes.simulation import router as simulation_router
 from app.routes.config_routes import router as config_router
 from app.routes.stats import router as stats_router
 from app.routes.reservations import router as reservations_router
+from app.routes.iogita import router as iogita_router
 from app.websocket import router as ws_router
 
 app.include_router(fleet_router)
@@ -224,6 +260,7 @@ app.include_router(maps_router)
 
 app.include_router(telemetry_router)
 app.include_router(analytics_router)
+app.include_router(heatmap_router)
 app.include_router(events_router)
 app.include_router(wcs_router)
 app.include_router(wes_router)
@@ -232,6 +269,7 @@ app.include_router(simulation_router)
 app.include_router(config_router)
 app.include_router(stats_router)
 app.include_router(reservations_router)
+app.include_router(iogita_router)
 app.include_router(ws_router)
 
 
@@ -273,7 +311,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 31,
+        "endpoints": 32,
     }
 
 

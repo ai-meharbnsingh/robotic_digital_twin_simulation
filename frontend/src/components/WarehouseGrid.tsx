@@ -1,10 +1,13 @@
 import { useMemo } from 'react'
-import type { MapNode, MapEdge, Robot, RobotType } from '../types'
+import type { MapNode, MapEdge, Robot, HeatMapCell } from '../types'
 
 interface WarehouseGridProps {
   nodes: MapNode[]
   edges: MapEdge[]
   robots: Robot[]
+  heatmapCells?: HeatMapCell[]
+  heatmapResolution?: number
+  heatmapEnabled?: boolean
 }
 
 const NODE_COLORS: Record<string, string> = {
@@ -26,10 +29,41 @@ const ROBOT_UNKNOWN_COLOR = '#6c7086'  // gray — unknown type
 const ROBOT_ERROR_COLOR = '#f38ba8'
 
 /**
- * Top-down warehouse map.
- * Nodes rendered as circles, edges as lines, robots as pulsing diamonds.
+ * Interpolate from green (low) → yellow (mid) → red (high) based on 0-1 intensity.
  */
-export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
+function heatColor(intensity: number): string {
+  const t = Math.max(0, Math.min(1, intensity))
+  let r: number, g: number, b: number
+
+  if (t < 0.5) {
+    // Green → Yellow (0.0 → 0.5)
+    const s = t / 0.5
+    r = Math.round(166 + (249 - 166) * s)  // #a6 → #f9
+    g = Math.round(227 + (226 - 227) * s)  // #e3 → #e2
+    b = Math.round(161 + (175 - 161) * s)  // #a1 → #af (greenish-yellow)
+  } else {
+    // Yellow → Red (0.5 → 1.0)
+    const s = (t - 0.5) / 0.5
+    r = Math.round(249 + (243 - 249) * s)  // #f9 → #f3
+    g = Math.round(226 + (139 - 226) * s)  // #e2 → #8b
+    b = Math.round(175 + (168 - 175) * s)  // #af → #a8
+  }
+
+  return `rgb(${r}, ${g}, ${b})`
+}
+
+/**
+ * Top-down warehouse map with optional heat map overlay.
+ * Layers (bottom to top): heat map → edges → nodes → robots.
+ */
+export function WarehouseGrid({
+  nodes,
+  edges,
+  robots,
+  heatmapCells,
+  heatmapResolution = 0.5,
+  heatmapEnabled = false,
+}: WarehouseGridProps) {
   // Compute SVG viewBox from node extents
   const { viewBox, scale } = useMemo(() => {
     if (nodes.length === 0) {
@@ -74,6 +108,7 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
 
   const nodeRadius = Math.max(0.3, scale * 0.5)
   const robotSize = Math.max(0.5, scale * 0.7)
+  const cellSize = heatmapResolution
 
   return (
     <div className="bg-panel border border-border rounded-lg p-3 h-full flex flex-col">
@@ -89,6 +124,22 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
           style={{ minHeight: 0 }}
           preserveAspectRatio="xMidYMid meet"
         >
+          {/* Heat map overlay — rendered first (bottom layer) */}
+          {heatmapEnabled && heatmapCells && heatmapCells.map((cell) => (
+            <rect
+              key={`hm-${cell.col}-${cell.row}`}
+              x={cell.x - cellSize / 2}
+              y={cell.y - cellSize / 2}
+              width={cellSize}
+              height={cellSize}
+              fill={heatColor(cell.intensity)}
+              opacity={0.35 + cell.intensity * 0.35}
+              rx={cellSize * 0.05}
+            >
+              <title>{`Visits: ${cell.visit_count} | Dwell: ${cell.avg_dwell_time_s.toFixed(1)}s`}</title>
+            </rect>
+          ))}
+
           {/* Edges */}
           {edges.map((e, i) => {
             const from = nodeMap.get(e.from)

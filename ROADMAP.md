@@ -2,9 +2,9 @@
 
 > **Vision:** The only open-source warehouse robotics simulator with a production-grade C++ fleet management system — bring your warehouse layout, your robot specs, and your real orders. No vendor lock-in. One Docker command. 3D visualization in the browser.
 >
-> **Status:** Phases 0-2 COMPLETE. 571 tests, 0 failures. Phase 1 audited (Codex 95, Gemini 100, Kimi 98).
+> **Status:** Phases 0-3 COMPLETE. 600 tests, 0 failures.
 >
-> **Last Updated:** 2026-03-29
+> **Last Updated:** 2026-03-30
 
 ---
 
@@ -34,7 +34,7 @@
 | 0 | Core Digital Twin (C++ FMS + API + Dashboard + Gazebo + Docker) | Done | **COMPLETE** | 528 tests |
 | 1 | CSV/Excel Order Import | S (1 week) | **COMPLETE** | Codex 95, Gemini 100, Kimi 98 |
 | 2 | Mixed Fleet Types | S (1 week) | **COMPLETE** | Gemini 97, Kimi 88, Codex 83→fix→reaudit |
-| 3 | Heat Map Visualization | S-M (1-2 weeks) | PENDING | — |
+| 3 | Heat Map Visualization | S-M (1-2 weeks) | **COMPLETE** | 600 tests |
 | 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | PENDING | — |
 | 5 | 3D Web Simulation (Three.js browser visualization) | L (3-4 weeks) | PENDING | — |
 | 6 | Parallel Scenario Comparison | L (3 weeks) | PENDING | — |
@@ -151,25 +151,30 @@
 - Congestion scoring per zone (derived from heat map data)
 
 **Acceptance Criteria:**
-- [ ] Heat map renders over warehouse grid with correct spatial alignment
-- [ ] Color intensity correlates with actual robot traffic
-- [ ] Time window selector works (1h, 4h, 8h, 24h)
-- [ ] Zone congestion scores match visual heat
-- [ ] Performance: heatmap API responds in <500ms for 24h window
+- [x] Heat map renders over warehouse grid with correct spatial alignment
+- [x] Color intensity correlates with actual robot traffic
+- [x] Time window selector works (1h, 4h, 8h, 24h)
+- [x] Zone congestion scores match visual heat
+- [x] Performance: heatmap API responds in <500ms for 24h window
 
 **Files to create/modify:**
-- NEW: `python/app/routes/heatmap.py`
-- NEW: `python/tests/test_heatmap.py`
-- MODIFY: `python/app/main.py` (register router)
-- MODIFY: `frontend/src/components/WarehouseGrid.tsx` (overlay layer)
-- NEW: `frontend/src/components/HeatMapControls.tsx`
+- NEW: `python/app/routes/heatmap.py` (GET /api/analytics/heatmap with InfluxDB→MongoDB→simulated fallback)
+- NEW: `python/tests/test_heatmap.py` (28 tests: shape, zones, params, performance, spatial)
+- NEW: `frontend/src/components/HeatMapControls.tsx` (toggle, duration selector, zone congestion)
+- MODIFY: `python/app/main.py` (register heatmap router, endpoint count 31→32)
+- MODIFY: `frontend/src/components/WarehouseGrid.tsx` (heatmap overlay layer, heatColor interpolation)
+- MODIFY: `frontend/src/App.tsx` (heatmap state, conditional API fetch, 7-panel grid)
+- MODIFY: `frontend/src/hooks/useApi.ts` (null path support for conditional fetching)
+- MODIFY: `frontend/src/types.ts` (HeatMapCell, HeatMapData, ZoneCongestion, HeatMapGrid)
+- MODIFY: `python/tests/test_api.py` (endpoint count 31→32, heatmap in endpoint list)
+- MODIFY: `python/tests/test_integration.py` (endpoint count 31→32)
 
 **Review Gate:** Codex + Gemini + Kimi audit → all must PASS before Phase 4.
 
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| — | — | — |
+| 2026-03-30 | Phase 3 implemented (Session 7) | Heatmap API + frontend overlay + controls, 600 tests passing |
 
 ---
 

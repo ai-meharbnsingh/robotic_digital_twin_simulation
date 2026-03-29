@@ -142,6 +142,49 @@ export interface WesKpi {
   completed_orders: number
 }
 
+// --- Heat Map ---
+
+export interface HeatMapCell {
+  x: number
+  y: number
+  col: number
+  row: number
+  visit_count: number
+  avg_dwell_time_s: number
+  intensity: number // 0.0 - 1.0
+}
+
+export interface ZoneCongestion {
+  zone_name: string
+  zone_type: string
+  node_count: number
+  total_visits: number
+  avg_visits_per_node: number
+  avg_dwell_time_s: number
+  congestion_score: number
+}
+
+export interface HeatMapGrid {
+  min_x: number
+  min_y: number
+  max_x: number
+  max_y: number
+  cols: number
+  rows: number
+}
+
+export interface HeatMapData {
+  duration: string
+  resolution_m: number
+  data_source: string
+  grid: HeatMapGrid
+  cells: HeatMapCell[]
+  total_positions: number
+  cell_count: number
+  zones: ZoneCongestion[]
+  query_ms: number
+}
+
 // --- WebSocket Events ---
 
 export interface WSEvent {
