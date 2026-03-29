@@ -409,7 +409,7 @@ class TestReservations:
 
 class TestEndpointCount:
     async def test_all_40_endpoints_exist(self, client: AsyncClient):
-        """Verify all 32 contracted endpoints respond (not 404/405)."""
+        """Verify all 40 API endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
             ("GET", "/"),

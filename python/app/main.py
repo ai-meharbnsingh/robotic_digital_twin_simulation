@@ -124,21 +124,22 @@ def _init_wes(warehouse_config: dict):
         app_state["wes_task_generator"] = TaskGenerator()
         app_state["wes_kpi_tracker"] = KPITracker()
         app_state["wes_wave_engine"] = WaveEngine(warehouse_config)
-
-        # Hydrate wave rules from MongoDB (if available)
-        db = app_state.get("mongo_db")
-        if db is not None:
-            try:
-                import asyncio
-                rules = asyncio.get_event_loop().run_until_complete(
-                    db["wave_rules"].find({}, {"_id": 0}).to_list(length=1000)
-                )
-                if rules:
-                    app_state["wes_wave_engine"].set_rules(rules)
-            except Exception:
-                pass  # Graceful — rules will be empty until created
     except Exception:
         pass
+
+
+async def _hydrate_wave_rules():
+    """Load wave rules from MongoDB into WaveEngine (called from async lifespan)."""
+    engine = app_state.get("wes_wave_engine")
+    db = app_state.get("mongo_db")
+    if engine is None or db is None:
+        return
+    try:
+        rules = await db["wave_rules"].find({}, {"_id": 0}).to_list(length=1000)
+        if rules:
+            engine.set_rules(rules)
+    except Exception:
+        pass  # Graceful — rules will be empty until created
 
 
 def _init_iogita(warehouse_config: dict):
@@ -217,6 +218,9 @@ async def lifespan(app: FastAPI):
         app_state["redis_cache"] = redis_cache
     except Exception:
         app_state["redis_cache"] = None
+
+    # Hydrate wave rules from MongoDB (async-safe)
+    await _hydrate_wave_rules()
 
     yield
 

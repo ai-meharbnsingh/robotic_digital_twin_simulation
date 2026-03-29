@@ -167,10 +167,13 @@ async def release_wave(wave_id: str):
     if engine is None or task_gen is None:
         raise HTTPException(status_code=503, detail="Wave engine not initialized")
 
-    # Load wave
+    # Load wave (graceful DB access)
     wave = None
     if db is not None:
-        wave = await db["waves"].find_one({"wave_id": wave_id}, {"_id": 0})
+        try:
+            wave = await db["waves"].find_one({"wave_id": wave_id}, {"_id": 0})
+        except Exception:
+            pass
 
     if wave is None:
         raise HTTPException(status_code=404, detail=f"Wave {wave_id} not found")
@@ -184,36 +187,41 @@ async def release_wave(wave_id: str):
     # Load orders for this wave
     orders = []
     if db is not None:
-        order_ids = wave.get("order_ids", [])
-        if order_ids:
-            orders = await db["orders"].find(
-                {"order_id": {"$in": order_ids}}, {"_id": 0}
-            ).to_list(length=10000)
+        try:
+            order_ids = wave.get("order_ids", [])
+            if order_ids:
+                orders = await db["orders"].find(
+                    {"order_id": {"$in": order_ids}}, {"_id": 0}
+                ).to_list(length=10000)
+        except Exception:
+            orders = []
 
     # Release wave → generate tasks
     updated_wave, tasks = engine.release_wave(wave, orders, task_gen)
 
-    # Persist updated wave + new tasks
+    # Persist updated wave + new tasks (graceful)
     if db is not None:
-        await db["waves"].update_one(
-            {"wave_id": wave_id},
-            {"$set": {
-                "status": updated_wave["status"],
-                "released_at": updated_wave["released_at"],
-                "task_ids": updated_wave["task_ids"],
-            }},
-        )
-        if tasks:
-            await db["tasks"].insert_many([dict(t) for t in tasks])
-
-        # Mark orders as "waved" to prevent duplicate task generation
-        # and infinite re-waving
-        order_ids = wave.get("order_ids", [])
-        if order_ids:
-            await db["orders"].update_many(
-                {"order_id": {"$in": order_ids}},
-                {"$set": {"status": "waved"}},
+        try:
+            await db["waves"].update_one(
+                {"wave_id": wave_id},
+                {"$set": {
+                    "status": updated_wave["status"],
+                    "released_at": updated_wave["released_at"],
+                    "task_ids": updated_wave["task_ids"],
+                }},
             )
+            if tasks:
+                await db["tasks"].insert_many([dict(t) for t in tasks])
+
+            # Mark orders as "waved" to prevent duplicate task generation
+            order_ids = wave.get("order_ids", [])
+            if order_ids:
+                await db["orders"].update_many(
+                    {"order_id": {"$in": order_ids}},
+                    {"$set": {"status": "waved"}},
+                )
+        except Exception:
+            pass
 
     return {
         "wave_id": wave_id,
@@ -242,9 +250,12 @@ async def create_wave_rule(body: WaveRuleCreate):
         "enabled": body.enabled,
     })
 
-    # Persist to MongoDB
+    # Persist to MongoDB (graceful)
     if db is not None:
-        await db["wave_rules"].insert_one(dict(rule))
+        try:
+            await db["wave_rules"].insert_one(dict(rule))
+        except Exception:
+            pass
 
     return {"rule": _strip_id(rule)}
 
