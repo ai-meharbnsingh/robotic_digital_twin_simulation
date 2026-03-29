@@ -283,7 +283,15 @@
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| 2026-03-30 | Phase 5 implemented (Session 8) | R3F 3D scene + 2D/3D toggle + 20 contract tests, 642 tests passing |
+| 2026-03-30 | Phase 5 implemented (Session 8) | R3F 3D scene + 2D/3D toggle + 22 contract tests, 644 tests passing |
+| 2026-03-30 | Self-audit + fixes | GPU leaks, instancing, selection ring, dead code |
+| 2026-03-30 | Gemini audit R1 | 81/100 — fleet volatility, WS tests, camera speed |
+| 2026-03-30 | Kimi audit R1 | 67/100 (no rubric R1) — Html labels, frame-rate lerp |
+| 2026-03-30 | Codex audit R1 | 59/100 (no rubric R1) — docs, WS validation, deps |
+| 2026-03-30 | Fix round: Gemini+Kimi+Codex | Fleet guard, WS validation, dead code, ROADMAP honesty |
+| 2026-03-30 | Gemini audit R2 | 86/100 CONDITIONAL PASS |
+| 2026-03-30 | Kimi audit R2 | 67/100 CONDITIONAL |
+| 2026-03-30 | Codex audit R2 | 59/100 — performance claim unproven (needs browser benchmark) |
 
 ---
 
