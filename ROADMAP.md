@@ -140,7 +140,7 @@
 **Goal:** Visual proof of bottlenecks — the "aha moment" that closes deals.
 
 **What to build:**
-- Backend: `GET /api/analytics/heatmap?duration=1h&resolution=0.5m`
+- Backend: `GET /api/analytics/heatmap?duration=1h&resolution=0.5`
   - Query InfluxDB for robot positions over time window
   - Bin into grid cells (configurable resolution)
   - Return grid with visit_count and avg_dwell_time per cell

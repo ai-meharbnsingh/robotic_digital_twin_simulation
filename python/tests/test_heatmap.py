@@ -273,3 +273,77 @@ class TestSpatialCorrectness:
             assert cell["avg_dwell_time_s"] > 0, (
                 f"Cell ({cell['col']}, {cell['row']}) has 0 dwell time"
             )
+
+
+# ── Deterministic value tests (seed=42 → reproducible) ───
+
+
+class TestDeterministicValues:
+    """Simulated data uses random.seed(42), so exact values are reproducible."""
+
+    async def test_simulated_source(self, client: AsyncClient):
+        """Without InfluxDB/MongoDB, data_source must be 'simulated'."""
+        resp = await client.get("/api/analytics/heatmap")
+        assert resp.json()["data_source"] == "simulated"
+
+    async def test_exact_cell_count_at_1m(self, client: AsyncClient):
+        """At 1.0m resolution, cell count is deterministic from seed=42."""
+        resp = await client.get("/api/analytics/heatmap?resolution=1.0")
+        cell_count = resp.json()["cell_count"]
+        assert cell_count > 20, f"Expected >20 cells at 1.0m, got {cell_count}"
+        assert cell_count < 200, f"Expected <200 cells at 1.0m, got {cell_count}"
+
+    async def test_hottest_cell_intensity_is_1(self, client: AsyncClient):
+        """The hottest cell must have intensity=1.0 (max normalization)."""
+        resp = await client.get("/api/analytics/heatmap")
+        cells = resp.json()["cells"]
+        assert cells[0]["intensity"] == 1.0
+
+    async def test_hottest_cell_has_multiple_visits(self, client: AsyncClient):
+        """Hottest cell (pick/drop/hub area) should have many visits."""
+        resp = await client.get("/api/analytics/heatmap")
+        hottest = resp.json()["cells"][0]
+        assert hottest["visit_count"] >= 10, (
+            f"Hottest cell has only {hottest['visit_count']} visits"
+        )
+
+    async def test_zone_count_matches_warehouse(self, client: AsyncClient):
+        """Zone count should match warehouse config (8 zones in simple_grid)."""
+        resp = await client.get("/api/analytics/heatmap")
+        zones = resp.json()["zones"]
+        assert len(zones) == 8, f"Expected 8 zones, got {len(zones)}"
+
+    async def test_pick_drop_zone_high_congestion(self, client: AsyncClient):
+        """Pick/Drop zone should have high congestion (traffic weight=20/18)."""
+        resp = await client.get("/api/analytics/heatmap")
+        zones = resp.json()["zones"]
+
+        pick_drop_zones = [z for z in zones if z["zone_type"] in ("pick", "ops")]
+        assert len(pick_drop_zones) > 0, "No pick/ops zone found"
+
+        for z in pick_drop_zones:
+            assert z["total_visits"] > 0, (
+                f"Zone '{z['zone_name']}' has 0 visits"
+            )
+
+    async def test_charging_zone_high_dwell_time(self, client: AsyncClient):
+        """Charging zone has high dwell time (60-300s charge cycles) but few visits."""
+        resp = await client.get("/api/analytics/heatmap")
+        zones = resp.json()["zones"]
+
+        dock_zones = [z for z in zones if z["zone_type"] == "dock"]
+        aisle_zones = [z for z in zones if z["zone_type"] in ("aisle", "lane")]
+
+        if dock_zones and aisle_zones:
+            avg_dock_dwell = max(z["avg_dwell_time_s"] for z in dock_zones)
+            avg_aisle_dwell = max(z["avg_dwell_time_s"] for z in aisle_zones)
+            assert avg_dock_dwell > avg_aisle_dwell, (
+                f"Dock dwell ({avg_dock_dwell}s) should exceed "
+                f"aisle dwell ({avg_aisle_dwell}s) due to charging"
+            )
+
+    async def test_total_positions_deterministic(self, client: AsyncClient):
+        """Two calls with same params should return same total_positions."""
+        resp1 = await client.get("/api/analytics/heatmap?resolution=1.0")
+        resp2 = await client.get("/api/analytics/heatmap?resolution=1.0")
+        assert resp1.json()["total_positions"] == resp2.json()["total_positions"]

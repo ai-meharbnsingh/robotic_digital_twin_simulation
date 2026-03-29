@@ -47,8 +47,6 @@ def _bin_positions(
     positions: list[dict],
     min_x: float,
     min_y: float,
-    max_x: float,
-    max_y: float,
     resolution_m: float,
 ) -> dict[tuple[int, int], dict]:
     """
@@ -305,30 +303,33 @@ async def get_heatmap(
     max_x += pad
     max_y += pad
 
-    # Try data sources in priority order
+    # Try data sources in priority order — check availability BEFORE querying
+    # to avoid connection timeout latency when services are down.
     data_source = "simulated"
     positions = None
 
-    # 1. Try InfluxDB
+    # 1. Try InfluxDB (only if client is available)
     influx = _get_influx()
-    positions = await _get_positions_from_influx(influx, duration_hours)
-    if positions:
-        data_source = "influxdb"
+    if influx and influx.is_available:
+        positions = await _get_positions_from_influx(influx, duration_hours)
+        if positions:
+            data_source = "influxdb"
 
-    # 2. Try MongoDB telemetry
+    # 2. Try MongoDB telemetry (only if connected)
     if positions is None:
         db = _get_db()
-        positions = await _get_positions_from_mongo(db, duration_hours)
-        if positions:
-            data_source = "mongodb"
+        if db is not None:
+            positions = await _get_positions_from_mongo(db, duration_hours)
+            if positions:
+                data_source = "mongodb"
 
-    # 3. Fall back to simulated data
+    # 3. Fall back to simulated data (instant, no I/O)
     if positions is None:
         positions = _generate_simulated_positions(warehouse_config)
         data_source = "simulated"
 
     # Bin positions into grid cells
-    cells_raw = _bin_positions(positions, min_x, min_y, max_x, max_y, resolution)
+    cells_raw = _bin_positions(positions, min_x, min_y, resolution)
 
     # Convert to output format
     cols = int(math.ceil((max_x - min_x) / resolution))

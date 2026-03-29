@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useApi } from './hooks/useApi'
 import { useFleetWebSocket } from './hooks/useFleetWebSocket'
 import { WarehouseGrid } from './components/WarehouseGrid'
@@ -44,10 +44,8 @@ export default function App() {
     heatmapEnabled ? 5000 : 0,
   )
 
-  // Track WS event count for header indicator
-  const wsEventCount = useRef(0)
   const handleWSEvent = useCallback((_event: FleetWSEvent) => {
-    wsEventCount.current += 1
+    // Future: merge real-time updates into state for lower-latency display
   }, [])
 
   const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
