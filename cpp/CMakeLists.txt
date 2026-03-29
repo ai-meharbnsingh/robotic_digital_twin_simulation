@@ -41,6 +41,7 @@ add_library(rdt_core STATIC
     src/fleet/TaskManager.cpp
     src/fleet/COPPController.cpp
     src/fleet/FleetManager.cpp
+    src/fleet/AgentInterface.cpp
 )
 target_include_directories(rdt_core PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include

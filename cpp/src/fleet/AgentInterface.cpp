@@ -20,12 +20,12 @@ bool AgentInterface::isCriticalBattery() const {
 }
 
 RobotState AgentInterface::currentState() const {
-    return last_telemetry_.state;
+    return robot_state_from_string(last_telemetry_.state);
 }
 
 bool AgentInterface::isAvailable() const {
     auto st = currentState();
-    return st == RobotState::IDLE || st == RobotState::STANDBY;
+    return st == RobotState::IDLE;
 }
 
 void AgentInterface::assignTask(uint64_t task_id,
@@ -52,16 +52,16 @@ void AgentInterface::updateFromTelemetry(const network::ProtocolV1Message& msg) 
     telemetry_fresh_ = true;
     pose_.x = msg.x;
     pose_.y = msg.y;
-    pose_.theta = msg.theta;
-    velocity_.linear = msg.linear_velocity;
-    velocity_.angular = msg.angular_velocity;
-    current_node_ = msg.node_id;
+    pose_.yaw = msg.theta;
+    velocity_.linear = msg.linear_vel;
+    velocity_.angular = msg.angular_vel;
+    current_node_ = msg.robot_id;  // Best available node proxy from telemetry
 }
 
 Json::Value AgentInterface::toJson() const {
     Json::Value j;
     j["robot_id"] = id_;
-    j["state"] = static_cast<int>(currentState());
+    j["state"] = robot_state_to_string(currentState());
     j["battery_pct"] = batteryPct();
     j["critical_battery"] = isCriticalBattery();
     j["available"] = isAvailable();
@@ -69,7 +69,7 @@ Json::Value AgentInterface::toJson() const {
     Json::Value jp;
     jp["x"] = pose_.x;
     jp["y"] = pose_.y;
-    jp["theta"] = pose_.theta;
+    jp["yaw"] = pose_.yaw;
     j["pose"] = jp;
 
     Json::Value jv;

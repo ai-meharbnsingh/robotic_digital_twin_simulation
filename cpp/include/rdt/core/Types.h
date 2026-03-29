@@ -186,6 +186,18 @@ inline std::string robot_state_to_string(RobotState s) {
     return "UNKNOWN";
 }
 
+inline RobotState robot_state_from_string(const std::string& s) {
+    if (s == "IDLE")      return RobotState::IDLE;
+    if (s == "MOVING")    return RobotState::MOVING;
+    if (s == "CHARGING")  return RobotState::CHARGING;
+    if (s == "LOADING")   return RobotState::LOADING;
+    if (s == "UNLOADING") return RobotState::UNLOADING;
+    if (s == "ERROR")     return RobotState::ERROR;
+    if (s == "OFFLINE")   return RobotState::OFFLINE;
+    if (s == "DOCKING")   return RobotState::DOCKING;
+    return RobotState::IDLE;  // default
+}
+
 enum class TaskState {
     NOT_ASSIGNED,
     ACCEPTED,
