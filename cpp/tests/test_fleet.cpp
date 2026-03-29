@@ -518,3 +518,141 @@ TEST_F(FleetManagerTest, MultipleRobotsInit) {
 
     fm.stop();
 }
+
+// ════════════════════════════════════════════════════════════
+// Phase 2: Mixed Fleet tests
+// ════════════════════════════════════════════════════════════
+
+TEST_F(FleetManagerTest, MixedFleetFromManifest) {
+    // Load fleet manifest and expand to individual configs
+    auto manifest = rdt::Config::loadFleetManifest(
+        std::string(RDT_PROJECT_ROOT) + "/configs/fleets/default_mixed.json");
+    auto configs = rdt::Config::expandFleetManifest(manifest, std::string(RDT_PROJECT_ROOT));
+
+    ASSERT_EQ(configs.size(), 10u);
+
+    rdt::fleet::FleetManager fm(wh_config_, configs);
+    fm.init(17070, 17072, "");
+
+    EXPECT_EQ(fm.getRobotCount(), 10);
+
+    // Run a cycle — should not crash with mixed types
+    auto timing = fm.runOneCycle();
+    EXPECT_GE(timing.total_ms, 0.0);
+    EXPECT_EQ(fm.getCycleCount(), 1);
+
+    fm.stop();
+}
+
+TEST_F(FleetManagerTest, MixedFleetStatusJsonIncludesRobotType) {
+    auto manifest = rdt::Config::loadFleetManifest(
+        std::string(RDT_PROJECT_ROOT) + "/configs/fleets/default_mixed.json");
+    auto configs = rdt::Config::expandFleetManifest(manifest, std::string(RDT_PROJECT_ROOT));
+
+    rdt::fleet::FleetManager fm(wh_config_, configs);
+    fm.init(17080, 17082, "");
+    fm.runOneCycle();
+
+    auto status = fm.getFleetStatusJson();
+
+    EXPECT_EQ(status["robot_count"].asUInt(), 10);
+    EXPECT_EQ(status["robots"].size(), 10);
+
+    // Every robot should have a robot_type field
+    int amr_count = 0;
+    int agv_count = 0;
+    for (const auto& r : status["robots"]) {
+        ASSERT_TRUE(r.isMember("robot_type"))
+            << "Robot " << r["id"].asString() << " missing robot_type";
+
+        std::string type = r["robot_type"].asString();
+        if (type == "differential_drive") amr_count++;
+        else if (type == "unidirectional") agv_count++;
+    }
+
+    EXPECT_EQ(amr_count, 5);
+    EXPECT_EQ(agv_count, 5);
+
+    fm.stop();
+}
+
+TEST_F(TaskManagerTest, MixedFleetTypeCompatibility) {
+    // MOVE task: both AMR and AGV can do it
+    auto move_id = task_mgr_.addTask(rdt::TaskType::MOVE, "DOCK_1", "DROP_1");
+
+    auto amr = makeIdleRobot("AMR_001", "DOCK_1", 80.0);
+    amr.type = rdt::RobotType::DIFFERENTIAL_DRIVE;
+
+    auto agv = makeIdleRobot("AGV_001", "DOCK_2", 80.0);
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    // AMR should be able to do MOVE
+    std::vector<rdt::fleet::RobotAllocationInfo> amr_vec = {amr};
+    auto result = task_mgr_.allocateNext(amr_vec, graph_, reservations_);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->second, "AMR_001");
+}
+
+TEST_F(TaskManagerTest, AGVCannotDoPick) {
+    // PICK task: only AMR (differential_drive or omnidirectional) can do it
+    task_mgr_.addTask(rdt::TaskType::PICK, "DOCK_1", "DROP_1");
+
+    auto agv = makeIdleRobot("AGV_001");
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    std::vector<rdt::fleet::RobotAllocationInfo> robots = {agv};
+    auto result = task_mgr_.allocateNext(robots, graph_, reservations_);
+    EXPECT_FALSE(result.has_value());  // AGV can't do PICK
+}
+
+TEST_F(TaskManagerTest, AGVCannotDoPlace) {
+    // PLACE task: also excluded for unidirectional
+    task_mgr_.addTask(rdt::TaskType::PLACE, "DOCK_1", "DROP_1");
+
+    auto agv = makeIdleRobot("AGV_001");
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    std::vector<rdt::fleet::RobotAllocationInfo> robots = {agv};
+    auto result = task_mgr_.allocateNext(robots, graph_, reservations_);
+    EXPECT_FALSE(result.has_value());
+}
+
+TEST_F(TaskManagerTest, MixedFleetPickAssignedToAMR) {
+    // Both an AMR and AGV are available, PICK task should go to AMR
+    task_mgr_.addTask(rdt::TaskType::PICK, "DOCK_1", "DROP_1");
+
+    auto amr = makeIdleRobot("AMR_001", "DOCK_1", 80.0);
+    amr.type = rdt::RobotType::DIFFERENTIAL_DRIVE;
+
+    auto agv = makeIdleRobot("AGV_001", "DOCK_2", 80.0);
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    std::vector<rdt::fleet::RobotAllocationInfo> robots = {agv, amr};
+    auto result = task_mgr_.allocateNext(robots, graph_, reservations_);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->second, "AMR_001");  // AMR, not AGV
+}
+
+TEST_F(TaskManagerTest, AGVCanDoCharge) {
+    task_mgr_.addTask(rdt::TaskType::CHARGE, "DOCK_1", "DOCK_2");
+
+    auto agv = makeIdleRobot("AGV_001");
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    std::vector<rdt::fleet::RobotAllocationInfo> robots = {agv};
+    auto result = task_mgr_.allocateNext(robots, graph_, reservations_);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->second, "AGV_001");
+}
+
+TEST_F(TaskManagerTest, AGVCanDoPark) {
+    task_mgr_.addTask(rdt::TaskType::PARK, "DOCK_1", "DOCK_2");
+
+    auto agv = makeIdleRobot("AGV_001");
+    agv.type = rdt::RobotType::UNIDIRECTIONAL;
+
+    std::vector<rdt::fleet::RobotAllocationInfo> robots = {agv};
+    auto result = task_mgr_.allocateNext(robots, graph_, reservations_);
+    ASSERT_TRUE(result.has_value());
+    EXPECT_EQ(result->second, "AGV_001");
+}

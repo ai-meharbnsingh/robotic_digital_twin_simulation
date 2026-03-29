@@ -1,4 +1,4 @@
-import type { Robot } from '../types'
+import type { Robot, RobotType } from '../types'
 
 interface RobotStatusPanelProps {
   robots: Robot[]
@@ -17,8 +17,14 @@ const STATUS_DOT: Record<string, string> = {
   waiting: 'bg-yellow-300',
 }
 
+const TYPE_BADGE: Record<RobotType, { label: string; color: string }> = {
+  differential_drive: { label: 'AMR', color: 'bg-sky-700 text-sky-200' },
+  unidirectional:     { label: 'AGV', color: 'bg-orange-700 text-orange-200' },
+  omnidirectional:    { label: 'OMNI', color: 'bg-purple-700 text-purple-200' },
+}
+
 /**
- * List of robots with state, battery, and current position.
+ * List of robots with type badge, state, battery, and current position.
  */
 export function RobotStatusPanel({ robots }: RobotStatusPanelProps) {
   return (
@@ -30,43 +36,53 @@ export function RobotStatusPanel({ robots }: RobotStatusPanelProps) {
         </div>
       ) : (
         <div className="flex-1 overflow-y-auto space-y-1.5">
-          {robots.map((r) => (
-            <div
-              key={r.robot_id}
-              className="flex items-center gap-2 px-2 py-1.5 bg-surface rounded text-xs"
-            >
-              {/* Status dot */}
-              <span
-                className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT[r.status] || 'bg-muted'}`}
-              />
-
-              {/* Name */}
-              <span className="font-medium text-gray-200 w-20 truncate">
-                {r.name || r.robot_id}
-              </span>
-
-              {/* Status */}
-              <span className="text-muted w-16 truncate">{r.status}</span>
-
-              {/* Battery */}
-              <span
-                className={`w-10 text-right ${
-                  r.battery.charge_pct < 20
-                    ? 'text-danger'
-                    : r.battery.charge_pct < 50
-                      ? 'text-warning'
-                      : 'text-success'
-                }`}
+          {robots.map((r) => {
+            const badge = TYPE_BADGE[r.robot_type] || TYPE_BADGE.differential_drive
+            return (
+              <div
+                key={r.robot_id}
+                className="flex items-center gap-2 px-2 py-1.5 bg-surface rounded text-xs"
               >
-                {r.battery.charge_pct.toFixed(0)}%
-              </span>
+                {/* Status dot */}
+                <span
+                  className={`w-2 h-2 rounded-full flex-shrink-0 ${STATUS_DOT[r.status] || 'bg-muted'}`}
+                />
 
-              {/* Node */}
-              <span className="text-muted ml-auto truncate">
-                {r.current_node || '---'}
-              </span>
-            </div>
-          ))}
+                {/* Type badge */}
+                <span
+                  className={`px-1.5 py-0.5 rounded text-[10px] font-bold flex-shrink-0 ${badge.color}`}
+                >
+                  {badge.label}
+                </span>
+
+                {/* Name */}
+                <span className="font-medium text-gray-200 w-20 truncate">
+                  {r.name || r.robot_id}
+                </span>
+
+                {/* Status */}
+                <span className="text-muted w-16 truncate">{r.status}</span>
+
+                {/* Battery */}
+                <span
+                  className={`w-10 text-right ${
+                    r.battery.charge_pct < 20
+                      ? 'text-danger'
+                      : r.battery.charge_pct < 50
+                        ? 'text-warning'
+                        : 'text-success'
+                  }`}
+                >
+                  {r.battery.charge_pct.toFixed(0)}%
+                </span>
+
+                {/* Node */}
+                <span className="text-muted ml-auto truncate">
+                  {r.current_node || '---'}
+                </span>
+              </div>
+            )
+          })}
         </div>
       )}
     </div>

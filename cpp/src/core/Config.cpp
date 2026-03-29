@@ -191,4 +191,85 @@ WarehouseConfig Config::loadWarehouseConfig(const std::string& json_path) {
     return cfg;
 }
 
+// ── Fleet manifest (JSON) ───────────────────────────────
+
+FleetManifest Config::loadFleetManifest(const std::string& json_path) {
+    std::ifstream file(json_path);
+    if (!file.is_open()) {
+        throw std::runtime_error("Failed to open fleet manifest JSON: " + json_path);
+    }
+
+    Json::Value root;
+    Json::CharReaderBuilder builder;
+    std::string errors;
+    if (!Json::parseFromStream(builder, file, &root, &errors)) {
+        throw std::runtime_error("Failed to parse fleet manifest JSON: " + json_path +
+                                 " — " + errors);
+    }
+
+    FleetManifest manifest;
+    manifest.name        = root.get("name", "").asString();
+    manifest.description = root.get("description", "").asString();
+
+    const auto& robots_json = root["robots"];
+    if (!robots_json.isArray()) {
+        throw std::runtime_error("Fleet manifest 'robots' must be an array: " + json_path);
+    }
+
+    manifest.robots.reserve(robots_json.size());
+    for (const auto& rj : robots_json) {
+        FleetEntry entry;
+        entry.id_prefix = rj.get("id_prefix", "").asString();
+        entry.config    = rj.get("config", "").asString();
+        entry.count     = rj.get("count", 1).asInt();
+
+        if (entry.id_prefix.empty()) {
+            throw std::runtime_error("Fleet entry missing 'id_prefix' in: " + json_path);
+        }
+        if (entry.config.empty()) {
+            throw std::runtime_error("Fleet entry missing 'config' in: " + json_path);
+        }
+        if (entry.count < 1) {
+            throw std::runtime_error("Fleet entry 'count' must be >= 1 for prefix '" +
+                                     entry.id_prefix + "' in: " + json_path);
+        }
+
+        manifest.robots.push_back(std::move(entry));
+    }
+
+    return manifest;
+}
+
+std::vector<RobotConfig> Config::expandFleetManifest(const FleetManifest& manifest,
+                                                     const std::string& base_dir) {
+    std::vector<RobotConfig> configs;
+
+    for (const auto& entry : manifest.robots) {
+        // Resolve config path relative to base_dir if provided
+        std::string config_path = entry.config;
+        if (!base_dir.empty() && config_path[0] != '/') {
+            config_path = base_dir + "/" + config_path;
+        }
+
+        // Load the base config once per fleet entry
+        RobotConfig base = loadRobotConfig(config_path);
+
+        for (int i = 1; i <= entry.count; ++i) {
+            RobotConfig rc = base;
+
+            // Generate unique name: AMR_001, AMR_002, ..., AGV_001, etc.
+            std::ostringstream name_ss;
+            name_ss << entry.id_prefix << "_";
+            if (i < 10)        name_ss << "00";
+            else if (i < 100)  name_ss << "0";
+            name_ss << i;
+            rc.name = name_ss.str();
+
+            configs.push_back(std::move(rc));
+        }
+    }
+
+    return configs;
+}
+
 } // namespace rdt

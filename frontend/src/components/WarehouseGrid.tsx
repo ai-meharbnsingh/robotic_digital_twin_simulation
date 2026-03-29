@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import type { MapNode, MapEdge, Robot } from '../types'
+import type { MapNode, MapEdge, Robot, RobotType } from '../types'
 
 interface WarehouseGridProps {
   nodes: MapNode[]
@@ -16,7 +16,13 @@ const NODE_COLORS: Record<string, string> = {
   hub: '#cba6f7',
 }
 
-const ROBOT_COLOR = '#f38ba8'
+const ROBOT_TYPE_COLORS: Record<RobotType, string> = {
+  differential_drive: '#89dceb',  // cyan — AMR
+  unidirectional:     '#fab387',  // orange — AGV
+  omnidirectional:    '#cba6f7',  // purple — OMNI
+}
+
+const ROBOT_ERROR_COLOR = '#f38ba8'
 
 /**
  * Top-down warehouse map.
@@ -53,7 +59,7 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
     return m
   }, [nodes])
 
-  // Build robot lookup by current_node
+  // Build robot positions with type info for color-coding
   const robotPositions = useMemo(() => {
     return robots.map((r) => ({
       id: r.robot_id,
@@ -61,6 +67,7 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
       y: r.pose.y,
       status: r.status,
       name: r.name || r.robot_id,
+      robot_type: r.robot_type,
     }))
   }, [robots])
 
@@ -113,32 +120,36 @@ export function WarehouseGrid({ nodes, edges, robots }: WarehouseGridProps) {
             </circle>
           ))}
 
-          {/* Robots */}
-          {robotPositions.map((r) => (
-            <g key={r.id}>
-              <rect
-                x={r.x - robotSize / 2}
-                y={r.y - robotSize / 2}
-                width={robotSize}
-                height={robotSize}
-                fill={r.status === 'error' ? '#f38ba8' : ROBOT_COLOR}
-                rx={robotSize * 0.15}
-                transform={`rotate(45 ${r.x} ${r.y})`}
-                opacity={r.status === 'offline' ? 0.3 : 0.9}
-              >
-                <title>{`${r.name} [${r.status}]`}</title>
-              </rect>
-              <text
-                x={r.x}
-                y={r.y + robotSize + scale * 0.4}
-                textAnchor="middle"
-                fill="#cdd6f4"
-                fontSize={scale * 0.8}
-              >
-                {r.name}
-              </text>
-            </g>
-          ))}
+          {/* Robots — color-coded by type */}
+          {robotPositions.map((r) => {
+            const typeColor = ROBOT_TYPE_COLORS[r.robot_type] || ROBOT_TYPE_COLORS.differential_drive
+            const fillColor = r.status === 'error' ? ROBOT_ERROR_COLOR : typeColor
+            return (
+              <g key={r.id}>
+                <rect
+                  x={r.x - robotSize / 2}
+                  y={r.y - robotSize / 2}
+                  width={robotSize}
+                  height={robotSize}
+                  fill={fillColor}
+                  rx={robotSize * 0.15}
+                  transform={`rotate(45 ${r.x} ${r.y})`}
+                  opacity={r.status === 'offline' ? 0.3 : 0.9}
+                >
+                  <title>{`${r.name} [${r.robot_type}] [${r.status}]`}</title>
+                </rect>
+                <text
+                  x={r.x}
+                  y={r.y + robotSize + scale * 0.4}
+                  textAnchor="middle"
+                  fill="#cdd6f4"
+                  fontSize={scale * 0.8}
+                >
+                  {r.name}
+                </text>
+              </g>
+            )
+          })}
         </svg>
       )}
     </div>

@@ -12,9 +12,14 @@
 //              [--tcp-port 7010] [--rest-port 7012] \
 //              [--state-file fleet_state.json]
 //
+//   Mixed fleet (alternative — replaces --robot flags):
+//   fms_server --warehouse configs/warehouses/simple_grid.json \
+//              --fleet configs/fleets/default_mixed.json
+//
 // Environment variables (fallbacks):
 //   RDT_WAREHOUSE   — path to warehouse JSON
 //   RDT_ROBOT       — path to robot YAML (single robot)
+//   RDT_FLEET       — path to fleet manifest JSON
 //   RDT_TCP_PORT    — TCP port (default 7010)
 //   RDT_REST_PORT   — REST port (default 7012)
 // ──────────────────────────────────────────────────────────
@@ -49,19 +54,21 @@ static void printUsage(const char* prog) {
     std::cerr << "Usage: " << prog << " [options]\n"
               << "  --warehouse <path>   Warehouse JSON config (required)\n"
               << "  --robot <path>       Robot YAML config (repeatable)\n"
+              << "  --fleet <path>       Fleet manifest JSON (alternative to --robot)\n"
               << "  --tcp-port <port>    TCP server port (default 7010)\n"
               << "  --rest-port <port>   REST server port (default 7012)\n"
               << "  --state-file <path>  JSON state output file (default fleet_state.json)\n"
               << "  --log-level <level>  Log level: trace|debug|info|warn|error (default info)\n"
               << "\n"
               << "Environment variables:\n"
-              << "  RDT_WAREHOUSE, RDT_ROBOT, RDT_TCP_PORT, RDT_REST_PORT\n";
+              << "  RDT_WAREHOUSE, RDT_ROBOT, RDT_FLEET, RDT_TCP_PORT, RDT_REST_PORT\n";
 }
 
 int main(int argc, char* argv[]) {
     // ── Parse arguments ──
     std::string warehouse_path;
     std::vector<std::string> robot_paths;
+    std::string fleet_path;
     uint16_t tcp_port  = 7010;
     uint16_t rest_port = 7012;
     std::string state_file = "fleet_state.json";
@@ -73,6 +80,8 @@ int main(int argc, char* argv[]) {
             warehouse_path = argv[++i];
         } else if (arg == "--robot" && i + 1 < argc) {
             robot_paths.push_back(argv[++i]);
+        } else if (arg == "--fleet" && i + 1 < argc) {
+            fleet_path = argv[++i];
         } else if (arg == "--tcp-port" && i + 1 < argc) {
             tcp_port = static_cast<uint16_t>(std::stoi(argv[++i]));
         } else if (arg == "--rest-port" && i + 1 < argc) {
@@ -95,7 +104,10 @@ int main(int argc, char* argv[]) {
     if (warehouse_path.empty()) {
         warehouse_path = getEnvOrDefault("RDT_WAREHOUSE", "");
     }
-    if (robot_paths.empty()) {
+    if (fleet_path.empty()) {
+        fleet_path = getEnvOrDefault("RDT_FLEET", "");
+    }
+    if (robot_paths.empty() && fleet_path.empty()) {
         std::string env_robot = getEnvOrDefault("RDT_ROBOT", "");
         if (!env_robot.empty()) robot_paths.push_back(env_robot);
     }
@@ -114,8 +126,13 @@ int main(int argc, char* argv[]) {
         printUsage(argv[0]);
         return 1;
     }
-    if (robot_paths.empty()) {
-        std::cerr << "Error: at least one --robot is required (or set RDT_ROBOT)\n";
+    if (robot_paths.empty() && fleet_path.empty()) {
+        std::cerr << "Error: --robot or --fleet is required (or set RDT_ROBOT / RDT_FLEET)\n";
+        printUsage(argv[0]);
+        return 1;
+    }
+    if (!robot_paths.empty() && !fleet_path.empty()) {
+        std::cerr << "Error: --robot and --fleet are mutually exclusive\n";
         printUsage(argv[0]);
         return 1;
     }
@@ -127,8 +144,12 @@ int main(int argc, char* argv[]) {
     spdlog::info("  Robotic Digital Twin — FMS Server v{}.{}.{}",
                  RDT_VERSION_MAJOR, RDT_VERSION_MINOR, RDT_VERSION_PATCH);
     spdlog::info("  Warehouse: {}", warehouse_path);
-    for (const auto& rp : robot_paths) {
-        spdlog::info("  Robot: {}", rp);
+    if (!fleet_path.empty()) {
+        spdlog::info("  Fleet manifest: {}", fleet_path);
+    } else {
+        for (const auto& rp : robot_paths) {
+            spdlog::info("  Robot: {}", rp);
+        }
     }
     spdlog::info("  TCP port: {} | REST port: {}", tcp_port, rest_port);
     spdlog::info("═══════════════════════════════════════════════════════════");
@@ -145,15 +166,37 @@ int main(int argc, char* argv[]) {
     }
 
     std::vector<rdt::RobotConfig> robot_configs;
-    for (const auto& path : robot_paths) {
+
+    if (!fleet_path.empty()) {
+        // ── Fleet manifest mode: expand manifest → individual robot configs ──
         try {
-            auto rc = rdt::Config::loadRobotConfig(path);
-            spdlog::info("Loaded robot config '{}' (type={})",
-                         rc.name, rdt::robot_type_to_string(rc.type));
-            robot_configs.push_back(std::move(rc));
+            auto manifest = rdt::Config::loadFleetManifest(fleet_path);
+            spdlog::info("Loaded fleet manifest '{}' ({} fleet entries)",
+                         manifest.name, manifest.robots.size());
+
+            robot_configs = rdt::Config::expandFleetManifest(manifest);
+            spdlog::info("Expanded fleet to {} individual robots", robot_configs.size());
+
+            for (const auto& rc : robot_configs) {
+                spdlog::info("  Robot: {} (type={})",
+                             rc.name, rdt::robot_type_to_string(rc.type));
+            }
         } catch (const std::exception& e) {
-            spdlog::error("Failed to load robot config '{}': {}", path, e.what());
+            spdlog::error("Failed to load fleet manifest: {}", e.what());
             return 1;
+        }
+    } else {
+        // ── Individual robot mode: load each --robot YAML ──
+        for (const auto& path : robot_paths) {
+            try {
+                auto rc = rdt::Config::loadRobotConfig(path);
+                spdlog::info("Loaded robot config '{}' (type={})",
+                             rc.name, rdt::robot_type_to_string(rc.type));
+                robot_configs.push_back(std::move(rc));
+            } catch (const std::exception& e) {
+                spdlog::error("Failed to load robot config '{}': {}", path, e.what());
+                return 1;
+            }
         }
     }
 

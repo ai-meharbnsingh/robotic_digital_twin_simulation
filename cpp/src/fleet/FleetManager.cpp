@@ -433,10 +433,11 @@ void FleetManager::setupRestRoutes() {
             std::lock_guard<std::mutex> lock(agents_mutex_);
             for (const auto& [id, agent] : agents_) {
                 Json::Value r;
-                r["id"]      = id;
-                r["state"]   = agent->state_machine->getCurrentStateString();
-                r["battery"] = agent->battery->getPercentage();
-                r["pose"]    = to_json(agent->pose);
+                r["id"]         = id;
+                r["robot_type"] = robot_type_to_string(agent->config.type);
+                r["state"]      = agent->state_machine->getCurrentStateString();
+                r["battery"]    = agent->battery->getPercentage();
+                r["pose"]       = to_json(agent->pose);
                 robots.append(r);
             }
             Json::StreamWriterBuilder builder;
@@ -506,6 +507,7 @@ Json::Value FleetManager::getFleetStatusJson() const {
         for (const auto& [id, agent] : agents_) {
             Json::Value r;
             r["id"]           = id;
+            r["robot_type"]   = robot_type_to_string(agent->config.type);
             r["state"]        = agent->state_machine->getCurrentStateString();
             r["battery_pct"]  = agent->battery->getPercentage();
             r["battery_v"]    = agent->battery->getVoltage();

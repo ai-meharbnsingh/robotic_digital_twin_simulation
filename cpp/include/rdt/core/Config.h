@@ -141,6 +141,20 @@ struct WarehouseConfig {
     std::vector<ZoneConfig> zones;
 };
 
+// ── Fleet manifest ──────────────────────────────────────
+
+struct FleetEntry {
+    std::string id_prefix;     // e.g., "AMR"
+    std::string config;        // path to robot YAML, e.g., "configs/robots/differential_drive.yaml"
+    int         count = 1;     // how many of this type to spawn
+};
+
+struct FleetManifest {
+    std::string              name;
+    std::string              description;
+    std::vector<FleetEntry>  robots;
+};
+
 // ── Config loader ───────────────────────────────────────
 
 class Config {
@@ -154,6 +168,20 @@ public:
     /// @param json_path  Absolute or relative path to the .json file
     /// @throws std::runtime_error if file cannot be read or parsed
     static WarehouseConfig loadWarehouseConfig(const std::string& json_path);
+
+    /// Load a fleet manifest from a JSON file.
+    /// @param json_path  Absolute or relative path to the .json file
+    /// @throws std::runtime_error if file cannot be read or parsed
+    static FleetManifest loadFleetManifest(const std::string& json_path);
+
+    /// Expand a fleet manifest into individual RobotConfig instances.
+    /// Each robot gets a unique name: "{id_prefix}_{NNN}" (e.g., AMR_001, AGV_003).
+    /// @param manifest  The fleet manifest to expand
+    /// @param base_dir  Base directory for resolving relative config paths (empty = cwd)
+    /// @return Vector of RobotConfig, one per robot instance
+    /// @throws std::runtime_error if any robot config file fails to load
+    static std::vector<RobotConfig> expandFleetManifest(const FleetManifest& manifest,
+                                                         const std::string& base_dir = "");
 };
 
 } // namespace rdt

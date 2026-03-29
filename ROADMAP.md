@@ -2,7 +2,7 @@
 
 > **Vision:** The only open-source warehouse robotics simulator with a production-grade C++ fleet management system — bring your warehouse layout, your robot specs, and your real orders. No vendor lock-in. One Docker command. 3D visualization in the browser.
 >
-> **Status:** Phase 0 COMPLETE. 528 tests, 0 failures. Externally audited (Codex 43, Gemini 99, Kimi 86).
+> **Status:** Phases 0-2 COMPLETE. 571 tests, 0 failures. Phase 1 audited (Codex 95, Gemini 100, Kimi 98).
 >
 > **Last Updated:** 2026-03-29
 
@@ -32,8 +32,8 @@
 | Phase | Feature | Effort | Status | Score |
 |-------|---------|--------|--------|-------|
 | 0 | Core Digital Twin (C++ FMS + API + Dashboard + Gazebo + Docker) | Done | **COMPLETE** | 528 tests |
-| 1 | CSV/Excel Order Import | S (1 week) | PENDING | — |
-| 2 | Mixed Fleet Types | S (1 week) | PENDING | — |
+| 1 | CSV/Excel Order Import | S (1 week) | **COMPLETE** | Codex 95, Gemini 100, Kimi 98 |
+| 2 | Mixed Fleet Types | S (1 week) | **COMPLETE** | 571 tests |
 | 3 | Heat Map Visualization | S-M (1-2 weeks) | PENDING | — |
 | 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | PENDING | — |
 | 5 | 3D Web Simulation (Three.js browser visualization) | L (3-4 weeks) | PENDING | — |
@@ -79,7 +79,10 @@
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| — | — | — |
+| 2026-03-29 | Phase 1 implemented (Session 6) | 18 tests, all passing |
+| 2026-03-29 | Codex audit | 95/100 |
+| 2026-03-29 | Gemini audit | 100/100 |
+| 2026-03-29 | Kimi audit | 98/100 |
 
 ---
 
@@ -101,11 +104,11 @@
 - TaskManager already has `isTypeCompatible()` — verify it works with mixed fleet
 
 **Acceptance Criteria:**
-- [ ] 5 AMR + 5 AGV running simultaneously with different speeds/capabilities
-- [ ] Tasks correctly assigned to compatible robot types
-- [ ] Different behavior trees execute per robot type
-- [ ] Dashboard shows robot type in status panel
-- [ ] New tests: mixed fleet allocation, type-filtered task assignment
+- [x] 5 AMR + 5 AGV running simultaneously with different speeds/capabilities
+- [x] Tasks correctly assigned to compatible robot types
+- [x] Different behavior trees execute per robot type
+- [x] Dashboard shows robot type in status panel
+- [x] New tests: mixed fleet allocation, type-filtered task assignment
 
 **Files to create/modify:**
 - NEW: `configs/fleets/default_mixed.json`
@@ -119,7 +122,7 @@
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| — | — | — |
+| 2026-03-29 | Phase 2 implemented (Session 7) | Fleet manifest, --fleet flag, type-aware REST, frontend badges, Gazebo multi-type, 571 tests passing |
 
 ---
 

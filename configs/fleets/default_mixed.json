@@ -1,0 +1,16 @@
+{
+  "name": "Default Mixed Fleet",
+  "description": "5 AMR (differential drive) + 5 AGV (unidirectional) — heterogeneous warehouse fleet",
+  "robots": [
+    {
+      "id_prefix": "AMR",
+      "config": "configs/robots/differential_drive.yaml",
+      "count": 5
+    },
+    {
+      "id_prefix": "AGV",
+      "config": "configs/robots/unidirectional.yaml",
+      "count": 5
+    }
+  ]
+}

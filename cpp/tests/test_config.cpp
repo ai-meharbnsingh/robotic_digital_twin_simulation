@@ -337,3 +337,108 @@ TEST(ConfigTest, LoadRobot_InvalidPath_Throws) {
         std::runtime_error
     );
 }
+
+// ── Fleet manifest ─────────────────────────────────────
+
+TEST(ConfigTest, LoadFleetManifest_Name) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    EXPECT_EQ(manifest.name, "Default Mixed Fleet");
+}
+
+TEST(ConfigTest, LoadFleetManifest_EntryCount) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    EXPECT_EQ(manifest.robots.size(), 2u);
+}
+
+TEST(ConfigTest, LoadFleetManifest_AMREntry) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    ASSERT_GE(manifest.robots.size(), 1u);
+    EXPECT_EQ(manifest.robots[0].id_prefix, "AMR");
+    EXPECT_EQ(manifest.robots[0].count, 5);
+    EXPECT_NE(manifest.robots[0].config.find("differential_drive"), std::string::npos);
+}
+
+TEST(ConfigTest, LoadFleetManifest_AGVEntry) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    ASSERT_GE(manifest.robots.size(), 2u);
+    EXPECT_EQ(manifest.robots[1].id_prefix, "AGV");
+    EXPECT_EQ(manifest.robots[1].count, 5);
+    EXPECT_NE(manifest.robots[1].config.find("unidirectional"), std::string::npos);
+}
+
+TEST(ConfigTest, LoadFleetManifest_InvalidPath_Throws) {
+    EXPECT_THROW(
+        Config::loadFleetManifest("/nonexistent/fleet.json"),
+        std::runtime_error
+    );
+}
+
+TEST(ConfigTest, ExpandFleetManifest_TotalCount) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+    EXPECT_EQ(configs.size(), 10u);  // 5 AMR + 5 AGV
+}
+
+TEST(ConfigTest, ExpandFleetManifest_AMRNames) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+
+    // First 5 should be AMR_001 through AMR_005
+    EXPECT_EQ(configs[0].name, "AMR_001");
+    EXPECT_EQ(configs[1].name, "AMR_002");
+    EXPECT_EQ(configs[2].name, "AMR_003");
+    EXPECT_EQ(configs[3].name, "AMR_004");
+    EXPECT_EQ(configs[4].name, "AMR_005");
+}
+
+TEST(ConfigTest, ExpandFleetManifest_AGVNames) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+
+    // Next 5 should be AGV_001 through AGV_005
+    EXPECT_EQ(configs[5].name, "AGV_001");
+    EXPECT_EQ(configs[6].name, "AGV_002");
+    EXPECT_EQ(configs[7].name, "AGV_003");
+    EXPECT_EQ(configs[8].name, "AGV_004");
+    EXPECT_EQ(configs[9].name, "AGV_005");
+}
+
+TEST(ConfigTest, ExpandFleetManifest_TypesCorrect) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+
+    // AMRs are differential drive
+    for (int i = 0; i < 5; ++i) {
+        EXPECT_EQ(configs[i].type, RobotType::DIFFERENTIAL_DRIVE)
+            << "Robot " << configs[i].name << " should be DIFFERENTIAL_DRIVE";
+    }
+
+    // AGVs are unidirectional
+    for (int i = 5; i < 10; ++i) {
+        EXPECT_EQ(configs[i].type, RobotType::UNIDIRECTIONAL)
+            << "Robot " << configs[i].name << " should be UNIDIRECTIONAL";
+    }
+}
+
+TEST(ConfigTest, ExpandFleetManifest_ConfigsPreserved) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/default_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+
+    // AMR_001 should have differential drive speed
+    EXPECT_DOUBLE_EQ(configs[0].motion.max_linear_velocity, 2.0);
+    EXPECT_EQ(configs[0].behavior_tree, "default_amr.xml");
+
+    // AGV_001 should have unidirectional speed
+    EXPECT_DOUBLE_EQ(configs[5].motion.max_linear_velocity, 1.4);
+    EXPECT_EQ(configs[5].behavior_tree, "default_agv.xml");
+    EXPECT_DOUBLE_EQ(configs[5].motion.max_linear_velocity_curve, 0.6);
+}
