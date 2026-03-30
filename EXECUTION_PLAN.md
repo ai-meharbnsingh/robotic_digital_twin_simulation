@@ -81,8 +81,8 @@ No task is done until its test passes for real.
 ## Phase 9: Python API + WES
 **Goal:** FastAPI serves fleet data. WES generates orders and tracks KPIs.
 
-- [x] 9.1 test_api.py — all 116 endpoints return correct shapes
-- [x] 9.2 python/app/ — FastAPI, 116 endpoints, WebSocket
+- [x] 9.1 test_api.py — all 118 endpoints return correct shapes
+- [x] 9.2 python/app/ — FastAPI, 118 endpoints, WebSocket
 - [x] 9.3–9.6 ~~io-gita + SG prediction~~ — **DROPPED** (see Phase 12 closure)
 - [x] 9.7 python/wes/ — OrderGenerator, TaskGenerator, KPITracker
 - [x] 9.8 python/monitoring/ — InfluxDB writer, Redis cache

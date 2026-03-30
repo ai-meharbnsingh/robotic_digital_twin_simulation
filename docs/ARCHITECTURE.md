@@ -32,7 +32,7 @@ The simulation runs as three primary processes plus supporting infrastructure se
   │  ┌─────────────────────────────────────────────────────────▼─────┐  │
   │  │  PYTHON PROCESS: FastAPI (:8029)                              │  │
   │  │                                                               │  │
-  │  │  ├── REST API (116 endpoints)                                  │  │
+  │  │  ├── REST API (118 endpoints)                                  │  │
   │  │  ├── WebSocket (/ws/fleet) — 100 connection limit             │  │
   │  │  ├── API Key Auth (X-API-Key header on write endpoints)       │  │
   │  │  ├── CORS (configurable via CORS_ORIGINS env var)             │  │
@@ -263,7 +263,7 @@ When deploying with real ROS2 hardware, the following security measures are reco
 | | Behavior Trees | Custom engine (tinyxml2) | Decision logic (11 action + 7 condition nodes) |
 | | Protocol | Custom V1 (33 fields + CRC32) | TCP communication with robots |
 | | Network | POSIX sockets | TCP server + REST server (thread-safe) |
-| **Python API** | REST API | FastAPI, Pydantic v2 | 116 endpoints for fleet data |
+| **Python API** | REST API | FastAPI, Pydantic v2 | 118 endpoints for fleet data |
 | | WebSocket | FastAPI WebSocket | Real-time fleet event streaming (100 conn limit) |
 | | Auth | API Key (X-API-Key header) | Write endpoint protection (configurable) |
 | | CORS | CORSMiddleware | Configurable origins via CORS_ORIGINS env var |
@@ -322,7 +322,7 @@ robotic_digital_twin_simulation/
 │   │   ├── config.py             # Settings + config loaders
 │   │   ├── auth.py               # API key auth for write endpoints
 │   │   ├── websocket.py          # WebSocket manager (100 conn limit + origin check)
-│   │   └── routes/               # 26 route modules (116 endpoints)
+│   │   └── routes/               # 26 route modules (118 endpoints)
 │   ├── wes/                      # Warehouse Execution System
 │   ├── monitoring/               # InfluxDB writer, Redis cache
 │   ├── intelligence/             # io-gita v4 (hierarchical zone ID)
@@ -359,7 +359,7 @@ robotic_digital_twin_simulation/
 │
 ├── docs/                         # Documentation
 │   ├── GETTING_STARTED.md        # 5-minute quickstart
-│   ├── API_REFERENCE.md          # All 116 endpoints
+│   ├── API_REFERENCE.md          # All 118 endpoints
 │   ├── CONFIGURATION.md          # Customization guide
 │   ├── ARCHITECTURE.md           # This file
 │   └── USER_EXPERIENCE.md        # UX design notes

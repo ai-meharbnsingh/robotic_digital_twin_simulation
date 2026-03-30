@@ -18,7 +18,7 @@ Open-source warehouse robotics simulator. Any company loads their warehouse layo
 - All written from scratch — no proprietary deps
 
 ### Python API (FastAPI — 906 tests)
-- 116 REST endpoints + 1 WebSocket
+- 118 REST endpoints + 1 WebSocket
 - Warehouse Execution System (WES): order gen, task gen, KPI tracking
 - Wave Rule Engine: batch picking, zone affinity grouping
 - CSV/Excel order import with OWASP validation
@@ -37,7 +37,7 @@ Open-source warehouse robotics simulator. Any company loads their warehouse layo
 ### Infrastructure
 - Docker Compose: 7 services (MongoDB, Redis, InfluxDB, RabbitMQ, Grafana, Mosquitto, App)
 - Gazebo Fortress: 3D physics sim with LiDAR, barcode, conveyor plugins
-- 1356 total tests (398 C++ + 906 Python + 52 Gazebo), 0 failures in any environment
+- 1398 total tests (398 C++ + 928 Python + 52 Gazebo), 0 failures in any environment
 
 ## What's Next (Phases 13-15)
 

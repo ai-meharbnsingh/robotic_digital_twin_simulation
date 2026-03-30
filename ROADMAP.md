@@ -2,7 +2,7 @@
 
 > **Vision:** The only open-source warehouse robotics simulator with a production-grade C++ fleet management system — bring your warehouse layout, your robot specs, and your real orders. No vendor lock-in. One Docker command. 3D visualization in the browser.
 >
-> **Status:** ALL 12 PHASES COMPLETE. 1356 tests (398 C++ + 906 Python + 52 Gazebo), 0 failures. Infrastructure-dependent tests skip gracefully via `requires_mongodb` fixture. 116 REST endpoints + 1 WebSocket.
+> **Status:** ALL 12 PHASES COMPLETE. 1398 tests (398 C++ + 928 Python + 52 Gazebo), 0 failures. Infrastructure-dependent tests skip gracefully via `requires_mongodb` fixture. 118 REST endpoints + 1 WebSocket.
 >
 > **Last Updated:** 2026-03-30
 
@@ -13,7 +13,7 @@
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
 │  C++ FMS    │────►│  Python API  │────►│  React       │
-│  15Hz loop  │     │  116 REST +   │     │  Dashboard   │
+│  15Hz loop  │     │  118 REST +   │     │  Dashboard   │
 │  A*, BT,    │     │  1 WebSocket │     │  2D + 3D     │
 │  TCP, MPC   │     │  WES, iogita │     │  TypeScript  │
 └──────┬──────┘     └──────┬───────┘     └──────────────┘
@@ -543,7 +543,7 @@
 - [x] Frontend types aligned: ROS2NavGoalResponse + ROS2PoseResponse match backend shapes
 - [x] SROS2 production config: docker/sros2/ with policies.xml and setup README
 - [x] Auth design documented: GET endpoints open by design (monitoring), POST auth-protected
-- [x] API_REFERENCE.md: all 116 endpoints listed and consistent
+- [x] API_REFERENCE.md: all 118 endpoints listed and consistent
 
 **Files created:**
 - NEW: `python/ros2_bridge/__init__.py`

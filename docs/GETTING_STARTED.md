@@ -138,6 +138,6 @@ docker compose -f docker/docker-compose.yml down -v
 
 ## Next Steps
 
-- [API Reference](API_REFERENCE.md) — All 116 endpoints with examples
+- [API Reference](API_REFERENCE.md) — All 118 endpoints with examples
 - [Configuration Guide](CONFIGURATION.md) — Custom warehouses, robots, behavior trees
 - [Architecture](ARCHITECTURE.md) — System design and data flow

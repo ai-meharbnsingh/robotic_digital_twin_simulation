@@ -1,6 +1,6 @@
 # API Reference
 
-The Python FastAPI server runs on port **8029** and exposes 116 REST endpoints plus 1 WebSocket endpoint.
+The Python FastAPI server runs on port **8029** and exposes 118 REST endpoints plus 1 WebSocket endpoint.
 
 > **Note:** io-gita v4 intelligence layer was reinstated with a hierarchical zone-first approach after v1-v3 failed (see ARCHITECTURE.md). 3 io-gita endpoints are active.
 
@@ -1854,7 +1854,7 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 
 ## Endpoint Summary
 
-**Total: 116 REST + 1 WebSocket = 117 endpoints**
+**Total: 118 REST + 1 WebSocket = 119 endpoints**
 
 | # | Method | Path | Description |
 |---|--------|------|-------------|
