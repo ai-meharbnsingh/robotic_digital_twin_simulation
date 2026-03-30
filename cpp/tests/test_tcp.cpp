@@ -25,6 +25,20 @@
 
 using namespace rdt::network;
 
+// ── Helper: check if sockets can bind in this environment ──
+
+static bool can_bind_socket() {
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) return false;
+    struct sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = 0;
+    int rc = ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr));
+    ::close(fd);
+    return rc == 0;
+}
+
 // ── Helper: find an available port ───────────────────────
 
 static uint16_t find_free_port() {
@@ -39,11 +53,16 @@ static uint16_t find_free_port() {
     uint16_t port = ntohs(addr.sin_port);
     ::close(fd);
     return port;
+
 }
+
+#define SKIP_IF_NO_SOCKETS() \
+    if (!can_bind_socket()) { GTEST_SKIP() << "Socket binding restricted in this environment"; }
 
 // ── Test: Server starts and is running ───────────────────
 
 TEST(TCPServer, StartsAndIsRunning) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -60,6 +79,7 @@ TEST(TCPServer, StartsAndIsRunning) {
 // ── Test: Server stops cleanly ───────────────────────────
 
 TEST(TCPServer, StopsCleanly) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -80,6 +100,7 @@ TEST(TCPServer, ConnectedCountZeroInitially) {
 // ── Test: Connected count is 0 after start (no clients) ──
 
 TEST(TCPServer, ConnectedCountZeroAfterStart) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -93,6 +114,7 @@ TEST(TCPServer, ConnectedCountZeroAfterStart) {
 // ── Test: Can start on a specific port ───────────────────
 
 TEST(TCPServer, StartsOnSpecificPort) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -107,6 +129,7 @@ TEST(TCPServer, StartsOnSpecificPort) {
 // ── Test: Double stop is safe ────────────────────────────
 
 TEST(TCPServer, DoubleStopSafe) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -122,6 +145,7 @@ TEST(TCPServer, DoubleStopSafe) {
 // ── Test: sendToRobot returns false for unknown robot ────
 
 TEST(TCPServer, SendToUnknownRobotReturnsFalse) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -150,6 +174,7 @@ TEST(TCPServer, CallbackRegistration) {
 // ── Test: Client connects and server counts it ───────────
 
 TEST(TCPServer, ClientConnectsAndIsCounted) {
+    SKIP_IF_NO_SOCKETS();
     TCPServer server;
     std::atomic<bool> got_message{false};
 
@@ -192,6 +217,7 @@ TEST(TCPServer, ClientConnectsAndIsCounted) {
 // ── Test: Destructor stops cleanly ───────────────────────
 
 TEST(TCPServer, DestructorStopsCleanly) {
+    SKIP_IF_NO_SOCKETS();
     uint16_t port = find_free_port();
     {
         TCPServer server;

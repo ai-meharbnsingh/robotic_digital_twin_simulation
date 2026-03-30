@@ -74,7 +74,7 @@ WAREHOUSE_CONFIG=addverb_noida FLEET_CONFIG=addverb_mixed docker compose up
 All configs verified through actual C++ FMS `Config::loadRobotConfig()` and `Config::loadWarehouseConfig()`:
 - 13 gtest tests in `cpp/tests/test_config.cpp` (LoadAddverb* filter)
 - Mixed fleet manifest expands to 10 robots with correct per-type speeds
-- 390 C++ tests pass (current), 0 failures
+- 398 C++ tests pass (current), 0 failures
 
 ## YAML Security
 

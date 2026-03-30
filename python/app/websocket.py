@@ -94,7 +94,9 @@ def _check_ws_origin(websocket: WebSocket) -> bool:
         return True
     allowed = {o.strip() for o in settings.cors_origins.split(",")}
     origin = websocket.headers.get("origin", "")
-    return origin in allowed or not origin  # no origin = same-origin
+    if not origin:
+        return False  # Reject connections with no Origin header
+    return origin in allowed
 
 
 @router.websocket("/ws/fleet")

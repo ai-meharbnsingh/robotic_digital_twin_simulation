@@ -1,0 +1,121 @@
+# SKU Catalog — Sample Inventory for Warehouse Simulation
+#
+# Categories: electronics, clothing, food, industrial, household
+# Storage classes: standard, cold, hazmat, fragile, heavy, high_value
+
+skus:
+  - sku_id: "SKU-ELEC-001"
+    name: "Wireless Headphones"
+    category: "electronics"
+    storage_class: "standard"
+    weight_kg: 0.3
+    length_cm: 20
+    width_cm: 15
+    height_cm: 8
+    min_stock: 20
+    max_stock: 200
+    reorder_point: 50
+    reorder_qty: 100
+
+  - sku_id: "SKU-ELEC-002"
+    name: "Laptop Charger"
+    category: "electronics"
+    storage_class: "standard"
+    weight_kg: 0.5
+    length_cm: 15
+    width_cm: 10
+    height_cm: 5
+    min_stock: 30
+    max_stock: 300
+    reorder_point: 75
+    reorder_qty: 150
+
+  - sku_id: "SKU-CLOTH-001"
+    name: "T-Shirt (M)"
+    category: "clothing"
+    storage_class: "standard"
+    weight_kg: 0.2
+    length_cm: 30
+    width_cm: 25
+    height_cm: 3
+    min_stock: 50
+    max_stock: 500
+    reorder_point: 100
+    reorder_qty: 200
+
+  - sku_id: "SKU-FOOD-001"
+    name: "Protein Bars (Box)"
+    category: "food"
+    storage_class: "cold"
+    weight_kg: 2.0
+    length_cm: 30
+    width_cm: 20
+    height_cm: 15
+    min_stock: 10
+    max_stock: 100
+    reorder_point: 25
+    reorder_qty: 50
+
+  - sku_id: "SKU-IND-001"
+    name: "Motor Oil 5L"
+    category: "industrial"
+    storage_class: "hazmat"
+    weight_kg: 5.0
+    length_cm: 25
+    width_cm: 15
+    height_cm: 30
+    min_stock: 5
+    max_stock: 50
+    reorder_point: 15
+    reorder_qty: 25
+
+  - sku_id: "SKU-HOUSE-001"
+    name: "Kitchen Blender"
+    category: "household"
+    storage_class: "fragile"
+    weight_kg: 3.0
+    length_cm: 35
+    width_cm: 20
+    height_cm: 40
+    min_stock: 10
+    max_stock: 80
+    reorder_point: 20
+    reorder_qty: 40
+
+  - sku_id: "SKU-IND-002"
+    name: "Steel Bolts (100-pack)"
+    category: "industrial"
+    storage_class: "heavy"
+    weight_kg: 8.0
+    length_cm: 20
+    width_cm: 15
+    height_cm: 10
+    min_stock: 15
+    max_stock: 150
+    reorder_point: 30
+    reorder_qty: 60
+
+  - sku_id: "SKU-ELEC-003"
+    name: "Smart Watch"
+    category: "electronics"
+    storage_class: "high_value"
+    weight_kg: 0.1
+    length_cm: 10
+    width_cm: 8
+    height_cm: 5
+    min_stock: 5
+    max_stock: 50
+    reorder_point: 10
+    reorder_qty: 20
+
+putaway_rules:
+  - category: "electronics"
+    preferred_zone: "Storage_A"
+  - category: "clothing"
+    preferred_zone: "Storage_A"
+  - category: "food"
+    preferred_zone: "Storage_B"
+  - category: "industrial"
+    preferred_zone: "Storage_B"
+  - category: "household"
+    preferred_zone: "Storage_A"

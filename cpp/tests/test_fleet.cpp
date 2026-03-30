@@ -26,6 +26,22 @@
 #include <unistd.h>
 #include <cstring>
 
+
+static bool can_bind_socket() {
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) return false;
+    struct sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = 0;
+    int rc = ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr));
+    ::close(fd);
+    return rc == 0;
+}
+
+#define SKIP_IF_NO_SOCKETS() \
+    if (!can_bind_socket()) { GTEST_SKIP() << "Socket binding restricted in this environment"; }
+
 // ── Test fixtures ─────────────────────────────────────────
 
 class TaskManagerTest : public ::testing::Test {

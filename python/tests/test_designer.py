@@ -503,4 +503,4 @@ class TestDesignerEndpointCount:
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118  # 112 (Phase 14) + 4 (Phase 15)

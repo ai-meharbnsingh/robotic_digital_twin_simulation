@@ -783,9 +783,9 @@ class TestPIBTValidation:
 class TestEndpointCountPhase11:
     """Verify root endpoint reports updated count after Phase 11."""
 
-    async def test_root_reports_65_endpoints(self, client: AsyncClient):
-        """GET / should now report 71 endpoints (60 base + 4 MAPF + 1 congestion + 6 WMS)."""
+    async def test_root_reports_94_endpoints(self, client: AsyncClient):
+        """GET / should now report 116 endpoints (includes 25 WCS + 5 MAPF + 6 WMS)."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118

@@ -41,6 +41,22 @@ static uint16_t find_free_port() {
     return port;
 }
 
+static bool can_bind_socket() {
+    int fd = ::socket(AF_INET, SOCK_STREAM, 0);
+    if (fd < 0) return false;
+    struct sockaddr_in addr{};
+    addr.sin_family = AF_INET;
+    addr.sin_addr.s_addr = INADDR_ANY;
+    addr.sin_port = 0;
+    int rc = ::bind(fd, reinterpret_cast<struct sockaddr*>(&addr), sizeof(addr));
+    ::close(fd);
+    return rc == 0;
+}
+
+#define SKIP_IF_NO_SOCKETS() \
+    if (!can_bind_socket()) { GTEST_SKIP() << "Socket binding restricted in this environment"; }
+
+
 // ── Helper: send an HTTP GET request and read response ───
 
 static std::string http_get(uint16_t port, const std::string& path) {
@@ -92,6 +108,7 @@ static int extract_status_code(const std::string& response) {
 // ── Test: Server starts and stops cleanly ────────────────
 
 TEST(RESTServer, StartsAndStopsCleanly) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -107,6 +124,7 @@ TEST(RESTServer, StartsAndStopsCleanly) {
 // ── Test: Route count starts at 0 ───────────────────────
 
 TEST(RESTServer, RouteCountStartsAtZero) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     EXPECT_EQ(server.getRouteCount(), 0u);
 }
@@ -114,6 +132,7 @@ TEST(RESTServer, RouteCountStartsAtZero) {
 // ── Test: Adding routes increments count ─────────────────
 
 TEST(RESTServer, AddRouteIncrementsCount) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/health", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json", R"({"status":"ok"})"};
@@ -129,6 +148,7 @@ TEST(RESTServer, AddRouteIncrementsCount) {
 // ── Test: GET /health returns 200 and JSON body ──────────
 
 TEST(RESTServer, HealthEndpointReturns200) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/health", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json", R"({"status":"ok","service":"fms"})"};
@@ -152,6 +172,7 @@ TEST(RESTServer, HealthEndpointReturns200) {
 // ── Test: GET /api/fleet/status returns fleet JSON ───────
 
 TEST(RESTServer, FleetStatusEndpoint) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/api/fleet/status", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json",
@@ -176,6 +197,7 @@ TEST(RESTServer, FleetStatusEndpoint) {
 // ── Test: GET /api/robots returns robot list JSON ────────
 
 TEST(RESTServer, RobotsEndpoint) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/api/robots", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json",
@@ -200,6 +222,7 @@ TEST(RESTServer, RobotsEndpoint) {
 // ── Test: Unknown route returns 404 ──────────────────────
 
 TEST(RESTServer, UnknownRouteReturns404) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/health", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json", R"({"status":"ok"})"};
@@ -219,6 +242,7 @@ TEST(RESTServer, UnknownRouteReturns404) {
 // ── Test: Response contains Content-Type header ──────────
 
 TEST(RESTServer, ResponseContainsContentType) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/health", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json", "{}"};
@@ -237,6 +261,7 @@ TEST(RESTServer, ResponseContainsContentType) {
 // ── Test: Response contains Content-Length header ────────
 
 TEST(RESTServer, ResponseContainsContentLength) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     std::string body_str = R"({"status":"ok"})";
     server.addRoute("GET", "/health", [body_str](const HTTPRequest&) {
@@ -257,6 +282,7 @@ TEST(RESTServer, ResponseContainsContentLength) {
 // ── Test: Double stop is safe ────────────────────────────
 
 TEST(RESTServer, DoubleStopSafe) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     uint16_t port = find_free_port();
     server.start(port);
@@ -270,6 +296,7 @@ TEST(RESTServer, DoubleStopSafe) {
 // ── Test: Destructor stops cleanly ───────────────────────
 
 TEST(RESTServer, DestructorStopsCleanly) {
+    SKIP_IF_NO_SOCKETS();
     uint16_t port = find_free_port();
     {
         RESTServer server;
@@ -285,6 +312,7 @@ TEST(RESTServer, DestructorStopsCleanly) {
 // ── Test: CORS header present ────────────────────────────
 
 TEST(RESTServer, CORSHeaderPresent) {
+    SKIP_IF_NO_SOCKETS();
     RESTServer server;
     server.addRoute("GET", "/health", [](const HTTPRequest&) {
         return HTTPResponse{200, "OK", "application/json", "{}"};

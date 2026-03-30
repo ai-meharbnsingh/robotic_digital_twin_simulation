@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 MAX_SYNC_ORDERS = 1_000
 MAX_WEBHOOK_ITEMS = 500
+MAX_ORDER_RETENTION = 10_000
 
 router = APIRouter(prefix="/api/wms", tags=["wms"])
 
@@ -47,16 +48,23 @@ def _get_order_store():
 # ── Request models ─────────────────────────────────────────
 
 
+class WebhookItem(BaseModel):
+    """A single line item in a webhook order."""
+    sku: str = Field(description="SKU identifier", min_length=1, max_length=128)
+    quantity: int = Field(description="Quantity ordered", gt=0)
+    location: str = Field(default="", description="Preferred pick location", max_length=128)
+
+
 class WebhookPayload(BaseModel):
     """Request body for POST /api/wms/webhook/receive."""
     id: str = Field(default="", description="External order ID", max_length=256)
-    items: list[dict] = Field(default_factory=list, description="Order line items")
+    items: list[WebhookItem] = Field(default_factory=list, description="Order line items")
     priority: int = Field(default=3, ge=1, le=5, description="Priority 1-5")
     customer: str = Field(default="", description="Customer name", max_length=512)
 
     @field_validator("items")
     @classmethod
-    def items_not_too_large(cls, v: list[dict]) -> list[dict]:
+    def items_not_too_large(cls, v: list[WebhookItem]) -> list[WebhookItem]:
         if len(v) > MAX_WEBHOOK_ITEMS:
             raise ValueError(f"Too many items ({len(v)}). Max is {MAX_WEBHOOK_ITEMS}.")
         return v
@@ -132,26 +140,42 @@ async def sync_orders():
             if dlq:
                 await dlq.enqueue(raw, str(exc))
 
-    # Store synced orders
+    # Store synced orders (capped at MAX_ORDER_RETENTION to prevent unbounded growth)
     order_store = app_state.setdefault("wms_orders", [])
     order_store.extend(translated)
+    if len(order_store) > MAX_ORDER_RETENTION:
+        order_store[:] = order_store[-MAX_ORDER_RETENTION:]
+
+    # Feed translated orders into WES TaskGenerator for wave/task processing
+    tasks_created = 0
+    task_gen = app_state.get("wes_task_generator")
+    if task_gen is not None and translated:
+        try:
+            tasks = task_gen.from_orders(translated)
+            tasks_created = len(tasks) if tasks else 0
+        except Exception:
+            logger.exception("WMS→WES task generation failed")
 
     return {
         "synced": len(translated),
         "errors": len(errors),
         "total_orders": len(order_store),
+        "tasks_created": tasks_created,
     }
 
 
 @router.get("/orders")
-async def list_orders():
+async def list_orders(offset: int = 0, limit: int = 100):
     """
     List orders pulled from WMS.
 
-    Returns all orders that have been synced (translated to internal format).
+    Returns paginated orders that have been synced (translated to internal format).
     """
+    limit = max(1, min(limit, 1000))
+    offset = max(0, offset)
     orders = _get_order_store()
-    return {"orders": orders, "total": len(orders)}
+    page = orders[offset:offset + limit]
+    return {"orders": page, "total": len(orders), "offset": offset, "limit": limit}
 
 
 @router.post("/webhook/receive", dependencies=[Depends(require_api_key)])
@@ -170,26 +194,20 @@ async def receive_webhook(payload: WebhookPayload):
     if not payload.id and not payload.items:
         raise HTTPException(status_code=400, detail="Webhook payload must include 'id' or 'items'")
 
-    # Check if connector supports receive_order (webhook adapter does)
-    if not hasattr(connector, "receive_order"):
-        raise HTTPException(
-            status_code=400,
-            detail=f"Active connector ({connector.get_status().get('type')}) does not support webhook receive",
-        )
-
     try:
         result = await connector.receive_order(payload.model_dump())
         return result
     except NotImplementedError:
+        connector_type = connector.get_status().get("type", "unknown")
         raise HTTPException(
             status_code=405,
-            detail=f"Active connector ({connector.get_status().get('type')}) does not support webhook receive",
+            detail=f"Active connector ({connector_type}) does not support webhook receive",
         )
     except ValueError as exc:
-        raise HTTPException(status_code=409, detail="Duplicate order ID or validation error")
+        raise HTTPException(status_code=409, detail=f"Order validation error: {exc}")
     except OverflowError as exc:
         raise HTTPException(status_code=507, detail=str(exc))
-    except Exception as exc:
+    except Exception:
         logger.exception("Webhook receive failed")
         raise HTTPException(status_code=500, detail="Internal error processing webhook")
 
@@ -201,6 +219,7 @@ async def list_dlq(limit: int = 100):
 
     Returns failed orders with error reasons, newest first.
     """
+    limit = max(1, min(limit, 1000))
     dlq = _get_dlq()
     if dlq is None:
         return {"dead_letters": [], "total": 0}

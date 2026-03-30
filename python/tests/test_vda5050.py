@@ -929,12 +929,12 @@ class TestVDA5050Conformance:
 class TestEndpointCount:
     """Verify root endpoint reports updated count with VDA5050."""
 
-    async def test_root_reports_56_endpoints(self, client: AsyncClient):
-        """GET / should now report 71 endpoints (56 + 5 MAPF + 4 ROS2 + 6 WMS iogita/recover)."""
+    async def test_root_reports_94_endpoints(self, client: AsyncClient):
+        """GET / should now report 116 endpoints (includes 25 WCS + 5 VDA5050 + 4 ROS2 + 5 MAPF + 6 WMS)."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118
 
 
 # ── TestVDA5050NegativeCases ─────────────────────────────

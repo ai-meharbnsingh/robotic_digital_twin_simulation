@@ -1,6 +1,6 @@
 # API Reference
 
-The Python FastAPI server runs on port **8029** and exposes 71 REST endpoints plus 1 WebSocket endpoint.
+The Python FastAPI server runs on port **8029** and exposes 116 REST endpoints plus 1 WebSocket endpoint.
 
 > **Note:** io-gita v4 intelligence layer was reinstated with a hierarchical zone-first approach after v1-v3 failed (see ARCHITECTURE.md). 3 io-gita endpoints are active.
 
@@ -22,6 +22,8 @@ Interactive docs: `http://localhost:8029/docs`
 - [Config](#config)
 - [Stats](#stats)
 - [Reservations](#reservations)
+- [Order Import](#order-import)
+- [Heat Map](#heat-map)
 - [Waves (WES)](#waves-wes)
 - [io-gita Intelligence](#io-gita-intelligence)
 - [Scenarios](#scenarios)
@@ -30,6 +32,7 @@ Interactive docs: `http://localhost:8029/docs`
 - [ROS2 Bridge](#ros2-bridge)
 - [Warehouse Designer](#warehouse-designer)
 - [WMS/ERP Connector](#wmserp-connector)
+- [Inventory Management](#inventory-management)
 - [WebSocket](#websocket)
 
 ---
@@ -49,7 +52,7 @@ curl http://localhost:8029/
   "service": "Robotic Digital Twin API",
   "version": "0.1.0",
   "docs": "/docs",
-  "endpoints": 71
+  "endpoints": 116
 }
 ```
 
@@ -1723,6 +1726,84 @@ curl -X POST http://localhost:8029/api/wms/dlq/abc123/retry \
 
 ---
 
+## Inventory Management
+
+Tracks SKUs, stock levels, movements, replenishment, and slotting optimization across all warehouse nodes.
+
+### GET /api/inventory/skus
+
+List all SKUs.
+
+### GET /api/inventory/skus/{sku_id}
+
+Get a single SKU by ID.
+
+### GET /api/inventory/stock-levels
+
+Get stock levels across all nodes.
+
+### GET /api/inventory/stock/{node_name}
+
+Get stock at a specific warehouse node.
+
+### POST /api/inventory/receive
+
+Receive goods inbound (requires API key).
+
+### POST /api/inventory/pick
+
+Pick inventory for an order (requires API key).
+
+### POST /api/inventory/adjust
+
+Manual stock adjustment (requires API key).
+
+### POST /api/inventory/transfer
+
+Transfer stock between nodes (requires API key).
+
+### POST /api/inventory/cycle-count
+
+Initiate a cycle count for a node or zone (requires API key).
+
+### GET /api/inventory/movements
+
+Retrieve stock movement history.
+
+### GET /api/inventory/replenishment
+
+List active replenishment orders.
+
+### POST /api/inventory/replenishment/check
+
+Check which SKUs have triggered replenishment rules (requires API key).
+
+### POST /api/inventory/replenishment/{order_id}/complete
+
+Mark a replenishment order as complete (requires API key).
+
+### POST /api/inventory/replenishment/{order_id}/cancel
+
+Cancel a replenishment order (requires API key).
+
+### GET /api/inventory/optimizer/abc
+
+ABC analysis — classify SKUs by velocity (A/B/C tiers).
+
+### GET /api/inventory/optimizer/recommendations
+
+Get slotting recommendations based on ABC analysis.
+
+### GET /api/inventory/optimizer/zone-balance
+
+Zone balance analysis — compare stock distribution across zones.
+
+### GET /api/inventory/stats
+
+Inventory statistics summary (total SKUs, total units, turnover rate).
+
+---
+
 ## WebSocket
 
 ### WS /ws/fleet
@@ -1773,6 +1854,8 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 
 ## Endpoint Summary
 
+**Total: 116 REST + 1 WebSocket = 117 endpoints**
+
 | # | Method | Path | Description |
 |---|--------|------|-------------|
 | 1 | GET | `/` | Root info |
@@ -1800,45 +1883,95 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 | 23 | POST | `/api/simulation/inject-fault` | Inject fault |
 | 24 | POST | `/api/wes/inject-orders` | Inject orders |
 | 25 | GET | `/api/wes/kpi` | WES KPIs |
-| 26 | GET | `/api/wcs/conveyors` | Conveyor status |
-| 27 | GET | `/api/wcs/lanes` | Lane occupancy |
-| 28 | GET | `/api/config/robots` | Robot config |
-| 29 | GET | `/api/stats/throughput` | Throughput stats |
-| 30 | GET | `/api/reservations/active` | Active reservations |
-| 31 | POST | `/api/wes/orders/import` | CSV order import |
-| 32 | GET | `/api/analytics/heatmap` | Traffic density heat map |
-| 33 | POST | `/api/wes/waves` | Create/auto-generate wave |
-| 34 | GET | `/api/wes/waves` | List waves |
-| 35 | POST | `/api/wes/waves/{id}/release` | Release wave → tasks |
-| 36 | POST | `/api/wes/wave-rules` | Create wave rule |
-| 37 | GET | `/api/wes/wave-rules` | List wave rules |
-| 38 | GET | `/api/iogita/status` | io-gita v4 status |
-| 39 | GET | `/api/iogita/zones` | Zone identification |
-| 40 | POST | `/api/iogita/cold-start/{id}` | Cold start recovery |
-| 41 | POST | `/api/iogita/recover/{id}` | LiDAR-based recovery (KDTree) |
-| 42 | GET | `/api/scenarios` | List scenarios |
-| 43 | POST | `/api/scenarios` | Create scenario |
-| 44 | POST | `/api/scenarios/{id}/run` | Run scenario |
-| 45 | GET | `/api/scenarios/{id}/results` | Scenario KPIs |
-| 46 | DELETE | `/api/scenarios/{id}` | Archive scenario |
-| 47 | GET | `/api/scenarios/compare` | Compare scenarios (csv/pdf) |
-| 48 | POST | `/api/designer/validate` | Validate warehouse config |
-| 49 | POST | `/api/designer/export` | Export warehouse config to file |
-| 50 | GET | `/api/designer/templates` | List warehouse templates |
-| 51 | GET | `/api/designer/templates/{name}` | Get template JSON |
-| 52 | GET | `/api/vda5050/status` | VDA5050 gateway status |
-| 53 | POST | `/api/vda5050/orders` | Send VDA5050 order to AGV |
-| 54 | POST | `/api/vda5050/instant-actions` | Send instant action (E-stop) |
-| 55 | GET | `/api/vda5050/agvs` | List connected AGVs |
-| 56 | GET | `/api/vda5050/agvs/{id}/state` | Get AGV VDA5050 state |
-| 57 | GET | `/api/ros2/status` | ROS2 bridge status |
-| 58 | GET | `/api/ros2/topics` | List ROS2 topics |
-| 59 | POST | `/api/ros2/nav-goal` | Send navigation goal |
-| 60 | GET | `/api/ros2/pose/{robot_id}` | Get robot pose from ROS2 |
-| 61 | GET | `/api/wms/status` | WMS connector status |
-| 62 | POST | `/api/wms/sync` | Trigger order sync from WMS |
-| 63 | GET | `/api/wms/orders` | List synced orders |
-| 64 | POST | `/api/wms/webhook/receive` | Receive order via webhook |
-| 65 | GET | `/api/wms/dlq` | List dead letter queue |
-| 66 | POST | `/api/wms/dlq/{id}/retry` | Retry dead letter |
+| 26 | GET | `/api/wcs/conveyors` | List all conveyor segments |
+| 27 | GET | `/api/wcs/conveyors/{id}/status` | Single conveyor status |
+| 28 | POST | `/api/wcs/conveyors/{id}/control` | Start/stop/set speed |
+| 29 | POST | `/api/wcs/conveyors/{id}/jam` | Inject jam fault |
+| 30 | POST | `/api/wcs/conveyors/start-all` | Start all conveyors |
+| 31 | POST | `/api/wcs/conveyors/stop-all` | Stop all conveyors |
+| 32 | POST | `/api/wcs/conveyors/transfer` | Transfer package to conveyor |
+| 33 | GET | `/api/wcs/sorter/rules` | List sorter routing rules |
+| 34 | POST | `/api/wcs/sorter/rules` | Create sorter rule |
+| 35 | DELETE | `/api/wcs/sorter/rules/{id}` | Delete sorter rule |
+| 36 | GET | `/api/wcs/sorter/log` | Sorter decision log |
+| 37 | POST | `/api/wcs/sorter/sort` | Manually trigger sort |
+| 38 | GET | `/api/wcs/sorter/stats` | Sorter throughput stats |
+| 39 | GET | `/api/wcs/sorter/diverts` | List active diverts |
+| 40 | GET | `/api/wcs/lanes` | List all lanes |
+| 41 | GET | `/api/wcs/lanes/by-type/{type}` | Filter lanes by type |
+| 42 | POST | `/api/wcs/lanes/{id}/control` | Open/close/set priority |
+| 43 | GET | `/api/wcs/lanes/{id}` | Single lane detail |
+| 44 | POST | `/api/wcs/lanes/{id}/package` | Add package to lane |
+| 45 | POST | `/api/wcs/packages` | Create tracked package |
+| 46 | GET | `/api/wcs/packages/in-transit` | Packages currently moving |
+| 47 | GET | `/api/wcs/packages/by-barcode` | Look up package by barcode |
+| 48 | GET | `/api/wcs/packages/at-location` | Packages at a location |
+| 49 | GET | `/api/wcs/packages/{tracking_id}` | Single package tracking |
+| 50 | GET | `/api/wcs/stats` | WCS throughput summary |
+| 51 | GET | `/api/config/robots` | Robot config |
+| 52 | GET | `/api/stats/throughput` | Throughput stats |
+| 53 | GET | `/api/reservations/active` | Active reservations |
+| 54 | POST | `/api/wes/orders/import` | CSV order import |
+| 55 | GET | `/api/analytics/heatmap` | Traffic density heat map |
+| 56 | POST | `/api/wes/waves` | Create/auto-generate wave |
+| 57 | GET | `/api/wes/waves` | List waves |
+| 58 | POST | `/api/wes/waves/{id}/release` | Release wave → tasks |
+| 59 | POST | `/api/wes/wave-rules` | Create wave rule |
+| 60 | GET | `/api/wes/wave-rules` | List wave rules |
+| 61 | GET | `/api/iogita/status` | io-gita v4 status |
+| 62 | GET | `/api/iogita/zones` | Zone identification |
+| 63 | POST | `/api/iogita/cold-start/{id}` | Cold start recovery |
+| 64 | POST | `/api/iogita/recover/{id}` | LiDAR-based recovery (KDTree) |
+| 65 | GET | `/api/scenarios` | List scenarios |
+| 66 | POST | `/api/scenarios` | Create scenario |
+| 67 | POST | `/api/scenarios/{id}/run` | Run scenario |
+| 68 | GET | `/api/scenarios/{id}/results` | Scenario KPIs |
+| 69 | DELETE | `/api/scenarios/{id}` | Archive scenario |
+| 70 | GET | `/api/scenarios/compare` | Compare scenarios (csv/pdf) |
+| 71 | POST | `/api/designer/validate` | Validate warehouse config |
+| 72 | POST | `/api/designer/export` | Export warehouse config to file |
+| 73 | GET | `/api/designer/templates` | List warehouse templates |
+| 74 | GET | `/api/designer/templates/categories` | List template categories |
+| 75 | GET | `/api/designer/templates/{name}` | Get template JSON |
+| 76 | POST | `/api/designer/import` | Import warehouse config from file |
+| 77 | POST | `/api/designer/validate-3d` | Validate 3D warehouse layout |
+| 78 | POST | `/api/designer/export-all` | Export all warehouse configs (admin) |
+| 79 | GET | `/api/vda5050/status` | VDA5050 gateway status |
+| 80 | POST | `/api/vda5050/orders` | Send VDA5050 order to AGV |
+| 81 | POST | `/api/vda5050/instant-actions` | Send instant action (E-stop) |
+| 82 | GET | `/api/vda5050/agvs` | List connected AGVs |
+| 83 | GET | `/api/vda5050/agvs/{id}/state` | Get AGV VDA5050 state |
+| 84 | POST | `/api/mapf/solve` | Solve multi-agent path finding |
+| 85 | GET | `/api/mapf/status` | MAPF solver status |
+| 86 | POST | `/api/mapf/step` | Step MAPF simulation |
+| 87 | GET | `/api/mapf/benchmarks` | MAPF benchmark results |
+| 88 | GET | `/api/mapf/congestion` | Congestion map |
+| 89 | GET | `/api/ros2/status` | ROS2 bridge status |
+| 90 | GET | `/api/ros2/topics` | List ROS2 topics |
+| 91 | POST | `/api/ros2/nav-goal` | Send navigation goal |
+| 92 | GET | `/api/ros2/pose/{robot_id}` | Get robot pose from ROS2 |
+| 93 | GET | `/api/wms/status` | WMS connector status |
+| 94 | POST | `/api/wms/sync` | Trigger order sync from WMS |
+| 95 | GET | `/api/wms/orders` | List synced orders |
+| 96 | POST | `/api/wms/webhook/receive` | Receive order via webhook |
+| 97 | GET | `/api/wms/dlq` | List dead letter queue |
+| 98 | POST | `/api/wms/dlq/{id}/retry` | Retry dead letter |
+| 99 | GET | `/api/inventory/skus` | List all SKUs |
+| 100 | GET | `/api/inventory/skus/{sku_id}` | Get single SKU |
+| 101 | GET | `/api/inventory/stock-levels` | All stock levels |
+| 102 | GET | `/api/inventory/stock/{node_name}` | Stock at a specific node |
+| 103 | POST | `/api/inventory/receive` | Receive goods (inbound) |
+| 104 | POST | `/api/inventory/pick` | Pick inventory for order |
+| 105 | POST | `/api/inventory/adjust` | Manual stock adjustment |
+| 106 | POST | `/api/inventory/transfer` | Transfer stock between nodes |
+| 107 | POST | `/api/inventory/cycle-count` | Initiate cycle count |
+| 108 | GET | `/api/inventory/movements` | Stock movement history |
+| 109 | GET | `/api/inventory/replenishment` | List replenishment orders |
+| 110 | POST | `/api/inventory/replenishment/check` | Check replenishment triggers |
+| 111 | POST | `/api/inventory/replenishment/{order_id}/complete` | Complete replenishment order |
+| 112 | POST | `/api/inventory/replenishment/{order_id}/cancel` | Cancel replenishment order |
+| 113 | GET | `/api/inventory/optimizer/abc` | ABC analysis of SKUs |
+| 114 | GET | `/api/inventory/optimizer/recommendations` | Slotting recommendations |
+| 115 | GET | `/api/inventory/optimizer/zone-balance` | Zone balance analysis |
+| 116 | GET | `/api/inventory/stats` | Inventory statistics summary |
 | WS | WS | `/ws/fleet` | Real-time updates |

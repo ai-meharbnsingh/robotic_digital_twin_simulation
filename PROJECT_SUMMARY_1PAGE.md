@@ -8,17 +8,17 @@ Open-source warehouse robotics simulator. Any company loads their warehouse layo
 - **FlexSim** is $5-100K/yr desktop software
 - **We're free, open-source, browser-based, and work with ANY robot YAML config**
 
-## What's Built (Phases 0-5 Complete)
+## What's Built (ALL 12 Phases Complete)
 
-### Core Engine (C++ — 371 tests)
+### Core Engine (C++ — 398 tests)
 - 15Hz fleet management loop (FleetManager, TaskManager, COPP)
 - A* pathfinding, QuadTree, Node Reservation (0 deadlocks with 10 robots)
 - Custom Behavior Tree engine (11 action + 7 condition nodes)
 - TCP Protocol V1 (33 fields + CRC32) at 150 msg/s
 - All written from scratch — no proprietary deps
 
-### Python API (FastAPI — 387 tests)
-- 65 REST endpoints + 1 WebSocket
+### Python API (FastAPI — 906 tests)
+- 116 REST endpoints + 1 WebSocket
 - Warehouse Execution System (WES): order gen, task gen, KPI tracking
 - Wave Rule Engine: batch picking, zone affinity grouping
 - CSV/Excel order import with OWASP validation
@@ -37,14 +37,15 @@ Open-source warehouse robotics simulator. Any company loads their warehouse layo
 ### Infrastructure
 - Docker Compose: 7 services (MongoDB, Redis, InfluxDB, RabbitMQ, Grafana, Mosquitto, App)
 - Gazebo Fortress: 3D physics sim with LiDAR, barcode, conveyor plugins
-- 856 total tests, 0 failures in any environment
+- 1356 total tests (398 C++ + 906 Python + 52 Gazebo), 0 failures in any environment
 
-## What's Next (Phases 6-7)
+## What's Next (Phases 13-15)
 
 | Phase | Feature | Effort | Business Value |
 |-------|---------|--------|----------------|
-| **6** | Parallel Scenario Comparison | 3 weeks | "Test before you buy" — run 3 configs, compare side-by-side |
-| **7** | Warehouse Designer (GUI) | 4 weeks | Non-developers design warehouses visually, export to sim |
+| **13** | WCS — Conveyors + Sorters | 2-3 weeks | Full material flow simulation — conveyor + sorter + lane management |
+| **14** | WMS — Inventory Management | 3-4 weeks | SKU tracking, replenishment, putaway, slotting optimization |
+| **15** | Warehouse Designer v2 (3D GUI) | 4-6 weeks | React Three Fiber 3D editor — drag shelves, draw conveyors |
 
 ## Business Model
 

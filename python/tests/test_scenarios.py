@@ -541,9 +541,9 @@ class TestScenarioIsolation:
 class TestEndpointCount:
     """Verify root endpoint reports updated count."""
 
-    async def test_root_reports_60_endpoints(self, client: AsyncClient):
-        """GET / should now report 71 endpoints."""
+    async def test_root_reports_94_endpoints(self, client: AsyncClient):
+        """GET / should now report 116 endpoints."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118

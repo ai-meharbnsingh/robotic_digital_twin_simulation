@@ -1,0 +1,17 @@
+segments:
+- segment_id: SEG_001
+  name: Conveyor Segment SEG_001
+  length_m: 5.0
+  max_speed_mps: 1.5
+  direction: forward
+  upstream_id: null
+  downstream_id: SEG_002
+- segment_id: SEG_002
+  name: Conveyor Segment SEG_002
+  length_m: 5.0
+  max_speed_mps: 1.5
+  direction: forward
+  upstream_id: SEG_001
+  downstream_id: null
+divert_points: []
+lanes: []

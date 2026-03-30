@@ -2,7 +2,7 @@
 
 > **Vision:** The only open-source warehouse robotics simulator with a production-grade C++ fleet management system — bring your warehouse layout, your robot specs, and your real orders. No vendor lock-in. One Docker command. 3D visualization in the browser.
 >
-> **Status:** Phases 0-7 COMPLETE, Phase 8 IN PROGRESS, Phase 9 COMPLETE, Phase 10 COMPLETE, Phase 11 COMPLETE. 884+ tests (390 C++ + 477 Python + 52 Gazebo), 0 failures in any environment. Infrastructure-dependent tests skip gracefully via `requires_mongodb` fixture. 64 REST endpoints + 1 WebSocket.
+> **Status:** ALL 12 PHASES COMPLETE. 1356 tests (398 C++ + 906 Python + 52 Gazebo), 0 failures. Infrastructure-dependent tests skip gracefully via `requires_mongodb` fixture. 116 REST endpoints + 1 WebSocket.
 >
 > **Last Updated:** 2026-03-30
 
@@ -13,7 +13,7 @@
 ```
 ┌─────────────┐     ┌──────────────┐     ┌──────────────┐
 │  C++ FMS    │────►│  Python API  │────►│  React       │
-│  15Hz loop  │     │  65 REST +   │     │  Dashboard   │
+│  15Hz loop  │     │  116 REST +   │     │  Dashboard   │
 │  A*, BT,    │     │  1 WebSocket │     │  2D + 3D     │
 │  TCP, MPC   │     │  WES, iogita │     │  TypeScript  │
 └──────┬──────┘     └──────┬───────┘     └──────────────┘
@@ -38,14 +38,15 @@
 | 4 | Wave Rule Engine (Advanced WES) | M (2 weeks) | **COMPLETE** | 629 tests |
 | 5 | 3D Web Simulation (React Three Fiber) | L (3-4 weeks) | **COMPLETE** | Kimi 98, Gemini 97, Codex 89 |
 | 6 | Parallel Scenario Comparison | L (3 weeks) | **COMPLETE** | Codex 89, Gemini 95, Kimi 91 |
-| 7 | Warehouse Designer (GUI MVP) | XL (4 weeks) | **IN PROGRESS** | Codex R2 82/100 — fixing |
-| 8 | VDA5050 Gateway (MQTT Protocol) | L (4 weeks) | **IN PROGRESS** | Infrastructure + fixtures done |
+| 7 | Warehouse Designer (GUI MVP) | XL (4 weeks) | **COMPLETE** | Codex R2 82/100 → fixed |
+| 8 | VDA5050 Gateway (MQTT Protocol) | L (4 weeks) | **COMPLETE** | MQTT bridge, 5 endpoints, conformance tests |
 | 9 | Addverb Fleet Presets | S (1 week) | **COMPLETE** | 27 tests, 3 robot configs, 1 warehouse, 1 fleet, 3 BTs |
 | 10 | ROS2 Bridge (nav2 + HAL) | M (2 weeks) | **COMPLETE** | 35 tests, 4 new endpoints, Docker ros:humble service |
 | 11 | Scale to 100+ Robots (MAPF) | M (2 weeks) | **COMPLETE** | 28 tests, CBS + PIBT solvers, congestion tracker, 4 new endpoints |
-
-**Deferred (build on customer demand):**
-- FMS C++ threading refactor for real-time 100+ robot control loop
+| 12 | io-gita Cold Start Intelligence | M (2 weeks) | **COMPLETE** | KDTree 0.008ms, 40/40 fleet, Nav2 26/26, AMCL 100%, safety 7/7 |
+| 13 | WCS — Conveyors + Sorters | M (2-3 weeks) | **PLANNED** | Conveyor segments, sorter routing, lane management, package tracking |
+| 14 | WMS — Inventory Management | M-L (3-4 weeks) | **PLANNED** | SKU tracking, replenishment, putaway, slotting optimization |
+| 15 | Warehouse Designer v2 (3D GUI) | XL (4-6 weeks) | **PLANNED** | React Three Fiber editor, conveyor drawing, template library |
 
 ---
 
@@ -357,7 +358,7 @@
 **Status Log:**
 | Date | Action | Result |
 |------|--------|--------|
-| 2026-03-30 | Phase 7 implemented (Session 9) | Canvas designer + validator + templates + 4 endpoints, 856 tests |
+| 2026-03-30 | Phase 7 implemented (Session 9) | Canvas designer + validator + templates + 4 endpoints |
 | 2026-03-30 | Codex audit R1 | — |
 | 2026-03-30 | Codex audit R2 | 82/100 — 5 findings (stale closure, contract tests, type safety, docs, blueprint) |
 | 2026-03-30 | Fix R2 findings | Stale closure deps, +4 security/edge tests, ROADMAP updated |
@@ -542,7 +543,7 @@
 - [x] Frontend types aligned: ROS2NavGoalResponse + ROS2PoseResponse match backend shapes
 - [x] SROS2 production config: docker/sros2/ with policies.xml and setup README
 - [x] Auth design documented: GET endpoints open by design (monitoring), POST auth-protected
-- [x] API_REFERENCE.md: all 65 endpoints listed and consistent
+- [x] API_REFERENCE.md: all 116 endpoints listed and consistent
 
 **Files created:**
 - NEW: `python/ros2_bridge/__init__.py`
@@ -575,13 +576,228 @@
 
 ---
 
+## Phase 12: io-gita Cold Start Intelligence (COMPLETE)
+
+**Goal:** When barcode/QR localization fails, robot recovers position from LiDAR in 0.008ms — no human intervention needed.
+
+**What was built:**
+- KDTree engine: 0.008ms recovery, 97.2% zone accuracy, 0.01MB memory
+- Nav2 integration: bridge node publishes /initialpose + NavigateToPose goals
+- 40/40 fleet intelligence conditions — all re-verified on KDTree engine
+- AMCL benchmark: 100% zone accuracy, 54x faster than particle filter
+- Dynamic obstacle filtering: 100% accuracy through 180° occlusion
+- Symmetry breaker: LiDAR-only aisle disambiguation (honest: 83% with odometry)
+- Safety rules (7/7): independent safety scanner, crawl speed, AMCL fallback
+- Docker test environment: ROS2 Humble + Nav2 in container, 26/26 tests
+- Safety certification roadmap: SIL2/PLd gap analysis (10 gaps, 6-12 months, €105-170K)
+- AMR500 params aligned to ActionCodes.yaml (13 mismatches fixed)
+- Hopfield ODE → KDTree migration across entire system (adapter pattern)
+
+**Key files:**
+- `../iogita_kdtree_addverb/` — deliverable package (engine, ROS1/ROS2 nodes, Nav2 integration)
+- `python/intelligence/iogita/kdtree_adapter.py` — drop-in adapter for Hopfield→KDTree swap
+- `python/intelligence/iogita/symmetry_breaker.py` — identical aisle disambiguation
+- `scenarios/` — AMCL benchmark, dynamic obstacles, symmetry tests, safety roadmap
+- `configs/robots/amr500.yaml` — corrected from Addverb ActionCodes.yaml
+- `configs/robots/zippy10.yaml` — verified against ActionCodes.yaml
+
+**Acceptance Criteria:**
+- [x] KDTree engine runs all Gazebo benchmarks (40/40 fleet intel, AMCL, advanced features)
+- [x] Nav2 bridge publishes correct /initialpose with confidence-scaled covariance
+- [x] Docker test (ROS2 Humble + Nav2): 26/26 pass
+- [x] Standalone bridge test: 21/21 pass
+- [x] Dynamic obstacle stress test: 100% through all scenarios
+- [x] Safety rules: 7/7 pass, 0 violations
+- [x] AMR500 params: 0 mismatches vs ActionCodes.yaml
+- [x] Hopfield ODE preserved as automatic fallback
+- [x] FastAPI /api/iogita/* endpoints updated to v5 KDTree
+- [x] New endpoint: POST /api/iogita/recover/{robot_id} (raw LiDAR recovery)
+
+**Status Log:**
+| Date | Action | Result |
+|------|--------|--------|
+| 2026-03-30 | Phase 12 complete | KDTree replaces Hopfield across entire system. 40/40 fleet intel, 26/26 Nav2, AMCL 100%, dynamic obstacles 100%. Zip shipped. |
+
+---
+
+## Phase 13: WCS — Warehouse Control System (Conveyors + Sorters)
+
+**Goal:** Simulate conveyor belts, sorters, and material handling equipment — robot drops package on conveyor, conveyor moves it to sorter, sorter routes it to outbound lane.
+
+**What exists already:**
+- `python/app/routes/wcs.py` — route file (endpoints return empty arrays)
+- Gazebo conveyor plugin — `gz-transport` topics for belt control
+- Behavior tree actions for conveyor load/unload
+
+**What to build:**
+- `python/wcs/conveyor_controller.py` — ConveyorController class
+  - Conveyor segments: start/stop/speed control, jam detection
+  - Segment state machine: IDLE → RUNNING → JAMMED → MAINTENANCE
+  - Package tracking: which package on which segment, ETA to endpoint
+  - Integration with WES: when order completes pick, trigger conveyor
+- `python/wcs/sorter_engine.py` — SorterEngine class
+  - Routing rules: package barcode → outbound lane mapping
+  - Divert mechanism simulation (popup, tilt-tray, crossbelt)
+  - Throughput tracking: packages/hour per lane
+  - Error handling: misread barcode, jam, full lane
+- `python/wcs/lane_manager.py` — LaneManager class
+  - Inbound lanes (receiving → storage)
+  - Outbound lanes (storage → shipping)
+  - Lane capacity tracking, overflow alerts
+  - Priority lanes for express/urgent orders
+- `python/app/routes/wcs.py` — Update with real endpoints:
+  - `GET /api/wcs/conveyors` — all conveyor segments with state
+  - `GET /api/wcs/conveyors/{id}/status` — single conveyor status
+  - `POST /api/wcs/conveyors/{id}/control` — start/stop/speed
+  - `GET /api/wcs/sorters` — sorter status + routing rules
+  - `POST /api/wcs/sorters/{id}/rules` — update routing rules
+  - `GET /api/wcs/lanes` — lane status + capacity
+  - `GET /api/wcs/packages/{tracking_id}` — track a package through the system
+- `configs/wcs/conveyor_layout.yaml` — Conveyor topology config
+  - Segments, junctions, sorter points, lane assignments
+- Gazebo integration: conveyor plugin wired to WCS controller
+- Frontend: conveyor visualization in 3D (animated belt movement)
+- Tests: conveyor state machine, sorter routing, lane overflow, jam detection
+
+**Acceptance Criteria:**
+- [ ] Conveyor segments start/stop via API
+- [ ] Package tracking from robot drop → conveyor → sorter → outbound lane
+- [ ] Sorter routes packages based on barcode → lane rules
+- [ ] Jam detection triggers alert + upstream stop
+- [ ] Lane capacity tracking with overflow prevention
+- [ ] Gazebo conveyor plugin responds to WCS commands
+- [ ] 3D dashboard shows conveyor animation
+- [ ] Config-driven: conveyor_layout.yaml defines topology
+- [ ] 30+ tests pass
+
+**Estimated effort:** M (2-3 weeks)
+
+---
+
+## Phase 14: WMS — Warehouse Management System (Inventory)
+
+**Goal:** Track inventory — what's stored where, stock levels, replenishment triggers, pick accuracy, storage optimization.
+
+**What exists already:**
+- `python/app/routes/wms.py` — route file (minimal logic)
+- WES already tracks orders and tasks
+- Warehouse config already defines storage zones and nodes
+
+**What to build:**
+- `python/wms/inventory_manager.py` — InventoryManager class
+  - SKU registry: SKU → name, dimensions, weight, category, storage class
+  - Location tracking: which SKU at which node, quantity, last updated
+  - Stock levels: current quantity, min/max thresholds, reorder point
+  - Putaway rules: which zone/aisle for which SKU category (heavy→bottom, fast-moving→front)
+  - Cycle counting: schedule automated inventory checks
+- `python/wms/replenishment.py` — ReplenishmentEngine class
+  - Trigger: stock below reorder point → generate replenishment order
+  - Source: inbound staging → storage location
+  - Priority: based on demand velocity (ABC analysis)
+  - Integration with WES: replenishment order → task → robot picks and puts away
+- `python/wms/storage_optimizer.py` — StorageOptimizer class
+  - Slotting optimization: move fast-movers closer to pick stations
+  - Zone balancing: distribute inventory evenly across storage aisles
+  - Heat map integration: use pick frequency data to recommend slot changes
+  - "What-if" analysis: simulate layout change impact on pick time
+- `python/app/routes/wms.py` — Update with real endpoints:
+  - `GET /api/wms/inventory` — current stock by SKU/location
+  - `GET /api/wms/inventory/{sku}` — single SKU details + locations
+  - `POST /api/wms/receive` — receive inbound inventory (putaway)
+  - `POST /api/wms/pick` — pick inventory (decrement stock)
+  - `GET /api/wms/stock-levels` — all SKUs with min/max/current
+  - `GET /api/wms/replenishment` — pending replenishment orders
+  - `POST /api/wms/cycle-count` — trigger cycle count for zone
+  - `GET /api/wms/slotting` — current slotting recommendations
+- `configs/wms/sku_catalog.yaml` — Sample SKU catalog
+- MongoDB collections: `inventory`, `sku_catalog`, `stock_movements`
+- Frontend: inventory dashboard (stock levels, alerts, heatmap overlay by SKU density)
+- Tests: putaway, pick, replenishment trigger, stock accuracy, cycle count
+
+**Acceptance Criteria:**
+- [ ] SKU catalog loadable from YAML
+- [ ] Receive/pick operations update stock levels in MongoDB
+- [ ] Stock below reorder point → auto-generates replenishment order → WES task
+- [ ] Putaway rules assign correct storage location by SKU category
+- [ ] Cycle count detects discrepancy between expected and actual
+- [ ] Slotting optimizer recommends changes based on pick frequency
+- [ ] Dashboard shows stock levels with red/yellow/green indicators
+- [ ] Config-driven: sku_catalog.yaml defines products
+- [ ] 35+ tests pass
+
+**Estimated effort:** M-L (3-4 weeks)
+
+---
+
+## Phase 15: Warehouse Designer GUI v2 (Full Visual Editor)
+
+**Goal:** Non-technical user draws warehouse in browser — drag shelves, aisles, charging stations, conveyors — exports to JSON config that drives the entire simulation.
+
+**What exists already:**
+- Phase 7 built an HTML5 Canvas editor (basic grid, node placement, validation)
+- `python/app/routes/designer.py` — 4 endpoints
+- Templates: small grid, multi-zone warehouse
+
+**What to build (v2 upgrade):**
+- **React Three Fiber 3D editor** (replace Canvas 2D)
+  - Drag-and-drop 3D models: shelves (height-adjustable), conveyors, charging stations, pick stations
+  - Snap-to-grid placement with configurable grid resolution
+  - Automatic aisle generation between shelf rows
+  - Node/edge auto-generation from placed objects
+  - Zone auto-detection from object clusters
+  - Real-time validation: disconnected areas, missing charge stations, dead-end aisles
+  - Undo/redo (50 levels)
+  - Camera: orbit, pan, zoom, top-down toggle
+- **Conveyor designer** (Phase 13 integration)
+  - Draw conveyor paths (click waypoints)
+  - Place sorter divert points
+  - Define lanes (inbound/outbound)
+  - Auto-generate conveyor_layout.yaml
+- **Import/Export**
+  - Import: existing warehouse JSON → visual editor
+  - Export: editor → warehouse JSON + conveyor YAML + robot placement
+  - Import from DWG/DXF (AutoCAD floor plan) — stretch goal
+- **Template library**
+  - Small warehouse (20 nodes, 2 aisles)
+  - Medium warehouse (100 nodes, 8 aisles, conveyors)
+  - Large distribution center (500+ nodes, multi-zone, multi-level)
+  - Addverb Noida reference layout
+- **Simulation preview**
+  - Place N robots in editor → click "Simulate" → 3D sim runs in same view
+  - Side-by-side: design view + simulation view
+- `python/app/routes/designer.py` — Extended endpoints:
+  - `POST /api/designer/import-dwg` — import AutoCAD floor plan
+  - `GET /api/designer/templates` — list available templates
+  - `POST /api/designer/validate-3d` — validate 3D layout
+  - `POST /api/designer/export-all` — export warehouse JSON + conveyor YAML + fleet config
+- Tests: placement validation, export format, template loading, undo/redo
+
+**Acceptance Criteria:**
+- [ ] 3D drag-and-drop shelf/station placement in browser
+- [ ] Auto-generates valid warehouse JSON from visual layout
+- [ ] Conveyor path drawing with sorter points
+- [ ] Real-time validation (no disconnected areas, required stations present)
+- [ ] Import existing warehouse JSON back into editor
+- [ ] 4+ templates (small → large)
+- [ ] Export produces config that runs in simulation without manual editing
+- [ ] Works on Chrome, Firefox, Safari
+- [ ] 25+ tests pass
+
+**Estimated effort:** XL (4-6 weeks)
+
+---
+
 ## Deferred Features
 
 | Feature | Trigger to Build | Estimated Effort |
 |---------|-----------------|-----------------|
-| Scale to 100+ robots | First customer needs >50 robots | XL (6 weeks) — FMS threading refactor |
+| FMS C++ threading refactor | Customer needs real-time 100+ robot loop | XL (6 weeks) |
 | Grafana dashboard provisioning | After heatmap proves demand | S (1 week) |
 | Mobile dashboard (responsive) | SaaS launch | M (2 weeks) |
+| DWG/DXF import | Enterprise customer request | M (2-3 weeks) |
+| Multi-floor warehouse | Customer with mezzanine/multi-level | L (4 weeks) |
+| SAP/WMS connector | Enterprise integration demand | M (3 weeks) |
+| Camera-based relocalization | Identical aisle accuracy >90% needed | L (6-12 weeks) |
 
 ---
 

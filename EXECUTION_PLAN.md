@@ -81,8 +81,8 @@ No task is done until its test passes for real.
 ## Phase 9: Python API + WES
 **Goal:** FastAPI serves fleet data. WES generates orders and tracks KPIs.
 
-- [x] 9.1 test_api.py — all 64 endpoints return correct shapes
-- [x] 9.2 python/app/ — FastAPI, 64 endpoints, WebSocket
+- [x] 9.1 test_api.py — all 116 endpoints return correct shapes
+- [x] 9.2 python/app/ — FastAPI, 116 endpoints, WebSocket
 - [x] 9.3–9.6 ~~io-gita + SG prediction~~ — **DROPPED** (see Phase 12 closure)
 - [x] 9.7 python/wes/ — OrderGenerator, TaskGenerator, KPITracker
 - [x] 9.8 python/monitoring/ — InfluxDB writer, Redis cache
@@ -127,9 +127,9 @@ v1-v3 code preserved in `_archive/io_gita_dropped/`. BottleneckPredictor (SG eng
 
 | Suite | Tests | Status |
 |-------|-------|--------|
-| C++ (gtest) | 371 | All pass |
-| Python (pytest) | 340 (308 pass, 32 skip) | All pass |
+| C++ (gtest) | 398 | All pass |
+| Python (pytest) | 906 | All pass (898 passed + 8 skipped) |
 | Gazebo (pytest) | 52 | All pass |
-| **Total** | **763** | **0 failures** |
+| **Total** | **1356** | **0 failures** |
 
 (Includes Phases 1-5 additions: order import, mixed fleet, heatmap, waves, 3D contracts + perf)

@@ -399,11 +399,11 @@ class TestROS2Endpoints:
 
     @pytest.mark.asyncio
     async def test_endpoint_count_60(self, client):
-        """Root endpoint reports 65 endpoints."""
+        """Root endpoint reports 116 endpoints."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118
 
     @pytest.mark.asyncio
     async def test_nav_goal_invalid_robot_id(self, client):

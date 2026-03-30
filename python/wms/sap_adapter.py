@@ -30,6 +30,7 @@ class SAPAdapter(WMSConnector):
         self._url = base_url.rstrip("/")
         self._key = api_key
         self._connected = False
+        self._client = httpx.AsyncClient(timeout=10.0)
 
     def _headers(self) -> dict[str, str]:
         return {
@@ -37,17 +38,20 @@ class SAPAdapter(WMSConnector):
             "X-SAP-API-Key": self._key,
         }
 
+    async def close(self) -> None:
+        """Close the HTTP client pool."""
+        await self._client.aclose()
+
     async def fetch_orders(self) -> list[dict]:
         """GET /sap/orders -> convert SAP order format to internal."""
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                resp = await client.get(
-                    f"{self._url}/sap/orders",
-                    headers=self._headers(),
-                )
-                resp.raise_for_status()
-                self._connected = True
-                return resp.json()
+            resp = await self._client.get(
+                f"{self._url}/sap/orders",
+                headers=self._headers(),
+            )
+            resp.raise_for_status()
+            self._connected = True
+            return resp.json()
         except Exception as exc:
             self._connected = False
             logger.error("SAP fetch_orders failed: %s", exc)
@@ -56,15 +60,14 @@ class SAPAdapter(WMSConnector):
     async def update_order_status(self, order_id: str, status: str) -> dict:
         """POST /sap/orders/{id}/status -> push status to SAP."""
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                resp = await client.post(
-                    f"{self._url}/sap/orders/{order_id}/status",
-                    headers=self._headers(),
-                    json={"status": status},
-                )
-                resp.raise_for_status()
-                self._connected = True
-                return resp.json()
+            resp = await self._client.post(
+                f"{self._url}/sap/orders/{order_id}/status",
+                headers=self._headers(),
+                json={"status": status},
+            )
+            resp.raise_for_status()
+            self._connected = True
+            return resp.json()
         except Exception as exc:
             self._connected = False
             logger.error("SAP update_order_status failed: %s", exc)
@@ -73,14 +76,13 @@ class SAPAdapter(WMSConnector):
     async def get_inventory(self) -> list[dict]:
         """GET /sap/inventory -> convert SAP inventory to internal."""
         try:
-            async with httpx.AsyncClient(timeout=10.0) as client:
-                resp = await client.get(
-                    f"{self._url}/sap/inventory",
-                    headers=self._headers(),
-                )
-                resp.raise_for_status()
-                self._connected = True
-                return resp.json()
+            resp = await self._client.get(
+                f"{self._url}/sap/inventory",
+                headers=self._headers(),
+            )
+            resp.raise_for_status()
+            self._connected = True
+            return resp.json()
         except Exception as exc:
             self._connected = False
             logger.error("SAP get_inventory failed: %s", exc)

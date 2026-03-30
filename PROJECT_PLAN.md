@@ -23,11 +23,11 @@ Note: "Tests" column shows cumulative count at time of phase completion (histori
 | 6. Communication | DONE | 319 C++ | TCP Protocol V1 + CRC32, REST server |
 | 7. Fleet Manager | DONE | 319 C++ | 15Hz main loop, COPP, TaskManager |
 | 8. Gazebo | DONE | 319 C++ | Physics sim, sensor plugins |
-| 9. Python API | DONE | 129 Python | 64 endpoints, WES, monitoring, ROS2 |
+| 9. Python API | DONE | 129 Python | 116 endpoints, WES, monitoring, ROS2 |
 | 10. Dashboard | DONE | 129 Python | React + Grafana |
 | 11. Integration | DONE | 182 Python | Demo, integration tests, docs |
 
-**Total: 390 C++ + 414 Python + 52 Gazebo = 856 tests. Zero failures (32 skipped in sandbox).**
+**Total: 398 C++ + 906 Python + 52 Gazebo = 1356 tests. Zero failures (infrastructure-dependent tests skip in sandbox).**
 
 (Test counts updated to include Phases 1-5: order import, mixed fleet, heatmap, waves, 3D contracts + perf, Gazebo plugins)
 
@@ -55,7 +55,7 @@ Note: "Tests" column shows cumulative count at time of phase completion (histori
 │              │ JSON file output (fleet_state.json)               │
 │  ┌───────────▼────────────────────────────────────────────────┐ │
 │  │ PYTHON PROCESS: FastAPI (python/app/main.py :8029)          │ │
-│  │ ├── REST API (64 endpoints — reads MongoDB)                 │ │
+│  │ ├── REST API (116 endpoints — reads MongoDB)                 │ │
 │  │ ├── WebSocket (/ws/fleet)                                   │ │
 │  │ └── [Phase 9] WES OrderGenerator                            │ │
 │  └────────────────────────────────────────────────────────────┘ │
@@ -157,7 +157,7 @@ robotic_digital_twin_simulation/
 ├── docs/                              # Documentation
 │   ├── USER_EXPERIENCE.md
 │   ├── GETTING_STARTED.md             # 5-minute quickstart
-│   ├── API_REFERENCE.md               # All 64 endpoints with curl examples
+│   ├── API_REFERENCE.md               # All 116 endpoints with curl examples
 │   ├── CONFIGURATION.md               # Warehouse, robot, BT customization guide
 │   └── ARCHITECTURE.md                # System diagram, data flow, tech stack
 │

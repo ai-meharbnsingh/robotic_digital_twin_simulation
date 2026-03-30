@@ -1,5 +1,5 @@
 """
-Test ALL 71 API endpoints with real assertions.
+Test ALL 118 REST endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 71
+        assert data["endpoints"] == 118
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -408,8 +408,8 @@ class TestReservations:
 
 
 class TestEndpointCount:
-    async def test_all_71_endpoints_exist(self, client: AsyncClient):
-        """Verify all 71 API endpoints respond (not 404/405)."""
+    async def test_all_94_endpoints_exist(self, client: AsyncClient):
+        """Verify all 94 API endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
             ("GET", "/"),
@@ -439,9 +439,32 @@ class TestEndpointCount:
             ("GET", "/api/analytics/heatmap"),
             # Events (1)
             ("GET", "/api/events"),
-            # WCS (2)
+            # WCS (25)
             ("GET", "/api/wcs/conveyors"),
+            ("GET", "/api/wcs/conveyors/seg-1/status"),
+            ("POST", "/api/wcs/conveyors/seg-1/control"),
+            ("POST", "/api/wcs/conveyors/seg-1/jam"),
+            ("POST", "/api/wcs/conveyors/start-all"),
+            ("POST", "/api/wcs/conveyors/stop-all"),
+            ("POST", "/api/wcs/conveyors/transfer"),
+            ("GET", "/api/wcs/sorter/rules"),
+            ("POST", "/api/wcs/sorter/rules"),
+            ("DELETE", "/api/wcs/sorter/rules/rule-1"),
+            ("GET", "/api/wcs/sorter/log"),
+            ("POST", "/api/wcs/sorter/sort"),
+            ("GET", "/api/wcs/sorter/stats"),
+            ("GET", "/api/wcs/sorter/diverts"),
             ("GET", "/api/wcs/lanes"),
+            ("GET", "/api/wcs/lanes/by-type/inbound"),
+            ("POST", "/api/wcs/lanes/{lane_id}/control"),
+            ("GET", "/api/wcs/lanes/lane-1"),
+            ("POST", "/api/wcs/lanes/{lane_id}/package"),
+            ("POST", "/api/wcs/packages"),
+            ("GET", "/api/wcs/packages/in-transit"),
+            ("GET", "/api/wcs/packages/by-barcode"),
+            ("GET", "/api/wcs/packages/at-location"),
+            ("GET", "/api/wcs/packages/pkg-1"),
+            ("GET", "/api/wcs/stats"),
             # WES (2)
             ("POST", "/api/wes/inject-orders"),
             ("GET", "/api/wes/kpi"),
@@ -476,11 +499,17 @@ class TestEndpointCount:
             ("GET", "/api/scenarios/test-id/results"),
             ("DELETE", "/api/scenarios/test-id"),
             ("GET", "/api/scenarios/compare"),
-            # Designer (4)
+            # Designer (10)
             ("POST", "/api/designer/validate"),
             ("POST", "/api/designer/export"),
+            ("POST", "/api/designer/auto-edges"),
+            ("POST", "/api/designer/template/scale"),
             ("GET", "/api/designer/templates"),
+            ("GET", "/api/designer/templates/categories"),
             ("GET", "/api/designer/templates/template_small"),
+            ("POST", "/api/designer/import"),
+            ("POST", "/api/designer/validate-3d"),
+            ("POST", "/api/designer/export-all"),
             # VDA5050 (5)
             ("GET", "/api/vda5050/status"),
             ("POST", "/api/vda5050/orders"),
@@ -505,9 +534,28 @@ class TestEndpointCount:
             ("POST", "/api/wms/webhook/receive"),
             ("GET", "/api/wms/dlq"),
             ("POST", "/api/wms/dlq/{id}/retry"),
+            # Inventory Management (Phase 14) — 18 endpoints
+            ("GET", "/api/inventory/skus"),
+            ("GET", "/api/inventory/skus/TEST-SKU"),
+            ("GET", "/api/inventory/stock-levels"),
+            ("GET", "/api/inventory/stock/BIN-1"),
+            ("POST", "/api/inventory/receive"),
+            ("POST", "/api/inventory/pick"),
+            ("POST", "/api/inventory/adjust"),
+            ("POST", "/api/inventory/transfer"),
+            ("POST", "/api/inventory/cycle-count"),
+            ("GET", "/api/inventory/movements"),
+            ("GET", "/api/inventory/replenishment"),
+            ("POST", "/api/inventory/replenishment/check"),
+            ("POST", "/api/inventory/replenishment/test-id/complete"),
+            ("POST", "/api/inventory/replenishment/test-id/cancel"),
+            ("GET", "/api/inventory/optimizer/abc"),
+            ("GET", "/api/inventory/optimizer/recommendations"),
+            ("GET", "/api/inventory/optimizer/zone-balance"),
+            ("GET", "/api/inventory/stats"),
         ]
 
-        assert len(endpoints) == 71, f"Expected 71 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 118, f"Expected 116 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":

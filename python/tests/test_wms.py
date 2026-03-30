@@ -399,6 +399,57 @@ class TestWMSEndpoints:
         resp = await authed_client.post("/api/wms/dlq/nonexistent-id/retry")
         assert resp.status_code == 404
 
+    @pytest.mark.asyncio
+    async def test_webhook_non_webhook_adapter_returns_405(self, client):
+        """POST /api/wms/webhook/receive with SAP adapter returns 405."""
+        from app.main import app_state
+
+        # Temporarily set WMS connector to a non-webhook adapter
+        original = app_state.get("wms_connector")
+        try:
+            from wms.sap_adapter import SAPAdapter
+            app_state["wms_connector"] = SAPAdapter(base_url="http://fake:8080", api_key="test")
+            resp = await client.post("/api/wms/webhook/receive", json={
+                "id": "SAP-001",
+                "items": [{"sku": "PART", "quantity": 1}],
+            })
+            assert resp.status_code == 405
+            assert "does not support webhook" in resp.json()["detail"]
+        finally:
+            app_state["wms_connector"] = original
+
+    @pytest.mark.asyncio
+    async def test_sync_connector_unavailable_503(self, authed_client):
+        """POST /api/wms/sync with no connector returns 503."""
+        from app.main import app_state
+
+        original = app_state.get("wms_connector")
+        try:
+            app_state["wms_connector"] = None
+            resp = await authed_client.post("/api/wms/sync")
+            assert resp.status_code == 503
+            assert "not initialized" in resp.json()["detail"]
+        finally:
+            app_state["wms_connector"] = original
+
+    @pytest.mark.asyncio
+    async def test_orders_pagination(self, client):
+        """GET /api/wms/orders supports offset and limit."""
+        resp = await client.get("/api/wms/orders", params={"offset": 0, "limit": 10})
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "offset" in data
+        assert "limit" in data
+        assert data["limit"] == 10
+
+    @pytest.mark.asyncio
+    async def test_dlq_limit_clamped(self, client):
+        """GET /api/wms/dlq clamps negative/huge limit values."""
+        resp = await client.get("/api/wms/dlq", params={"limit": -5})
+        assert resp.status_code == 200
+        resp = await client.get("/api/wms/dlq", params={"limit": 99999})
+        assert resp.status_code == 200
+
 
 # ── Endpoint count test ────────────────────────────────────
 
@@ -618,4 +669,4 @@ class TestEndpointCount:
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 71, f"Expected 71 endpoints, got {data['endpoints']}"
+        assert data["endpoints"] == 118, f"Expected 116 endpoints, got {data['endpoints']}"

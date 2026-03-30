@@ -70,10 +70,16 @@ class WebhookAdapter(WMSConnector):
         return {"internal_id": internal_id, "status": "received"}
 
     async def fetch_orders(self) -> list[dict]:
-        """Return and clear pending orders."""
+        """Return and clear pending orders. Prunes old processed orders to prevent unbounded growth."""
         orders = list(self._pending_orders)
         self._processed_orders.extend(orders)
         self._pending_orders.clear()
+        # Prune processed orders to prevent eventual lockout (keep last 10k)
+        if len(self._processed_orders) > 10_000:
+            pruned = self._processed_orders[-10_000:]
+            # Rebuild seen set from remaining orders only
+            self._seen_order_ids = {o.get("id", "") for o in pruned if o.get("id")}
+            self._processed_orders = pruned
         return orders
 
     async def update_order_status(self, order_id: str, status: str) -> dict:

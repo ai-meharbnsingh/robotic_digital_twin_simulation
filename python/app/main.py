@@ -57,6 +57,11 @@ app_state: dict[str, Any] = {
     # io-gita v4 intelligence
     "iogita_zone_identifier": None,
     "iogita_cold_start": None,
+    # WCS — Warehouse Control System (Phase 13)
+    "wcs_conveyor": None,
+    "wcs_sorter": None,
+    "wcs_lanes": None,
+    "wcs_tracker": None,
     # VDA5050 gateway (Phase 8)
     "vda5050_gateway": None,
     # ROS2 bridge + HAL (Phase 10)
@@ -68,6 +73,9 @@ app_state: dict[str, Any] = {
     "wms_connector": None,
     "wms_dlq": None,
     "wms_orders": [],
+    "inventory_manager": None,  # Phase 14: WMS Inventory
+    "replenishment_engine": None,  # Phase 14: WMS Replenishment
+    "storage_optimizer": None,  # Phase 14: WMS Storage Optimizer
 }
 
 
@@ -154,6 +162,45 @@ async def _hydrate_wave_rules():
             engine.set_rules(rules)
     except Exception:
         pass  # Graceful — rules will be empty until created
+
+
+def _init_wcs():
+    """Initialize WCS — Warehouse Control System (Phase 13)."""
+    try:
+        import yaml
+        from wcs import ConveyorController, SorterEngine, LaneManager, PackageTracker
+
+        wcs_config_path = Path(__file__).resolve().parent.parent.parent / "configs" / "wcs" / "conveyor_layout.yaml"
+        if wcs_config_path.exists():
+            with open(wcs_config_path) as f:
+                wcs_config = yaml.safe_load(f)
+        else:
+            wcs_config = {}
+
+        conveyor = ConveyorController()
+        conveyor.load_config(wcs_config)
+        app_state["wcs_conveyor"] = conveyor
+
+        sorter = SorterEngine()
+        sorter.load_config(wcs_config)
+        app_state["wcs_sorter"] = sorter
+
+        lanes = LaneManager()
+        lanes.load_config(wcs_config)
+        app_state["wcs_lanes"] = lanes
+
+        tracker = PackageTracker()
+        app_state["wcs_tracker"] = tracker
+
+        logger.info(
+            "WCS loaded: %d conveyors, %d sort rules, %d divert points, %d lanes",
+            len(conveyor.get_all_segments()),
+            len(sorter.get_rules()),
+            len(sorter.get_diverts()),
+            len(lanes.get_all_lanes()),
+        )
+    except Exception as e:
+        logger.warning("WCS init failed: %s", e)
 
 
 def _init_iogita(warehouse_config: dict):
@@ -320,6 +367,67 @@ def _init_wms(settings: Settings):
         app_state["wms_dlq"] = None
 
 
+def _init_inventory():
+    """Initialize WMS Inventory Management (Phase 14).
+
+    Loads SKU catalog from configs/wms/sku_catalog.yaml,
+    creates InventoryManager, ReplenishmentEngine, StorageOptimizer.
+    """
+    try:
+        import yaml
+        from wms.inventory_manager import InventoryManager
+        from wms.replenishment import ReplenishmentEngine
+        from wms.storage_optimizer import StorageOptimizer
+
+        sku_config_path = (
+            Path(__file__).resolve().parent.parent.parent
+            / "configs"
+            / "wms"
+            / "sku_catalog.yaml"
+        )
+        if not sku_config_path.exists():
+            logger.warning("SKU catalog not found at %s", sku_config_path)
+            return
+
+        with open(sku_config_path) as f:
+            sku_config = yaml.safe_load(f)
+
+        manager = InventoryManager()
+        manager.load_catalog(sku_config)
+        app_state["inventory_manager"] = manager
+
+        replenishment = ReplenishmentEngine(manager, default_source="Staging")
+        app_state["replenishment_engine"] = replenishment
+
+        # Build pick nodes and node positions from warehouse config for optimizer
+        wh_config = app_state.get("warehouse_config") or {}
+        nodes = wh_config.get("nodes", [])
+        pick_nodes = [n["name"] for n in nodes if n.get("type") == "pick"]
+        node_positions = {
+            n["name"]: {
+                "x": n.get("x", 0),
+                "y": n.get("y", 0),
+                "zone": n.get("zone", "unknown"),
+            }
+            for n in nodes
+        }
+
+        optimizer = StorageOptimizer(
+            inventory=manager,
+            pick_nodes=pick_nodes,
+            node_positions=node_positions,
+        )
+        app_state["storage_optimizer"] = optimizer
+
+        logger.info(
+            "Inventory loaded: %d SKUs, %d putaway rules",
+            len(manager.get_all_skus()),
+            len(manager.get_putaway_rules()),
+        )
+    except Exception as e:
+        logger.warning("Inventory init failed: %s", e)
+
+
 def _init_ros2_bridge():
     """Initialize ROS2 Bridge and HAL (Phase 10).
 
@@ -398,7 +506,13 @@ async def lifespan(app: FastAPI):
     # Initialize WES
     _init_wes(app_state["warehouse_config"])
 
-    # Initialize io-gita v4 intelligence
+    # Initialize WCS (Phase 13)
+    _init_wcs()
+
+    # Initialize WMS Inventory Management (Phase 14)
+    _init_inventory()
+
+    # Initialize io-gita v5 intelligence
     _init_iogita(app_state["warehouse_config"])
 
     # Initialize monitoring
@@ -453,6 +567,10 @@ async def lifespan(app: FastAPI):
         await app_state["redis_cache"].close()
     if app_state.get("influx_writer"):
         app_state["influx_writer"].close()
+    # Close WMS connector (SAP adapter has persistent httpx.AsyncClient)
+    connector = app_state.get("wms_connector")
+    if connector and hasattr(connector, "close"):
+        await connector.close()
 
 
 app = FastAPI(
@@ -499,6 +617,7 @@ from app.routes.vda5050 import router as vda5050_router
 from app.routes.ros2 import router as ros2_router
 from app.routes.mapf import router as mapf_router
 from app.routes.wms import router as wms_router
+from app.routes.inventory import router as inventory_router  # Phase 14: WMS Inventory
 from app.websocket import router as ws_router
 
 app.include_router(fleet_router)
@@ -525,6 +644,7 @@ app.include_router(vda5050_router)
 app.include_router(ros2_router)
 app.include_router(mapf_router)
 app.include_router(wms_router)
+app.include_router(inventory_router)  # Phase 14: WMS Inventory
 app.include_router(ws_router)
 
 
@@ -566,7 +686,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 71,
+        "endpoints": 118,
     }
 
 

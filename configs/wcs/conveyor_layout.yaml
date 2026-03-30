@@ -1,0 +1,168 @@
+# WCS Conveyor Layout — Default Warehouse Configuration
+#
+# Conveyor topology:
+#   INBOUND_A → MAIN_LINE → SORTER_LINE → [DIVERT to outbound lanes]
+#   INBOUND_B → MAIN_LINE (merge)
+#
+# Robot drops package at INBOUND_A or INBOUND_B entry point.
+# Package travels through MAIN_LINE to SORTER_LINE.
+# Sorter diverts to correct outbound lane based on barcode.
+
+segments:
+  - segment_id: "INBOUND_A"
+    name: "Inbound Belt A"
+    length_m: 6.0
+    max_speed_mps: 1.2
+    direction: "forward"
+    upstream_id: null
+    downstream_id: "MAIN_LINE"
+
+  - segment_id: "INBOUND_B"
+    name: "Inbound Belt B"
+    length_m: 6.0
+    max_speed_mps: 1.2
+    direction: "forward"
+    upstream_id: null
+    downstream_id: "MAIN_LINE"
+
+  - segment_id: "MAIN_LINE"
+    name: "Main Conveyor Line"
+    length_m: 15.0
+    max_speed_mps: 2.0
+    direction: "forward"
+    upstream_ids:
+      - "INBOUND_A"
+      - "INBOUND_B"
+    downstream_id: "SORTER_LINE"
+
+  - segment_id: "SORTER_LINE"
+    name: "Sorter Line"
+    length_m: 10.0
+    max_speed_mps: 1.5
+    direction: "forward"
+    upstream_id: "MAIN_LINE"
+    downstream_id: null
+
+  - segment_id: "EXPRESS_SPUR"
+    name: "Express Lane Spur"
+    length_m: 3.0
+    max_speed_mps: 2.0
+    direction: "forward"
+    upstream_id: "MAIN_LINE"
+    downstream_id: null
+
+sort_rules:
+  - rule_id: "RULE_EXPRESS"
+    pattern: "EXP-"
+    target_lane: "LANE_EXPRESS"
+    priority: 10
+    enabled: true
+
+  - rule_id: "RULE_ZONE_A"
+    pattern: "ZA-"
+    target_lane: "LANE_OUT_A"
+    priority: 5
+    enabled: true
+
+  - rule_id: "RULE_ZONE_B"
+    pattern: "ZB-"
+    target_lane: "LANE_OUT_B"
+    priority: 5
+    enabled: true
+
+  - rule_id: "RULE_ZONE_C"
+    pattern: "ZC-"
+    target_lane: "LANE_OUT_C"
+    priority: 5
+    enabled: true
+
+  - rule_id: "RULE_RETURNS"
+    pattern: "RET-"
+    target_lane: "LANE_RETURNS"
+    priority: 8
+    enabled: true
+
+divert_points:
+  - divert_id: "DIV_EXPRESS"
+    name: "Express Divert"
+    segment_id: "SORTER_LINE"
+    position_m: 2.0
+    target_lane: "LANE_EXPRESS"
+    divert_type: "popup"
+
+  - divert_id: "DIV_A"
+    name: "Zone A Divert"
+    segment_id: "SORTER_LINE"
+    position_m: 4.0
+    target_lane: "LANE_OUT_A"
+    divert_type: "popup"
+
+  - divert_id: "DIV_B"
+    name: "Zone B Divert"
+    segment_id: "SORTER_LINE"
+    position_m: 6.0
+    target_lane: "LANE_OUT_B"
+    divert_type: "tilt_tray"
+
+  - divert_id: "DIV_C"
+    name: "Zone C Divert"
+    segment_id: "SORTER_LINE"
+    position_m: 8.0
+    target_lane: "LANE_OUT_C"
+    divert_type: "pusher"
+
+  - divert_id: "DIV_RETURNS"
+    name: "Returns Divert"
+    segment_id: "MAIN_LINE"
+    position_m: 12.0
+    target_lane: "LANE_RETURNS"
+    divert_type: "popup"
+
+lanes:
+  - lane_id: "LANE_IN_A"
+    name: "Inbound Dock A"
+    type: "inbound"
+    max_capacity: 100
+    connected_segment_id: "INBOUND_A"
+
+  - lane_id: "LANE_IN_B"
+    name: "Inbound Dock B"
+    type: "inbound"
+    max_capacity: 100
+    connected_segment_id: "INBOUND_B"
+
+  - lane_id: "LANE_OUT_A"
+    name: "Outbound Zone A"
+    type: "outbound"
+    max_capacity: 50
+    connected_segment_id: "SORTER_LINE"
+
+  - lane_id: "LANE_OUT_B"
+    name: "Outbound Zone B"
+    type: "outbound"
+    max_capacity: 50
+    connected_segment_id: "SORTER_LINE"
+
+  - lane_id: "LANE_OUT_C"
+    name: "Outbound Zone C"
+    type: "outbound"
+    max_capacity: 50
+    connected_segment_id: "SORTER_LINE"
+
+  - lane_id: "LANE_EXPRESS"
+    name: "Express Shipping"
+    type: "express"
+    max_capacity: 20
+    connected_segment_id: "EXPRESS_SPUR"
+
+  - lane_id: "LANE_RETURNS"
+    name: "Returns Processing"
+    type: "returns"
+    max_capacity: 30
+    connected_segment_id: "MAIN_LINE"
+
+  - lane_id: "DEFAULT"
+    name: "Default / Unsorted"
+    type: "staging"
+    max_capacity: 100
+    connected_segment_id: null
