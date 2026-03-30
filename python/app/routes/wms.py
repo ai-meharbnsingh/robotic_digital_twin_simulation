@@ -180,8 +180,13 @@ async def receive_webhook(payload: WebhookPayload):
     try:
         result = await connector.receive_order(payload.model_dump())
         return result
+    except NotImplementedError:
+        raise HTTPException(
+            status_code=405,
+            detail=f"Active connector ({connector.get_status().get('type')}) does not support webhook receive",
+        )
     except ValueError as exc:
-        raise HTTPException(status_code=409, detail=str(exc))
+        raise HTTPException(status_code=409, detail="Duplicate order ID or validation error")
     except OverflowError as exc:
         raise HTTPException(status_code=507, detail=str(exc))
     except Exception as exc:
