@@ -13,19 +13,29 @@ export function FleetAnalyticsPanel({ analytics }: Props) {
     )
   }
 
+  // Handle both old API format (flat) and new format (detailed)
+  const a = analytics as any
+  const totalTasks = a.total_tasks ?? 0
+  const completed = a.completed_tasks ?? 0
+  const failed = a.failed_tasks ?? 0
+  const avgTime = a.avg_task_time_s ?? a.avg_task_time ?? 0
+  const robots = a.total_robots ?? 0
+  const avgBat = a.avg_battery_pct ?? 0
+  const throughput = a.throughput_tasks_per_hour ?? a.throughput ?? 0
+
   return (
     <div className="bg-panel border border-border rounded-lg p-3 flex flex-col gap-2 overflow-auto">
       <h2 className="text-sm font-semibold text-gray-300 tracking-wide uppercase">
         Fleet Analytics
       </h2>
       <div className="grid grid-cols-2 gap-2 text-xs">
-        <Stat label="Total Tasks" value={analytics.total_tasks} />
-        <Stat label="Completed" value={analytics.completed_tasks} />
-        <Stat label="Failed" value={analytics.failed_tasks} />
-        <Stat label="Avg Time" value={`${analytics.avg_task_time_s.toFixed(1)}s`} />
-        <Stat label="Robots" value={analytics.total_robots} />
-        <Stat label="Avg Battery" value={`${analytics.avg_battery_pct.toFixed(0)}%`} />
-        <Stat label="Throughput" value={`${analytics.throughput_tasks_per_hour.toFixed(0)}/hr`} className="col-span-2" />
+        <Stat label="Total Tasks" value={totalTasks} />
+        <Stat label="Completed" value={completed} />
+        <Stat label="Failed" value={failed} />
+        <Stat label="Avg Time" value={`${Number(avgTime).toFixed(1)}s`} />
+        <Stat label="Robots" value={robots} />
+        <Stat label="Avg Battery" value={`${Number(avgBat).toFixed(0)}%`} />
+        <Stat label="Throughput" value={`${Number(throughput).toFixed(0)}/hr`} className="col-span-2" />
       </div>
     </div>
   )

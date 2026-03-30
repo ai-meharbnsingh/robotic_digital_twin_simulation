@@ -40,9 +40,19 @@ FMS_BINARY="${APP_DIR}/bin/fms_server"
 PYTHON_APP="${APP_DIR}/python"
 
 # --- Start C++ FMS server ---
+WAREHOUSE_JSON="${APP_DIR}/configs/warehouses/${WAREHOUSE_CONFIG:-simple_grid}.json"
+ROBOT_YAML="${APP_DIR}/configs/robots/${ROBOT_CONFIG:-differential_drive}.yaml"
+
 if [ -f "$FMS_BINARY" ] && [ -x "$FMS_BINARY" ]; then
-    echo "[start.sh] Starting C++ FMS server: $FMS_BINARY"
-    "$FMS_BINARY" &
+    FMS_ARGS="--tcp-port ${FMS_TCP_PORT:-65123} --rest-port ${FMS_REST_PORT:-7012}"
+    if [ -f "$WAREHOUSE_JSON" ]; then
+        FMS_ARGS="$FMS_ARGS --warehouse $WAREHOUSE_JSON"
+    fi
+    if [ -f "$ROBOT_YAML" ]; then
+        FMS_ARGS="$FMS_ARGS --robot $ROBOT_YAML"
+    fi
+    echo "[start.sh] Starting C++ FMS server: $FMS_BINARY $FMS_ARGS"
+    $FMS_BINARY $FMS_ARGS &
     FMS_PID=$!
     echo "[start.sh] C++ FMS server started (PID $FMS_PID)"
 else

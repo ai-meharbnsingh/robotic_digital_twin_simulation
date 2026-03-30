@@ -1,0 +1,231 @@
+{
+  "timestamp": "2026-03-30T17:27:51",
+  "world": "warehouse_distinct",
+  "calibrated_nodes": 10,
+  "elapsed_s": 19.8,
+  "feature_1_dynamic_filtering": {
+    "pass": true,
+    "clean_accuracy": 1.0,
+    "dirty_accuracy": 0.9,
+    "filtered_accuracy": 1.0,
+    "recovery_gain": 0.09999999999999998,
+    "nodes_tested": 10
+  },
+  "feature_2_uncertainty": {
+    "pass": true,
+    "total_nodes": 10,
+    "ambiguous_count": 0,
+    "clear_count": 10,
+    "synthetic_same_type_ambiguous": false,
+    "synthetic_distinct_clear": true,
+    "cases": [
+      {
+        "node": "CHARGE_0",
+        "entropy": 1.9424,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Charging",
+            0.5005
+          ],
+          [
+            "Storage_B",
+            0.3206
+          ],
+          [
+            "Storage_A",
+            0.3192
+          ]
+        ]
+      },
+      {
+        "node": "STOR_A_0_0",
+        "entropy": 1.9406,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Storage_A",
+            0.5322
+          ],
+          [
+            "Storage_B",
+            0.3826
+          ],
+          [
+            "Charging",
+            0.3071
+          ]
+        ]
+      },
+      {
+        "node": "STOR_B_0_0",
+        "entropy": 1.9374,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Storage_B",
+            0.6112
+          ],
+          [
+            "Storage_A",
+            0.3615
+          ],
+          [
+            "Corridor",
+            0.305
+          ]
+        ]
+      },
+      {
+        "node": "PICK_0",
+        "entropy": 1.8991,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Operations",
+            1.0
+          ],
+          [
+            "Staging",
+            0.2805
+          ],
+          [
+            "Storage_A",
+            0.2656
+          ]
+        ]
+      },
+      {
+        "node": "CORR_0",
+        "entropy": 1.8983,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Corridor",
+            1.0
+          ],
+          [
+            "Storage_B",
+            0.3296
+          ],
+          [
+            "Operations",
+            0.253
+          ]
+        ]
+      },
+      {
+        "node": "STAGE_0",
+        "entropy": 1.898,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Staging",
+            1.0
+          ],
+          [
+            "Charging",
+            0.2904
+          ],
+          [
+            "Operations",
+            0.2805
+          ]
+        ]
+      },
+      {
+        "node": "MAINT_0",
+        "entropy": 1.8951,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Maintenance",
+            1.0
+          ],
+          [
+            "Charging",
+            0.293
+          ],
+          [
+            "Storage_B",
+            0.2412
+          ]
+        ]
+      },
+      {
+        "node": "STOR_A_2_1",
+        "entropy": 1.941,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Storage_A",
+            0.5209
+          ],
+          [
+            "Storage_B",
+            0.3713
+          ],
+          [
+            "Charging",
+            0.3403
+          ]
+        ]
+      },
+      {
+        "node": "STOR_B_1_1",
+        "entropy": 1.9375,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Storage_B",
+            0.6112
+          ],
+          [
+            "Corridor",
+            0.3364
+          ],
+          [
+            "Storage_A",
+            0.3121
+          ]
+        ]
+      },
+      {
+        "node": "CHARGE_2",
+        "entropy": 1.9418,
+        "is_ambiguous": false,
+        "top3": [
+          [
+            "Charging",
+            0.5005
+          ],
+          [
+            "Storage_A",
+            0.3128
+          ],
+          [
+            "Staging",
+            0.2907
+          ]
+        ]
+      }
+    ]
+  },
+  "feature_3_map_versioning": {
+    "pass": true,
+    "fresh_drift": 0.0,
+    "corrupted_drift": 0.4,
+    "corruption_applied": 0.4,
+    "needs_recal_detected": true
+  },
+  "feature_4_hardware_agnostic": {
+    "pass": true,
+    "accuracy_180": 1.0,
+    "accuracy_360": 1.0,
+    "accuracy_720": 1.0,
+    "all_agree_correct": 10,
+    "agreement_rate": 1.0,
+    "nodes_tested": 10
+  },
+  "overall_pass": true
+}

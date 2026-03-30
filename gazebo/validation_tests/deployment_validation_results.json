@@ -1,0 +1,300 @@
+{
+  "V1": {
+    "title": "Calibration Drift Detection",
+    "passed": true,
+    "details": {
+      "corrupted_nodes": 5,
+      "drift_detected": 5,
+      "clean_nodes": 5,
+      "false_positives": 0,
+      "corrupt_details": {
+        "STOR_A_0_0": {
+          "feature_distance": 1.803,
+          "drift_detected": true
+        },
+        "STOR_B_1_1": {
+          "feature_distance": 1.4863,
+          "drift_detected": true
+        },
+        "CHARGE_1": {
+          "feature_distance": 2.0691,
+          "drift_detected": true
+        },
+        "PICK_0": {
+          "feature_distance": 1.615,
+          "drift_detected": true
+        },
+        "CORR_1": {
+          "feature_distance": 1.9789,
+          "drift_detected": true
+        }
+      },
+      "clean_details": {
+        "STOR_A_2_2": {
+          "feature_distance": 0.0,
+          "false_positive": false
+        },
+        "STOR_B_0_2": {
+          "feature_distance": 0.0,
+          "false_positive": false
+        },
+        "STAGE_0": {
+          "feature_distance": 0.0,
+          "false_positive": false
+        },
+        "DROP_1": {
+          "feature_distance": 0.0,
+          "false_positive": false
+        },
+        "MAINT_0": {
+          "feature_distance": 0.0,
+          "false_positive": false
+        }
+      },
+      "threshold": 0.15,
+      "measurement": "gazebo_physics"
+    }
+  },
+  "V2": {
+    "title": "Auto-Heal Fleet Learning Update",
+    "passed": true,
+    "details": {
+      "pre_heal_pct": 40.0,
+      "post_heal_pct": 100.0,
+      "target_pct": 90.0,
+      "details": {
+        "STOR_A_0_0": {
+          "true_zone": "Storage_A",
+          "pre_heal_zone": "Corridor",
+          "pre_ok": false,
+          "post_heal_zone": "Storage_A",
+          "post_ok": true
+        },
+        "STOR_B_1_1": {
+          "true_zone": "Storage_B",
+          "pre_heal_zone": "Storage_B",
+          "pre_ok": true,
+          "post_heal_zone": "Storage_B",
+          "post_ok": true
+        },
+        "CHARGE_1": {
+          "true_zone": "Charging",
+          "pre_heal_zone": "Corridor",
+          "pre_ok": false,
+          "post_heal_zone": "Charging",
+          "post_ok": true
+        },
+        "PICK_0": {
+          "true_zone": "Operations",
+          "pre_heal_zone": "Operations",
+          "pre_ok": true,
+          "post_heal_zone": "Operations",
+          "post_ok": true
+        },
+        "CORR_1": {
+          "true_zone": "Corridor",
+          "pre_heal_zone": "Storage_B",
+          "pre_ok": false,
+          "post_heal_zone": "Corridor",
+          "post_ok": true
+        }
+      },
+      "measurement": "gazebo_physics"
+    }
+  },
+  "V3": {
+    "title": "Config-Only Deployment (Warehouse Swap)",
+    "passed": true,
+    "details": {
+      "zones": 11,
+      "nodes": 30,
+      "loaded": true,
+      "names_ok": true,
+      "recovery_valid": true,
+      "zone_accuracy_pct": 75.0,
+      "details": {
+        "CLEAN_A1": {
+          "true": "CleanRoom_A",
+          "predicted": "CleanRoom_A",
+          "valid": true,
+          "correct": true
+        },
+        "COLD_C2": {
+          "true": "ColdStorage_C",
+          "predicted": "ColdStorage_C",
+          "valid": true,
+          "correct": true
+        },
+        "QC_STATION_1": {
+          "true": "QualityControl",
+          "predicted": "Dispatch",
+          "valid": true,
+          "correct": false
+        },
+        "DISPATCH_1": {
+          "true": "Dispatch",
+          "predicted": "Dispatch",
+          "valid": true,
+          "correct": true
+        },
+        "CORRIDOR_MID": {
+          "true": "MainCorridor",
+          "predicted": "MainCorridor",
+          "valid": true,
+          "correct": true
+        },
+        "CHARGE_P1": {
+          "true": "Charging",
+          "predicted": "Charging",
+          "valid": true,
+          "correct": true
+        },
+        "MAINT_BAY": {
+          "true": "Maintenance",
+          "predicted": "Maintenance",
+          "valid": true,
+          "correct": true
+        },
+        "BUFFER_1": {
+          "true": "Buffer",
+          "predicted": "Airlock",
+          "valid": true,
+          "correct": false
+        }
+      },
+      "measurement": "synthetic_config_swap"
+    }
+  },
+  "V4": {
+    "title": "Different Robot Model (LiDAR Mount Height)",
+    "passed": true,
+    "details": {
+      "dynamo_m": 0.395,
+      "veloce_m": 0.25,
+      "bias": 1.1,
+      "total": 36,
+      "correct": 36,
+      "accuracy_pct": 100.0,
+      "target_pct": 70.0,
+      "measurement": "synthetic_height_bias"
+    }
+  },
+  "V5": {
+    "title": "Real-Time Performance Benchmark",
+    "passed": true,
+    "details": {
+      "recovery_1000": {
+        "avg_ms": 4.269,
+        "p99_ms": 4.426,
+        "max_ms": 4.554,
+        "target": 10.0,
+        "ok": true
+      },
+      "decision_40x100": {
+        "avg_ms": 170.848,
+        "max_ms": 175.389,
+        "target": 400.0,
+        "ok": true,
+        "per_decision_ms": 4.271
+      },
+      "measurement": "wall_clock_perf_counter"
+    }
+  },
+  "V6": {
+    "title": "Network Latency Simulation",
+    "passed": true,
+    "details": {
+      "results": {
+        "0ms": {
+          "accuracy_pct": 100.0,
+          "avg_time_s": 0.0043
+        },
+        "50ms": {
+          "accuracy_pct": 100.0,
+          "avg_time_s": 0.0569
+        },
+        "100ms": {
+          "accuracy_pct": 100.0,
+          "avg_time_s": 0.1089
+        },
+        "200ms": {
+          "accuracy_pct": 100.0,
+          "avg_time_s": 0.2102
+        }
+      },
+      "accuracy_stable": true,
+      "timing_ok": true,
+      "measurement": "simulated_network_delay"
+    }
+  },
+  "V7": {
+    "title": "False Positive Analysis",
+    "passed": true,
+    "details": {
+      "tested": 36,
+      "correct": 34,
+      "accuracy_pct": 94.4,
+      "high_conf_wrong": 0,
+      "fp_rate_pct": 0.0,
+      "target_fp_pct": 5.0,
+      "confusion": {
+        "Charging": {
+          "Charging": 3
+        },
+        "Storage_A": {
+          "Storage_A": 9
+        },
+        "Storage_B": {
+          "Storage_B": 8,
+          "Corridor": 1
+        },
+        "Operations": {
+          "Operations": 5,
+          "Staging": 1
+        },
+        "Corridor": {
+          "Corridor": 4
+        },
+        "Staging": {
+          "Staging": 3
+        },
+        "Maintenance": {
+          "Maintenance": 2
+        }
+      },
+      "measurement": "gazebo_physics"
+    }
+  },
+  "V8": {
+    "title": "Error Correction Loop",
+    "passed": true,
+    "details": {
+      "true_zone": "Storage_B",
+      "wrong_zone": "Storage_A",
+      "corrected": true,
+      "correction_m": 0.5,
+      "max_m": 5.0,
+      "steps": [
+        {
+          "step": 1,
+          "travel_m": 0.5,
+          "pos": [
+            10.5,
+            0.02
+          ],
+          "predicted": "Storage_B",
+          "confidence": 0.571,
+          "corrected": true
+        }
+      ],
+      "measurement": "gazebo_physics"
+    }
+  },
+  "_summary": {
+    "passed": 8,
+    "total": 8,
+    "production_ready": true,
+    "gazebo": "real",
+    "time_s": 139.11
+  }
+}

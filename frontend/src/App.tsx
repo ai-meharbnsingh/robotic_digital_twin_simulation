@@ -1,4 +1,4 @@
-import { Component, useCallback, useRef, useState, lazy, Suspense, type ReactNode } from 'react'
+import { Component, useCallback, useMemo, useRef, useState, lazy, Suspense, type ReactNode } from 'react'
 import { useApi } from './hooks/useApi'
 import { useFleetWebSocket } from './hooks/useFleetWebSocket'
 import type { FleetWSEvent } from './types'
@@ -95,7 +95,22 @@ export default function App() {
   // REST polling for core data
   const { data: robots, error: robotsErr } = useApi<Robot[]>('/api/robots', POLL_MS)
   const { data: tasks, error: tasksErr } = useApi<Task[]>('/api/tasks', POLL_MS)
-  const { data: mapData } = useApi<MapData>('/api/map', 0) // Fetch once
+  const { data: rawMapData } = useApi<any>('/api/map', 0) // Fetch once
+  // Normalize: C++ FMS returns pose.position.x/y, frontend needs flat x/y
+  const mapData = useMemo<MapData | undefined>(() => {
+    if (!rawMapData) return undefined
+    const nodes = (rawMapData.nodes ?? []).map((n: any) => ({
+      name: n.name,
+      x: n.x ?? n.pose?.position?.x ?? 0,
+      y: n.y ?? n.pose?.position?.y ?? 0,
+      type: n.type || 'aisle',
+    }))
+    const edges = (rawMapData.edges ?? []).map((e: any) => ({
+      from: e.from ?? e.source ?? '',
+      to: e.to ?? e.target ?? '',
+    }))
+    return { nodes, edges, zones: rawMapData.zones ?? [] }
+  }, [rawMapData])
   const { data: health } = useApi<Health>('/health', 5000)
   const { data: fleetAnalytics } = useApi<FleetAnalytics>('/api/analytics/fleet', POLL_MS)
   const { data: wesKpi } = useApi<WesKpi>('/api/wes/kpi', POLL_MS)

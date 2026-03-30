@@ -1,0 +1,95 @@
+{
+  "test": "REAL Gazebo raycasts + noise",
+  "mode": "real_gazebo_both_phases",
+  "strategy": "B_hierarchical + C_dual_scan",
+  "warehouse": "Realistic Warehouse 150x200m",
+  "n_nodes": 539,
+  "n_zones": 12,
+  "calibration": "REAL Gazebo raycasts (537/539 nodes)",
+  "zone_accuracy_exact": 44,
+  "zone_accuracy_pct": 88.0,
+  "node_accuracy_exact": 10,
+  "node_accuracy_pct": 20.0,
+  "ode_mean_ms": 0.512,
+  "recovery_mean_s": 2.616,
+  "blind_cautious_mean_s": 3.077,
+  "blind_standard_mean_s": 0.923,
+  "speedup_vs_cautious": 1.2,
+  "speedup_vs_standard": 0.4,
+  "failed_calibration_nodes": [
+    "Zone_G_A0_S4",
+    "Zone_G_A0_S5"
+  ],
+  "gates": {
+    "zone_accuracy_>90%": false,
+    "zone_accuracy_>70%_hard": true,
+    "node_accuracy_>40%": false,
+    "recovery_<5s_avg": true,
+    "speedup_>1x_cautious": true,
+    "safety_violations_0": true,
+    "calibrated_with_real_scans": true
+  },
+  "all_gates_pass": false,
+  "by_zone": {
+    "Zone_A": {
+      "z_ok": 5,
+      "n_ok": 0,
+      "total": 6
+    },
+    "Zone_B": {
+      "z_ok": 4,
+      "n_ok": 0,
+      "total": 4
+    },
+    "Zone_C": {
+      "z_ok": 2,
+      "n_ok": 0,
+      "total": 2
+    },
+    "Zone_D": {
+      "z_ok": 3,
+      "n_ok": 0,
+      "total": 3
+    },
+    "Zone_E": {
+      "z_ok": 9,
+      "n_ok": 3,
+      "total": 9
+    },
+    "Zone_F": {
+      "z_ok": 2,
+      "n_ok": 2,
+      "total": 2
+    },
+    "Zone_G": {
+      "z_ok": 7,
+      "n_ok": 1,
+      "total": 7
+    },
+    "Zone_H": {
+      "z_ok": 7,
+      "n_ok": 2,
+      "total": 7
+    },
+    "Zone_I": {
+      "z_ok": 4,
+      "n_ok": 1,
+      "total": 6
+    },
+    "Zone_J": {
+      "z_ok": 1,
+      "n_ok": 0,
+      "total": 1
+    },
+    "Zone_K": {
+      "z_ok": 0,
+      "n_ok": 0,
+      "total": 1
+    },
+    "?": {
+      "z_ok": 0,
+      "n_ok": 1,
+      "total": 2
+    }
+  }
+}
