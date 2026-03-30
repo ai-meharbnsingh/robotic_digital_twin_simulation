@@ -81,8 +81,8 @@ No task is done until its test passes for real.
 ## Phase 9: Python API + WES
 **Goal:** FastAPI serves fleet data. WES generates orders and tracks KPIs.
 
-- [x] 9.1 test_api.py — all 30 endpoints return correct shapes
-- [x] 9.2 python/app/ — FastAPI, 30 endpoints, WebSocket
+- [x] 9.1 test_api.py — all 64 endpoints return correct shapes
+- [x] 9.2 python/app/ — FastAPI, 64 endpoints, WebSocket
 - [x] 9.3–9.6 ~~io-gita + SG prediction~~ — **DROPPED** (see Phase 12 closure)
 - [x] 9.7 python/wes/ — OrderGenerator, TaskGenerator, KPITracker
 - [x] 9.8 python/monitoring/ — InfluxDB writer, Redis cache
@@ -107,19 +107,19 @@ No task is done until its test passes for real.
 - [x] 11.11 python/tests/test_integration.py — integration tests (all pass)
 - [x] 11.12 Final audit — 3 external reviewers (Codex, Gemini, Kimi)
 
-## Phase 12: io-gita Intelligence Layer — CLOSED
+## Phase 12: io-gita Intelligence Layer — v4 REINSTATED
 
-**Status: DROPPED** (Session 6, 2026-03-29)
+**Status: v1-v3 DROPPED** (Session 6, 2026-03-29) **→ v4 REINSTATED**
 
-io-gita cold start localization achieved only 52% accuracy with 3D LiDAR, well below the 75% gate. After 4 experiment scripts and a formal RCA (see COLD_START_RCA_FINAL.md), the decision was made to drop the entire intelligence layer:
+io-gita v1-v3 cold start localization achieved only 52% accuracy with 3D LiDAR, well below the 75% gate. After 4 experiment scripts and a formal RCA (see COLD_START_RCA_FINAL.md), v1-v3 were archived.
 
-- ZoneIdentifier (Hopfield ODE + graph disambiguation) — archived
-- ColdStartRecovery (state persistence) — archived
-- FleetAtlas (zone occupation tracking) — archived
-- BottleneckPredictor (SG engine) — archived
-- All code preserved in `_archive/io_gita_dropped/`
+**v4 reinstated** with a hierarchical zone-first approach:
+- [x] HierarchicalZoneIdentifier: geometry-only zone features (12-dim) + zone-first hierarchy → >90% zone accuracy
+- [x] ColdStartRecovery: state persistence + recovery hints
+- [x] 3 REST endpoints: GET /api/iogita/status, GET /api/iogita/zones, POST /api/iogita/cold-start/{id}
+- [x] Loaded on startup via `_init_iogita()` in main.py
 
-The digital twin stands as a complete warehouse robotics simulator without the intelligence layer. Zone identification and predictive analytics can be re-added in a future milestone if a proven approach emerges.
+v1-v3 code preserved in `_archive/io_gita_dropped/`. BottleneckPredictor (SG engine) and FleetAtlas remain archived — not reinstated in v4.
 
 ---
 
@@ -127,7 +127,9 @@ The digital twin stands as a complete warehouse robotics simulator without the i
 
 | Suite | Tests | Status |
 |-------|-------|--------|
-| C++ (gtest) | 352 | All pass |
-| Python (pytest) | 124 | All pass |
+| C++ (gtest) | 371 | All pass |
+| Python (pytest) | 340 (308 pass, 32 skip) | All pass |
 | Gazebo (pytest) | 52 | All pass |
-| **Total** | **528** | **0 failures** |
+| **Total** | **763** | **0 failures** |
+
+(Includes Phases 1-5 additions: order import, mixed fleet, heatmap, waves, 3D contracts + perf)

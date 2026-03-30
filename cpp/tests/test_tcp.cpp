@@ -3,6 +3,12 @@
 //
 // Phase 6: Basic tests for start/stop/count.
 // Full integration (connect, send, receive) tested in Phase 7.
+//
+// PORT REQUIREMENT: These tests bind to ephemeral OS-assigned ports
+// via find_free_port(). In sandboxed or containerized environments
+// where socket creation or port binding is restricted, these tests
+// may fail. The production FMS uses port 65123 by default (configured
+// via FMS_TCP_PORT env var).
 // ──────────────────────────────────────────────────────────
 
 #include <gtest/gtest.h>

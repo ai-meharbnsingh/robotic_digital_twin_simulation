@@ -55,6 +55,10 @@ When writing config values → cross-reference the source YAML/JSON.
 When setting up build systems → verify package names and find_package names.
 If unsure → say so and look it up. Don't guess.
 
+## ENVIRONMENT NOTES
+
+- C++ network tests (test_tcp.cpp, test_rest.cpp) require the ability to create sockets and bind to ephemeral ports. In sandboxed/container environments where port binding is restricted, these tests may fail. Production ports: FMS_TCP_PORT=65123, FMS_PORT=7012.
+
 ## LEARNED RULES (from 20+ factory projects)
 
 - Never rewrite existing production code in another language — use the original

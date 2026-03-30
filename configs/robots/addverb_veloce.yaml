@@ -1,0 +1,104 @@
+# Addverb Veloce ACR — Automated Case-handling Robot
+# Grid-based navigation using QR code/barcode floor markers.
+# Compact 0.6x0.6m footprint, 240kg payload, case-handling conveyor top.
+#
+# Usage: ROBOT=addverb_veloce docker compose up
+# Place at: configs/robots/addverb_veloce.yaml
+
+name: "Addverb_Veloce"
+type: unidirectional              # Grid-based movement — forward only, 90° turns at nodes
+
+motion:
+  max_linear_velocity: 1.5        # m/s — Addverb spec
+  max_linear_velocity_curve: 0.5  # Reduced speed on 90° turns
+  max_angular_velocity: 0.8       # rad/s — 90° grid turns only
+  linear_acceleration: 0.3        # m/s² — moderate accel for case loads
+  linear_deceleration: 0.6        # m/s² — quick stop for grid precision
+  jerk_max: 8.0                   # m/s³
+  position_tolerance: 0.005       # m — 5mm grid stop precision
+  angular_tolerance: 0.02         # rad
+  creep_distance: 0.015           # m — final approach
+  creep_velocity: 0.02            # m/s
+  exit_velocity: 0.4              # m/s
+
+dimensions:
+  length: 0.6                     # m — compact square footprint
+  width: 0.6                      # m — Addverb spec
+  height: 0.2                     # m — low profile under shelves
+  weight: 45.0                    # kg (empty)
+  payload_capacity: 240.0         # kg — Addverb Veloce spec
+  wheel_separation: 0.45          # m
+  wheel_radius: 0.06              # m
+
+sensors:
+  lidar:
+    enabled: true
+    type: "2d"
+    fov_deg: 30                   # Forward-facing only (±15°) — obstacle detect
+    range_m: 1.5                  # Short range — grid environment
+    rays: 30
+    height_m: 0.08
+    noise_stddev_m: 0.03
+  barcode_reader:
+    enabled: true                 # PRIMARY navigation sensor — QR code grid
+    debounce_ms: 3                # Fast scanning for grid positioning
+    failure_threshold: 3          # Lower threshold — grid nav depends on this
+  imu:
+    enabled: true
+    noise_stddev_deg: 2.0         # Backup for heading between barcodes
+
+battery:
+  charge_duration_s: 2400         # 40 min full charge (1.2 kWh)
+  discharge_duration_s: 36000     # 10 hours operation
+  motion_energy_factor: 1.05
+  attachment_energy_factor: 1.03  # Conveyor top energy draw
+  critical_threshold_pct: 5       # Low critical — grid bots can park safely
+  initial_charge_pct: 100
+
+obstacle_thresholds:
+  critical_m: 0.3                 # Tight grid — 0.3m safety distance
+  warning_m: 0.5
+  planning_m: 1.0
+
+attachment:
+  type: "conveyor"                # Conveyor top for case handling
+  load_time_s: 3.0                # Fast case transfer
+  unload_time_s: 3.0
+
+mpc:
+  num_opt_vars: 12
+  dt: 0.1
+  position_weight: 2.0            # High precision for grid alignment
+  velocity_weight: 0.0
+  weight_scale: 0.05
+  jerk_scale: 1.0
+  acceleration_scale: 1.0
+  final_position_offset: 0.005    # 5mm grid precision
+  final_velocity_threshold: 0.05
+  osqp_iterations: 500
+  osqp_eps_abs: 0.01
+  osqp_eps_rel: 0.01
+
+behavior_tree: "addverb_veloce.xml"
+
+# Action codes — Addverb Veloce firmware
+action_codes:
+  move: 0
+  charge_dock: 2
+  start_charging: 3
+  charge_undock: 4
+  scan_barcode: 10
+  start_loading: 14
+  start_unloading: 15
+  reset_errors: 31
+  hard_reset: 51
+
+# Response codes
+response_codes:
+  reached_dock: 10
+  reached_predock: 8
+  barcode_scanned: 11
+  charging_stopped: 18
+  charging_error: 501
+  load_error: 401
+  unload_error: 402

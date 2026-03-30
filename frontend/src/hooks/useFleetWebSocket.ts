@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { FleetWSEvent } from '../types'
 
 const WS_URL = `${window.location.protocol === 'https:' ? 'wss:' : 'ws:'}//${window.location.host}/ws/fleet`
@@ -7,7 +7,6 @@ const INITIAL_BACKOFF_MS = 1_000
 
 interface UseFleetWebSocketResult {
   connected: boolean
-  lastEvent: FleetWSEvent | null
   error: string | null
 }
 
@@ -19,7 +18,6 @@ export function useFleetWebSocket(
   onEvent?: (event: FleetWSEvent) => void
 ): UseFleetWebSocketResult {
   const [connected, setConnected] = useState(false)
-  const [lastEvent, setLastEvent] = useState<FleetWSEvent | null>(null)
   const [error, setError] = useState<string | null>(null)
 
   const wsRef = useRef<WebSocket | null>(null)
@@ -48,7 +46,6 @@ export function useFleetWebSocket(
         if (!mountedRef.current) return
         try {
           const parsed = JSON.parse(msgEvent.data) as FleetWSEvent
-          setLastEvent(parsed)
           onEventRef.current?.(parsed)
         } catch {
           // Ignore malformed messages
@@ -94,5 +91,5 @@ export function useFleetWebSocket(
     }
   }, [connect])
 
-  return { connected, lastEvent, error }
+  return { connected, error }
 }

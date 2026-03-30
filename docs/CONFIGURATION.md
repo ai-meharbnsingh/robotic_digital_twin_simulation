@@ -7,7 +7,7 @@ The simulation is configured through three types of files plus environment varia
 ```
 configs/
   warehouses/           # Warehouse navigation graphs (JSON)
-    simple_grid.json    # 25 nodes, 3 zones (demo)
+    simple_grid.json    # 25 nodes, 8 zones (demo)
     botvalley.json      # 63 nodes (production)
   robots/               # Robot physical parameters (YAML)
     differential_drive.yaml   # AMR preset

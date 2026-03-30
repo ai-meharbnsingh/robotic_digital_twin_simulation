@@ -805,3 +805,108 @@ TEST(BTEngineTest, XMLParamsPassedToCallback) {
     EXPECT_EQ(received_target, "k3");
     EXPECT_EQ(received_code, "0");
 }
+
+// ═══════════════════════════════════════════════════════
+// Addverb BT XML Load + Tick Tests (Phase 9)
+// ═══════════════════════════════════════════════════════
+
+TEST(BTEngineTest, LoadAddverbDynamo) {
+    BTEngine engine;
+    bool result = engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_dynamo.xml");
+    EXPECT_TRUE(result) << "Failed to load addverb_dynamo.xml";
+    EXPECT_GE(engine.getSubtreeCount(), 1u);
+}
+
+TEST(BTEngineTest, LoadAddverbVeloce) {
+    BTEngine engine;
+    bool result = engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_veloce.xml");
+    EXPECT_TRUE(result) << "Failed to load addverb_veloce.xml";
+    EXPECT_GE(engine.getSubtreeCount(), 1u);
+}
+
+TEST(BTEngineTest, LoadAddverbQuadron) {
+    BTEngine engine;
+    bool result = engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_quadron.xml");
+    EXPECT_TRUE(result) << "Failed to load addverb_quadron.xml";
+    EXPECT_GE(engine.getSubtreeCount(), 1u);
+}
+
+// Addverb BT Tick Tests — Load + Tick Validation
+//
+// These tests verify that Addverb BT XMLs:
+// 1. Load successfully through BTEngine (valid XML structure, valid node IDs)
+// 2. Can be ticked without crash when all standard actions/conditions are registered
+//
+// LIMITATION: A single tick() only traverses the nodes visited in that tick cycle.
+// Unvisited subtrees (e.g., error recovery, charging fallback) are NOT exercised.
+// Full branch coverage would require multi-tick scenarios with state injection.
+// This is a LOAD + SMOKE test, not a full branch coverage test.
+//
+// What IS proven: every Action/Condition ID in the XML is recognized by BTEngine
+// at load time (loadFromXML validates the tree structure). Runtime tick proves
+// the main execution path doesn't crash with real handlers registered.
+
+TEST(BTEngineTest, TickAddverbDynamoAllRegistered) {
+    RobotConfig config = loadTestConfig();
+    RobotStateMachine sm(config);
+    BatteryModel battery(config);
+    ObstacleHandler obstacles(config);
+    BTRobotContext ctx;
+    ctx.state_machine = &sm;
+    ctx.battery = &battery;
+    ctx.obstacles = &obstacles;
+
+    BTEngine engine;
+    registerStandardActions(engine, ctx);
+    registerStandardConditions(engine, ctx);
+
+    ASSERT_TRUE(engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_dynamo.xml"));
+    // All 17 actions + 10 conditions registered — tick exercises real handlers.
+    // RUNNING or FAILURE is expected (no task assigned), but no crash = no unregistered IDs.
+    auto status = engine.tick();
+    EXPECT_TRUE(status == BTStatus::RUNNING || status == BTStatus::FAILURE);
+}
+
+TEST(BTEngineTest, TickAddverbVeloceAllRegistered) {
+    RobotConfig config = loadTestConfig();
+    RobotStateMachine sm(config);
+    BatteryModel battery(config);
+    ObstacleHandler obstacles(config);
+    BTRobotContext ctx;
+    ctx.state_machine = &sm;
+    ctx.battery = &battery;
+    ctx.obstacles = &obstacles;
+
+    BTEngine engine;
+    registerStandardActions(engine, ctx);
+    registerStandardConditions(engine, ctx);
+
+    ASSERT_TRUE(engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_veloce.xml"));
+    auto status = engine.tick();
+    EXPECT_TRUE(status == BTStatus::RUNNING || status == BTStatus::FAILURE);
+}
+
+TEST(BTEngineTest, TickAddverbQuadronAllRegistered) {
+    RobotConfig config = loadTestConfig();
+    RobotStateMachine sm(config);
+    BatteryModel battery(config);
+    ObstacleHandler obstacles(config);
+    BTRobotContext ctx;
+    ctx.state_machine = &sm;
+    ctx.battery = &battery;
+    ctx.obstacles = &obstacles;
+
+    BTEngine engine;
+    registerStandardActions(engine, ctx);
+    registerStandardConditions(engine, ctx);
+
+    ASSERT_TRUE(engine.loadFromXML(
+        projectRoot() + "/configs/behavior_trees/addverb_quadron.xml"));
+    auto status = engine.tick();
+    EXPECT_TRUE(status == BTStatus::RUNNING || status == BTStatus::FAILURE);
+}

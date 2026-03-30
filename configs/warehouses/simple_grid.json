@@ -1,6 +1,6 @@
 {
   "name": "Simple 5x5 Grid",
-  "description": "Minimal demo warehouse — 25 nodes, 40 edges, 3 zones",
+  "description": "Minimal demo warehouse — 25 nodes, 40 edges, 8 zones",
   "grid_spacing_m": 2.0,
   "nodes": [
     {"name": "DOCK_1", "x": 0, "y": 0, "type": "charge"},

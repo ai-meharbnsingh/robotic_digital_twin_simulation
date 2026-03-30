@@ -1,0 +1,578 @@
+{
+  "name": "warehouse_distinct",
+  "description": "Warehouse with physically distinct zone geometry for io-gita cold start testing",
+  "width_m": 40.0,
+  "height_m": 30.0,
+  "nodes": [
+    {
+      "name": "CHARGE_0",
+      "x": -16.0,
+      "y": 10.0,
+      "type": "charge"
+    },
+    {
+      "name": "CHARGE_1",
+      "x": -14.0,
+      "y": 10.0,
+      "type": "charge"
+    },
+    {
+      "name": "CHARGE_2",
+      "x": -12.0,
+      "y": 10.0,
+      "type": "charge"
+    },
+    {
+      "name": "STOR_A_0_0",
+      "x": -13.0,
+      "y": 0.85,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_0_1",
+      "x": -10.7,
+      "y": 0.85,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_0_2",
+      "x": -8.4,
+      "y": 0.85,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_1_0",
+      "x": -13.0,
+      "y": 2.55,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_1_1",
+      "x": -10.7,
+      "y": 2.55,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_1_2",
+      "x": -8.4,
+      "y": 2.55,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_2_0",
+      "x": -13.0,
+      "y": 4.25,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_2_1",
+      "x": -10.7,
+      "y": 4.25,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_A_2_2",
+      "x": -8.4,
+      "y": 4.25,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_0_0",
+      "x": 11.0,
+      "y": 0.0,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_0_1",
+      "x": 11.0,
+      "y": 2.3,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_0_2",
+      "x": 11.0,
+      "y": 4.6,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_1_0",
+      "x": 13.0,
+      "y": 0.0,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_1_1",
+      "x": 13.0,
+      "y": 2.3,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_1_2",
+      "x": 13.0,
+      "y": 4.6,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_2_0",
+      "x": 15.0,
+      "y": 0.0,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_2_1",
+      "x": 15.0,
+      "y": 2.3,
+      "type": "shelf"
+    },
+    {
+      "name": "STOR_B_2_2",
+      "x": 15.0,
+      "y": 4.6,
+      "type": "shelf"
+    },
+    {
+      "name": "PICK_0",
+      "x": -3.0,
+      "y": 0.5,
+      "type": "pick"
+    },
+    {
+      "name": "PICK_1",
+      "x": 0.0,
+      "y": 0.5,
+      "type": "pick"
+    },
+    {
+      "name": "PICK_2",
+      "x": 3.0,
+      "y": 0.5,
+      "type": "pick"
+    },
+    {
+      "name": "DROP_0",
+      "x": -2.0,
+      "y": -0.5,
+      "type": "drop"
+    },
+    {
+      "name": "DROP_1",
+      "x": 2.0,
+      "y": -0.5,
+      "type": "drop"
+    },
+    {
+      "name": "OPS_HUB",
+      "x": 0.0,
+      "y": 0.0,
+      "type": "hub"
+    },
+    {
+      "name": "CORR_0",
+      "x": 0.0,
+      "y": 1.5,
+      "type": "none"
+    },
+    {
+      "name": "CORR_1",
+      "x": 0.0,
+      "y": 4.5,
+      "type": "none"
+    },
+    {
+      "name": "CORR_2",
+      "x": 0.0,
+      "y": 7.5,
+      "type": "none"
+    },
+    {
+      "name": "CORR_3",
+      "x": 0.0,
+      "y": 10.5,
+      "type": "none"
+    },
+    {
+      "name": "STAGE_0",
+      "x": 12.0,
+      "y": 10.0,
+      "type": "predock"
+    },
+    {
+      "name": "STAGE_1",
+      "x": 14.0,
+      "y": 10.0,
+      "type": "predock"
+    },
+    {
+      "name": "STAGE_2",
+      "x": 16.0,
+      "y": 10.0,
+      "type": "predock"
+    },
+    {
+      "name": "MAINT_0",
+      "x": -12.0,
+      "y": -10.0,
+      "type": "none"
+    },
+    {
+      "name": "MAINT_1",
+      "x": -12.0,
+      "y": -8.5,
+      "type": "none"
+    }
+  ],
+  "edges": [
+    {
+      "from": "CHARGE_0",
+      "to": "CHARGE_1"
+    },
+    {
+      "from": "CHARGE_1",
+      "to": "CHARGE_2"
+    },
+    {
+      "from": "STOR_A_0_0",
+      "to": "STOR_A_0_1"
+    },
+    {
+      "from": "STOR_A_0_0",
+      "to": "STOR_A_1_0"
+    },
+    {
+      "from": "STOR_A_0_0",
+      "to": "STOR_A_1_1"
+    },
+    {
+      "from": "STOR_A_0_0",
+      "to": "STOR_A_2_0"
+    },
+    {
+      "from": "STOR_A_0_1",
+      "to": "STOR_A_0_2"
+    },
+    {
+      "from": "STOR_A_0_1",
+      "to": "STOR_A_1_0"
+    },
+    {
+      "from": "STOR_A_0_1",
+      "to": "STOR_A_1_1"
+    },
+    {
+      "from": "STOR_A_0_1",
+      "to": "STOR_A_1_2"
+    },
+    {
+      "from": "STOR_A_0_1",
+      "to": "STOR_A_2_1"
+    },
+    {
+      "from": "STOR_A_0_2",
+      "to": "STOR_A_1_1"
+    },
+    {
+      "from": "STOR_A_0_2",
+      "to": "STOR_A_1_2"
+    },
+    {
+      "from": "STOR_A_0_2",
+      "to": "STOR_A_2_2"
+    },
+    {
+      "from": "STOR_A_1_0",
+      "to": "STOR_A_1_1"
+    },
+    {
+      "from": "STOR_A_1_0",
+      "to": "STOR_A_2_0"
+    },
+    {
+      "from": "STOR_A_1_0",
+      "to": "STOR_A_2_1"
+    },
+    {
+      "from": "STOR_A_1_1",
+      "to": "STOR_A_1_2"
+    },
+    {
+      "from": "STOR_A_1_1",
+      "to": "STOR_A_2_0"
+    },
+    {
+      "from": "STOR_A_1_1",
+      "to": "STOR_A_2_1"
+    },
+    {
+      "from": "STOR_A_1_1",
+      "to": "STOR_A_2_2"
+    },
+    {
+      "from": "STOR_A_1_2",
+      "to": "STOR_A_2_1"
+    },
+    {
+      "from": "STOR_A_1_2",
+      "to": "STOR_A_2_2"
+    },
+    {
+      "from": "STOR_A_2_0",
+      "to": "STOR_A_2_1"
+    },
+    {
+      "from": "STOR_A_2_1",
+      "to": "STOR_A_2_2"
+    },
+    {
+      "from": "STOR_B_0_0",
+      "to": "STOR_B_0_1"
+    },
+    {
+      "from": "STOR_B_0_0",
+      "to": "STOR_B_1_0"
+    },
+    {
+      "from": "STOR_B_0_0",
+      "to": "STOR_B_1_1"
+    },
+    {
+      "from": "STOR_B_0_1",
+      "to": "STOR_B_0_2"
+    },
+    {
+      "from": "STOR_B_0_1",
+      "to": "STOR_B_1_0"
+    },
+    {
+      "from": "STOR_B_0_1",
+      "to": "STOR_B_1_1"
+    },
+    {
+      "from": "STOR_B_0_1",
+      "to": "STOR_B_1_2"
+    },
+    {
+      "from": "STOR_B_0_2",
+      "to": "STOR_B_1_1"
+    },
+    {
+      "from": "STOR_B_0_2",
+      "to": "STOR_B_1_2"
+    },
+    {
+      "from": "STOR_B_1_0",
+      "to": "STOR_B_1_1"
+    },
+    {
+      "from": "STOR_B_1_0",
+      "to": "STOR_B_2_0"
+    },
+    {
+      "from": "STOR_B_1_0",
+      "to": "STOR_B_2_1"
+    },
+    {
+      "from": "STOR_B_1_1",
+      "to": "STOR_B_1_2"
+    },
+    {
+      "from": "STOR_B_1_1",
+      "to": "STOR_B_2_0"
+    },
+    {
+      "from": "STOR_B_1_1",
+      "to": "STOR_B_2_1"
+    },
+    {
+      "from": "STOR_B_1_1",
+      "to": "STOR_B_2_2"
+    },
+    {
+      "from": "STOR_B_1_2",
+      "to": "STOR_B_2_1"
+    },
+    {
+      "from": "STOR_B_1_2",
+      "to": "STOR_B_2_2"
+    },
+    {
+      "from": "STOR_B_2_0",
+      "to": "STOR_B_2_1"
+    },
+    {
+      "from": "STOR_B_2_1",
+      "to": "STOR_B_2_2"
+    },
+    {
+      "from": "PICK_0",
+      "to": "PICK_1"
+    },
+    {
+      "from": "PICK_0",
+      "to": "DROP_0"
+    },
+    {
+      "from": "PICK_0",
+      "to": "OPS_HUB"
+    },
+    {
+      "from": "PICK_0",
+      "to": "CORR_0"
+    },
+    {
+      "from": "PICK_1",
+      "to": "PICK_2"
+    },
+    {
+      "from": "PICK_1",
+      "to": "DROP_0"
+    },
+    {
+      "from": "PICK_1",
+      "to": "DROP_1"
+    },
+    {
+      "from": "PICK_1",
+      "to": "OPS_HUB"
+    },
+    {
+      "from": "PICK_1",
+      "to": "CORR_0"
+    },
+    {
+      "from": "PICK_2",
+      "to": "DROP_1"
+    },
+    {
+      "from": "PICK_2",
+      "to": "OPS_HUB"
+    },
+    {
+      "from": "PICK_2",
+      "to": "CORR_0"
+    },
+    {
+      "from": "DROP_0",
+      "to": "OPS_HUB"
+    },
+    {
+      "from": "DROP_0",
+      "to": "CORR_0"
+    },
+    {
+      "from": "DROP_1",
+      "to": "OPS_HUB"
+    },
+    {
+      "from": "DROP_1",
+      "to": "CORR_0"
+    },
+    {
+      "from": "OPS_HUB",
+      "to": "CORR_0"
+    },
+    {
+      "from": "CORR_0",
+      "to": "CORR_1"
+    },
+    {
+      "from": "CORR_1",
+      "to": "CORR_2"
+    },
+    {
+      "from": "CORR_2",
+      "to": "CORR_3"
+    },
+    {
+      "from": "STAGE_0",
+      "to": "STAGE_1"
+    },
+    {
+      "from": "STAGE_1",
+      "to": "STAGE_2"
+    },
+    {
+      "from": "MAINT_0",
+      "to": "MAINT_1"
+    }
+  ],
+  "zones": [
+    {
+      "name": "Charging",
+      "type": "charging",
+      "nodes": [
+        "CHARGE_0",
+        "CHARGE_1",
+        "CHARGE_2"
+      ]
+    },
+    {
+      "name": "Storage_A",
+      "type": "storage_a",
+      "nodes": [
+        "STOR_A_0_0",
+        "STOR_A_0_1",
+        "STOR_A_0_2",
+        "STOR_A_1_0",
+        "STOR_A_1_1",
+        "STOR_A_1_2",
+        "STOR_A_2_0",
+        "STOR_A_2_1",
+        "STOR_A_2_2"
+      ]
+    },
+    {
+      "name": "Storage_B",
+      "type": "storage_b",
+      "nodes": [
+        "STOR_B_0_0",
+        "STOR_B_0_1",
+        "STOR_B_0_2",
+        "STOR_B_1_0",
+        "STOR_B_1_1",
+        "STOR_B_1_2",
+        "STOR_B_2_0",
+        "STOR_B_2_1",
+        "STOR_B_2_2"
+      ]
+    },
+    {
+      "name": "Operations",
+      "type": "operations",
+      "nodes": [
+        "PICK_0",
+        "PICK_1",
+        "PICK_2",
+        "DROP_0",
+        "DROP_1",
+        "OPS_HUB"
+      ]
+    },
+    {
+      "name": "Corridor",
+      "type": "corridor",
+      "nodes": [
+        "CORR_0",
+        "CORR_1",
+        "CORR_2",
+        "CORR_3"
+      ]
+    },
+    {
+      "name": "Staging",
+      "type": "staging",
+      "nodes": [
+        "STAGE_0",
+        "STAGE_1",
+        "STAGE_2"
+      ]
+    },
+    {
+      "name": "Maintenance",
+      "type": "maintenance",
+      "nodes": [
+        "MAINT_0",
+        "MAINT_1"
+      ]
+    }
+  ]
+}

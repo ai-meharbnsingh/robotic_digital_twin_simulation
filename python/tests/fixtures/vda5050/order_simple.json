@@ -1,0 +1,100 @@
+{
+  "headerId": 1,
+  "timestamp": "2026-03-30T12:00:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "orderId": "order-001",
+  "orderUpdateId": 0,
+  "nodes": [
+    {
+      "nodeId": "pick-station-1",
+      "sequenceId": 0,
+      "released": true,
+      "nodePosition": {
+        "x": 1.0,
+        "y": 1.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-001",
+          "actionType": "pick",
+          "blockingType": "HARD",
+          "actionDescription": "Pick item from station 1",
+          "actionParameters": [
+            {
+              "key": "stationType",
+              "value": "pick"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeId": "shelf-A3",
+      "sequenceId": 2,
+      "released": true,
+      "nodePosition": {
+        "x": 5.0,
+        "y": 3.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": []
+    },
+    {
+      "nodeId": "drop-station-1",
+      "sequenceId": 4,
+      "released": true,
+      "nodePosition": {
+        "x": 9.0,
+        "y": 1.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-002",
+          "actionType": "drop",
+          "blockingType": "HARD",
+          "actionDescription": "Drop item at station 1",
+          "actionParameters": [
+            {
+              "key": "stationType",
+              "value": "drop"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "edge-001",
+      "sequenceId": 1,
+      "released": true,
+      "startNodeId": "pick-station-1",
+      "endNodeId": "shelf-A3",
+      "maxSpeed": 1.5,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": true,
+      "actions": []
+    },
+    {
+      "edgeId": "edge-002",
+      "sequenceId": 3,
+      "released": true,
+      "startNodeId": "shelf-A3",
+      "endNodeId": "drop-station-1",
+      "maxSpeed": 1.5,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": true,
+      "actions": []
+    }
+  ]
+}

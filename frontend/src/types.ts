@@ -1,6 +1,6 @@
 /**
- * TypeScript interfaces matching python/app/models.py
- * Used by all dashboard components and hooks.
+ * TypeScript interfaces matching Python backend response shapes.
+ * Contracts verified by python/tests/test_3d_contracts.py.
  */
 
 // --- Enums ---
@@ -31,7 +31,7 @@ export type EventSeverity = 'info' | 'warning' | 'error' | 'critical'
 
 export type NodeType = 'aisle' | 'shelf' | 'charge' | 'pick' | 'drop' | 'hub'
 
-export type ZoneType = 'dock' | 'shelf' | 'ops' | 'aisle'
+export type ZoneType = 'dock' | 'shelf' | 'ops' | 'aisle' | 'lane' | 'pick'
 
 export type RobotType = 'differential_drive' | 'unidirectional' | 'omnidirectional'
 
@@ -101,8 +101,8 @@ export interface MapNode {
 export interface MapEdge {
   from: string
   to: string
-  weight: number
-  bidirectional: boolean
+  weight?: number
+  bidirectional?: boolean
 }
 
 export interface Zone {
@@ -140,6 +140,9 @@ export interface WesKpi {
   avg_order_cycle_time_s: number
   pending_orders: number
   completed_orders: number
+  total_orders: number
+  completed_tasks: number
+  failed_tasks: number
 }
 
 // --- Heat Map ---
@@ -216,11 +219,6 @@ export interface WavesResponse {
 
 // --- WebSocket Events ---
 
-export interface WSEvent {
-  event: string
-  data: unknown
-}
-
 export interface RobotPositionEvent {
   event: 'robot_position'
   data: {
@@ -240,4 +238,239 @@ export interface TaskUpdateEvent {
   }
 }
 
-export type FleetWSEvent = RobotPositionEvent | TaskUpdateEvent | WSEvent
+export interface OtherBroadcastEvent {
+  event: 'robot_state_change' | 'collision_alert' | 'deadlock_event' | 'fleet_metrics' | 'wcs_event'
+  data: Record<string, unknown>
+}
+
+export interface WSControlMessage {
+  type: 'connected' | 'pong'
+  [key: string]: unknown
+}
+
+export type FleetWSEvent = RobotPositionEvent | TaskUpdateEvent | OtherBroadcastEvent | WSControlMessage
+
+// --- Scenarios ---
+
+export type ScenarioStatus = 'created' | 'running' | 'completed' | 'failed' | 'archived'
+export type AllocationStrategy = 'fifo' | 'nearest' | 'priority_weighted'
+
+export interface ScenarioConfig {
+  name: string
+  description: string
+  fleet_size: number
+  robot_config: string
+  allocation_strategy: AllocationStrategy
+  warehouse_config: string
+  order_count: number
+  order_seed: number | null
+  duration_s: number
+}
+
+export interface Scenario {
+  scenario_id: string
+  name: string
+  status: ScenarioStatus
+  config: ScenarioConfig
+  created_at: number
+  started_at: number | null
+  completed_at: number | null
+  kpis: WesKpi | null
+}
+
+/** Partial response from POST /api/scenarios/{id}/run — not a full Scenario. */
+export interface ScenarioRunResult {
+  scenario_id: string
+  status: 'completed'
+  kpis: WesKpi
+  completed_at: number
+}
+
+export interface ScenarioDelta {
+  scenario_id: string
+  name: string
+  vs_baseline: Record<string, number>
+}
+
+export interface ScenarioRanking {
+  rank: number
+  scenario_id: string
+  name: string
+  throughput_items_per_hour: number
+  avg_order_cycle_time_s: number
+}
+
+/** Partial scenario object returned inside a comparison response (no status/timestamps). */
+export interface ScenarioComparisonEntry {
+  scenario_id: string
+  name: string
+  config: ScenarioConfig
+  kpis: WesKpi
+}
+
+export interface ScenarioComparison {
+  scenarios: ScenarioComparisonEntry[]
+  deltas: ScenarioDelta[]
+  rankings: ScenarioRanking[]
+  baseline_scenario_id: string
+}
+
+// --- Warehouse Designer ---
+
+export interface DesignerNode {
+  id: string
+  name: string
+  x: number
+  y: number
+  type: NodeType
+  zone?: string
+}
+
+export interface DesignerEdge {
+  id: string
+  from: string
+  to: string
+}
+
+export interface DesignerZone {
+  name: string
+  type: ZoneType
+  nodeIds: string[]
+}
+
+export interface DesignerValidation {
+  valid: boolean
+  errors: string[]
+  warnings: string[]
+}
+
+/** JSON export format matching configs/warehouses/*.json */
+export interface WarehouseConfig {
+  name: string
+  description: string
+  grid_spacing_m: number
+  nodes: { name: string; x: number; y: number; type: NodeType }[]
+  edges: { from: string; to: string }[]
+  zones: { name: string; type: ZoneType; nodes: string[] }[]
+}
+
+// --- VDA5050 ---
+
+export interface VDA5050GatewayStatus {
+  broker_connected: boolean
+  agvs_online: number
+  agvs_total: number
+  gateway_initialized: boolean
+}
+
+export type VDA5050ConnectionState = 'ONLINE' | 'OFFLINE' | 'CONNECTIONBROKEN'
+
+export interface VDA5050AgvError {
+  errorType: string
+  errorLevel: string
+  errorDescription: string
+}
+
+export interface VDA5050AgvPosition {
+  x: number
+  y: number
+  theta: number
+  mapId: string
+}
+
+export interface VDA5050AgvLastState {
+  orderId: string
+  lastNodeId: string
+  agvPosition: VDA5050AgvPosition
+  batteryState: { batteryCharge: number; batteryVoltage: number; charging: boolean }
+  operatingMode: string
+  driving: boolean
+  errors: VDA5050AgvError[]
+  safetyState: { eStop: string; fieldViolation: boolean }
+}
+
+export interface VDA5050AgvState {
+  serial_number: string
+  last_state: VDA5050AgvLastState
+}
+
+// --- ROS2 Bridge ---
+
+export type HardwareMode = 'simulated' | 'ros2_sim' | 'ros2_real'
+
+export interface ROS2BridgeStatus {
+  ros2_available: boolean
+  bridge_mode: string
+  fms_url: string
+  subscribed_topics: number
+  discovered_nodes: number
+  bridge_initialized: boolean
+}
+
+export interface ROS2Topic {
+  topic_type: string
+  template: string
+  msg_type: string
+  source: 'live' | 'simulated'
+}
+
+/** Response from POST /api/ros2/nav-goal (matches python/app/routes/ros2.py + HAL) */
+export interface ROS2NavGoalResponse {
+  status: 'simulated' | 'sent' | 'error'
+  robot_id: string
+  goal: { x: number; y: number; theta: number }
+  mode: HardwareMode
+  timestamp: number
+  topic?: string          // present when ROS2 is live
+  error?: string          // present when status='error'
+}
+
+// --- MAPF / Congestion (Phase 11) ---
+
+export interface CongestionMap {
+  [node_id: string]: {
+    occupancy: number
+    wait_time_avg: number
+    throughput: number
+  }
+}
+
+export interface Bottleneck {
+  node_id: string
+  occupancy: number
+  wait_time_avg: number
+  throughput: number
+}
+
+export interface MAPFSolveResult {
+  paths?: Record<string, string[]>
+  moves?: Record<string, string>
+  cost?: number
+  conflicts_resolved?: number
+  solve_time_ms: number
+  success: boolean
+}
+
+export interface MAPFStatus {
+  last_solve_time_ms: number
+  last_conflicts_resolved: number
+  total_solves: number
+}
+
+export interface MAPFBenchmarkEntry {
+  solver: string
+  agent_count: number
+  solve_time_ms: number
+  conflicts_resolved?: number
+  success: boolean
+}
+
+/** Response from GET /api/ros2/pose/{robot_id} (matches python/app/routes/ros2.py + HAL) */
+export interface ROS2PoseResponse {
+  robot_id: string
+  pose: Pose
+  source: 'simulated' | 'ros2' | 'error'
+  mode: HardwareMode
+  topic?: string          // present when ROS2 is live
+  error?: string          // present when source='error'
+}

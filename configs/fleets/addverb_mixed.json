@@ -1,0 +1,21 @@
+{
+  "name": "Addverb Mixed Fleet",
+  "description": "Mixed fleet for Noida-style warehouse demo — 3 Dynamo AMR + 5 Veloce ACR + 2 Quadron shuttles",
+  "robots": [
+    {
+      "id_prefix": "DYN",
+      "config": "configs/robots/addverb_dynamo.yaml",
+      "count": 3
+    },
+    {
+      "id_prefix": "VEL",
+      "config": "configs/robots/addverb_veloce.yaml",
+      "count": 5
+    },
+    {
+      "id_prefix": "QDR",
+      "config": "configs/robots/addverb_quadron.yaml",
+      "count": 2
+    }
+  ]
+}

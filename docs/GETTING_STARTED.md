@@ -27,7 +27,7 @@ cp .env.example .env
 ```
 
 Default configuration uses:
-- **Warehouse:** `simple_grid` (25 nodes, 3 zones)
+- **Warehouse:** `simple_grid` (25 nodes, 8 zones)
 - **Robot:** `differential_drive` (AMR with 360-degree LiDAR)
 
 To use a different warehouse or robot:
@@ -44,7 +44,7 @@ ROBOT_CONFIG=unidirectional
 docker compose -f docker/docker-compose.yml up --build
 ```
 
-This starts 6 services:
+This starts 7 services:
 
 | Service | Port | Purpose |
 |---------|------|---------|
@@ -54,6 +54,7 @@ This starts 6 services:
 | rdt-redis | 6379 | Real-time position cache |
 | rdt-influxdb | 8086 | Time-series telemetry |
 | rdt-grafana | 3000 | Dashboards |
+| rdt-mosquitto | 1883, 9001 | MQTT broker (VDA5050) |
 
 Wait for the health check to pass (about 30 seconds):
 
@@ -137,6 +138,6 @@ docker compose -f docker/docker-compose.yml down -v
 
 ## Next Steps
 
-- [API Reference](API_REFERENCE.md) — All 30 endpoints with examples
+- [API Reference](API_REFERENCE.md) — All 65 endpoints with examples
 - [Configuration Guide](CONFIGURATION.md) — Custom warehouses, robots, behavior trees
 - [Architecture](ARCHITECTURE.md) — System design and data flow

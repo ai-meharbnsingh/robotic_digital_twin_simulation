@@ -3,6 +3,12 @@
 //
 // Phase 6: Tests for route registration, start/stop,
 // and actual HTTP GET requests.
+//
+// PORT REQUIREMENT: These tests bind to ephemeral OS-assigned ports
+// via find_free_port(). In sandboxed or containerized environments
+// where socket creation or port binding is restricted, these tests
+// may fail. The production FMS REST server uses port 7012 by default
+// (configured via FMS_PORT env var).
 // ──────────────────────────────────────────────────────────
 
 #include <gtest/gtest.h>

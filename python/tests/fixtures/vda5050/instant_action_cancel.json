@@ -1,0 +1,21 @@
+{
+  "headerId": 301,
+  "timestamp": "2026-03-30T12:03:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "instantActions": [
+    {
+      "actionId": "ia-cancel-001",
+      "actionType": "cancelOrder",
+      "blockingType": "HARD",
+      "actionDescription": "Cancel current order and return to idle",
+      "actionParameters": [
+        {
+          "key": "orderId",
+          "value": "order-001"
+        }
+      ]
+    }
+  ]
+}

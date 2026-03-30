@@ -1,5 +1,5 @@
 """
-Test ALL 40 API endpoints with real assertions.
+Test ALL 65 API endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 40
+        assert data["endpoints"] == 65
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -408,8 +408,8 @@ class TestReservations:
 
 
 class TestEndpointCount:
-    async def test_all_40_endpoints_exist(self, client: AsyncClient):
-        """Verify all 40 API endpoints respond (not 404/405)."""
+    async def test_all_65_endpoints_exist(self, client: AsyncClient):
+        """Verify all 65 API endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
             ("GET", "/"),
@@ -464,18 +464,50 @@ class TestEndpointCount:
             ("POST", "/api/wes/waves/test-id/release"),
             ("POST", "/api/wes/wave-rules"),
             ("GET", "/api/wes/wave-rules"),
-            # io-gita (3)
+            # io-gita (4)
             ("GET", "/api/iogita/zones"),
             ("GET", "/api/iogita/status"),
             ("POST", "/api/iogita/cold-start/test_robot"),
+            ("POST", "/api/iogita/recover/test_robot"),
+            # Scenarios (6)
+            ("GET", "/api/scenarios"),
+            ("POST", "/api/scenarios"),
+            ("POST", "/api/scenarios/test-id/run"),
+            ("GET", "/api/scenarios/test-id/results"),
+            ("DELETE", "/api/scenarios/test-id"),
+            ("GET", "/api/scenarios/compare"),
+            # Designer (4)
+            ("POST", "/api/designer/validate"),
+            ("POST", "/api/designer/export"),
+            ("GET", "/api/designer/templates"),
+            ("GET", "/api/designer/templates/template_small"),
+            # VDA5050 (5)
+            ("GET", "/api/vda5050/status"),
+            ("POST", "/api/vda5050/orders"),
+            ("POST", "/api/vda5050/instant-actions"),
+            ("GET", "/api/vda5050/agvs"),
+            ("GET", "/api/vda5050/agvs/test-agv/state"),
+            # Phase 10: ROS2 Bridge (4 endpoints)
+            ("GET", "/api/ros2/status"),
+            ("GET", "/api/ros2/topics"),
+            ("POST", "/api/ros2/nav-goal"),
+            ("GET", "/api/ros2/pose/AMR-01"),
+            # Phase 11: MAPF (4 endpoints)
+            ("POST", "/api/mapf/solve"),
+            ("GET", "/api/mapf/status"),
+            ("POST", "/api/mapf/step"),
+            ("GET", "/api/mapf/benchmarks"),
+            ("GET", "/api/mapf/congestion"),
         ]
 
-        assert len(endpoints) == 40, f"Expected 40 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 65, f"Expected 65 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":
                 if "path" in path and "?" not in path and path == "/api/map/path":
                     resp = await client.get(path, params={"start": "DOCK_1", "end": "DROP_1"})
+                elif path == "/api/scenarios/compare":
+                    resp = await client.get(path, params={"ids": "id_a,id_b"})
                 else:
                     resp = await client.get(path)
             elif method == "POST":
@@ -494,6 +526,51 @@ class TestEndpointCount:
                     import io
                     csv_data = b"source_node,destination_node\nPICK_1,DROP_1"
                     resp = await client.post(path, files={"file": ("test.csv", io.BytesIO(csv_data), "text/csv")})
+                elif path == "/api/scenarios":
+                    resp = await client.post(path, json={
+                        "name": "test",
+                        "warehouse_config": "simple_grid",
+                        "robot_config": "differential_drive",
+                    })
+                elif "/run" in path and "scenarios" in path:
+                    resp = await client.post(path)
+                elif path == "/api/designer/validate":
+                    resp = await client.post(path, json={
+                        "name": "test", "nodes": [], "edges": [],
+                    })
+                elif path == "/api/designer/export":
+                    resp = await client.post(path, json={
+                        "name": "test", "config": {"nodes": [], "edges": []},
+                    })
+                elif path == "/api/vda5050/orders":
+                    resp = await client.post(path, json={
+                        "agv_id": "test-agv",
+                        "order": {"headerId": 1, "timestamp": "2026-01-01T00:00:00Z",
+                                  "version": "2.0.0", "orderId": "t", "orderUpdateId": 0,
+                                  "nodes": [], "edges": []},
+                    })
+                elif path == "/api/vda5050/instant-actions":
+                    resp = await client.post(path, json={
+                        "agv_id": "test-agv",
+                        "action_type": "cancelOrder",
+                        "action_id": "test_cancel",
+                    })
+                elif "recover" in path and "iogita" in path:
+                    resp = await client.post(path, json={
+                        "scan": [1.0] * 360,
+                        "last_known_node": "DOCK_1",
+                        "heading_deg": 0.0,
+                    })
+                elif path == "/api/mapf/solve":
+                    resp = await client.post(path, json={
+                        "solver": "cbs",
+                        "agents": [{"agent_id": "R1", "start": "DOCK_1", "goal": "DROP_1"}],
+                    })
+                elif path == "/api/mapf/step":
+                    resp = await client.post(path, json={
+                        "agents": [{"agent_id": "R1", "position": "DOCK_1", "goal": "DROP_1",
+                                    "priority": 1, "wait_time": 0}],
+                    })
                 else:
                     resp = await client.post(path)
             elif method == "DELETE":

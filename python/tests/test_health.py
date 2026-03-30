@@ -87,7 +87,7 @@ async def test_health_fields_are_correct_types(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_health_mongodb_true_when_running(async_client: AsyncClient):
+async def test_health_mongodb_true_when_running(async_client: AsyncClient, requires_mongodb):
     """MongoDB IS running locally — mongodb_ok should be True."""
     resp = await async_client.get("/health")
     data = resp.json()
@@ -97,7 +97,7 @@ async def test_health_mongodb_true_when_running(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_health_redis_true_when_running(async_client: AsyncClient):
+async def test_health_redis_true_when_running(async_client: AsyncClient, requires_mongodb):
     """Redis IS running locally — redis_ok should be True."""
     resp = await async_client.get("/health")
     data = resp.json()
@@ -105,7 +105,7 @@ async def test_health_redis_true_when_running(async_client: AsyncClient):
 
 
 @pytest.mark.asyncio
-async def test_health_influxdb_true_when_running(async_client: AsyncClient):
+async def test_health_influxdb_true_when_running(async_client: AsyncClient, requires_mongodb):
     """InfluxDB IS running locally — influxdb_ok should be True."""
     resp = await async_client.get("/health")
     data = resp.json()

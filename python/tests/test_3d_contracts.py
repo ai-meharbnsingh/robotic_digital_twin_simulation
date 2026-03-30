@@ -78,7 +78,11 @@ class TestMapContractFor3D:
 
 
 class TestRobotContractFor3D:
-    """GET /api/robots must return pose, type, battery, path for 3D rendering."""
+    """GET /api/robots must return pose, type, battery, path for 3D rendering.
+
+    Robot shape tests require MongoDB with seeded data. When MongoDB is unavailable,
+    tests skip with a clear reason instead of silently passing on empty lists.
+    """
 
     async def test_robots_response_is_list(self, client: AsyncClient):
         resp = await client.get("/api/robots")
@@ -86,11 +90,11 @@ class TestRobotContractFor3D:
         data = resp.json()
         assert isinstance(data, list)
 
-    async def test_robot_has_pose_with_xyz_theta(self, client: AsyncClient):
+    async def test_robot_has_pose_with_xyz_theta(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "pose" in r, f"Robot missing 'pose': {r.get('robot_id')}"
             pose = r["pose"]
@@ -98,32 +102,32 @@ class TestRobotContractFor3D:
             assert isinstance(pose["y"], (int, float))
             assert isinstance(pose["theta"], (int, float))
 
-    async def test_robot_has_type_field(self, client: AsyncClient):
+    async def test_robot_has_type_field(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "robot_type" in r, f"Robot missing 'robot_type': {r.get('robot_id')}"
             assert r["robot_type"] in ("differential_drive", "unidirectional", "omnidirectional"), \
                 f"Unknown robot_type '{r['robot_type']}'"
 
-    async def test_robot_has_battery_with_charge_pct(self, client: AsyncClient):
+    async def test_robot_has_battery_with_charge_pct(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "battery" in r
             bat = r["battery"]
             assert "charge_pct" in bat
             assert 0 <= bat["charge_pct"] <= 100
 
-    async def test_robot_has_path_field(self, client: AsyncClient):
+    async def test_robot_has_path_field(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "path" in r
             assert isinstance(r["path"], list)
@@ -131,42 +135,42 @@ class TestRobotContractFor3D:
             for entry in r["path"]:
                 assert isinstance(entry, str), f"Path entry not a string: {entry}"
 
-    async def test_robot_has_current_task_id(self, client: AsyncClient):
+    async def test_robot_has_current_task_id(self, client: AsyncClient, requires_mongodb):
         """3D scene uses current_task_id for destination marker visibility."""
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "current_task_id" in r
             assert r["current_task_id"] is None or isinstance(r["current_task_id"], str)
 
-    async def test_robot_has_current_and_target_node(self, client: AsyncClient):
+    async def test_robot_has_current_and_target_node(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "current_node" in r
             assert "target_node" in r
             assert isinstance(r["current_node"], str)
 
-    async def test_robot_has_name_and_id(self, client: AsyncClient):
+    async def test_robot_has_name_and_id(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         for r in robots:
             assert "robot_id" in r
             assert "name" in r
             assert isinstance(r["robot_id"], str)
             assert isinstance(r["name"], str)
 
-    async def test_robot_has_status(self, client: AsyncClient):
+    async def test_robot_has_status(self, client: AsyncClient, requires_mongodb):
         resp = await client.get("/api/robots")
         robots = resp.json()
         if len(robots) == 0:
-            pytest.skip("No robots in test environment")
+            pytest.skip("No robots seeded in database (requires running simulation)")
         valid_statuses = {
             "idle", "moving", "charging", "loading", "unloading",
             "error", "offline", "docking", "undocking", "waiting",

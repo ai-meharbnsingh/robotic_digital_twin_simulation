@@ -1,0 +1,188 @@
+{
+  "headerId": 2,
+  "timestamp": "2026-03-30T12:05:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-002",
+  "orderId": "order-complex-001",
+  "orderUpdateId": 0,
+  "nodes": [
+    {
+      "nodeId": "charge-station-1",
+      "sequenceId": 0,
+      "released": true,
+      "nodePosition": {
+        "x": 0.0,
+        "y": 0.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-c001",
+          "actionType": "startCharging",
+          "blockingType": "NONE",
+          "actionDescription": "Disconnect from charger before mission",
+          "actionParameters": []
+        }
+      ]
+    },
+    {
+      "nodeId": "pick-station-2",
+      "sequenceId": 2,
+      "released": true,
+      "nodePosition": {
+        "x": 2.0,
+        "y": 4.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-c002",
+          "actionType": "pick",
+          "blockingType": "HARD",
+          "actionDescription": "Pick pallet from station 2",
+          "actionParameters": [
+            {
+              "key": "stationType",
+              "value": "pick"
+            },
+            {
+              "key": "height",
+              "value": "0.5"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeId": "inspection-node",
+      "sequenceId": 4,
+      "released": true,
+      "nodePosition": {
+        "x": 5.0,
+        "y": 4.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-c003",
+          "actionType": "waitForTrigger",
+          "blockingType": "HARD",
+          "actionDescription": "Wait for QC inspection pass",
+          "actionParameters": [
+            {
+              "key": "triggerType",
+              "value": "qc_pass"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeId": "shelf-B2",
+      "sequenceId": 6,
+      "released": true,
+      "nodePosition": {
+        "x": 7.0,
+        "y": 2.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-c004",
+          "actionType": "finePositioning",
+          "blockingType": "HARD",
+          "actionDescription": "Align with shelf rack for drop",
+          "actionParameters": [
+            {
+              "key": "stationType",
+              "value": "shelf"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "nodeId": "drop-station-2",
+      "sequenceId": 8,
+      "released": true,
+      "nodePosition": {
+        "x": 9.0,
+        "y": 5.0,
+        "mapId": "warehouse-floor-1"
+      },
+      "actions": [
+        {
+          "actionId": "action-c005",
+          "actionType": "drop",
+          "blockingType": "HARD",
+          "actionDescription": "Drop pallet at outbound station",
+          "actionParameters": [
+            {
+              "key": "stationType",
+              "value": "drop"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "edges": [
+    {
+      "edgeId": "edge-c001",
+      "sequenceId": 1,
+      "released": true,
+      "startNodeId": "charge-station-1",
+      "endNodeId": "pick-station-2",
+      "maxSpeed": 1.0,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": true,
+      "actions": []
+    },
+    {
+      "edgeId": "edge-c002",
+      "sequenceId": 3,
+      "released": true,
+      "startNodeId": "pick-station-2",
+      "endNodeId": "inspection-node",
+      "maxSpeed": 0.8,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": false,
+      "actions": []
+    },
+    {
+      "edgeId": "edge-c003",
+      "sequenceId": 5,
+      "released": true,
+      "startNodeId": "inspection-node",
+      "endNodeId": "shelf-B2",
+      "maxSpeed": 1.2,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": true,
+      "actions": []
+    },
+    {
+      "edgeId": "edge-c004",
+      "sequenceId": 7,
+      "released": true,
+      "startNodeId": "shelf-B2",
+      "endNodeId": "drop-station-2",
+      "maxSpeed": 1.5,
+      "maxHeight": 0.0,
+      "minHeight": 0.0,
+      "orientation": 0.0,
+      "direction": "",
+      "rotationAllowed": true,
+      "actions": []
+    }
+  ]
+}

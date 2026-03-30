@@ -24,6 +24,8 @@ services:
         condition: service_started
       influxdb:
         condition: service_started
+      mosquitto:
+        condition: service_healthy
     environment:
       - MONGODB_URL=mongodb://${MONGO_USER:-rdt}:${MONGO_PASSWORD:-changeme}@mongodb:27017
       - REDIS_URL=redis://:${REDIS_PASSWORD:-changeme}@redis:6379
@@ -32,6 +34,11 @@ services:
       - INFLUXDB_ORG=rdt
       - INFLUXDB_BUCKET=fleet_telemetry
       - RABBITMQ_URL=amqp://${RABBITMQ_USER:-fms}:${RABBITMQ_PASSWORD:-changeme}@rabbitmq:5672/
+      - MQTT_BROKER_URL=mqtt://mosquitto:1883
+      - MQTT_BROKER_WS_URL=ws://mosquitto:9001
+      - VDA5050_MANUFACTURER=RDT
+      - VDA5050_INTERFACE_NAME=uagv
+      - VDA5050_VERSION=2.0.0
       - WAREHOUSE_CONFIG=simple_grid
       - ROBOT_CONFIG=differential_drive
       - FMS_TCP_PORT=65123
@@ -104,6 +111,40 @@ services:
     volumes:
       - influx_data:/var/lib/influxdb2
 
+  # ── Mosquitto: MQTT broker for VDA5050 protocol ──
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: rdt-mosquitto
+    ports:
+      - "1883:1883"
+      - "9001:9001"  # WebSocket
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - mosquitto_data:/mosquitto/data
+    healthcheck:
+      test: ["CMD", "mosquitto_sub", "-t", "$$SYS/#", "-C", "1", "-i", "healthcheck", "-W", "3"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ── ROS2 Bridge: nav2 integration (Phase 10) ──
+  ros2_bridge:
+    image: ros:humble
+    container_name: rdt-ros2-bridge
+    volumes:
+      - ../python/ros2_bridge:/ros2_ws/src/ros2_bridge
+    command: >
+      bash -c "source /opt/ros/humble/setup.bash &&
+               pip3 install --quiet httpx &&
+               python3 -c 'from ros2_bridge.bridge import ROS2Bridge; print(\"ROS2 Bridge ready\")' &&
+               tail -f /dev/null"
+    depends_on:
+      - rdt
+    environment:
+      - FMS_URL=http://rdt:7012
+      - ROS_DOMAIN_ID=0
+    restart: unless-stopped
+
   # ── Grafana: dashboards for telemetry visualization ──
   grafana:
     image: grafana/grafana:latest
@@ -121,3 +162,4 @@ volumes:
   mongo_data:
   influx_data:
   grafana_data:
+  mosquitto_data:

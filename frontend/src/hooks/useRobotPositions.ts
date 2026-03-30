@@ -3,6 +3,11 @@ import { useFrame } from '@react-three/fiber'
 import * as THREE from 'three'
 import type { Robot, FleetWSEvent } from '../types'
 
+const VALID_STATUSES = new Set([
+  'idle', 'moving', 'charging', 'loading', 'unloading',
+  'error', 'offline', 'docking', 'undocking', 'waiting',
+])
+
 export interface RobotPosition3D {
   robot_id: string
   current: THREE.Vector3
@@ -95,12 +100,14 @@ export function useRobotPositions() {
     (event: FleetWSEvent) => {
       if (event.event !== 'robot_position') return
       const d = event.data as Record<string, unknown>
-      // Runtime validation — guard against malformed WS events
+      // Runtime validation — guard against malformed WS events (including NaN/Infinity)
       if (
         typeof d?.robot_id !== 'string' ||
         !d.pose ||
         typeof (d.pose as Record<string, unknown>).x !== 'number' ||
-        typeof (d.pose as Record<string, unknown>).y !== 'number'
+        typeof (d.pose as Record<string, unknown>).y !== 'number' ||
+        !isFinite((d.pose as Record<string, unknown>).x as number) ||
+        !isFinite((d.pose as Record<string, unknown>).y as number)
       ) return
 
       const pose = d.pose as { x: number; y: number; theta: number }
@@ -110,19 +117,23 @@ export function useRobotPositions() {
       const now = Date.now()
       if (existing) {
         existing.target.set(pose.x, 0, pose.y)
-        if (typeof pose.theta === 'number') existing.targetTheta = pose.theta
-        if (typeof d.status === 'string') existing.status = d.status as Robot['status']
+        if (typeof pose.theta === 'number' && isFinite(pose.theta)) existing.targetTheta = pose.theta
+        if (typeof d.status === 'string' && VALID_STATUSES.has(d.status)) existing.status = d.status as Robot['status']
         if (typeof d.current_node === 'string') existing.current_node = d.current_node
         existing.lastUpdated = now
       } else {
-        // WS arrived before REST — create provisional entry so robot appears immediately
+        // WS arrived before REST — create provisional entry (renders on next REST poll ~3s)
+        const wsStatus = typeof d.status === 'string' && VALID_STATUSES.has(d.status)
+          ? (d.status as Robot['status'])
+          : 'idle'
+        const safeTheta = typeof pose.theta === 'number' && isFinite(pose.theta) ? pose.theta : 0
         positionsRef.current.set(robotId, {
           robot_id: robotId,
           current: new THREE.Vector3(pose.x, 0, pose.y),
           target: new THREE.Vector3(pose.x, 0, pose.y),
-          theta: pose.theta ?? 0,
-          targetTheta: pose.theta ?? 0,
-          status: (d.status as Robot['status']) ?? 'idle',
+          theta: safeTheta,
+          targetTheta: safeTheta,
+          status: wsStatus,
           robot_type: 'differential_drive',
           battery_pct: 100,
           current_node: (d.current_node as string) ?? '',

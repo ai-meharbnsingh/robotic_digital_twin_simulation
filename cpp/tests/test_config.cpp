@@ -442,3 +442,93 @@ TEST(ConfigTest, ExpandFleetManifest_ConfigsPreserved) {
     EXPECT_EQ(configs[5].behavior_tree, "default_agv.xml");
     EXPECT_DOUBLE_EQ(configs[5].motion.max_linear_velocity_curve, 0.6);
 }
+
+// ── Addverb Fleet Presets (Phase 9) ─────────────────────
+
+TEST(ConfigTest, LoadAddverbDynamo_Name) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_dynamo.yaml");
+    EXPECT_EQ(cfg.name, "Addverb_Dynamo");
+}
+
+TEST(ConfigTest, LoadAddverbDynamo_Type) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_dynamo.yaml");
+    EXPECT_EQ(cfg.type, RobotType::DIFFERENTIAL_DRIVE);
+}
+
+TEST(ConfigTest, LoadAddverbDynamo_Speed) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_dynamo.yaml");
+    EXPECT_DOUBLE_EQ(cfg.motion.max_linear_velocity, 1.5);
+}
+
+TEST(ConfigTest, LoadAddverbVeloce_Name) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_veloce.yaml");
+    EXPECT_EQ(cfg.name, "Addverb_Veloce");
+}
+
+TEST(ConfigTest, LoadAddverbVeloce_Type) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_veloce.yaml");
+    EXPECT_EQ(cfg.type, RobotType::UNIDIRECTIONAL);
+}
+
+TEST(ConfigTest, LoadAddverbVeloce_Speed) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_veloce.yaml");
+    EXPECT_DOUBLE_EQ(cfg.motion.max_linear_velocity, 1.5);
+}
+
+TEST(ConfigTest, LoadAddverbQuadron_Name) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_quadron.yaml");
+    EXPECT_EQ(cfg.name, "Addverb_Quadron");
+}
+
+TEST(ConfigTest, LoadAddverbQuadron_Speed) {
+    auto cfg = Config::loadRobotConfig(
+        projectRoot() + "/configs/robots/addverb_quadron.yaml");
+    EXPECT_DOUBLE_EQ(cfg.motion.max_linear_velocity, 4.0);
+}
+
+TEST(ConfigTest, LoadAddverbNoida_NodeCount) {
+    auto cfg = Config::loadWarehouseConfig(
+        projectRoot() + "/configs/warehouses/addverb_noida.json");
+    EXPECT_EQ(cfg.nodes.size(), 49u);
+}
+
+TEST(ConfigTest, LoadAddverbNoida_HasChargeStations) {
+    auto cfg = Config::loadWarehouseConfig(
+        projectRoot() + "/configs/warehouses/addverb_noida.json");
+    int charge_count = 0;
+    for (const auto& n : cfg.nodes) {
+        if (n.type == "charge") charge_count++;
+    }
+    EXPECT_GE(charge_count, 4);
+}
+
+TEST(ConfigTest, LoadAddverbMixedFleet_TotalRobots) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/addverb_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+    EXPECT_EQ(configs.size(), 10u);  // 3 Dynamo + 5 Veloce + 2 Quadron
+}
+
+TEST(ConfigTest, LoadAddverbMixedFleet_DynamoSpeed) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/addverb_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+    // First 3 should be Dynamo at 1.5 m/s
+    EXPECT_DOUBLE_EQ(configs[0].motion.max_linear_velocity, 1.5);
+    EXPECT_EQ(configs[0].type, RobotType::DIFFERENTIAL_DRIVE);
+}
+
+TEST(ConfigTest, LoadAddverbMixedFleet_QuadronSpeed) {
+    auto manifest = Config::loadFleetManifest(
+        projectRoot() + "/configs/fleets/addverb_mixed.json");
+    auto configs = Config::expandFleetManifest(manifest, projectRoot());
+    // Last 2 should be Quadron at 4.0 m/s
+    EXPECT_DOUBLE_EQ(configs[8].motion.max_linear_velocity, 4.0);
+}

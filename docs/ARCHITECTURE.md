@@ -32,7 +32,7 @@ The simulation runs as three primary processes plus supporting infrastructure se
   │  ┌─────────────────────────────────────────────────────────▼─────┐  │
   │  │  PYTHON PROCESS: FastAPI (:8029)                              │  │
   │  │                                                               │  │
-  │  │  ├── REST API (30 endpoints)                                  │  │
+  │  │  ├── REST API (65 endpoints)                                  │  │
   │  │  ├── WebSocket (/ws/fleet) — 100 connection limit             │  │
   │  │  ├── API Key Auth (X-API-Key header on write endpoints)       │  │
   │  │  ├── CORS (configurable via CORS_ORIGINS env var)             │  │
@@ -53,7 +53,7 @@ The simulation runs as three primary processes plus supporting infrastructure se
   │  ┌───────────────────────────────────────────────────────────────┐  │
   │  │  INFRASTRUCTURE (all with auth, ports bound to 127.0.0.1)    │  │
   │  │  MongoDB :27017  │  RabbitMQ :5672  │  Redis :6379            │  │
-  │  │  InfluxDB :8086  │  Grafana :3000                             │  │
+  │  │  InfluxDB :8086  │  Grafana :3000   │  Mosquitto :1883/:9001  │  │
   │  └───────────────────────────────────────────────────────────────┘  │
   └─────────────────────────────────────────────────────────────────────┘
 ```
@@ -104,18 +104,154 @@ MongoDB "tasks" collection
     └──► Python WebSocket (broadcast task_update event)
 ```
 
-## Dropped: Intelligence Pipeline (io-gita)
+## Intelligence Pipeline (io-gita v4 — Reinstated)
 
-The io-gita intelligence layer was **dropped in Session 6** after the cold start localization experiment failed (52% accuracy, below 75% gate). The following components were archived:
+io-gita v1-v3 were **dropped in Session 6** after cold start localization failed (52% accuracy with 3D LiDAR, below 75% gate). The original approach used 16-feature LiDAR extraction which was too similar between zones.
 
-- ZoneIdentifier (Hopfield ODE + graph disambiguation)
-- ColdStartRecovery (state persistence + recovery hints)
-- FleetAtlas (zone occupation tracking)
-- SG BottleneckPredictor (fleet state pattern matching)
+**v4 was reinstated** with a hierarchical zone-first approach:
+- ZoneIdentifier v4: geometry-only zone features (12-dim) + zone-first hierarchy → >90% zone accuracy
+- ColdStartRecovery: state persistence + recovery hints (3 endpoints)
+- Backend: `hierarchical_hopfield_d10000`
 
-All code is preserved in `_archive/io_gita_dropped/`. Closure documented in `COLD_START_CLOSED.md`.
+v1-v3 code is preserved in `_archive/io_gita_dropped/`. Closure documented in `COLD_START_CLOSED.md`.
 
-The digital twin is fully functional without the intelligence layer. Zone identification and predictive analytics can be re-added in a future milestone.
+4 REST endpoints: `GET /api/iogita/status`, `GET /api/iogita/zones`, `POST /api/iogita/cold-start/{id}`, `POST /api/iogita/recover/{id}`
+
+## Phases 1-5 Enhancements (v2.0)
+
+### Phase 1: CSV/Excel Order Import
+- `POST /api/wes/orders/import` — multipart CSV upload
+- Row-by-row validation, OWASP CSV injection protection, MAX_FILE_SIZE/MAX_ROWS limits
+
+### Phase 2: Mixed Fleet Types
+- Fleet manifest: `configs/fleets/default_mixed.json`
+- C++ `--fleet` flag loads heterogeneous robots (AMR + AGV) with different configs
+- Dashboard color-codes robots by type
+
+### Phase 3: Heat Map Visualization
+- `GET /api/analytics/heatmap` — grid-based traffic density over time window
+- Frontend: semi-transparent color overlay (green→yellow→red) on WarehouseGrid
+- Zone congestion scoring
+
+### Phase 4: Wave Rule Engine (Advanced WES)
+- WaveEngine: group orders into waves for batch picking
+- 5 REST endpoints: waves CRUD, rules CRUD, wave release
+- Rules persist in MongoDB, loaded on startup
+
+### Phase 5: 3D Web Simulation (React Three Fiber)
+- Browser-based 3D warehouse visualization — no Gazebo required
+- React Three Fiber + drei: auto-generated 3D scene from warehouse JSON config
+- Shared geometry pools (1 per type, reused by all instances) for 50+ robot scalability
+- Dual update path: REST polling (3s) for full state + WebSocket for low-latency position updates
+- WS events bypass React re-renders (ref callback pattern → useFrame interpolation)
+- Lazy-loaded: Three.js chunk (~918KB) loads only when 3D tab clicked
+- Camera orbit/pan/zoom + follow-robot mode
+- Heat map overlay in 3D (merged vertex-colored floor geometry)
+- Battery color bars, direction cones, path lines, selection rings on robot models
+
+## Phase 8: VDA5050 Gateway (MQTT + Standard AGV Protocol)
+
+VDA5050 v2.0 is the open European standard for AGV/AMR communication. Phase 8 adds a VDA5050 Gateway that bridges the internal C++ FMS protocol to the industry-standard MQTT-based VDA5050 message format.
+
+### Infrastructure
+
+Eclipse Mosquitto MQTT broker runs as a Docker Compose service:
+- Port 1883: MQTT (TCP) for robot-to-gateway communication
+- Port 9001: WebSocket for browser-based monitoring tools
+- Health-checked and auto-started before the main application
+
+### VDA5050 Topic Structure
+
+All topics follow the VDA5050 v2.0 namespace:
+```
+{interfaceName}/{version}/{manufacturer}/{serialNumber}/{topic}
+```
+
+Example for robot AMR-001:
+```
+uagv/v2/RDT/AMR-001/order          ← Master Control → AGV (orders)
+uagv/v2/RDT/AMR-001/instantActions  ← Master Control → AGV (e-stop, cancel)
+uagv/v2/RDT/AMR-001/state           ← AGV → Master Control (robot state at 1-10Hz)
+uagv/v2/RDT/AMR-001/visualization   ← AGV → Master Control (position updates)
+uagv/v2/RDT/AMR-001/connection      ← AGV → Broker (online/offline/connectionBroken)
+uagv/v2/RDT/AMR-001/factsheet       ← AGV → Master Control (capabilities)
+```
+
+### Message Flow
+
+```
+                    MQTT Broker (Mosquitto :1883)
+                         │
+    ┌────────────────────┼────────────────────┐
+    │                    │                    │
+    ▼                    ▼                    ▼
+VDA5050 Gateway    Third-party tools    Browser monitor
+(Python service)   (any VDA5050 client)  (WS :9001)
+    │
+    ▼
+C++ FMS (via REST :7012 / internal API)
+    │
+    ▼
+Robot fleet (TCP :65123)
+```
+
+The gateway translates between:
+- **Inbound:** VDA5050 JSON orders/instantActions → internal FMS task format
+- **Outbound:** Internal robot state → VDA5050 state/visualization/connection messages
+
+### Conformance Testing
+
+Golden JSON fixtures in `python/tests/fixtures/vda5050/` provide reference messages for conformance testing:
+- `order_simple.json` — 3-node pick→shelf→drop order
+- `order_complex.json` — 5-node order with actions at each node
+- `state_moving.json` — Robot moving along edge with load and battery state
+- `state_idle.json` — Robot idle awaiting orders
+- `instant_action_estop.json` — Emergency stop command
+- `instant_action_cancel.json` — Cancel order command
+- `connection_online.json` — AGV online announcement
+- `factsheet_amr.json` — AMR capabilities and protocol limits
+
+All fixtures follow VDA5050 v2.0 schema and are used by `test_vda5050.py` for schema validation, topic construction, and message translation correctness.
+
+## Phase 10: ROS2 Bridge (Simulated + Production-Ready)
+
+The ROS2 Bridge provides bidirectional communication between the FMS REST API and ROS2 nav2 stack. Locally, it runs in **simulated mode** (no rclpy required). In Docker with `ros:humble` base image, it connects to real ROS2 topics.
+
+### Components
+
+- **ROS2Bridge** (`python/ros2_bridge/bridge.py`): Core bridge with nav goal, pose, scan, e-stop
+- **TopicMapper** (`python/ros2_bridge/topic_mapper.py`): Bidirectional FMS <-> ROS2 topic translation
+- **HAL** (`python/ros2_bridge/hal.py`): Hardware Abstraction Layer (SIMULATED / ROS2_SIM / ROS2_REAL modes)
+- **REST Endpoints** (`python/app/routes/ros2.py`): 4 endpoints with input validation and rate limiting
+
+### Input Validation
+
+All `robot_id` parameters are validated by `sanitize_robot_id()` before use in topic names. This prevents ROS2 topic injection attacks. The validation rejects: `/`, `#`, `+`, `..`, whitespace, and IDs over 50 characters. Only alphanumeric characters, dashes, underscores, and dots are allowed. This follows the same pattern as VDA5050's `sanitize_topic_component()`.
+
+### Rate Limiting
+
+Navigation goals are rate-limited to 100 per robot per minute (sliding window) to prevent resource exhaustion.
+
+### ROS2 Security Best Practices (Production Deployment)
+
+When deploying with real ROS2 hardware, the following security measures are recommended:
+
+1. **ROS_DOMAIN_ID Isolation**: Set a unique `ROS_DOMAIN_ID` (0-232) for the fleet to isolate DDS discovery from other ROS2 systems on the same network. Each isolated environment (dev, staging, production) should use a different domain ID.
+
+2. **SROS2 Encrypted Topics**: Enable SROS2 (Secure ROS2) for encrypted and authenticated DDS communication. This uses DDS Security with X.509 certificates for:
+   - Authentication (mutual TLS between nodes)
+   - Access control (per-topic publish/subscribe permissions)
+   - Encryption (AES-GCM for topic data in transit)
+
+   Generate security keys with: `ros2 security create_keystore`, `ros2 security create_enclave`
+
+3. **Dedicated VLAN for Robot Network**: Place all robot-to-FMS communication on a dedicated VLAN (e.g., VLAN 100) with:
+   - Firewall rules restricting DDS multicast traffic to the robot VLAN only
+   - No direct internet access from the robot network
+   - VPN or SSH tunnel for remote monitoring access
+   - MAC address filtering for robot network interfaces
+
+4. **DDS Discovery Restriction**: Use `FASTDDS_DISCOVERY_SERVER` or `RMW_IMPLEMENTATION=rmw_cyclonedds_cpp` with unicast peer lists instead of multicast discovery to prevent unauthorized node joins.
 
 ## Technology Stack
 
@@ -127,23 +263,25 @@ The digital twin is fully functional without the intelligence layer. Zone identi
 | | Behavior Trees | Custom engine (tinyxml2) | Decision logic (11 action + 7 condition nodes) |
 | | Protocol | Custom V1 (33 fields + CRC32) | TCP communication with robots |
 | | Network | POSIX sockets | TCP server + REST server (thread-safe) |
-| **Python API** | REST API | FastAPI, Pydantic v2 | 30 endpoints for fleet data |
+| **Python API** | REST API | FastAPI, Pydantic v2 | 65 endpoints for fleet data |
 | | WebSocket | FastAPI WebSocket | Real-time fleet event streaming (100 conn limit) |
 | | Auth | API Key (X-API-Key header) | Write endpoint protection (configurable) |
 | | CORS | CORSMiddleware | Configurable origins via CORS_ORIGINS env var |
 | | WES | Custom (Poisson generator) | Order generation, task management, KPIs |
 | | Monitoring | InfluxDB client, Redis | Time-series telemetry, position cache |
-| **Frontend** | Dashboard | React 19, TypeScript, Vite | Live fleet visualization |
+| **Frontend** | Dashboard | React 19, TypeScript, Vite | Live fleet visualization (2D + 3D) |
+| | 3D Scene | React Three Fiber, drei, Three.js | Browser-based 3D warehouse sim |
 | **Simulation** | Gazebo | gz-sim7 (Fortress) | 3D warehouse with LiDAR, barcode, conveyor plugins |
 | **Infrastructure** | Database | MongoDB 7 (with auth) | Fleet state storage |
 | | Message Broker | RabbitMQ 3 (with auth) | Task queue and event bus |
+| | MQTT Broker | Eclipse Mosquitto 2 | VDA5050 AGV communication (TCP :1883 + WS :9001) |
 | | Cache | Redis 7 (with auth) | Real-time robot position cache |
 | | Time-Series | InfluxDB 2 (with auth) | Telemetry storage |
 | | Dashboards | Grafana | Visual monitoring |
 | **Build** | C++ | CMake + vcpkg | Cross-platform build |
 | | Frontend | Node.js 20 + npm | React build (Dockerfile stage 2) |
 | | Container | Docker 3-stage | C++ builder + frontend builder + runtime |
-| | Orchestration | Docker Compose | 6-service stack with health checks + auth |
+| | Orchestration | Docker Compose | 7-service stack with health checks + auth |
 
 ## Performance Targets
 
@@ -176,7 +314,7 @@ robotic_digital_twin_simulation/
 │   │   ├── network/              # ProtocolV1, TCPServer, RESTServer
 │   │   └── fleet/                # FleetManager, TaskManager, COPP, AgentInterface
 │   ├── src/                      # Implementation files
-│   └── tests/                    # 18 test files (352 C++ tests)
+│   └── tests/                    # 18 test files (390 C++ tests)
 │
 ├── python/                       # Python API
 │   ├── app/                      # FastAPI application
@@ -184,24 +322,31 @@ robotic_digital_twin_simulation/
 │   │   ├── config.py             # Settings + config loaders
 │   │   ├── auth.py               # API key auth for write endpoints
 │   │   ├── websocket.py          # WebSocket manager (100 conn limit + origin check)
-│   │   └── routes/               # 13 route modules (30 endpoints)
+│   │   └── routes/               # 21 route modules (65 endpoints)
 │   ├── wes/                      # Warehouse Execution System
 │   ├── monitoring/               # InfluxDB writer, Redis cache
-│   └── tests/                    # Python test suite (124 tests)
+│   ├── intelligence/             # io-gita v4 (hierarchical zone ID)
+│   └── tests/                    # Python test suite (387 tests)
 │
 ├── configs/                      # Pluggable configuration files
 │   ├── warehouses/               # JSON warehouse maps (simple_grid, botvalley)
 │   ├── robots/                   # YAML robot presets (differential_drive, unidirectional)
+│   ├── fleets/                   # Fleet manifests (mixed fleet definitions)
 │   └── behavior_trees/           # XML behavior tree definitions
 │
 ├── docker/                       # Container infrastructure
 │   ├── Dockerfile                # 3-stage: C++ build + frontend build + runtime
-│   ├── docker-compose.yml        # 6 services with auth (secrets via .env)
+│   ├── docker-compose.yml        # 7 services with auth (secrets via .env)
 │   ├── .env.docker.example       # Docker secrets template
+│   ├── mosquitto/                # MQTT broker config
+│   │   └── mosquitto.conf        # Mosquitto listeners + persistence
 │   └── start.sh                  # Process launcher with graceful shutdown
 │
-├── frontend/                     # React dashboard (TypeScript + Vite)
-│   └── src/                      # Components, hooks, types
+├── frontend/                     # React dashboard (TypeScript + Vite + React Three Fiber)
+│   └── src/
+│       ├── components/           # WarehouseGrid, Warehouse3D, Robot3DModel, etc.
+│       ├── hooks/                # useApi, useFleetWebSocket, useRobotPositions
+│       └── types.ts              # TypeScript interfaces matching Pydantic models
 │
 ├── gazebo/                       # Gazebo simulation
 │   ├── scripts/                  # generate_world.py, generate_robot.py
@@ -214,7 +359,7 @@ robotic_digital_twin_simulation/
 │
 ├── docs/                         # Documentation
 │   ├── GETTING_STARTED.md        # 5-minute quickstart
-│   ├── API_REFERENCE.md          # All 30 endpoints
+│   ├── API_REFERENCE.md          # All 65 endpoints
 │   ├── CONFIGURATION.md          # Customization guide
 │   ├── ARCHITECTURE.md           # This file
 │   └── USER_EXPERIENCE.md        # UX design notes
@@ -241,9 +386,11 @@ Originally planned as C++ writing directly to MongoDB (MongoDBWriter). This was 
 3. JSON file output is simpler and debuggable
 4. The C++ REST server at :7012 provides the same data for programmatic access
 
-### Why io-gita was dropped
+### Why io-gita v4 was reinstated
 
-io-gita (Hopfield ODE zone identification + cold start recovery) was implemented across Phases 9-12. The cold start localization experiment achieved only 52% accuracy with 3D LiDAR, well below the 75% gate. After 4 experiment scripts and a formal RCA, the entire intelligence layer was archived. The digital twin is complete and functional without it. See `COLD_START_CLOSED.md` for the full closure report.
+io-gita v1-v3 (Hopfield ODE zone identification) failed — cold start localization achieved only 52% accuracy with 3D LiDAR, well below the 75% gate. Root cause: 16-feature LiDAR extraction was too similar between zones (see `COLD_START_CLOSED.md`).
+
+io-gita v4 uses a hierarchical zone-first approach: geometry-only zone features (12-dim) with zone-first hierarchy, achieving >90% zone accuracy. The intelligence layer now provides zone identification per robot and cold start recovery hints via 3 REST endpoints.
 
 ### Why Pluggable Configs?
 

@@ -1,0 +1,76 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.14.3, pytest-9.0.2, pluggy-1.6.0 -- /opt/homebrew/opt/python@3.14/bin/python3.14
+cachedir: .pytest_cache
+rootdir: /Users/meharban/Projects/Autonmous_Factory/multi_llm_orchestrator/case-studies/project_29_full_robotics/robotic_digital_twin_simulation/python
+configfile: pytest.ini
+plugins: anyio-4.12.1, playwright-0.7.2, asyncio-1.3.0, base-url-2.1.0
+asyncio: mode=Mode.AUTO, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 59 items
+
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_status_simulated PASSED [  1%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_ros2_available_property PASSED [  3%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_send_nav_goal_simulated PASSED [  5%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_get_pose_simulated PASSED [  6%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_get_scan_simulated PASSED [  8%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_emergency_stop_simulated PASSED [ 10%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_get_topics_simulated PASSED [ 11%]
+tests/test_ros2_bridge.py::TestROS2BridgeSimulated::test_bridge_init_shutdown_simulated PASSED [ 13%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_cmd_vel PASSED [ 15%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_odom PASSED [ 16%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_scan PASSED [ 18%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_nav_goal PASSED [ 20%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_map PASSED [ 22%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_unknown_raises PASSED [ 23%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_ros2_to_fms_cmd_vel PASSED [ 25%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_ros2_to_fms_odom PASSED [ 27%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_ros2_to_fms_global_map PASSED [ 28%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_ros2_to_fms_unknown_raises PASSED [ 30%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_ros2_to_fms_invalid_format_raises PASSED [ 32%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_get_all_topics_for_robot PASSED [ 33%]
+tests/test_ros2_bridge.py::TestTopicMapper::test_topic_mapper_msg_types_defined PASSED [ 35%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_simulated_mode PASSED       [ 37%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_status_simulated PASSED     [ 38%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_move_robot_simulated PASSED [ 40%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_get_position_simulated PASSED [ 42%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_emergency_stop_simulated PASSED [ 44%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_get_scan_simulated PASSED   [ 45%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_init_shutdown_simulated PASSED [ 47%]
+tests/test_ros2_bridge.py::TestHAL::test_hal_hardware_mode_enum_values PASSED [ 49%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_ros2_status_endpoint PASSED [ 50%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_ros2_topics_endpoint PASSED [ 52%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_ros2_nav_goal_endpoint PASSED [ 54%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_ros2_pose_endpoint PASSED [ 55%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_ros2_nav_goal_missing_fields PASSED [ 57%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_endpoint_count_60 PASSED [ 59%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_invalid_robot_id PASSED [ 61%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_invalid_robot_id_hash PASSED [ 62%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_invalid_robot_id_plus PASSED [ 64%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_invalid_robot_id_whitespace PASSED [ 66%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_missing_coordinates PASSED [ 67%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_pose_invalid_robot_id_hash PASSED [ 69%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_pose_invalid_robot_id_whitespace PASSED [ 71%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_pose_invalid_robot_id_path_traversal PASSED [ 72%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_rate_limit_429 PASSED [ 74%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_empty_robot_id PASSED [ 76%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_nav_goal_dots_only_robot_id PASSED [ 77%]
+tests/test_ros2_bridge.py::TestROS2Endpoints::test_pose_empty_robot_id PASSED [ 79%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_valid_robot_ids PASSED [ 81%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_empty_robot_id_rejected PASSED [ 83%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_slash_rejected PASSED [ 84%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_hash_rejected PASSED [ 86%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_plus_rejected PASSED [ 88%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_path_traversal_rejected PASSED [ 89%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_whitespace_rejected PASSED [ 91%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_too_long_rejected PASSED [ 93%]
+tests/test_ros2_bridge.py::TestSanitizeRobotId::test_max_length_accepted PASSED [ 94%]
+tests/test_ros2_bridge.py::TestHALModeValidation::test_hal_string_mode_valid PASSED [ 96%]
+tests/test_ros2_bridge.py::TestHALModeValidation::test_hal_string_mode_invalid PASSED [ 98%]
+tests/test_ros2_bridge.py::TestHALModeValidation::test_hal_wrong_type_rejected PASSED [100%]
+
+=============================== warnings summary ===============================
+tests/test_ros2_bridge.py: 18 warnings
+  /opt/homebrew/lib/python3.14/site-packages/influxdb_client/client/influxdb_client.py:377: DeprecationWarning: This method is deprecated. Call 'ping()' instead.
+    warnings.warn("This method is deprecated. Call 'ping()' instead.", DeprecationWarning)
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+======================= 59 passed, 18 warnings in 0.93s ========================

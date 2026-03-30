@@ -1,0 +1,376 @@
+{
+  "name": "Medium 5x5 Warehouse",
+  "description": "Medium 25-node warehouse \u2014 5x5 grid with charging, storage, pick/drop zones",
+  "grid_spacing_m": 2.0,
+  "nodes": [
+    {
+      "name": "DOCK_1",
+      "x": 0.0,
+      "y": 0.0,
+      "type": "charge"
+    },
+    {
+      "name": "N_01",
+      "x": 2.0,
+      "y": 0.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_02",
+      "x": 4.0,
+      "y": 0.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_03",
+      "x": 6.0,
+      "y": 0.0,
+      "type": "aisle"
+    },
+    {
+      "name": "DOCK_2",
+      "x": 8.0,
+      "y": 0.0,
+      "type": "charge"
+    },
+    {
+      "name": "N_10",
+      "x": 0.0,
+      "y": 2.0,
+      "type": "aisle"
+    },
+    {
+      "name": "S_11",
+      "x": 2.0,
+      "y": 2.0,
+      "type": "shelf"
+    },
+    {
+      "name": "S_12",
+      "x": 4.0,
+      "y": 2.0,
+      "type": "shelf"
+    },
+    {
+      "name": "S_13",
+      "x": 6.0,
+      "y": 2.0,
+      "type": "shelf"
+    },
+    {
+      "name": "N_14",
+      "x": 8.0,
+      "y": 2.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_20",
+      "x": 0.0,
+      "y": 4.0,
+      "type": "aisle"
+    },
+    {
+      "name": "S_21",
+      "x": 2.0,
+      "y": 4.0,
+      "type": "shelf"
+    },
+    {
+      "name": "HUB",
+      "x": 4.0,
+      "y": 4.0,
+      "type": "hub"
+    },
+    {
+      "name": "S_23",
+      "x": 6.0,
+      "y": 4.0,
+      "type": "shelf"
+    },
+    {
+      "name": "N_24",
+      "x": 8.0,
+      "y": 4.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_30",
+      "x": 0.0,
+      "y": 6.0,
+      "type": "aisle"
+    },
+    {
+      "name": "S_31",
+      "x": 2.0,
+      "y": 6.0,
+      "type": "shelf"
+    },
+    {
+      "name": "S_32",
+      "x": 4.0,
+      "y": 6.0,
+      "type": "shelf"
+    },
+    {
+      "name": "S_33",
+      "x": 6.0,
+      "y": 6.0,
+      "type": "shelf"
+    },
+    {
+      "name": "N_34",
+      "x": 8.0,
+      "y": 6.0,
+      "type": "aisle"
+    },
+    {
+      "name": "PICK_1",
+      "x": 0.0,
+      "y": 8.0,
+      "type": "pick"
+    },
+    {
+      "name": "N_41",
+      "x": 2.0,
+      "y": 8.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_42",
+      "x": 4.0,
+      "y": 8.0,
+      "type": "aisle"
+    },
+    {
+      "name": "N_43",
+      "x": 6.0,
+      "y": 8.0,
+      "type": "aisle"
+    },
+    {
+      "name": "DROP_1",
+      "x": 8.0,
+      "y": 8.0,
+      "type": "drop"
+    }
+  ],
+  "edges": [
+    {
+      "from": "DOCK_1",
+      "to": "N_01"
+    },
+    {
+      "from": "N_01",
+      "to": "N_02"
+    },
+    {
+      "from": "N_02",
+      "to": "N_03"
+    },
+    {
+      "from": "N_03",
+      "to": "DOCK_2"
+    },
+    {
+      "from": "N_10",
+      "to": "S_11"
+    },
+    {
+      "from": "S_11",
+      "to": "S_12"
+    },
+    {
+      "from": "S_12",
+      "to": "S_13"
+    },
+    {
+      "from": "S_13",
+      "to": "N_14"
+    },
+    {
+      "from": "N_20",
+      "to": "S_21"
+    },
+    {
+      "from": "S_21",
+      "to": "HUB"
+    },
+    {
+      "from": "HUB",
+      "to": "S_23"
+    },
+    {
+      "from": "S_23",
+      "to": "N_24"
+    },
+    {
+      "from": "N_30",
+      "to": "S_31"
+    },
+    {
+      "from": "S_31",
+      "to": "S_32"
+    },
+    {
+      "from": "S_32",
+      "to": "S_33"
+    },
+    {
+      "from": "S_33",
+      "to": "N_34"
+    },
+    {
+      "from": "PICK_1",
+      "to": "N_41"
+    },
+    {
+      "from": "N_41",
+      "to": "N_42"
+    },
+    {
+      "from": "N_42",
+      "to": "N_43"
+    },
+    {
+      "from": "N_43",
+      "to": "DROP_1"
+    },
+    {
+      "from": "DOCK_1",
+      "to": "N_10"
+    },
+    {
+      "from": "N_01",
+      "to": "S_11"
+    },
+    {
+      "from": "N_02",
+      "to": "S_12"
+    },
+    {
+      "from": "N_03",
+      "to": "S_13"
+    },
+    {
+      "from": "DOCK_2",
+      "to": "N_14"
+    },
+    {
+      "from": "N_10",
+      "to": "N_20"
+    },
+    {
+      "from": "S_11",
+      "to": "S_21"
+    },
+    {
+      "from": "S_12",
+      "to": "HUB"
+    },
+    {
+      "from": "S_13",
+      "to": "S_23"
+    },
+    {
+      "from": "N_14",
+      "to": "N_24"
+    },
+    {
+      "from": "N_20",
+      "to": "N_30"
+    },
+    {
+      "from": "S_21",
+      "to": "S_31"
+    },
+    {
+      "from": "HUB",
+      "to": "S_32"
+    },
+    {
+      "from": "S_23",
+      "to": "S_33"
+    },
+    {
+      "from": "N_24",
+      "to": "N_34"
+    },
+    {
+      "from": "N_30",
+      "to": "PICK_1"
+    },
+    {
+      "from": "S_31",
+      "to": "N_41"
+    },
+    {
+      "from": "S_32",
+      "to": "N_42"
+    },
+    {
+      "from": "S_33",
+      "to": "N_43"
+    },
+    {
+      "from": "N_34",
+      "to": "DROP_1"
+    }
+  ],
+  "zones": [
+    {
+      "name": "Charging",
+      "type": "dock",
+      "nodes": [
+        "DOCK_1",
+        "DOCK_2"
+      ]
+    },
+    {
+      "name": "Storage",
+      "type": "shelf",
+      "nodes": [
+        "S_11",
+        "S_12",
+        "S_13",
+        "S_21",
+        "S_23",
+        "S_31",
+        "S_32",
+        "S_33"
+      ]
+    },
+    {
+      "name": "Aisles",
+      "type": "aisle",
+      "nodes": [
+        "N_01",
+        "N_02",
+        "N_03",
+        "N_10",
+        "N_14",
+        "N_20",
+        "N_24",
+        "N_30",
+        "N_34",
+        "N_41",
+        "N_42",
+        "N_43"
+      ]
+    },
+    {
+      "name": "Operations",
+      "type": "ops",
+      "nodes": [
+        "HUB"
+      ]
+    },
+    {
+      "name": "Pick_Drop",
+      "type": "ops",
+      "nodes": [
+        "PICK_1",
+        "DROP_1"
+      ]
+    }
+  ]
+}

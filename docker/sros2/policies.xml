@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  SROS2 access control policies for the Robotic Digital Twin.
+
+  FMS bridge node: subscribes to all robot sensor topics, publishes nav goals.
+  Per-robot enclaves: publish sensor data, subscribe to commands.
+
+  Usage:
+    ros2 security create_permission /sros2_keystore /rdt_ros2_bridge policies.xml
+    ros2 security create_permission /sros2_keystore /AMR-01 policies.xml
+-->
+<policy version="0.2.0">
+  <enclaves>
+
+    <!-- FMS Bridge: central orchestrator node -->
+    <enclave path="/rdt_ros2_bridge">
+      <profiles>
+        <profile ns="/" node="rdt_ros2_bridge">
+          <topics publish="ALLOW">
+            <topic>*/navigate_to_pose</topic>
+            <topic>*/cmd_vel</topic>
+          </topics>
+          <topics subscribe="ALLOW">
+            <topic>*/odom</topic>
+            <topic>*/scan</topic>
+            <topic>*/battery_state</topic>
+            <topic>*/tf</topic>
+            <topic>/map</topic>
+          </topics>
+        </profile>
+      </profiles>
+    </enclave>
+
+    <!-- AMR-01: Autonomous Mobile Robot -->
+    <enclave path="/AMR-01">
+      <profiles>
+        <profile ns="/AMR-01" node="amr01_nav">
+          <topics publish="ALLOW">
+            <topic>odom</topic>
+            <topic>scan</topic>
+            <topic>battery_state</topic>
+            <topic>tf</topic>
+          </topics>
+          <topics subscribe="ALLOW">
+            <topic>navigate_to_pose</topic>
+            <topic>cmd_vel</topic>
+          </topics>
+        </profile>
+      </profiles>
+    </enclave>
+
+    <!-- AMR-02: Autonomous Mobile Robot -->
+    <enclave path="/AMR-02">
+      <profiles>
+        <profile ns="/AMR-02" node="amr02_nav">
+          <topics publish="ALLOW">
+            <topic>odom</topic>
+            <topic>scan</topic>
+            <topic>battery_state</topic>
+            <topic>tf</topic>
+          </topics>
+          <topics subscribe="ALLOW">
+            <topic>navigate_to_pose</topic>
+            <topic>cmd_vel</topic>
+          </topics>
+        </profile>
+      </profiles>
+    </enclave>
+
+    <!-- AGV-01: Automated Guided Vehicle -->
+    <enclave path="/AGV-01">
+      <profiles>
+        <profile ns="/AGV-01" node="agv01_nav">
+          <topics publish="ALLOW">
+            <topic>odom</topic>
+            <topic>scan</topic>
+            <topic>battery_state</topic>
+            <topic>tf</topic>
+          </topics>
+          <topics subscribe="ALLOW">
+            <topic>navigate_to_pose</topic>
+            <topic>cmd_vel</topic>
+          </topics>
+        </profile>
+      </profiles>
+    </enclave>
+
+  </enclaves>
+</policy>

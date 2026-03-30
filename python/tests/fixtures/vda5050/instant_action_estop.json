@@ -1,0 +1,21 @@
+{
+  "headerId": 300,
+  "timestamp": "2026-03-30T12:02:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "instantActions": [
+    {
+      "actionId": "ia-estop-001",
+      "actionType": "stopPause",
+      "blockingType": "HARD",
+      "actionDescription": "Emergency stop — immediate halt, engage brakes",
+      "actionParameters": [
+        {
+          "key": "reason",
+          "value": "operator_triggered"
+        }
+      ]
+    }
+  ]
+}

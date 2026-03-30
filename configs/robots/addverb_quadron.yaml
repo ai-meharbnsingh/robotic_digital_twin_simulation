@@ -1,0 +1,105 @@
+# Addverb Quadron — High-speed Pallet Shuttle
+# Rail-guided shuttle for deep-lane storage. No turning — linear motion only.
+# 4 m/s top speed, 50kg payload, encoder-based positioning.
+#
+# Usage: ROBOT=addverb_quadron docker compose up
+# Place at: configs/robots/addverb_quadron.yaml
+
+name: "Addverb_Quadron"
+type: unidirectional              # Rail-guided — forward/reverse only, no turning
+
+motion:
+  max_linear_velocity: 4.0        # m/s — high-speed shuttle
+  max_linear_velocity_curve: 4.0  # Same — no curves on rails
+  max_angular_velocity: 0.0       # rad/s — rail-guided, zero turning
+  linear_acceleration: 0.5        # m/s² — quick acceleration on rails
+  linear_deceleration: 1.0        # m/s² — strong braking for pallet safety
+  jerk_max: 15.0                  # m/s³ — fast response on rails
+  position_tolerance: 0.002       # m — 2mm rail precision
+  angular_tolerance: 0.0          # rad — no angular movement
+  creep_distance: 0.01            # m
+  creep_velocity: 0.05            # m/s
+  exit_velocity: 0.5              # m/s
+
+dimensions:
+  length: 1.2                     # m — fits inside pallet racking lanes
+  width: 0.9                      # m — standard euro-pallet width
+  height: 0.15                    # m — ultra-low profile under pallets
+  weight: 80.0                    # kg (empty)
+  payload_capacity: 50.0          # kg — Addverb Quadron spec
+  wheel_separation: 0.7           # m — rail gauge
+  wheel_radius: 0.04              # m — small rail wheels
+
+sensors:
+  lidar:
+    enabled: false                # No LiDAR — rail-guided, uses encoder + limit switches
+    type: "2d"
+    fov_deg: 0
+    range_m: 0
+    rays: 0
+    height_m: 0
+    noise_stddev_m: 0
+  barcode_reader:
+    enabled: false                # No barcode — uses encoder position
+    debounce_ms: 0
+    failure_threshold: 0
+  imu:
+    enabled: false                # No IMU needed on rails
+
+battery:
+  charge_duration_s: 1800         # 30 min full charge (0.8 kWh)
+  discharge_duration_s: 21600     # 6 hours operation
+  motion_energy_factor: 1.08      # Higher at 4 m/s
+  attachment_energy_factor: 1.05  # Lifter for pallet grab
+  critical_threshold_pct: 10
+  initial_charge_pct: 100
+
+obstacle_thresholds:
+  critical_m: 0.2                 # Tight — rail environment, 0.2m
+  warning_m: 0.3
+  planning_m: 0.5                 # Short planning horizon on rails
+
+attachment:
+  type: "lifter"                  # Pallet lifter mechanism
+  load_time_s: 5.0                # Pallet grab time
+  unload_time_s: 5.0              # Pallet release time
+
+mpc:
+  num_opt_vars: 6                 # Simpler — 1D motion only
+  dt: 0.05                        # Faster update rate for high-speed shuttle
+  position_weight: 2.0
+  velocity_weight: 0.5            # Speed matters on shuttles
+  weight_scale: 0.05
+  jerk_scale: 0.5
+  acceleration_scale: 1.0
+  final_position_offset: 0.002    # 2mm rail precision
+  final_velocity_threshold: 0.02
+  osqp_iterations: 300            # Simpler 1D problem
+  osqp_eps_abs: 0.005
+  osqp_eps_rel: 0.005
+
+behavior_tree: "addverb_quadron.xml"
+
+# Action codes — Addverb Quadron firmware
+action_codes:
+  move: 0
+  charge_dock: 2
+  start_charging: 3
+  charge_undock: 4
+  enter_lane: 10
+  exit_lane: 11
+  start_loading: 14
+  start_unloading: 15
+  reset_errors: 31
+  hard_reset: 51
+
+# Response codes
+response_codes:
+  reached_dock: 10
+  reached_predock: 8
+  lane_entered: 12
+  lane_exited: 13
+  charging_stopped: 18
+  charging_error: 501
+  load_error: 401
+  unload_error: 402

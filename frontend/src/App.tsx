@@ -1,8 +1,9 @@
-import { useCallback, useRef, useState, lazy, Suspense } from 'react'
+import { Component, useCallback, useRef, useState, lazy, Suspense, type ReactNode } from 'react'
 import { useApi } from './hooks/useApi'
 import { useFleetWebSocket } from './hooks/useFleetWebSocket'
 import type { FleetWSEvent } from './types'
 import { WarehouseGrid } from './components/WarehouseGrid'
+import { WarehouseDesigner } from './components/WarehouseDesigner'
 
 // Lazy-load 3D scene (Three.js is ~1MB — only load when user clicks 3D tab)
 const Warehouse3D = lazy(() =>
@@ -15,6 +16,11 @@ import { FleetAnalyticsPanel } from './components/FleetAnalyticsPanel'
 import { WesKpiPanel } from './components/WesKpiPanel'
 import { HeatMapControls } from './components/HeatMapControls'
 import { WaveStatusPanel } from './components/WaveStatusPanel'
+import { ScenarioPanel } from './components/ScenarioPanel'
+import { ScenarioComparisonDashboard } from './components/ScenarioComparisonDashboard'
+import { VDA5050Panel } from './components/VDA5050Panel'
+import { CongestionPanel } from './components/CongestionPanel'
+import { useROS2Status } from './hooks/useROS2'
 import type {
   Robot,
   Task,
@@ -27,9 +33,43 @@ import type {
   WavesResponse,
 } from './types'
 
+/** ErrorBoundary — catches R3F crashes so the 2D dashboard survives */
+class Scene3DErrorBoundary extends Component<
+  { children: ReactNode; onError: () => void },
+  { hasError: boolean; error: string }
+> {
+  state = { hasError: false, error: '' }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error: error.message }
+  }
+
+  componentDidCatch() {
+    this.props.onError()
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="bg-panel rounded border border-danger/30 flex flex-col items-center justify-center text-sm p-4 gap-2">
+          <span className="text-danger font-semibold">3D scene crashed</span>
+          <span className="text-muted text-xs">{this.state.error}</span>
+          <button
+            className="text-xs px-3 py-1 rounded border border-border text-muted hover:text-gray-200"
+            onClick={() => this.setState({ hasError: false, error: '' })}
+          >
+            Retry 3D
+          </button>
+        </div>
+      )
+    }
+    return this.props.children
+  }
+}
+
 const POLL_MS = 3000
 
-type ViewMode = '2d' | '3d'
+type ViewMode = '2d' | '3d' | 'designer'
 
 interface MapData {
   nodes: MapNode[]
@@ -42,6 +82,9 @@ export default function App() {
   const [has3DLoaded, setHas3DLoaded] = useState(false)
   const [selectedRobotId, setSelectedRobotId] = useState<string | null>(null)
   const [followMode, setFollowMode] = useState(false)
+
+  // Scenario comparison view
+  const [compareIds, setCompareIds] = useState<string[] | null>(null)
 
   const handleSetViewMode = useCallback((mode: ViewMode) => {
     setViewMode(mode)
@@ -72,6 +115,9 @@ export default function App() {
   }, [])
   const { connected: wsConnected } = useFleetWebSocket(handleWSEvent)
 
+  // ROS2 bridge status
+  const { data: ros2Status } = useROS2Status(5000)
+
   // Aggregate errors
   const apiErrors = [robotsErr, tasksErr, wavesErr].filter(Boolean)
 
@@ -79,6 +125,24 @@ export default function App() {
     setSelectedRobotId(id)
     if (!id) setFollowMode(false)
   }, [])
+
+  const handleCompareScenarios = useCallback((ids: string[]) => {
+    setCompareIds(ids)
+  }, [])
+
+  const handleCloseComparison = useCallback(() => {
+    setCompareIds(null)
+  }, [])
+
+  // Scenario comparison view — full-screen overlay replaces dashboard
+  if (compareIds && compareIds.length >= 2) {
+    return (
+      <ScenarioComparisonDashboard
+        scenarioIds={compareIds}
+        onClose={handleCloseComparison}
+      />
+    )
+  }
 
   return (
     <div className="min-h-screen bg-surface text-gray-200 flex flex-col">
@@ -88,7 +152,7 @@ export default function App() {
           RDT Fleet Dashboard
         </h1>
 
-        {/* 2D / 3D toggle */}
+        {/* 2D / 3D / Designer toggle */}
         <div className="flex items-center gap-0 border border-border rounded overflow-hidden text-xs">
           <button
             className={`px-3 py-1 transition-colors ${
@@ -109,6 +173,16 @@ export default function App() {
             onClick={() => handleSetViewMode('3d')}
           >
             3D
+          </button>
+          <button
+            className={`px-3 py-1 transition-colors ${
+              viewMode === 'designer'
+                ? 'bg-accent text-panel font-semibold'
+                : 'bg-panel text-muted hover:text-gray-200'
+            }`}
+            onClick={() => handleSetViewMode('designer')}
+          >
+            Designer
           </button>
         </div>
 
@@ -150,6 +224,18 @@ export default function App() {
           </span>
         </div>
 
+        {/* ROS2 bridge status */}
+        <div className="flex items-center gap-1.5 text-xs">
+          <span
+            className={`w-2 h-2 rounded-full ${
+              ros2Status?.ros2_available ? 'bg-success' : 'bg-gray-500'
+            }`}
+          />
+          <span className="text-muted">
+            ROS2 {ros2Status ? (ros2Status.ros2_available ? 'LIVE' : 'SIM') : '...'}
+          </span>
+        </div>
+
         {/* Service status (from health) */}
         {health && (
           <div className="ml-auto flex items-center gap-3 text-[10px] text-muted">
@@ -182,61 +268,85 @@ export default function App() {
         </div>
       )}
 
-      {/* 7-panel grid: 4 columns, 2 rows — col 1 row 1 switches between 2D and 3D */}
-      <main className="flex-1 p-3 grid grid-cols-4 grid-rows-2 gap-3 min-h-0">
-        {/* Row 1: 2D and 3D views — 3D stays mounted (hidden) to preserve camera/state */}
-        <div className={viewMode === '2d' ? '' : 'hidden'}>
-          <WarehouseGrid
-            nodes={mapData?.nodes ?? []}
-            edges={mapData?.edges ?? []}
-            robots={robots ?? []}
-            heatmapCells={heatmap?.cells}
-            heatmapResolution={heatmap?.resolution_m}
-            heatmapEnabled={heatmapEnabled}
-          />
-        </div>
-        {has3DLoaded && (
-          <div className={viewMode === '3d' ? '' : 'hidden'}>
-            <Suspense fallback={
-              <div className="bg-panel rounded border border-border flex items-center justify-center text-muted text-sm">
-                Loading 3D scene...
-              </div>
-            }>
-              <Warehouse3D
-                nodes={mapData?.nodes ?? []}
-                edges={mapData?.edges ?? []}
-                robots={robots ?? []}
-                heatmapCells={heatmap?.cells}
-                heatmapResolution={heatmap?.resolution_m}
-                heatmapEnabled={heatmapEnabled}
-                selectedRobotId={selectedRobotId}
-                onSelectRobot={handleSelectRobot}
-                followMode={followMode}
-                wsHandlerRef={wsHandlerRef}
-              />
-            </Suspense>
-          </div>
-        )}
-        <RobotStatusPanel
-          robots={robots ?? []}
-          selectedRobotId={viewMode === '3d' ? selectedRobotId : undefined}
-          onSelectRobot={viewMode === '3d' ? handleSelectRobot : undefined}
-        />
-        <TaskQueue tasks={tasks ?? []} />
-        <HeatMapControls
-          enabled={heatmapEnabled}
-          onToggle={setHeatmapEnabled}
-          duration={heatmapDuration}
-          onDurationChange={setHeatmapDuration}
-          heatmap={heatmap ?? null}
-        />
+      {/* Designer mode — full-width, replaces dashboard grid */}
+      {viewMode === 'designer' && (
+        <main className="flex-1 min-h-0">
+          <WarehouseDesigner />
+        </main>
+      )}
 
-        {/* Row 2 */}
-        <BatteryLevels robots={robots ?? []} />
-        <FleetAnalyticsPanel analytics={fleetAnalytics} />
-        <WesKpiPanel kpi={wesKpi} />
-        <WaveStatusPanel waves={waves ?? null} />
-      </main>
+      {/* Dashboard grid (2D / 3D modes) */}
+      {viewMode !== 'designer' && (
+        <main className="flex-1 p-3 grid grid-cols-4 auto-rows-fr gap-3 min-h-0">
+          {/* Row 1: 2D and 3D views — 3D stays mounted (hidden) to preserve camera/state */}
+          <div className={viewMode === '2d' ? '' : 'hidden'}>
+            <WarehouseGrid
+              nodes={mapData?.nodes ?? []}
+              edges={mapData?.edges ?? []}
+              robots={robots ?? []}
+              heatmapCells={heatmap?.cells}
+              heatmapResolution={heatmap?.resolution_m}
+              heatmapEnabled={heatmapEnabled}
+            />
+          </div>
+          {has3DLoaded && (
+            <div className={viewMode === '3d' ? '' : 'hidden'}>
+              <Scene3DErrorBoundary onError={() => handleSetViewMode('2d')}>
+                <Suspense fallback={
+                  <div className="bg-panel rounded border border-border flex items-center justify-center text-muted text-sm">
+                    Loading 3D scene...
+                  </div>
+                }>
+                  <Warehouse3D
+                    nodes={mapData?.nodes ?? []}
+                    edges={mapData?.edges ?? []}
+                    robots={robots ?? []}
+                    heatmapCells={heatmap?.cells}
+                    heatmapResolution={heatmap?.resolution_m}
+                    heatmapEnabled={heatmapEnabled}
+                    selectedRobotId={selectedRobotId}
+                    onSelectRobot={handleSelectRobot}
+                    followMode={followMode}
+                    wsHandlerRef={wsHandlerRef}
+                  />
+                </Suspense>
+              </Scene3DErrorBoundary>
+            </div>
+          )}
+          <RobotStatusPanel
+            robots={robots ?? []}
+            selectedRobotId={viewMode === '3d' ? selectedRobotId : undefined}
+            onSelectRobot={viewMode === '3d' ? handleSelectRobot : undefined}
+          />
+          <TaskQueue tasks={tasks ?? []} />
+          <HeatMapControls
+            enabled={heatmapEnabled}
+            onToggle={setHeatmapEnabled}
+            duration={heatmapDuration}
+            onDurationChange={setHeatmapDuration}
+            heatmap={heatmap ?? null}
+          />
+
+          {/* Row 2 */}
+          <BatteryLevels robots={robots ?? []} />
+          <FleetAnalyticsPanel analytics={fleetAnalytics} />
+          <WesKpiPanel kpi={wesKpi} />
+          <WaveStatusPanel waves={waves ?? null} />
+
+          {/* Row 3: Scenarios + VDA5050 */}
+          <div className="col-span-2">
+            <ScenarioPanel onCompare={handleCompareScenarios} />
+          </div>
+          <div className="col-span-2">
+            <VDA5050Panel />
+          </div>
+
+          {/* Row 4: MAPF Congestion (Phase 11) */}
+          <div className="col-span-2">
+            <CongestionPanel />
+          </div>
+        </main>
+      )}
     </div>
   )
 }

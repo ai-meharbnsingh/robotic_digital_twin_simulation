@@ -1,0 +1,198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Addverb Veloce ACR Behavior Tree — BTCPP v4 format
+  Robot type: unidirectional (Grid-based Automated Case-handling Robot)
+  Lifecycle: idle -> accept_task -> grid_navigate_to_pickup -> load_case -> grid_navigate_to_drop -> unload_case -> check_battery -> charge -> repeat
+
+  Key features:
+  - Grid-based navigation: QR code/barcode floor markers
+  - Unidirectional: forward only, 90° turns at grid nodes
+  - Conveyor top: fast case transfer (3s load/unload)
+  - 240kg payload: moderate loads
+  - Barcode scanning at every node for position confirmation
+  - 5mm grid stop precision
+-->
+<root BTCPP_format="4" main_tree_to_execute="Veloce_Main">
+
+  <!-- ============================================================ -->
+  <!-- MAIN TREE: Grid navigation loop with barcode verification    -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="Veloce_Main">
+    <ReactiveSequence>
+      <!-- Forward-facing obstacle check (30° FOV only) -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInCriticalZone" distance_m="0.3"/>
+        </Inverter>
+        <Action ID="EmergencyStop"/>
+      </Fallback>
+
+      <!-- Error monitor -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasErrors"/>
+        </Inverter>
+        <SubTree ID="ErrorRecovery"/>
+      </Fallback>
+
+      <!-- Main work loop -->
+      <Sequence>
+        <RepeatNode num_cycles="-1">
+          <Sequence>
+            <SubTree ID="WaitForTask"/>
+            <SubTree ID="GridCaseHandling"/>
+            <SubTree ID="BatteryManagement"/>
+          </Sequence>
+        </RepeatNode>
+      </Sequence>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: WaitForTask                                         -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="WaitForTask">
+    <RetryNode num_attempts="-1">
+      <Sequence>
+        <Condition ID="TaskAvailable"/>
+        <Action ID="AcceptTask" task_id="{task_id}" pickup_node="{pickup_node}" drop_node="{drop_node}"/>
+      </Sequence>
+    </RetryNode>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: GridCaseHandling — Barcode-guided case transport    -->
+  <!-- Veloce navigates grid nodes, scans barcode at each stop,     -->
+  <!-- loads case via conveyor, transports, unloads at drop.        -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="GridCaseHandling">
+    <Sequence>
+      <!-- Navigate to pickup via grid path -->
+      <SubTree ID="GridNavigate"
+               _target="{pickup_node}"/>
+
+      <!-- Barcode scan to confirm position at pickup (simulated as alignment) -->
+      <Action ID="AlignAtStation"
+              station_type="barcode_verify"
+              tolerance_m="0.005"
+              description="barcode_scan_pickup"/>
+
+      <!-- Align at pickup station -->
+      <Action ID="AlignAtStation"
+              station_type="pickup"
+              tolerance_m="0.005"/>
+
+      <!-- Load case via conveyor (3 seconds) -->
+      <Action ID="ExecuteAttachment"
+              action_code="14"
+              timeout_s="5.0"
+              description="start_loading"/>
+
+      <!-- Confirm cargo secured -->
+      <Condition ID="CargoSecured"/>
+
+      <!-- Navigate to drop via grid path -->
+      <SubTree ID="GridNavigate"
+               _target="{drop_node}"/>
+
+      <!-- Barcode scan to confirm position at drop (simulated as alignment) -->
+      <Action ID="AlignAtStation"
+              station_type="barcode_verify"
+              tolerance_m="0.005"
+              description="barcode_scan_drop"/>
+
+      <!-- Align at drop station -->
+      <Action ID="AlignAtStation"
+              station_type="dropoff"
+              tolerance_m="0.005"/>
+
+      <!-- Unload case via conveyor (3 seconds) -->
+      <Action ID="ExecuteAttachment"
+              action_code="15"
+              timeout_s="5.0"
+              description="start_unloading"/>
+
+      <!-- Report task complete -->
+      <Action ID="ReportTaskComplete" task_id="{task_id}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: GridNavigate — unidirectional grid movement         -->
+  <!-- Follows grid edges, scans barcode at each node for position  -->
+  <!-- confirmation. Forward-facing 30° LiDAR for obstacle detect.  -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="GridNavigate">
+    <ReactiveSequence>
+      <!-- Forward obstacle check while traversing grid -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInWarningZone" distance_m="0.5"/>
+        </Inverter>
+        <Sequence>
+          <Action ID="Decelerate"/>
+          <Action ID="WaitSeconds" seconds="1.0"/>
+        </Sequence>
+      </Fallback>
+
+      <!-- Execute grid movement — barcode scan at each node -->
+      <Action ID="NavigateToNode"
+              target_node="{_target}"
+              action_code="0"
+              velocity_profile="standard"
+              allow_rotation="false"/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: BatteryManagement — charge if below 5% critical     -->
+  <!-- Veloce has 1.2 kWh battery, 40 min charge time               -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="BatteryManagement">
+    <Fallback>
+      <Condition ID="BatteryAboveThreshold" threshold_pct="5"/>
+
+      <Sequence>
+        <SubTree ID="GridNavigate"
+                 _target="{nearest_dock}"/>
+
+        <Action ID="DockAtCharger"
+                action_code="2"
+                timeout_s="20.0"/>
+
+        <Action ID="StartCharging"
+                action_code="3"/>
+
+        <Action ID="WaitUntilCharged"
+                target_pct="95"/>
+
+        <Action ID="UndockFromCharger"
+                action_code="4"
+                timeout_s="10.0"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: ErrorRecovery                                       -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="ErrorRecovery">
+    <Sequence>
+      <Fallback>
+        <Action ID="SendActionCode"
+                action_code="31"
+                description="reset_errors"
+                timeout_s="5.0"/>
+
+        <Action ID="SendActionCode"
+                action_code="51"
+                description="hard_reset"
+                timeout_s="15.0"/>
+      </Fallback>
+
+      <Action ID="WaitSeconds" seconds="2.0"/>
+      <Condition ID="NoErrors"/>
+    </Sequence>
+  </BehaviorTree>
+
+</root>

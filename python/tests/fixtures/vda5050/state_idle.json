@@ -1,0 +1,54 @@
+{
+  "headerId": 200,
+  "timestamp": "2026-03-30T12:10:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "orderId": "",
+  "orderUpdateId": 0,
+  "lastNodeId": "drop-station-1",
+  "lastNodeSequenceId": 4,
+  "driving": false,
+  "paused": false,
+  "newBaseRequest": false,
+  "distanceSinceLastNode": 0.0,
+  "operatingMode": "AUTOMATIC",
+  "nodeStates": [],
+  "edgeStates": [],
+  "agvPosition": {
+    "x": 9.0,
+    "y": 1.0,
+    "theta": 1.57,
+    "mapId": "warehouse-floor-1",
+    "positionInitialized": true,
+    "localizationScore": 0.99,
+    "deviationRange": 0.02
+  },
+  "velocity": {
+    "vx": 0.0,
+    "vy": 0.0,
+    "omega": 0.0
+  },
+  "loads": [],
+  "actionStates": [],
+  "batteryState": {
+    "batteryCharge": 76.2,
+    "batteryVoltage": 24.9,
+    "batteryHealth": 95,
+    "charging": false,
+    "reach": 4200
+  },
+  "errors": [],
+  "information": [
+    {
+      "infoType": "debug",
+      "infoLevel": "INFO",
+      "infoDescription": "AGV idle, awaiting new order",
+      "infoReferences": []
+    }
+  ],
+  "safetyState": {
+    "eStop": false,
+    "fieldViolation": false
+  }
+}

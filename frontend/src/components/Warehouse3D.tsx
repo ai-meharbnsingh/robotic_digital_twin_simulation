@@ -274,9 +274,9 @@ function Scene({
     return () => { wsHandlerRef.current = null }
   }, [wsHandlerRef, handleWSEvent])
 
-  // Sync REST data into position system
+  // Sync REST data into position system (always call — empty array triggers stale prune)
   useEffect(() => {
-    if (robots.length > 0) updateFromRest(robots)
+    updateFromRest(robots)
   }, [robots, updateFromRest])
 
   const bounds = useMemo(() => {
@@ -294,7 +294,9 @@ function Scene({
     return { cx, cz, size }
   }, [nodes])
 
-  // Robot ID list — union of REST robots + WS-provisional entries in positionsRef
+  // Robot ID list — driven by REST polling (3s). WS-provisional entries in positionsRef
+  // are picked up on the next REST poll cycle. positionsRef is a stable ref so memo
+  // only recomputes when REST robots array changes.
   const robotIds = useMemo(() => {
     const ids = new Set(robots.map((r) => r.robot_id))
     for (const key of positionsRef.current.keys()) ids.add(key)

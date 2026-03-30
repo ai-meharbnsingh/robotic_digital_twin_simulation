@@ -1,7 +1,7 @@
 """
 Integration tests for Phase 11 — verifies the full stack works together.
 
-TEST: All 40 API endpoints return 200 (or expected error for missing resources)
+TEST: All 65 API endpoints return 200 (or expected error for missing resources)
 TEST: WebSocket connects and receives events
 TEST: Config loads both warehouse formats (simple_grid, botvalley)
 """
@@ -30,17 +30,17 @@ async def client():
             yield c
 
 
-# ── TEST: All 40 API endpoints return expected status ──────────────────
+# ── TEST: All 65 API endpoints return expected status ──────────────────
 
 class TestAllEndpoints:
-    """Verify all 40 API endpoints respond correctly."""
+    """Verify all 65 API endpoints respond correctly."""
 
     async def test_root(self, client):
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
         assert data["service"] == "Robotic Digital Twin API"
-        assert data["endpoints"] == 40
+        assert data["endpoints"] == 65
 
     async def test_health(self, client):
         resp = await client.get("/health")
@@ -204,7 +204,7 @@ class TestAllEndpoints:
         assert data["status"] == "fault_injected"
         assert data["fault"]["fault_type"] == "battery_drain"
 
-    async def test_wes_inject_orders(self, client):
+    async def test_wes_inject_orders(self, client, requires_mongodb):
         resp = await client.post("/api/wes/inject-orders", json={
             "num_orders": 3,
         })

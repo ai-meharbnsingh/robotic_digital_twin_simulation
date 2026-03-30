@@ -1,0 +1,176 @@
+{
+  "headerId": 500,
+  "timestamp": "2026-03-30T12:00:00.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "typeSpecification": {
+    "seriesName": "RDT-AMR",
+    "seriesDescription": "Robotic Digital Twin Autonomous Mobile Robot",
+    "agvKinematic": "DIFF",
+    "agvClass": "FORKLIFT",
+    "maxLoadMass": 50.0,
+    "localizationTypes": [
+      "NATURAL",
+      "REFLECTOR"
+    ],
+    "navigationTypes": [
+      "AUTONOMOUS",
+      "VIRTUAL_LINE"
+    ]
+  },
+  "physicalParameters": {
+    "speedMin": 0.0,
+    "speedMax": 2.0,
+    "accelerationMax": 1.5,
+    "decelerationMax": 2.0,
+    "heightMin": 0.2,
+    "heightMax": 0.5,
+    "width": 0.6,
+    "length": 0.8
+  },
+  "protocolLimits": {
+    "maxStringLens": {
+      "msgLen": 10000,
+      "topicSerialLen": 40,
+      "topicElemLen": 40,
+      "idLen": 40,
+      "idNumericalOnly": false,
+      "enumLen": 40,
+      "loadIdLen": 40
+    },
+    "maxArrayLens": {
+      "orderNodes": 50,
+      "orderEdges": 50,
+      "nodeActions": 10,
+      "edgeActions": 10,
+      "actionsActionsParameters": 20,
+      "instantActions": 10,
+      "trajectoryKnotVector": 100
+    },
+    "timing": {
+      "minOrderInterval": 1.0,
+      "minStateInterval": 1.0,
+      "defaultStateInterval": 10.0,
+      "visualizationInterval": 1.0
+    }
+  },
+  "protocolFeatures": {
+    "optionalParameters": [
+      {
+        "parameter": "agvPosition.deviationRange",
+        "support": "SUPPORTED",
+        "description": "Position deviation range in meters"
+      },
+      {
+        "parameter": "agvPosition.localizationScore",
+        "support": "SUPPORTED",
+        "description": "Localization confidence 0.0-1.0"
+      },
+      {
+        "parameter": "trajectory",
+        "support": "NOT_SUPPORTED",
+        "description": "NURBS trajectory not supported — uses node-to-node navigation"
+      }
+    ],
+    "agvActions": [
+      {
+        "actionType": "pick",
+        "actionDescription": "Pick load from station or shelf",
+        "actionScopes": ["INSTANT", "NODE"],
+        "actionParameters": [
+          {
+            "key": "stationType",
+            "valueDataType": "STRING",
+            "description": "Type of station: pick, shelf, conveyor",
+            "isOptional": false
+          },
+          {
+            "key": "height",
+            "valueDataType": "FLOAT",
+            "description": "Pick height in meters",
+            "isOptional": true
+          }
+        ],
+        "resultDescription": "Load picked and secured"
+      },
+      {
+        "actionType": "drop",
+        "actionDescription": "Drop load at station or shelf",
+        "actionScopes": ["INSTANT", "NODE"],
+        "actionParameters": [
+          {
+            "key": "stationType",
+            "valueDataType": "STRING",
+            "description": "Type of station: drop, shelf, conveyor",
+            "isOptional": false
+          }
+        ],
+        "resultDescription": "Load released at destination"
+      },
+      {
+        "actionType": "startCharging",
+        "actionDescription": "Begin battery charging at charge station",
+        "actionScopes": ["NODE"],
+        "actionParameters": [],
+        "resultDescription": "Charging initiated"
+      },
+      {
+        "actionType": "stopPause",
+        "actionDescription": "Emergency stop — immediate halt with brakes engaged",
+        "actionScopes": ["INSTANT"],
+        "actionParameters": [
+          {
+            "key": "reason",
+            "valueDataType": "STRING",
+            "description": "Reason for stop",
+            "isOptional": true
+          }
+        ],
+        "resultDescription": "AGV halted, brakes engaged"
+      },
+      {
+        "actionType": "cancelOrder",
+        "actionDescription": "Cancel current order and return to idle",
+        "actionScopes": ["INSTANT"],
+        "actionParameters": [
+          {
+            "key": "orderId",
+            "valueDataType": "STRING",
+            "description": "ID of order to cancel",
+            "isOptional": false
+          }
+        ],
+        "resultDescription": "Order cancelled, AGV idle"
+      },
+      {
+        "actionType": "finePositioning",
+        "actionDescription": "Precision alignment at target node",
+        "actionScopes": ["NODE"],
+        "actionParameters": [
+          {
+            "key": "stationType",
+            "valueDataType": "STRING",
+            "description": "Type of station for alignment",
+            "isOptional": false
+          }
+        ],
+        "resultDescription": "AGV aligned within tolerance"
+      },
+      {
+        "actionType": "waitForTrigger",
+        "actionDescription": "Wait for external trigger before proceeding",
+        "actionScopes": ["NODE"],
+        "actionParameters": [
+          {
+            "key": "triggerType",
+            "valueDataType": "STRING",
+            "description": "Type of trigger to wait for",
+            "isOptional": false
+          }
+        ],
+        "resultDescription": "Trigger received, proceeding"
+      }
+    ]
+  }
+}

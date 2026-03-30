@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Addverb Dynamo AMR Behavior Tree — BTCPP v4 format
+  Robot type: differential_drive (Goods-to-Person)
+  Lifecycle: idle -> accept_task -> navigate_to_pickup -> lift_load -> navigate_to_drop -> lower_unload -> check_battery -> charge_if_needed -> repeat
+
+  Key features:
+  - Differential drive: can rotate in place
+  - 360° LiDAR: reactive obstacle avoidance
+  - Lifter attachment: raise/lower for pallet goods
+  - 1500kg payload: cautious velocity profiles when loaded
+  - 10mm docking precision
+-->
+<root BTCPP_format="4" main_tree_to_execute="Dynamo_Main">
+
+  <!-- ============================================================ -->
+  <!-- MAIN TREE: Reactive loop with obstacle monitoring + charging  -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="Dynamo_Main">
+    <ReactiveSequence>
+      <!-- Continuous safety monitor — 360° LiDAR obstacle check -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInCriticalZone" distance_m="0.5"/>
+        </Inverter>
+        <Action ID="EmergencyStop"/>
+      </Fallback>
+
+      <!-- Global error monitor -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="HasErrors"/>
+        </Inverter>
+        <SubTree ID="ErrorRecovery"/>
+      </Fallback>
+
+      <!-- Main work loop -->
+      <Sequence>
+        <RepeatNode num_cycles="-1">
+          <Sequence>
+            <!-- Phase 1: Wait for task assignment -->
+            <SubTree ID="WaitForTask"/>
+
+            <!-- Phase 2: Execute Goods-to-Person cycle -->
+            <SubTree ID="GoodsToPersonCycle"/>
+
+            <!-- Phase 3: Battery management (10% critical threshold) -->
+            <SubTree ID="BatteryManagement"/>
+          </Sequence>
+        </RepeatNode>
+      </Sequence>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: WaitForTask — polls for task availability           -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="WaitForTask">
+    <RetryNode num_attempts="-1">
+      <Sequence>
+        <Condition ID="TaskAvailable"/>
+        <Action ID="AcceptTask" task_id="{task_id}" pickup_node="{pickup_node}" drop_node="{drop_node}"/>
+      </Sequence>
+    </RetryNode>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: GoodsToPersonCycle — full pick-lift-move-drop cycle -->
+  <!-- Dynamo navigates with reactive avoidance, lifts goods,       -->
+  <!-- transports at reduced speed when loaded, drops at station.   -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="GoodsToPersonCycle">
+    <Sequence>
+      <!-- Navigate to pickup with reactive obstacle avoidance -->
+      <SubTree ID="NavigateWithAvoidance"
+               _target="{pickup_node}"
+               _velocity_profile="standard"/>
+
+      <!-- Precision dock at pickup station (10mm) -->
+      <Action ID="RotateToHeading"
+              target_heading="{pickup_heading}"
+              angular_velocity="1.2"
+              tolerance_rad="0.025"/>
+
+      <!-- Lower lifter before loading -->
+      <Action ID="ExecuteAttachment"
+              action_code="17"
+              timeout_s="5.0"
+              description="lower_lifter"/>
+
+      <!-- Load goods onto lifter (8 seconds) -->
+      <Action ID="ExecuteAttachment"
+              action_code="14"
+              timeout_s="12.0"
+              description="start_loading"/>
+
+      <!-- Raise lifter with goods -->
+      <Action ID="ExecuteAttachment"
+              action_code="16"
+              timeout_s="5.0"
+              description="raise_lifter"/>
+
+      <!-- Confirm cargo secured -->
+      <Condition ID="CargoSecured"/>
+
+      <!-- Navigate to drop — LOADED velocity profile (slower, 1500kg) -->
+      <SubTree ID="NavigateWithAvoidance"
+               _target="{drop_node}"
+               _velocity_profile="loaded"/>
+
+      <!-- Dock at drop station -->
+      <Action ID="RotateToHeading"
+              target_heading="{drop_heading}"
+              angular_velocity="1.2"
+              tolerance_rad="0.025"/>
+
+      <!-- Lower lifter to place goods -->
+      <Action ID="ExecuteAttachment"
+              action_code="17"
+              timeout_s="5.0"
+              description="lower_lifter"/>
+
+      <!-- Unload goods (8 seconds) -->
+      <Action ID="ExecuteAttachment"
+              action_code="15"
+              timeout_s="12.0"
+              description="start_unloading"/>
+
+      <!-- Report task complete -->
+      <Action ID="ReportTaskComplete" task_id="{task_id}"/>
+    </Sequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: NavigateWithAvoidance — differential drive movement -->
+  <!-- Reactive replanning when 360° LiDAR detects obstacles        -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="NavigateWithAvoidance">
+    <ReactiveSequence>
+      <!-- Monitor for obstacles in warning zone while moving -->
+      <Fallback>
+        <Inverter>
+          <Condition ID="ObstacleInWarningZone" distance_m="0.8"/>
+        </Inverter>
+        <Sequence>
+          <Action ID="Decelerate"/>
+          <Action ID="RequestReplan" target_node="{_target}"/>
+        </Sequence>
+      </Fallback>
+
+      <!-- Execute movement along planned path -->
+      <Action ID="NavigateToNode"
+              target_node="{_target}"
+              action_code="0"
+              velocity_profile="{_velocity_profile}"
+              allow_rotation="true"/>
+    </ReactiveSequence>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: BatteryManagement — charge if below 10% critical    -->
+  <!-- Dynamo has 2.4 kWh battery, 1 hour charge time               -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="BatteryManagement">
+    <Fallback>
+      <Condition ID="BatteryAboveThreshold" threshold_pct="10"/>
+
+      <Sequence>
+        <SubTree ID="NavigateWithAvoidance"
+                 _target="{nearest_dock}"
+                 _velocity_profile="cautious"/>
+
+        <Action ID="DockAtCharger"
+                action_code="2"
+                timeout_s="30.0"/>
+
+        <Action ID="StartCharging"
+                action_code="3"/>
+
+        <Action ID="WaitUntilCharged"
+                target_pct="95"/>
+
+        <Action ID="UndockFromCharger"
+                action_code="4"
+                timeout_s="15.0"/>
+      </Sequence>
+    </Fallback>
+  </BehaviorTree>
+
+  <!-- ============================================================ -->
+  <!-- SUBTREE: ErrorRecovery — reset errors and resume             -->
+  <!-- ============================================================ -->
+  <BehaviorTree ID="ErrorRecovery">
+    <Sequence>
+      <Fallback>
+        <Action ID="SendActionCode"
+                action_code="31"
+                description="reset_errors"
+                timeout_s="5.0"/>
+
+        <Action ID="SendActionCode"
+                action_code="51"
+                description="hard_reset"
+                timeout_s="15.0"/>
+      </Fallback>
+
+      <Action ID="WaitSeconds" seconds="2.0"/>
+      <Condition ID="NoErrors"/>
+    </Sequence>
+  </BehaviorTree>
+
+</root>

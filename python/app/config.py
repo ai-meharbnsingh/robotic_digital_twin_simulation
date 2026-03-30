@@ -33,6 +33,13 @@ class Settings(BaseSettings):
     influxdb_bucket: str = Field(default="telemetry")
     rabbitmq_url: str = Field(default="amqp://guest:guest@localhost:5672/")
 
+    # --- MQTT / VDA5050 ---
+    mqtt_broker_url: str = Field(default="mqtt://localhost:1883")
+    mqtt_broker_ws_url: str = Field(default="ws://localhost:9001")
+    vda5050_manufacturer: str = Field(default="RDT")
+    vda5050_interface_name: str = Field(default="uagv")
+    vda5050_version: str = Field(default="2.0.0")
+
     # --- Config file names (resolved to configs/ directory) ---
     warehouse_config: str = Field(default="simple_grid")
     robot_config: str = Field(default="differential_drive")
@@ -69,10 +76,17 @@ def load_warehouse_config(name: str) -> dict[str, Any]:
         Parsed JSON dict with nodes, edges, zones.
 
     Raises:
+        ValueError: If the name contains path traversal characters.
         FileNotFoundError: If the config file does not exist.
         json.JSONDecodeError: If the file is not valid JSON.
     """
-    config_path = PROJECT_ROOT / "configs" / "warehouses" / f"{name}.json"
+    # Path traversal protection
+    if "/" in name or "\\" in name or ".." in name:
+        raise ValueError(f"Invalid warehouse config name: {name}")
+    config_dir = PROJECT_ROOT / "configs" / "warehouses"
+    config_path = config_dir / f"{name}.json"
+    if not config_path.resolve().is_relative_to(config_dir.resolve()):
+        raise ValueError(f"Invalid warehouse config name: {name}")
     if not config_path.exists():
         raise FileNotFoundError(f"Warehouse config not found: {config_path}")
     with open(config_path, "r") as f:
@@ -93,11 +107,22 @@ def load_robot_config(name: str) -> dict[str, Any]:
         FileNotFoundError: If the config file does not exist.
         yaml.YAMLError: If the file is not valid YAML.
     """
-    config_path = PROJECT_ROOT / "configs" / "robots" / f"{name}.yaml"
+    # Path traversal protection
+    if "/" in name or "\\" in name or ".." in name:
+        raise ValueError(f"Invalid robot config name: {name}")
+    config_dir = PROJECT_ROOT / "configs" / "robots"
+    config_path = config_dir / f"{name}.yaml"
+    if not config_path.resolve().is_relative_to(config_dir.resolve()):
+        raise ValueError(f"Invalid robot config name: {name}")
     if not config_path.exists():
         raise FileNotFoundError(f"Robot config not found: {config_path}")
     with open(config_path, "r") as f:
-        return yaml.safe_load(f)
+        config = yaml.safe_load(f)
+    # Validate critical numeric fields are sane
+    motion = config.get("motion", {})
+    if motion.get("max_linear_velocity", 0) <= 0:
+        raise ValueError(f"Robot config {name}: max_linear_velocity must be positive")
+    return config
 
 
 def get_settings() -> Settings:

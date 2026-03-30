@@ -1,0 +1,106 @@
+# Addverb Dynamo AMR — Goods-to-Person Autonomous Mobile Robot
+# Based on Addverb's publicly available Dynamo specifications.
+# 1500kg payload, LiDAR SLAM navigation, differential drive.
+#
+# Usage: ROBOT=addverb_dynamo docker compose up
+# Place at: configs/robots/addverb_dynamo.yaml
+
+name: "Addverb_Dynamo"
+type: differential_drive          # Differential drive — can rotate in place
+
+motion:
+  max_linear_velocity: 1.5        # m/s — Addverb spec
+  min_linear_velocity: 0.02       # m/s — minimum before stopping
+  max_angular_velocity: 1.2       # rad/s — smooth turning for heavy loads
+  min_angular_velocity: 0.02      # rad/s
+  linear_acceleration: 0.2        # m/s² — conservative for 1500kg payload
+  linear_deceleration: 0.5        # m/s² — stronger braking for safety
+  jerk_max: 5.0                   # m/s³ — smooth for heavy goods
+  position_tolerance: 0.01        # m — 10mm docking precision
+  angular_tolerance: 0.025        # rad
+  creep_distance: 0.02            # m — final approach distance
+  creep_velocity: 0.02            # m/s — final approach speed
+  exit_velocity: 0.3              # m/s — speed when leaving a node
+
+dimensions:
+  length: 0.85                    # m — Addverb spec
+  width: 0.65                     # m — Addverb spec
+  height: 0.35                    # m
+  weight: 250.0                   # kg (empty) — heavy-duty frame
+  payload_capacity: 1500.0        # kg — Addverb Dynamo spec
+  wheel_separation: 0.55          # m — wide base for stability
+  wheel_radius: 0.1               # m — large wheels for heavy loads
+
+sensors:
+  lidar:
+    enabled: true
+    type: "2d"                    # 2D LiDAR 360° — SLAM + reflector backup
+    fov_deg: 360                  # Full 360° coverage
+    range_m: 8.0                  # Long range for warehouse aisles
+    rays: 720                     # High resolution for SLAM
+    height_m: 0.2                 # Mounting height from ground
+    noise_stddev_m: 0.02          # Low noise industrial LiDAR
+  barcode_reader:
+    enabled: true                 # Backup localization via reflectors
+    debounce_ms: 5
+    failure_threshold: 5
+  imu:
+    enabled: true
+    noise_stddev_deg: 1.5         # Industrial-grade IMU
+
+battery:
+  charge_duration_s: 3600         # 1 hour full charge (2.4 kWh)
+  discharge_duration_s: 28800     # 8 hours operation
+  motion_energy_factor: 1.15      # Higher energy when moving with 1500kg
+  attachment_energy_factor: 1.1   # Lifter energy draw
+  critical_threshold_pct: 10      # Emergency threshold
+  initial_charge_pct: 100
+
+obstacle_thresholds:
+  critical_m: 0.5                 # Emergency stop — 0.5m safety distance
+  warning_m: 0.8                  # Decelerate
+  planning_m: 2.0                 # Replan — larger buffer for heavy robot
+
+attachment:
+  type: "lifter"                  # Goods-to-Person lifter mechanism
+  load_time_s: 8.0                # 8s load time
+  unload_time_s: 8.0              # 8s unload time
+
+mpc:
+  num_opt_vars: 12
+  dt: 0.1
+  position_weight: 1.5            # Higher precision needed for docking
+  velocity_weight: 0.0
+  weight_scale: 0.05
+  jerk_scale: 1.5                 # Smoother motion for heavy loads
+  acceleration_scale: 1.0
+  final_position_offset: 0.01     # 10mm docking precision
+  final_velocity_threshold: 0.03
+  osqp_iterations: 500
+  osqp_eps_abs: 0.01
+  osqp_eps_rel: 0.01
+
+behavior_tree: "addverb_dynamo.xml"
+
+# Action codes — Addverb Dynamo firmware
+action_codes:
+  move: 0
+  charge_dock: 2
+  start_charging: 3
+  charge_undock: 4
+  start_loading: 14
+  start_unloading: 15
+  raise_lifter: 16
+  lower_lifter: 17
+  reset_errors: 31
+  hard_reset: 51
+
+# Response codes
+response_codes:
+  reached_dock: 10
+  reached_predock: 8
+  charging_stopped: 18
+  charging_error: 501
+  load_error: 401
+  unload_error: 402
+  lifter_error: 403

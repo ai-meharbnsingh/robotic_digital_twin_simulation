@@ -1,15 +1,15 @@
 """
-Phase 5 — 3D Performance Benchmark.
+Phase 5 — 3D Backend Performance Budget.
 
-Proves (or disproves) the "30fps with 50 robots" acceptance criterion.
-Uses requestAnimationFrame timing inside the 3D scene to measure actual FPS.
+Verifies the BACKEND data pipeline can support 50 robots within the frame budget:
+  - API response times (map, robots, heatmap)
+  - WebSocket broadcast overhead (event creation + serialization, 0 clients)
+  - JSON payload size
+  - Shared geometry patterns in frontend source (static analysis)
 
-This test is a CONTRACT test — it verifies the data shape that the 3D scene
-would use if 50 robots were rendered, and measures the frame budget available.
-
-NOTE: Full browser rendering benchmark requires Playwright with a real browser.
-This test provides the synthetic load verification. E2E Playwright perf test
-should be run separately with `npx playwright test e2e/test_3d_perf.py`.
+This does NOT measure browser-side FPS. Actual 30fps@50-robot rendering requires
+a Playwright E2E test with GPU-enabled browser, which is not part of this suite.
+The 30fps acceptance criterion in ROADMAP.md is honestly marked as unproven.
 """
 
 import json
@@ -33,16 +33,23 @@ async def client():
 class TestPerformanceBudget:
     """Verify the data pipeline can support 50 robots at 30fps (33ms frame budget)."""
 
-    async def test_map_api_under_10ms(self, client: AsyncClient):
-        """GET /api/map must respond fast enough for 3D scene init."""
+    async def test_map_api_under_100ms(self, client: AsyncClient):
+        """GET /api/map must respond within 100ms init budget for 3D scene."""
         start = time.perf_counter()
         resp = await client.get("/api/map")
         elapsed_ms = (time.perf_counter() - start) * 1000
         assert resp.status_code == 200
         assert elapsed_ms < 100, f"Map API took {elapsed_ms:.1f}ms (budget: <100ms for init)"
 
-    async def test_robots_api_under_50ms(self, client: AsyncClient):
-        """GET /api/robots must respond within 3D frame budget for 50-robot polling."""
+    async def test_robots_api_under_200ms(self, client: AsyncClient, requires_mongodb):
+        """GET /api/robots must respond within 200ms budget for 3s polling cycle.
+
+        Requires MongoDB: measures actual query latency, not connection timeout.
+        Skipped when MongoDB is unavailable (no point measuring timeout duration).
+        """
+        # Warm the MongoDB connection
+        await client.get("/api/robots")
+        # Measure steady-state latency
         start = time.perf_counter()
         resp = await client.get("/api/robots")
         elapsed_ms = (time.perf_counter() - start) * 1000
@@ -57,8 +64,8 @@ class TestPerformanceBudget:
         assert resp.status_code == 200
         assert elapsed_ms < 500, f"Heatmap API took {elapsed_ms:.1f}ms (budget: <500ms)"
 
-    def test_websocket_broadcast_throughput(self):
-        """WebSocket broadcast must handle 50 robot_position events in <33ms (1 frame)."""
+    def test_websocket_broadcast_overhead(self):
+        """WebSocket broadcast overhead: 50 events creation+serialize in <100ms (0 connected clients)."""
         from app.websocket import ConnectionManager
         import asyncio
 
@@ -85,13 +92,14 @@ class TestPerformanceBudget:
         elapsed_ms = loop.run_until_complete(broadcast_all())
         loop.close()
 
-        # With 0 connected clients, broadcast is near-instant.
-        # With clients, it would be IO-bound. This tests the event creation overhead.
-        assert elapsed_ms < 100, f"Broadcasting 50 events took {elapsed_ms:.1f}ms"
+        # 0 connected clients — tests event creation + serialization overhead only.
+        # Actual fanout latency depends on client count and is IO-bound.
+        # Full broadcast-under-load requires Playwright E2E with connected WS clients.
+        assert elapsed_ms < 100, f"Broadcasting 50 events took {elapsed_ms:.1f}ms (overhead budget: <100ms)"
         assert manager.message_count == 50
 
-    def test_50_robot_json_serialization_under_5ms(self):
-        """50-robot REST response must serialize fast enough for 3D polling."""
+    def test_50_robot_json_serialization_under_10ms(self):
+        """50-robot REST response must serialize within 10ms budget."""
         robots = []
         for i in range(50):
             robots.append({

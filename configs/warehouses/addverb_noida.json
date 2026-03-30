@@ -1,0 +1,178 @@
+{
+  "name": "Addverb Noida Test Facility",
+  "description": "49-node (7x7) mixed-use warehouse layout modeled after Addverb's Noida facility. Supports Dynamo AMR, Veloce ACR, and Quadron shuttle operations.",
+  "grid_spacing_m": 3.0,
+  "nodes": [
+    {"name": "DOCK_1",  "x": 0,  "y": 0,  "type": "charge"},
+    {"name": "DOCK_2",  "x": 3,  "y": 0,  "type": "charge"},
+    {"name": "IN_01",   "x": 6,  "y": 0,  "type": "aisle"},
+    {"name": "IN_02",   "x": 9,  "y": 0,  "type": "aisle"},
+    {"name": "PICK_1",  "x": 12, "y": 0,  "type": "pick"},
+    {"name": "PICK_2",  "x": 15, "y": 0,  "type": "pick"},
+    {"name": "IN_03",   "x": 18, "y": 0,  "type": "aisle"},
+
+    {"name": "DOCK_3",  "x": 0,  "y": 3,  "type": "charge"},
+    {"name": "A_10",    "x": 3,  "y": 3,  "type": "aisle"},
+    {"name": "S_11",    "x": 6,  "y": 3,  "type": "shelf"},
+    {"name": "S_12",    "x": 9,  "y": 3,  "type": "shelf"},
+    {"name": "S_13",    "x": 12, "y": 3,  "type": "shelf"},
+    {"name": "S_14",    "x": 15, "y": 3,  "type": "shelf"},
+    {"name": "A_15",    "x": 18, "y": 3,  "type": "aisle"},
+
+    {"name": "A_20",    "x": 0,  "y": 6,  "type": "aisle"},
+    {"name": "S_21",    "x": 3,  "y": 6,  "type": "shelf"},
+    {"name": "S_22",    "x": 6,  "y": 6,  "type": "shelf"},
+    {"name": "S_23",    "x": 9,  "y": 6,  "type": "shelf"},
+    {"name": "S_24",    "x": 12, "y": 6,  "type": "shelf"},
+    {"name": "S_25",    "x": 15, "y": 6,  "type": "shelf"},
+    {"name": "A_26",    "x": 18, "y": 6,  "type": "aisle"},
+
+    {"name": "A_30",    "x": 0,  "y": 9,  "type": "aisle"},
+    {"name": "S_31",    "x": 3,  "y": 9,  "type": "shelf"},
+    {"name": "S_32",    "x": 6,  "y": 9,  "type": "shelf"},
+    {"name": "HUB",     "x": 9,  "y": 9,  "type": "hub"},
+    {"name": "S_34",    "x": 12, "y": 9,  "type": "shelf"},
+    {"name": "S_35",    "x": 15, "y": 9,  "type": "shelf"},
+    {"name": "A_36",    "x": 18, "y": 9,  "type": "aisle"},
+
+    {"name": "A_40",    "x": 0,  "y": 12, "type": "aisle"},
+    {"name": "S_41",    "x": 3,  "y": 12, "type": "shelf"},
+    {"name": "S_42",    "x": 6,  "y": 12, "type": "shelf"},
+    {"name": "S_43",    "x": 9,  "y": 12, "type": "shelf"},
+    {"name": "S_44",    "x": 12, "y": 12, "type": "shelf"},
+    {"name": "S_45",    "x": 15, "y": 12, "type": "shelf"},
+    {"name": "A_46",    "x": 18, "y": 12, "type": "aisle"},
+
+    {"name": "A_50",    "x": 0,  "y": 15, "type": "aisle"},
+    {"name": "A_51",    "x": 3,  "y": 15, "type": "aisle"},
+    {"name": "S_52",    "x": 6,  "y": 15, "type": "shelf"},
+    {"name": "S_53",    "x": 9,  "y": 15, "type": "shelf"},
+    {"name": "S_54",    "x": 12, "y": 15, "type": "shelf"},
+    {"name": "A_55",    "x": 15, "y": 15, "type": "aisle"},
+    {"name": "DOCK_4",  "x": 18, "y": 15, "type": "charge"},
+
+    {"name": "DROP_1",  "x": 0,  "y": 18, "type": "drop"},
+    {"name": "OUT_01",  "x": 3,  "y": 18, "type": "aisle"},
+    {"name": "OUT_02",  "x": 6,  "y": 18, "type": "aisle"},
+    {"name": "STAGE_1", "x": 9,  "y": 18, "type": "hub"},
+    {"name": "OUT_03",  "x": 12, "y": 18, "type": "aisle"},
+    {"name": "DROP_2",  "x": 15, "y": 18, "type": "drop"},
+    {"name": "DROP_3",  "x": 18, "y": 18, "type": "drop"}
+  ],
+  "edges": [
+    {"from": "DOCK_1", "to": "DOCK_2"}, {"from": "DOCK_2", "to": "IN_01"},
+    {"from": "IN_01",  "to": "IN_02"},  {"from": "IN_02",  "to": "PICK_1"},
+    {"from": "PICK_1", "to": "PICK_2"}, {"from": "PICK_2", "to": "IN_03"},
+
+    {"from": "DOCK_3", "to": "A_10"},   {"from": "A_10",   "to": "S_11"},
+    {"from": "S_11",   "to": "S_12"},   {"from": "S_12",   "to": "S_13"},
+    {"from": "S_13",   "to": "S_14"},   {"from": "S_14",   "to": "A_15"},
+
+    {"from": "A_20",   "to": "S_21"},   {"from": "S_21",   "to": "S_22"},
+    {"from": "S_22",   "to": "S_23"},   {"from": "S_23",   "to": "S_24"},
+    {"from": "S_24",   "to": "S_25"},   {"from": "S_25",   "to": "A_26"},
+
+    {"from": "A_30",   "to": "S_31"},   {"from": "S_31",   "to": "S_32"},
+    {"from": "S_32",   "to": "HUB"},    {"from": "HUB",    "to": "S_34"},
+    {"from": "S_34",   "to": "S_35"},   {"from": "S_35",   "to": "A_36"},
+
+    {"from": "A_40",   "to": "S_41"},   {"from": "S_41",   "to": "S_42"},
+    {"from": "S_42",   "to": "S_43"},   {"from": "S_43",   "to": "S_44"},
+    {"from": "S_44",   "to": "S_45"},   {"from": "S_45",   "to": "A_46"},
+
+    {"from": "A_50",   "to": "A_51"},   {"from": "A_51",   "to": "S_52"},
+    {"from": "S_52",   "to": "S_53"},   {"from": "S_53",   "to": "S_54"},
+    {"from": "S_54",   "to": "A_55"},   {"from": "A_55",   "to": "DOCK_4"},
+
+    {"from": "DROP_1", "to": "OUT_01"}, {"from": "OUT_01", "to": "OUT_02"},
+    {"from": "OUT_02", "to": "STAGE_1"},{"from": "STAGE_1","to": "OUT_03"},
+    {"from": "OUT_03", "to": "DROP_2"}, {"from": "DROP_2", "to": "DROP_3"},
+
+    {"from": "DOCK_1", "to": "DOCK_3"}, {"from": "DOCK_2", "to": "A_10"},
+    {"from": "IN_01",  "to": "S_11"},   {"from": "IN_02",  "to": "S_12"},
+    {"from": "PICK_1", "to": "S_13"},   {"from": "PICK_2", "to": "S_14"},
+    {"from": "IN_03",  "to": "A_15"},
+
+    {"from": "DOCK_3", "to": "A_20"},   {"from": "A_10",   "to": "S_21"},
+    {"from": "S_11",   "to": "S_22"},   {"from": "S_12",   "to": "S_23"},
+    {"from": "S_13",   "to": "S_24"},   {"from": "S_14",   "to": "S_25"},
+    {"from": "A_15",   "to": "A_26"},
+
+    {"from": "A_20",   "to": "A_30"},   {"from": "S_21",   "to": "S_31"},
+    {"from": "S_22",   "to": "S_32"},   {"from": "S_23",   "to": "HUB"},
+    {"from": "S_24",   "to": "S_34"},   {"from": "S_25",   "to": "S_35"},
+    {"from": "A_26",   "to": "A_36"},
+
+    {"from": "A_30",   "to": "A_40"},   {"from": "S_31",   "to": "S_41"},
+    {"from": "S_32",   "to": "S_42"},   {"from": "HUB",    "to": "S_43"},
+    {"from": "S_34",   "to": "S_44"},   {"from": "S_35",   "to": "S_45"},
+    {"from": "A_36",   "to": "A_46"},
+
+    {"from": "A_40",   "to": "A_50"},   {"from": "S_41",   "to": "A_51"},
+    {"from": "S_42",   "to": "S_52"},   {"from": "S_43",   "to": "S_53"},
+    {"from": "S_44",   "to": "S_54"},   {"from": "S_45",   "to": "A_55"},
+    {"from": "A_46",   "to": "DOCK_4"},
+
+    {"from": "A_50",   "to": "DROP_1"}, {"from": "A_51",   "to": "OUT_01"},
+    {"from": "S_52",   "to": "OUT_02"}, {"from": "S_53",   "to": "STAGE_1"},
+    {"from": "S_54",   "to": "OUT_03"}, {"from": "A_55",   "to": "DROP_2"},
+    {"from": "DOCK_4", "to": "DROP_3"}
+  ],
+  "zones": [
+    {
+      "name": "Charging",
+      "type": "dock",
+      "nodes": ["DOCK_1", "DOCK_2", "DOCK_3", "DOCK_4"]
+    },
+    {
+      "name": "Inbound_Picks",
+      "type": "pick",
+      "nodes": ["PICK_1", "PICK_2", "IN_01", "IN_02", "IN_03"]
+    },
+    {
+      "name": "Storage_Row_1",
+      "type": "shelf",
+      "nodes": ["S_11", "S_12", "S_13", "S_14"]
+    },
+    {
+      "name": "Storage_Row_2",
+      "type": "shelf",
+      "nodes": ["S_21", "S_22", "S_23", "S_24", "S_25"]
+    },
+    {
+      "name": "Storage_Row_3",
+      "type": "shelf",
+      "nodes": ["S_31", "S_32", "S_34", "S_35"]
+    },
+    {
+      "name": "Storage_Row_4",
+      "type": "shelf",
+      "nodes": ["S_41", "S_42", "S_43", "S_44", "S_45"]
+    },
+    {
+      "name": "Storage_Row_5",
+      "type": "shelf",
+      "nodes": ["S_52", "S_53", "S_54"]
+    },
+    {
+      "name": "Staging_Hub",
+      "type": "ops",
+      "nodes": ["HUB", "STAGE_1"]
+    },
+    {
+      "name": "Outbound_Drops",
+      "type": "drop",
+      "nodes": ["DROP_1", "DROP_2", "DROP_3", "OUT_01", "OUT_02", "OUT_03"]
+    },
+    {
+      "name": "Aisle_West",
+      "type": "lane",
+      "nodes": ["A_20", "A_30", "A_40", "A_50"]
+    },
+    {
+      "name": "Aisle_East",
+      "type": "lane",
+      "nodes": ["A_15", "A_26", "A_36", "A_46"]
+    }
+  ]
+}

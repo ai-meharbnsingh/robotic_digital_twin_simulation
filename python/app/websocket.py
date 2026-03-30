@@ -12,7 +12,7 @@ Broadcasts these event types:
 
 Usage:
   ws_manager = ConnectionManager()
-  await ws_manager.broadcast({"type": "robot_position", "data": {...}})
+  await ws_manager.broadcast({"event": "robot_position", "data": {...}})
 """
 
 import json

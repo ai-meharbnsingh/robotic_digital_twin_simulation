@@ -1,10 +1,13 @@
 """
 Shared test fixtures for the Python test suite.
 Sets environment variables and provides the FastAPI TestClient.
+
+Tests that require running infrastructure (MongoDB, Redis, InfluxDB) use the
+`requires_mongodb` marker and are automatically skipped when services are unavailable.
 """
 
 import os
-from contextlib import asynccontextmanager
+import socket
 from pathlib import Path
 
 import pytest
@@ -17,6 +20,26 @@ os.environ["ROBOT_CONFIG"] = "differential_drive"
 os.environ["MONGODB_URL"] = "mongodb://localhost:27017"
 os.environ["REDIS_URL"] = "redis://localhost:6379"
 os.environ["INFLUXDB_URL"] = "http://localhost:8086"
+
+
+def _port_open(host: str, port: int, timeout: float = 0.3) -> bool:
+    """Check if a TCP port is accepting connections."""
+    try:
+        with socket.create_connection((host, port), timeout=timeout):
+            return True
+    except (ConnectionRefusedError, TimeoutError, OSError):
+        return False
+
+
+# Detect infrastructure availability at collection time
+MONGODB_AVAILABLE = _port_open("localhost", 27017)
+
+
+@pytest.fixture
+def requires_mongodb():
+    """Skip test if MongoDB is not running."""
+    if not MONGODB_AVAILABLE:
+        pytest.skip("MongoDB not available (port 27017 closed)")
 
 
 @pytest.fixture

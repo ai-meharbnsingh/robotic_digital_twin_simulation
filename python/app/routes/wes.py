@@ -96,4 +96,7 @@ def _empty_kpi() -> dict:
         "avg_order_cycle_time_s": 0.0,
         "pending_orders": 0,
         "completed_orders": 0,
+        "total_orders": 0,
+        "completed_tasks": 0,
+        "failed_tasks": 0,
     }

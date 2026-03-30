@@ -5,11 +5,13 @@ Open source warehouse robotics digital twin. Any robotics company loads their wa
 
 Written from scratch. C++ where it matters (real-time FMS), Python where it helps (API + monitoring). No proprietary dependencies.
 
-> **Note:** The io-gita intelligence layer and SG prediction were dropped. All related code has been archived. See ARCHITECTURE.md for details.
+> **Note:** io-gita v1-v3 were dropped. v4 reinstated with hierarchical zone-first approach. See ARCHITECTURE.md for details.
 
 ---
 
-## Current Status (All 11 phases complete)
+## Current Status (All 11 core phases + Phases 1-6 enhancements complete)
+
+Note: "Tests" column shows cumulative count at time of phase completion (historical snapshot).
 
 | Phase | Status | Tests | Key Deliverable |
 |-------|--------|-------|-----------------|
@@ -21,11 +23,13 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 | 6. Communication | DONE | 319 C++ | TCP Protocol V1 + CRC32, REST server |
 | 7. Fleet Manager | DONE | 319 C++ | 15Hz main loop, COPP, TaskManager |
 | 8. Gazebo | DONE | 319 C++ | Physics sim, sensor plugins |
-| 9. Python API | DONE | 129 Python | 30 endpoints, WES, monitoring |
+| 9. Python API | DONE | 129 Python | 64 endpoints, WES, monitoring, ROS2 |
 | 10. Dashboard | DONE | 129 Python | React + Grafana |
 | 11. Integration | DONE | 182 Python | Demo, integration tests, docs |
 
-**Total: 319 C++ + 182 Python = 501 tests passing. Zero failures.**
+**Total: 390 C++ + 414 Python + 52 Gazebo = 856 tests. Zero failures (32 skipped in sandbox).**
+
+(Test counts updated to include Phases 1-5: order import, mixed fleet, heatmap, waves, 3D contracts + perf, Gazebo plugins)
 
 ---
 
@@ -51,7 +55,7 @@ Written from scratch. C++ where it matters (real-time FMS), Python where it help
 │              │ JSON file output (fleet_state.json)               │
 │  ┌───────────▼────────────────────────────────────────────────┐ │
 │  │ PYTHON PROCESS: FastAPI (python/app/main.py :8029)          │ │
-│  │ ├── REST API (30 endpoints — reads MongoDB)                 │ │
+│  │ ├── REST API (64 endpoints — reads MongoDB)                 │ │
 │  │ ├── WebSocket (/ws/fleet)                                   │ │
 │  │ └── [Phase 9] WES OrderGenerator                            │ │
 │  └────────────────────────────────────────────────────────────┘ │
@@ -153,7 +157,7 @@ robotic_digital_twin_simulation/
 ├── docs/                              # Documentation
 │   ├── USER_EXPERIENCE.md
 │   ├── GETTING_STARTED.md             # 5-minute quickstart
-│   ├── API_REFERENCE.md               # All 30 endpoints with curl examples
+│   ├── API_REFERENCE.md               # All 64 endpoints with curl examples
 │   ├── CONFIGURATION.md               # Warehouse, robot, BT customization guide
 │   └── ARCHITECTURE.md                # System diagram, data flow, tech stack
 │

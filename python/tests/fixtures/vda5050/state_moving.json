@@ -1,0 +1,103 @@
+{
+  "headerId": 100,
+  "timestamp": "2026-03-30T12:01:30.000Z",
+  "version": "2.0.0",
+  "manufacturer": "RDT",
+  "serialNumber": "AMR-001",
+  "orderId": "order-001",
+  "orderUpdateId": 0,
+  "lastNodeId": "pick-station-1",
+  "lastNodeSequenceId": 0,
+  "driving": true,
+  "paused": false,
+  "newBaseRequest": false,
+  "distanceSinceLastNode": 2.3,
+  "operatingMode": "AUTOMATIC",
+  "nodeStates": [
+    {
+      "nodeId": "shelf-A3",
+      "sequenceId": 2,
+      "released": true,
+      "nodePosition": {
+        "x": 5.0,
+        "y": 3.0,
+        "mapId": "warehouse-floor-1"
+      }
+    },
+    {
+      "nodeId": "drop-station-1",
+      "sequenceId": 4,
+      "released": true,
+      "nodePosition": {
+        "x": 9.0,
+        "y": 1.0,
+        "mapId": "warehouse-floor-1"
+      }
+    }
+  ],
+  "edgeStates": [
+    {
+      "edgeId": "edge-001",
+      "sequenceId": 1,
+      "released": true
+    },
+    {
+      "edgeId": "edge-002",
+      "sequenceId": 3,
+      "released": true
+    }
+  ],
+  "agvPosition": {
+    "x": 3.1,
+    "y": 2.0,
+    "theta": 0.52,
+    "mapId": "warehouse-floor-1",
+    "positionInitialized": true,
+    "localizationScore": 0.95,
+    "deviationRange": 0.05
+  },
+  "velocity": {
+    "vx": 0.8,
+    "vy": 0.0,
+    "omega": 0.0
+  },
+  "loads": [
+    {
+      "loadId": "load-001",
+      "loadType": "PALLET",
+      "loadPosition": "top",
+      "weight": 25.0,
+      "boundingBoxReference": {
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.3
+      },
+      "loadDimensions": {
+        "length": 0.8,
+        "width": 0.6,
+        "height": 0.3
+      }
+    }
+  ],
+  "actionStates": [
+    {
+      "actionId": "action-001",
+      "actionType": "pick",
+      "actionStatus": "FINISHED",
+      "resultDescription": "Pick completed successfully"
+    }
+  ],
+  "batteryState": {
+    "batteryCharge": 78.5,
+    "batteryVoltage": 25.2,
+    "batteryHealth": 95,
+    "charging": false,
+    "reach": 4500
+  },
+  "errors": [],
+  "information": [],
+  "safetyState": {
+    "eStop": false,
+    "fieldViolation": false
+  }
+}

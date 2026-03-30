@@ -16,6 +16,8 @@ namespace rdt {
 // ── Robot config (YAML) ─────────────────────────────────
 
 RobotConfig Config::loadRobotConfig(const std::string& yaml_path) {
+    // Note: C++ Config loader accepts full filesystem paths constructed at compile/startup time.
+    // Path traversal protection is applied at the Python HTTP layer (config.py), not here.
     YAML::Node root;
     try {
         root = YAML::LoadFile(yaml_path);
@@ -141,6 +143,8 @@ RobotConfig Config::loadRobotConfig(const std::string& yaml_path) {
 // ── Warehouse config (JSON) ─────────────────────────────
 
 WarehouseConfig Config::loadWarehouseConfig(const std::string& json_path) {
+    // Note: C++ Config loader accepts full filesystem paths constructed at compile/startup time.
+    // Path traversal protection is applied at the Python HTTP layer (config.py), not here.
     std::ifstream file(json_path);
     if (!file.is_open()) {
         throw std::runtime_error("Failed to open warehouse JSON: " + json_path);
