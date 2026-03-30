@@ -65,10 +65,26 @@ class OrderTranslator:
         items = []
         for line in odoo_order.get("order_line", []):
             if isinstance(line, dict):
+                # Full dict line object — extract product_id which can be
+                # [id, name] tuple or a bare string/int
+                pid = line.get("product_id", "")
+                if isinstance(pid, (list, tuple)) and len(pid) > 1:
+                    sku = str(pid[1])
+                else:
+                    sku = str(pid)
                 items.append({
-                    "sku": line.get("product_id", ["", ""])[1] if isinstance(line.get("product_id"), list) else str(line.get("product_id", "")),
+                    "sku": sku,
                     "quantity": int(line.get("product_uom_qty", line.get("quantity", 1))),
                     "location": line.get("warehouse_id", ""),
+                })
+            elif isinstance(line, (int, float)):
+                # Odoo sometimes returns order_line as a list of IDs only
+                # (when fields aren't expanded). We can't extract product
+                # data from bare IDs so we create a placeholder item.
+                items.append({
+                    "sku": f"odoo-line-{int(line)}",
+                    "quantity": 1,
+                    "location": "",
                 })
 
         partner = odoo_order.get("partner_id", [0, ""])

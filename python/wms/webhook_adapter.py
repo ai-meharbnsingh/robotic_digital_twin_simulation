@@ -10,11 +10,12 @@ This is the primary adapter for testing since it requires no external services.
 import logging
 import time
 import uuid
-from typing import Any
 
 from wms.connector import WMSConnector
 
 logger = logging.getLogger(__name__)
+
+MAX_ORDERS = 50_000
 
 
 class WebhookAdapter(WMSConnector):
@@ -28,6 +29,7 @@ class WebhookAdapter(WMSConnector):
         self._callback_url = callback_url
         self._pending_orders: list[dict] = []
         self._processed_orders: list[dict] = []
+        self._seen_order_ids: set[str] = set()
 
     async def receive_order(self, order: dict) -> dict:
         """Called when webhook POSTs an order to us.
@@ -37,7 +39,23 @@ class WebhookAdapter(WMSConnector):
 
         Returns:
             Receipt confirmation with assigned internal ID.
+
+        Raises:
+            ValueError: If order with same external ID already exists.
+            OverflowError: If order store is at capacity (MAX_ORDERS).
         """
+        # Duplicate order ID check
+        ext_id = order.get("id", "")
+        if ext_id and ext_id in self._seen_order_ids:
+            raise ValueError(f"Duplicate order ID: {ext_id}")
+
+        # Capacity check
+        total = len(self._pending_orders) + len(self._processed_orders)
+        if total >= MAX_ORDERS:
+            raise OverflowError(
+                f"Order store at capacity ({MAX_ORDERS}). Sync or purge before adding more."
+            )
+
         internal_id = str(uuid.uuid4())[:8]
         enriched = {
             **order,
@@ -46,6 +64,8 @@ class WebhookAdapter(WMSConnector):
             "_source": "webhook",
         }
         self._pending_orders.append(enriched)
+        if ext_id:
+            self._seen_order_ids.add(ext_id)
         logger.info("Webhook received order %s (internal_id=%s)", order.get("id", "?"), internal_id)
         return {"internal_id": internal_id, "status": "received"}
 

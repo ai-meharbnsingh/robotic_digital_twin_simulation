@@ -14,11 +14,14 @@ Phase 12: WMS/SAP Connector Backend.
 import logging
 
 from fastapi import APIRouter, Depends, HTTPException
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.auth import require_api_key
 
 logger = logging.getLogger(__name__)
+
+MAX_SYNC_ORDERS = 1_000
+MAX_WEBHOOK_ITEMS = 500
 
 router = APIRouter(prefix="/api/wms", tags=["wms"])
 
@@ -46,10 +49,17 @@ def _get_order_store():
 
 class WebhookPayload(BaseModel):
     """Request body for POST /api/wms/webhook/receive."""
-    id: str = Field(default="", description="External order ID")
+    id: str = Field(default="", description="External order ID", max_length=256)
     items: list[dict] = Field(default_factory=list, description="Order line items")
     priority: int = Field(default=3, ge=1, le=5, description="Priority 1-5")
-    customer: str = Field(default="", description="Customer name")
+    customer: str = Field(default="", description="Customer name", max_length=512)
+
+    @field_validator("items")
+    @classmethod
+    def items_not_too_large(cls, v: list[dict]) -> list[dict]:
+        if len(v) > MAX_WEBHOOK_ITEMS:
+            raise ValueError(f"Too many items ({len(v)}). Max is {MAX_WEBHOOK_ITEMS}.")
+        return v
 
 
 # ── Endpoints ──────────────────────────────────────────────
@@ -101,6 +111,11 @@ async def sync_orders():
         logger.exception("WMS sync failed")
         raise HTTPException(status_code=500, detail="Internal error during WMS sync")
 
+    # Cap orders per sync to prevent resource exhaustion
+    if len(raw_orders) > MAX_SYNC_ORDERS:
+        logger.warning("Sync truncated: %d orders to %d", len(raw_orders), MAX_SYNC_ORDERS)
+        raw_orders = raw_orders[:MAX_SYNC_ORDERS]
+
     from wms.order_translator import OrderTranslator
     from app.main import app_state
 
@@ -139,7 +154,7 @@ async def list_orders():
     return {"orders": orders, "total": len(orders)}
 
 
-@router.post("/webhook/receive")
+@router.post("/webhook/receive", dependencies=[Depends(require_api_key)])
 async def receive_webhook(payload: WebhookPayload):
     """
     Receive order via webhook.
@@ -165,6 +180,10 @@ async def receive_webhook(payload: WebhookPayload):
     try:
         result = await connector.receive_order(payload.model_dump())
         return result
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc))
+    except OverflowError as exc:
+        raise HTTPException(status_code=507, detail=str(exc))
     except Exception as exc:
         logger.exception("Webhook receive failed")
         raise HTTPException(status_code=500, detail="Internal error processing webhook")

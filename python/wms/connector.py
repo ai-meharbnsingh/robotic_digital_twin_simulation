@@ -43,3 +43,24 @@ class WMSConnector(ABC):
     @abstractmethod
     def get_status(self) -> dict:
         """Return connector status (type, connected, etc.)."""
+
+    async def receive_order(self, order: dict) -> dict:
+        """Receive an inbound order (webhook-style).
+
+        Not all connectors support inbound webhooks.  The default
+        implementation raises NotImplementedError — only the
+        WebhookAdapter overrides this.
+
+        Args:
+            order: Raw order payload from external WMS.
+
+        Returns:
+            Receipt confirmation dict.
+
+        Raises:
+            NotImplementedError: If the concrete adapter does not
+                support receiving orders (e.g. SAP, Odoo).
+        """
+        raise NotImplementedError(
+            f"{type(self).__name__} does not support receive_order"
+        )

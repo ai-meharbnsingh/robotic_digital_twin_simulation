@@ -6,12 +6,14 @@ Graceful degradation: if RabbitMQ is unreachable, DLQ operates
 in-memory only (data lost on restart, but no crashes).
 """
 
+import asyncio
 import logging
 import time
 import uuid
-from typing import Any
 
 logger = logging.getLogger(__name__)
+
+MAX_DLQ_SIZE = 10_000
 
 
 class DeadLetterQueue:
@@ -51,6 +53,22 @@ class DeadLetterQueue:
             self._rabbitmq_connected = False
             logger.warning("DLQ RabbitMQ unavailable (in-memory mode): %s", exc)
 
+    def _publish_to_rabbitmq(self, entry: dict) -> None:
+        """Synchronous RabbitMQ publish — called via asyncio.to_thread()."""
+        import json
+        import pika
+        params = pika.URLParameters(self._rabbitmq_url)
+        params.socket_timeout = 2
+        connection = pika.BlockingConnection(params)
+        channel = connection.channel()
+        channel.basic_publish(
+            exchange="",
+            routing_key="wms_dlq",
+            body=json.dumps(entry),
+            properties=pika.BasicProperties(delivery_mode=2),
+        )
+        connection.close()
+
     async def enqueue(self, order: dict, error: str) -> dict:
         """Push failed order to DLQ with error reason.
 
@@ -70,24 +88,16 @@ class DeadLetterQueue:
             "retry_count": 0,
             "status": "dead",
         }
+        # Evict oldest entries if at capacity
+        while len(self._dead_letters) >= MAX_DLQ_SIZE:
+            self._dead_letters.pop(0)
+
         self._dead_letters.append(entry)
 
-        # Also push to RabbitMQ if connected
+        # Also push to RabbitMQ if connected (in a thread to avoid blocking)
         if self._rabbitmq_connected:
             try:
-                import pika
-                import json
-                params = pika.URLParameters(self._rabbitmq_url)
-                params.socket_timeout = 2
-                connection = pika.BlockingConnection(params)
-                channel = connection.channel()
-                channel.basic_publish(
-                    exchange="",
-                    routing_key="wms_dlq",
-                    body=json.dumps(entry),
-                    properties=pika.BasicProperties(delivery_mode=2),  # persistent
-                )
-                connection.close()
+                await asyncio.to_thread(self._publish_to_rabbitmq, entry)
             except Exception as exc:
                 logger.warning("DLQ RabbitMQ publish failed: %s", exc)
                 self._rabbitmq_connected = False

@@ -1,6 +1,6 @@
 # API Reference
 
-The Python FastAPI server runs on port **8029** and exposes 65 REST endpoints plus 1 WebSocket endpoint.
+The Python FastAPI server runs on port **8029** and exposes 71 REST endpoints plus 1 WebSocket endpoint.
 
 > **Note:** io-gita v4 intelligence layer was reinstated with a hierarchical zone-first approach after v1-v3 failed (see ARCHITECTURE.md). 3 io-gita endpoints are active.
 
@@ -29,6 +29,7 @@ Interactive docs: `http://localhost:8029/docs`
 - [MAPF (Multi-Agent Path Finding)](#mapf-multi-agent-path-finding)
 - [ROS2 Bridge](#ros2-bridge)
 - [Warehouse Designer](#warehouse-designer)
+- [WMS/ERP Connector](#wmserp-connector)
 - [WebSocket](#websocket)
 
 ---
@@ -1620,6 +1621,108 @@ Returns the full warehouse config JSON (nodes, edges, zones).
 
 ---
 
+## WMS/ERP Connector
+
+WMS integration layer supporting SAP, Odoo, and generic webhook adapters.
+All write endpoints require `X-API-Key` header (see Auth).
+
+### GET /api/wms/status
+
+Connector status including type, connection state, and DLQ summary.
+
+```bash
+curl http://localhost:8029/api/wms/status
+```
+
+```json
+{
+  "connector_initialized": true,
+  "type": "webhook",
+  "connected": true,
+  "dlq": {"total": 0, "dead": 0, "retrying": 0, "rabbitmq_connected": false},
+  "pending_orders": 0,
+  "processed_orders": 3
+}
+```
+
+### POST /api/wms/sync
+
+Trigger order sync — pulls pending orders from the active connector, translates them to internal format, and stores them. Requires API key.
+
+```bash
+curl -X POST http://localhost:8029/api/wms/sync \
+  -H "X-API-Key: $API_KEY"
+```
+
+```json
+{"synced": 2, "errors": 0, "total_orders": 5}
+```
+
+### GET /api/wms/orders
+
+List all synced orders (translated to internal format).
+
+```bash
+curl http://localhost:8029/api/wms/orders
+```
+
+```json
+{
+  "orders": [
+    {"order_id": "WH-001", "source": "webhook", "items": [...], "priority": 3, "customer": "Acme"}
+  ],
+  "total": 1
+}
+```
+
+### POST /api/wms/webhook/receive
+
+Receive an order via webhook push. Any external WMS can POST orders here. Requires API key. Returns 409 for duplicate order IDs.
+
+```bash
+curl -X POST http://localhost:8029/api/wms/webhook/receive \
+  -H "X-API-Key: $API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"id": "WH-001", "items": [{"sku": "BOLT-M8", "quantity": 50}], "priority": 2, "customer": "Acme"}'
+```
+
+```json
+{"internal_id": "a1b2c3d4", "status": "received"}
+```
+
+### GET /api/wms/dlq
+
+List dead letter queue entries (failed order processing), newest first.
+
+```bash
+curl http://localhost:8029/api/wms/dlq?limit=50
+```
+
+```json
+{
+  "dead_letters": [
+    {"message_id": "abc123", "order": {...}, "error": "Connection timeout", "status": "dead"}
+  ],
+  "total": 1,
+  "rabbitmq_connected": false
+}
+```
+
+### POST /api/wms/dlq/{id}/retry
+
+Retry a dead letter. Returns the order for re-processing. Requires API key.
+
+```bash
+curl -X POST http://localhost:8029/api/wms/dlq/abc123/retry \
+  -H "X-API-Key: $API_KEY"
+```
+
+```json
+{"message_id": "abc123", "status": "retrying", "retry_count": 1, "order": {...}}
+```
+
+---
+
 ## WebSocket
 
 ### WS /ws/fleet
@@ -1732,4 +1835,10 @@ const ws = new WebSocket("ws://localhost:8029/ws/fleet");
 | 58 | GET | `/api/ros2/topics` | List ROS2 topics |
 | 59 | POST | `/api/ros2/nav-goal` | Send navigation goal |
 | 60 | GET | `/api/ros2/pose/{robot_id}` | Get robot pose from ROS2 |
+| 61 | GET | `/api/wms/status` | WMS connector status |
+| 62 | POST | `/api/wms/sync` | Trigger order sync from WMS |
+| 63 | GET | `/api/wms/orders` | List synced orders |
+| 64 | POST | `/api/wms/webhook/receive` | Receive order via webhook |
+| 65 | GET | `/api/wms/dlq` | List dead letter queue |
+| 66 | POST | `/api/wms/dlq/{id}/retry` | Retry dead letter |
 | WS | WS | `/ws/fleet` | Real-time updates |

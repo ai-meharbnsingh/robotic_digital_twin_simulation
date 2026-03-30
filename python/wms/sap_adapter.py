@@ -10,7 +10,6 @@ ConnectionError and the route layer returns 503.
 """
 
 import logging
-from typing import Any
 
 import httpx
 

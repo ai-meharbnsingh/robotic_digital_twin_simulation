@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useWMSStatus, useWMSOrders, useWMSDlq } from '../hooks/useWMS'
+import type { WMSOrder, WMSDlqEntry } from '../types'
 
 const API_BASE = window.location.origin
 const API_KEY = (import.meta.env?.VITE_API_KEY as string | undefined) ?? ''
@@ -101,7 +102,7 @@ export function WMSPanel() {
             No orders synced
           </div>
         ) : (
-          orders.slice(-5).reverse().map((order: any, i: number) => (
+          orders.slice(-5).reverse().map((order: WMSOrder, i: number) => (
             <div key={order.order_id || i} className="bg-surface rounded px-2 py-1 text-[10px]">
               <div className="flex items-center gap-2">
                 <span className="text-gray-200 font-semibold truncate">
@@ -123,7 +124,7 @@ export function WMSPanel() {
       {dlqEntries.length > 0 && (
         <div className="mt-2 border-t border-border pt-1">
           <div className="text-[10px] text-danger font-semibold mb-1">Dead Letters</div>
-          {dlqEntries.slice(0, 3).map((entry: any, i: number) => (
+          {dlqEntries.slice(0, 3).map((entry: WMSDlqEntry, i: number) => (
             <div key={entry.message_id || i} className="bg-surface rounded px-2 py-0.5 text-[9px] text-danger mb-0.5">
               {entry.message_id}: {entry.error}
             </div>
