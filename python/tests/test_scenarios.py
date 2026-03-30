@@ -542,8 +542,8 @@ class TestEndpointCount:
     """Verify root endpoint reports updated count."""
 
     async def test_root_reports_60_endpoints(self, client: AsyncClient):
-        """GET / should now report 65 endpoints."""
+        """GET / should now report 71 endpoints."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 65
+        assert data["endpoints"] == 71

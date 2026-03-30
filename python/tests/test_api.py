@@ -1,5 +1,5 @@
 """
-Test ALL 65 API endpoints with real assertions.
+Test ALL 71 API endpoints with real assertions.
 
 Tests run against the FastAPI app via httpx AsyncClient.
 MongoDB may or may not be available — tests verify correct response shapes
@@ -34,7 +34,7 @@ class TestRootAndHealth:
         assert data["service"] == "Robotic Digital Twin API"
         assert data["version"] == "0.1.0"
         assert "docs" in data
-        assert data["endpoints"] == 65
+        assert data["endpoints"] == 71
 
     async def test_health(self, client: AsyncClient):
         """GET /health — returns actual service status booleans."""
@@ -408,8 +408,8 @@ class TestReservations:
 
 
 class TestEndpointCount:
-    async def test_all_65_endpoints_exist(self, client: AsyncClient):
-        """Verify all 65 API endpoints respond (not 404/405)."""
+    async def test_all_71_endpoints_exist(self, client: AsyncClient):
+        """Verify all 71 API endpoints respond (not 404/405)."""
         endpoints = [
             # Root + Health (2)
             ("GET", "/"),
@@ -498,9 +498,16 @@ class TestEndpointCount:
             ("POST", "/api/mapf/step"),
             ("GET", "/api/mapf/benchmarks"),
             ("GET", "/api/mapf/congestion"),
+            # WMS/ERP (Phase 12) — 6 endpoints
+            ("GET", "/api/wms/status"),
+            ("POST", "/api/wms/sync"),
+            ("GET", "/api/wms/orders"),
+            ("POST", "/api/wms/webhook/receive"),
+            ("GET", "/api/wms/dlq"),
+            ("POST", "/api/wms/dlq/{id}/retry"),
         ]
 
-        assert len(endpoints) == 65, f"Expected 65 endpoints, got {len(endpoints)}"
+        assert len(endpoints) == 71, f"Expected 71 endpoints, got {len(endpoints)}"
 
         for method, path in endpoints:
             if method == "GET":

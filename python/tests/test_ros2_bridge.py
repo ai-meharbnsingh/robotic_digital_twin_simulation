@@ -403,7 +403,7 @@ class TestROS2Endpoints:
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 65
+        assert data["endpoints"] == 71
 
     @pytest.mark.asyncio
     async def test_nav_goal_invalid_robot_id(self, client):

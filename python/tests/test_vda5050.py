@@ -930,11 +930,11 @@ class TestEndpointCount:
     """Verify root endpoint reports updated count with VDA5050."""
 
     async def test_root_reports_56_endpoints(self, client: AsyncClient):
-        """GET / should now report 65 endpoints (56 + 5 MAPF + 4 ROS2 iogita/recover)."""
+        """GET / should now report 71 endpoints (56 + 5 MAPF + 4 ROS2 + 6 WMS iogita/recover)."""
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["endpoints"] == 65
+        assert data["endpoints"] == 71
 
 
 # ── TestVDA5050NegativeCases ─────────────────────────────

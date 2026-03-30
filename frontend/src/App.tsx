@@ -20,6 +20,7 @@ import { ScenarioPanel } from './components/ScenarioPanel'
 import { ScenarioComparisonDashboard } from './components/ScenarioComparisonDashboard'
 import { VDA5050Panel } from './components/VDA5050Panel'
 import { CongestionPanel } from './components/CongestionPanel'
+import { WMSPanel } from './components/WMSPanel'
 import { useROS2Status } from './hooks/useROS2'
 import type {
   Robot,
@@ -341,9 +342,12 @@ export default function App() {
             <VDA5050Panel />
           </div>
 
-          {/* Row 4: MAPF Congestion (Phase 11) */}
+          {/* Row 4: MAPF Congestion (Phase 11) + WMS Connector (Phase 12) */}
           <div className="col-span-2">
             <CongestionPanel />
+          </div>
+          <div className="col-span-2">
+            <WMSPanel />
           </div>
         </main>
       )}

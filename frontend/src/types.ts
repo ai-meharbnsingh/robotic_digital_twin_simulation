@@ -474,3 +474,59 @@ export interface ROS2PoseResponse {
   topic?: string          // present when ROS2 is live
   error?: string          // present when source='error'
 }
+
+// --- WMS/ERP Connector (Phase 12) ---
+
+export interface WMSDlqStatus {
+  total: number
+  dead: number
+  retrying: number
+  rabbitmq_connected: boolean
+}
+
+export interface WMSStatus {
+  connector_initialized: boolean
+  type: string | null
+  connected: boolean
+  dlq: WMSDlqStatus
+  // Webhook-specific
+  pending_orders?: number
+  processed_orders?: number
+  callback_url?: string
+  // SAP-specific
+  base_url?: string
+  // Odoo-specific
+  url?: string
+  database?: string
+  authenticated?: boolean
+}
+
+export interface WMSOrder {
+  order_id: string
+  source: 'sap' | 'odoo' | 'webhook'
+  items: { sku: string; quantity: number; location: string }[]
+  priority: number
+  customer: string
+  created_at: string
+  raw: Record<string, unknown>
+}
+
+export interface WMSOrdersResponse {
+  orders: WMSOrder[]
+  total: number
+}
+
+export interface WMSDlqEntry {
+  message_id: string
+  order: Record<string, unknown>
+  error: string
+  enqueued_at: number
+  retry_count: number
+  status: 'dead' | 'retrying'
+}
+
+export interface WMSDlqResponse {
+  dead_letters: WMSDlqEntry[]
+  total: number
+  rabbitmq_connected: boolean
+}

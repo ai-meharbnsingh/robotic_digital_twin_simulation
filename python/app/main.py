@@ -64,6 +64,10 @@ app_state: dict[str, Any] = {
     "ros2_hal": None,
     # MAPF solvers + congestion tracker (Phase 11)
     "congestion_tracker": None,
+    # WMS/ERP connector (Phase 12)
+    "wms_connector": None,
+    "wms_dlq": None,
+    "wms_orders": [],
 }
 
 
@@ -273,6 +277,49 @@ def _init_vda5050(settings: Settings):
         app_state["vda5050_gateway"] = None
 
 
+def _init_wms(settings: Settings):
+    """Initialize WMS/ERP connector and DLQ (Phase 12).
+
+    Default: WebhookAdapter (works without external WMS).
+    SAP/Odoo adapters activated via env vars WMS_TYPE, WMS_SAP_URL, etc.
+    """
+    try:
+        from wms.dlq import DeadLetterQueue
+
+        dlq = DeadLetterQueue(rabbitmq_url=settings.rabbitmq_url)
+        app_state["wms_dlq"] = dlq
+
+        wms_type = os.environ.get("WMS_TYPE", "webhook").lower()
+
+        if wms_type == "sap":
+            from wms.sap_adapter import SAPAdapter
+            adapter = SAPAdapter(
+                base_url=os.environ.get("WMS_SAP_URL", "http://localhost:8080"),
+                api_key=os.environ.get("WMS_SAP_API_KEY", ""),
+            )
+        elif wms_type == "odoo":
+            from wms.odoo_adapter import OdooAdapter
+            adapter = OdooAdapter(
+                url=os.environ.get("WMS_ODOO_URL", "http://localhost:8069"),
+                db=os.environ.get("WMS_ODOO_DB", "odoo"),
+                user=os.environ.get("WMS_ODOO_USER", "admin"),
+                password=os.environ.get("WMS_ODOO_PASSWORD", "admin"),
+            )
+        else:
+            from wms.webhook_adapter import WebhookAdapter
+            adapter = WebhookAdapter(
+                callback_url=os.environ.get("WMS_WEBHOOK_CALLBACK", ""),
+            )
+
+        app_state["wms_connector"] = adapter
+        app_state["wms_orders"] = []
+        logger.info("WMS connector initialized (type=%s)", wms_type)
+    except Exception as e:
+        logger.warning("WMS connector init failed: %s", e)
+        app_state["wms_connector"] = None
+        app_state["wms_dlq"] = None
+
+
 def _init_ros2_bridge():
     """Initialize ROS2 Bridge and HAL (Phase 10).
 
@@ -385,6 +432,9 @@ async def lifespan(app: FastAPI):
         logger.warning("Congestion tracker init failed: %s", e)
         app_state["congestion_tracker"] = None
 
+    # Initialize WMS/ERP connector (Phase 12)
+    _init_wms(settings)
+
     # Initialize ROS2 Bridge + HAL (Phase 10)
     _init_ros2_bridge()
     if app_state.get("ros2_hal"):
@@ -448,6 +498,7 @@ from app.routes.designer import router as designer_router
 from app.routes.vda5050 import router as vda5050_router
 from app.routes.ros2 import router as ros2_router
 from app.routes.mapf import router as mapf_router
+from app.routes.wms import router as wms_router
 from app.websocket import router as ws_router
 
 app.include_router(fleet_router)
@@ -473,6 +524,7 @@ app.include_router(designer_router)
 app.include_router(vda5050_router)
 app.include_router(ros2_router)
 app.include_router(mapf_router)
+app.include_router(wms_router)
 app.include_router(ws_router)
 
 
@@ -514,7 +566,7 @@ async def root():
         "service": "Robotic Digital Twin API",
         "version": "0.1.0",
         "docs": "/docs",
-        "endpoints": 65,
+        "endpoints": 71,
     }
 
 

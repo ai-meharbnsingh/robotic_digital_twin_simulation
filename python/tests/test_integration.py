@@ -1,7 +1,7 @@
 """
 Integration tests for Phase 11 — verifies the full stack works together.
 
-TEST: All 65 API endpoints return 200 (or expected error for missing resources)
+TEST: All 71 API endpoints return 200 (or expected error for missing resources)
 TEST: WebSocket connects and receives events
 TEST: Config loads both warehouse formats (simple_grid, botvalley)
 """
@@ -30,17 +30,17 @@ async def client():
             yield c
 
 
-# ── TEST: All 65 API endpoints return expected status ──────────────────
+# ── TEST: All 71 API endpoints return expected status ──────────────────
 
 class TestAllEndpoints:
-    """Verify all 65 API endpoints respond correctly."""
+    """Verify all 71 API endpoints respond correctly."""
 
     async def test_root(self, client):
         resp = await client.get("/")
         assert resp.status_code == 200
         data = resp.json()
         assert data["service"] == "Robotic Digital Twin API"
-        assert data["endpoints"] == 65
+        assert data["endpoints"] == 71
 
     async def test_health(self, client):
         resp = await client.get("/health")
@@ -249,6 +249,26 @@ class TestAllEndpoints:
         resp = await client.get("/api/reservations/active")
         assert resp.status_code == 200
         assert isinstance(resp.json(), list)
+
+    async def test_wms_status(self, client):
+        resp = await client.get("/api/wms/status")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "connector_initialized" in data
+        assert "dlq" in data
+
+    async def test_wms_orders(self, client):
+        resp = await client.get("/api/wms/orders")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "orders" in data
+        assert "total" in data
+
+    async def test_wms_dlq(self, client):
+        resp = await client.get("/api/wms/dlq")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "dead_letters" in data
 
 
 # ── TEST: WebSocket connects and receives events ──────────────────────
