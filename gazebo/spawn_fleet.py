@@ -5,12 +5,18 @@ Spawn a namespaced multi-robot fleet in Gazebo.
 Each robot gets:
   /robot_NN/cmd_vel   — velocity commands (DiffDrive)
   /robot_NN/odom      — odometry
-  /robot_NN/lidar     — 360-ray GPU LiDAR
+  /robot_NN/lidar     — LiDAR (config-dependent FOV/range)
   /robot_NN/imu       — IMU sensor
 
+Robot models organized by manufacturer:
+  gazebo/models/addverb/   — Dynamo, Veloce, Quadron, AMR500, Zippy10
+  gazebo/models/generic/   — DiffDrive AMR, Unidirectional AGV
+
 Usage:
-    python3 spawn_fleet.py --count 5 --world warehouse_distinct
-    python3 spawn_fleet.py --count 15 --world warehouse_distinct
+    python3 spawn_fleet.py --count 5                              # 5 generic AMRs
+    python3 spawn_fleet.py --count 3 --model addverb/addverb_dynamo  # 3 Dynamo AGVs
+    python3 spawn_fleet.py --fleet configs/fleets/addverb_mixed.json # mixed Addverb fleet
+    python3 spawn_fleet.py --list-models                          # show available models
 """
 
 import argparse
@@ -24,17 +30,69 @@ import time
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, ".."))
-BASE_SDF = os.path.join(SCRIPT_DIR, "models", "diffdrive_amr", "model.sdf")
+MODELS_DIR = os.path.join(SCRIPT_DIR, "models")
+DEFAULT_MODEL = "generic/diffdrive_amr"
 CONFIG_PATH = os.path.join(PROJECT_ROOT, "configs", "warehouses", "warehouse_distinct.json")
 
+# Map robot YAML config type to SDF model path
+ROBOT_CONFIG_TO_MODEL = {
+    "addverb_dynamo": "addverb/addverb_dynamo",
+    "addverb_veloce": "addverb/addverb_veloce",
+    "addverb_quadron": "addverb/addverb_quadron",
+    "amr500": "addverb/amr500",
+    "zippy10": "addverb/zippy10",
+    "differential_drive": "generic/diffdrive_amr",
+    "unidirectional": "generic/uni_agv",
+}
 
-def generate_namespaced_sdf(robot_name: str) -> str:
+
+def resolve_model_sdf(model_name: str) -> str:
+    """Resolve model name to SDF file path."""
+    # Try direct path first (e.g., addverb/addverb_dynamo)
+    sdf_path = os.path.join(MODELS_DIR, model_name, "model.sdf")
+    if os.path.exists(sdf_path):
+        return sdf_path
+    # Try config name mapping (e.g., addverb_dynamo)
+    mapped = ROBOT_CONFIG_TO_MODEL.get(model_name)
+    if mapped:
+        return os.path.join(MODELS_DIR, mapped, "model.sdf")
+    # Try legacy flat path (e.g., diffdrive_amr)
+    legacy = os.path.join(MODELS_DIR, model_name, "model.sdf")
+    if os.path.exists(legacy):
+        return legacy
+    raise FileNotFoundError(f"No SDF model found for '{model_name}'. Run --list-models to see available.")
+
+
+def list_models():
+    """List all available robot models."""
+    print("Available robot models:\n")
+    for manufacturer in sorted(os.listdir(MODELS_DIR)):
+        mfg_dir = os.path.join(MODELS_DIR, manufacturer)
+        if not os.path.isdir(mfg_dir):
+            continue
+        sdf = os.path.join(mfg_dir, "model.sdf")
+        if os.path.exists(sdf):
+            # Legacy flat model
+            continue
+        for robot in sorted(os.listdir(mfg_dir)):
+            robot_sdf = os.path.join(mfg_dir, robot, "model.sdf")
+            if os.path.exists(robot_sdf):
+                print(f"  {manufacturer}/{robot}")
+    print(f"\nUsage: --model <manufacturer>/<robot_name>")
+
+
+BASE_SDF = os.path.join(MODELS_DIR, DEFAULT_MODEL, "model.sdf")
+
+
+def generate_namespaced_sdf(robot_name: str, model_sdf_path: str = None) -> str:
     """Generate SDF with all topics prefixed by /robot_name/."""
-    with open(BASE_SDF) as f:
+    sdf_path = model_sdf_path or BASE_SDF
+    with open(sdf_path) as f:
         sdf = f.read()
 
-    # Replace model name
-    sdf = sdf.replace('name="diffdrive_amr"', f'name="{robot_name}"', 1)
+    # Replace model name (handles any model name in the SDF)
+    import re
+    sdf = re.sub(r'<model name="[^"]*">', f'<model name="{robot_name}">', sdf, count=1)
 
     # Namespace all topics
     sdf = sdf.replace('<topic>cmd_vel</topic>', f'<topic>/{robot_name}/cmd_vel</topic>')
@@ -77,9 +135,9 @@ def detect_world():
     return None
 
 
-def spawn_robot(world_name: str, robot_name: str, x: float, y: float, yaw: float = 0.0):
+def spawn_robot(world_name: str, robot_name: str, x: float, y: float, yaw: float = 0.0, model_sdf: str = None):
     """Spawn a namespaced robot at (x, y) in the Gazebo world."""
-    sdf_content = generate_namespaced_sdf(robot_name)
+    sdf_content = generate_namespaced_sdf(robot_name, model_sdf)
 
     # Write to /tmp/ (Gazebo needs accessible path)
     tmp_path = f"/tmp/{robot_name}.sdf"
@@ -106,8 +164,17 @@ def spawn_robot(world_name: str, robot_name: str, x: float, y: float, yaw: float
 def main():
     parser = argparse.ArgumentParser(description="Spawn namespaced robot fleet in Gazebo")
     parser.add_argument("--count", type=int, default=5, help="Number of robots")
+    parser.add_argument("--model", default=DEFAULT_MODEL, help="Robot model (e.g., addverb/addverb_dynamo)")
+    parser.add_argument("--fleet", default=None, help="Fleet manifest JSON (overrides --count and --model)")
     parser.add_argument("--world", default=None, help="World name (auto-detect if not set)")
+    parser.add_argument("--list-models", action="store_true", help="List available robot models")
     args = parser.parse_args()
+
+    if args.list_models:
+        list_models()
+        sys.exit(0)
+
+    model_sdf = resolve_model_sdf(args.model)
 
     world = args.world or detect_world()
     if not world:
@@ -131,7 +198,7 @@ def main():
         x += (i % 3 - 1) * 0.5
         y += (i // 3 % 3 - 1) * 0.5
 
-        ok = spawn_robot(world, name, x, y)
+        ok = spawn_robot(world, name, x, y, model_sdf=model_sdf)
         status = "OK" if ok else "FAIL"
         print(f"  {name} at ({x:.1f}, {y:.1f}) — {status}")
         if ok:
