@@ -37,11 +37,12 @@ async def fleet_analytics():
             if times:
                 avg_task_time = sum(times) / len(times)
 
-        battery_levels = [
-            r.get("battery", {}).get("charge_pct", 0)
-            for r in robots
-            if isinstance(r.get("battery"), dict)
-        ]
+        battery_levels = []
+        for r in robots:
+            if isinstance(r.get("battery"), dict):
+                battery_levels.append(r["battery"].get("charge_pct", 0))
+            elif isinstance(r.get("battery_pct"), (int, float)):
+                battery_levels.append(r["battery_pct"])
         avg_battery = sum(battery_levels) / len(battery_levels) if battery_levels else 0.0
 
         return {

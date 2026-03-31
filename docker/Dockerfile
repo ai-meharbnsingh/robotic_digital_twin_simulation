@@ -93,6 +93,9 @@ COPY configs/ /app/configs/
 COPY python/ /app/python/
 COPY gazebo/ /app/gazebo/
 
+# Copy io-gita KDTree engine (Phase 12)
+COPY iogita_kdtree_addverb/engine/ /app/iogita_kdtree_addverb/engine/
+
 # Copy built frontend from frontend-builder
 COPY --from=frontend-builder /frontend/dist /app/frontend/dist
 

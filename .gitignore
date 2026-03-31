@@ -43,5 +43,10 @@ docker/.env
 .cache/
 build/
 test_output*.txt
+*_output.txt
+*_results.json
 _archive/
+_trash/
 frontend/node_modules/
+frontend/.vite/
+frontend/tsconfig.tsbuildinfo

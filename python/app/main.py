@@ -119,7 +119,7 @@ async def check_rabbitmq(settings: Settings) -> bool:
     """Check RabbitMQ management API. Returns True only if reachable."""
     try:
         # RabbitMQ management plugin runs on port 15672
-        mgmt_url = settings.rabbitmq_url.replace("amqp://", "http://").replace("5672", "15672")
+        mgmt_url = settings.rabbitmq_url.replace("amqp://", "http://").replace("5672", "15672").rstrip("/")
         async with httpx.AsyncClient(timeout=2.0) as client:
             resp = await client.get(f"{mgmt_url}/api/health/checks/alarms")
             return resp.status_code == 200
@@ -213,12 +213,16 @@ def _init_iogita(warehouse_config: dict):
     """
     try:
         import sys
-        kdtree_path = os.path.join(
-            os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))),
-            "..", "iogita_kdtree_addverb",
-        )
-        if kdtree_path not in sys.path:
-            sys.path.insert(0, kdtree_path)
+        base = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+        candidates = [
+            os.path.join(base, "..", "iogita_kdtree_addverb"),   # local dev (project root)
+            os.path.join(base, "iogita_kdtree_addverb"),          # Docker (/app/iogita_kdtree_addverb)
+        ]
+        for kdtree_path in candidates:
+            kdtree_path = os.path.normpath(kdtree_path)
+            if os.path.isdir(kdtree_path) and kdtree_path not in sys.path:
+                sys.path.insert(0, kdtree_path)
+                break
 
         from engine import IoGitaEngine
         from intelligence.iogita import ColdStartRecovery
