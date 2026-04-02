@@ -50,7 +50,7 @@
 
 ## 1. Executive Summary
 
-P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles and runs **actual Addverb fleet_core C++ code** (~200K LOC) alongside a Python FastAPI intelligence layer, Gazebo Fortress physics simulation, and a React 3D dashboard — all fully Dockerized as 8 services.
+P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles and runs **actual production fleet_core C++ code** (~200K LOC) alongside a Python FastAPI intelligence layer, Gazebo Fortress physics simulation, and a React 3D dashboard — all fully Dockerized as 8 services.
 
 ### Key Metrics
 
@@ -61,7 +61,7 @@ P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles
 | C++ Core LOC | 12,287 across 63 files |
 | Python Backend LOC | 45,791 across 28 route modules |
 | Docker Services | **8** (MongoDB, Redis, RabbitMQ, InfluxDB, Grafana, Mosquitto, ROS2 Bridge, main app) |
-| Robot Models | **9** (5 Addverb + 2 generic + 2 base) |
+| Robot Models | **9** (5 industrial + 2 generic + 2 base) |
 | Gazebo Worlds | **6** SDF environments (5x5 grid to 150x200m) |
 | Phases Completed | **18** |
 | FMS Cycle Rate | **15Hz** (67ms budget, 30-40ms typical) |
@@ -71,7 +71,7 @@ P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles
 
 ### Core Principle
 
-**Compile and run ACTUAL Addverb fleet_core C++ code. No rewrites. No "equivalent" Python.** The simulation runs the SAME binary that runs on physical robots. Python exists only for NEW layers that don't exist in fleet_core (analytics, io-gita intelligence, WES order generation, REST API wrapper, dashboard).
+**Compile and run ACTUAL production fleet_core C++ code. No rewrites. No "equivalent" Python.** The simulation runs the SAME binary that runs on physical robots. Python exists only for NEW layers that don't exist in fleet_core (analytics, io-gita intelligence, WES order generation, REST API wrapper, dashboard).
 
 ---
 
@@ -79,11 +79,11 @@ P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles
 
 ### The Problem
 
-No unified simulation engine replicates Addverb's exact production fleet behavior (~200K LOC C++ fleet_core). Testing FMS logic, pathfinding, collision avoidance, or behavior tree changes requires physical robots. Additionally, Addverb robots rely entirely on barcode grid localization — when barcodes are damaged or missing, robots are blind with no spatial awareness fallback. There is no predictive intelligence layer to prevent bottlenecks and deadlocks before they happen.
+No unified simulation engine replicates the exact production fleet behavior (~200K LOC C++ fleet_core). Testing FMS logic, pathfinding, collision avoidance, or behavior tree changes requires physical robots. Additionally, warehouse robots relying on barcode grid localization — when barcodes are damaged or missing, robots are blind with no spatial awareness fallback. There is no predictive intelligence layer to prevent bottlenecks and deadlocks before they happen.
 
 ### Target Users
 
-1. **Addverb Technologies research team** — validate FMS/navigation changes without hardware
+1. **Robotics engineering team** — validate FMS/navigation changes without hardware
 2. **Warehouse automation engineers** — test fleet configurations and workflows
 3. **Robotics simulation developers** — extend and customize the simulation
 
@@ -94,7 +94,7 @@ No unified simulation engine replicates Addverb's exact production fleet behavio
 | Sim-to-real behavioral gap | < 5% | Velocity profile comparison against fleet_core outputs |
 | io-gita zone identification | < 1ms | Timing instrumentation on sg_engine |
 | Cold start recovery | < 2s total | Time from robot restart to barcode-confirmed position |
-| Fleet concurrency | 10 robots (6 Zippy10 + 4 AMR500) | All robots active simultaneously |
+| Fleet concurrency | 10 robots (mixed fleet) | All robots active simultaneously |
 | Telemetry loop | 15Hz sustained (67ms budget) | Main loop timing instrumentation |
 | Zero deadlocks | 0 in 1-hour run | Deadlock counter in fleet events |
 | Pathfinding response | < 10ms for 100-node graph | A* timing instrumentation |
@@ -114,7 +114,7 @@ No unified simulation engine replicates Addverb's exact production fleet behavio
 ├──────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │ FLEET_CORE C++ (COMPILED — ACTUAL ADDVERB CODE)                  │   │
+│  │ FLEET_CORE C++ (COMPILED — ACTUAL PRODUCTION CODE)                  │   │
 │  │  src/fleet/  → FleetManager, FleetController, COPP Controller    │   │
 │  │  src/task/   → TaskManager, TaskPool, FIFO allocator             │   │
 │  │  src/graph/  → A*, Dijkstra, NodeReservation (ILP)               │   │
@@ -212,12 +212,12 @@ Gazebo C++ process
 | Container | Docker Desktop | — | New |
 | OS | Ubuntu 22.04 | — | New |
 | Physics Sim | Gazebo Fortress | C++ | New |
-| FMS Core | fleet_core (compiled fmsApp) | C++17 | **ACTUAL Addverb code** |
-| Robot Control | fleet_core (robot state machine) | C++17 | **ACTUAL Addverb code** |
-| Navigation | A* + NodeReservation (ILP) | C++17 | **ACTUAL Addverb code** |
-| Behavior Trees | BTCPP v4 | C++17 | **ACTUAL Addverb code** |
-| TCP Protocol | ProtocolV1 (33 fields, CRC32) | C++17 | **ACTUAL Addverb code** |
-| Fleet DB Driver | mongocxx (native C++) | C++17 | **ACTUAL Addverb code** |
+| FMS Core | fleet_core (compiled fmsApp) | C++17 | **ACTUAL production code** |
+| Robot Control | fleet_core (robot state machine) | C++17 | **ACTUAL production code** |
+| Navigation | A* + NodeReservation (ILP) | C++17 | **ACTUAL production code** |
+| Behavior Trees | BTCPP v4 | C++17 | **ACTUAL production code** |
+| TCP Protocol | ProtocolV1 (33 fields, CRC32) | C++17 | **ACTUAL production code** |
+| Fleet DB Driver | mongocxx (native C++) | C++17 | **ACTUAL production code** |
 | Zone Intelligence | io-gita sg_engine (KDTree v5) | C++ (compiled binary) | Existing io-gita code |
 | SG Prediction | Semantic Gravity engine | Python | **NEW** |
 | WES | Order flow engine | Python | **NEW** |
@@ -290,7 +290,7 @@ FROM ubuntu:22.04
 # Build (Apple Silicon):
 docker build --platform linux/amd64 -f docker/Dockerfile -t wrie .
 
-# Build (with SSH for private Addverb repos):
+# Build (with SSH for private repos):
 DOCKER_BUILDKIT=1 docker build --ssh default --platform linux/amd64 -t wrie .
 
 # Run full stack:
@@ -359,7 +359,7 @@ The `/health` endpoint probes each service:
 
 ## 6. C++ Fleet Core (FMS)
 
-### What Is Compiled From Actual Addverb Code
+### What Is Compiled From Production Fleet Core
 
 | Component | fleet_core Source | Lines |
 |-----------|------------------|-------|
@@ -405,7 +405,7 @@ TOTAL CRITICAL PATH: 15-38ms (well within 67ms budget)
 - **Frame Format:** Newline-delimited, `robot_id|timestamp|type|payload`
 - **Fields:** 33 per frame + CRC32 checksum
 - **Rate:** 15Hz bidirectional (telemetry in, commands out)
-- **Same protocol used by actual physical Addverb robots**
+- **Same protocol used by actual physical warehouse robots**
 
 ### C++ REST API (Port 7012)
 
@@ -708,7 +708,7 @@ python/app/
 | POST | `/api/designer/import` | Load existing warehouse JSON |
 | POST | `/api/designer/validate-3d` | 3D validation + charge station recommendations |
 | POST | `/api/designer/export-all` | Full config bundle (warehouse + conveyor + fleet) |
-| GET | `/api/designer/templates` | Pre-built templates (small/medium/large/addverb) |
+| GET | `/api/designer/templates` | Pre-built templates (small/medium/large/industrial) |
 | GET | `/api/designer/templates/categories` | Template categories |
 | GET | `/api/designer/templates/{name}` | Single template detail |
 | POST | `/api/designer/auto-edges` | Generate edges by distance |
@@ -745,11 +745,11 @@ python/app/
 
 | Model | Type | Mass | Dimensions (m) | Max Speed | Locomotion | Attachment |
 |-------|------|------|----------------|-----------|------------|------------|
-| **AMR500** | Addverb | 150 kg | 0.93 x 0.73 x 0.666 | 0.8 m/s | Differential | Lifter |
-| **Zippy10** | Addverb | 30 kg | 0.6 x 0.5 x 0.25 | 1.0 m/s | Differential | None |
-| **Dynamo** | Addverb | 45 kg | 0.7 x 0.6 x 0.35 | 0.9 m/s | Differential | Forklift |
-| **Quadron** | Addverb | 55 kg | 0.75 x 0.65 x 0.40 | 1.2 m/s | Omni (4-wheel) | Tray |
-| **Veloce** | Addverb | 60 kg | 0.8 x 0.7 x 0.45 | 1.5 m/s | Differential | None |
+| **Heavy Lifter** | Industrial | 150 kg | 0.93 x 0.73 x 0.666 | 0.8 m/s | Differential | Lifter |
+| **Light Courier** | Industrial | 30 kg | 0.6 x 0.5 x 0.25 | 1.0 m/s | Differential | None |
+| **Fork AMR** | Industrial | 45 kg | 0.7 x 0.6 x 0.35 | 0.9 m/s | Differential | Forklift |
+| **Omni Carrier** | Industrial | 55 kg | 0.75 x 0.65 x 0.40 | 1.2 m/s | Omni (4-wheel) | Tray |
+| **High-Speed** | Industrial | 60 kg | 0.8 x 0.7 x 0.45 | 1.5 m/s | Differential | None |
 | **DiffDrive AMR** | Generic | 150 kg | 0.93 x 0.73 x 0.666 | 0.8 m/s | Differential | Configurable |
 | **Uni AGV** | Generic | 60 kg | 0.6 x 0.5 x 0.25 | 1.0 m/s | Non-holonomic | None |
 | **DiffDrive AMR** | Base | — | — | — | Differential | — |
@@ -761,7 +761,7 @@ All properties are loaded from YAML config files at runtime — no hardcoded val
 
 **Motion Parameters** (`configs/robots/*.yaml`):
 
-| Property | Range | Default (AMR500) | Description |
+| Property | Range | Default (Heavy Lifter) | Description |
 |----------|-------|-------------------|-------------|
 | `max_linear_velocity` | 0.1–2.0 m/s | 0.8 | Top speed |
 | `max_angular_velocity` | 0.5–3.0 rad/s | 1.57 | Rotation speed |
@@ -1358,7 +1358,7 @@ task_throughput orders_per_hour=240
   - Small (< 15 nodes)
   - Medium (15-30 nodes)
   - Large (31-60 nodes)
-  - Addverb (Addverb-specific layouts)
+  - Industrial (production-specific layouts)
 - **Scale Template:** Multiply node positions and add proportional nodes
 - **Export:** Save as JSON config to `configs/warehouses/` or full bundle (warehouse + conveyor YAML + fleet)
 
@@ -1409,8 +1409,8 @@ configs/
 │   └── botvalley.json            # 150x200m, 100+ nodes
 ├── robots/              # Robot parameter definitions (YAML)
 │   ├── differential_drive.yaml
-│   ├── amr500.yaml
-│   ├── zippy10.yaml
+│   ├── heavy_lifter.yaml
+│   ├── light_courier.yaml
 │   ├── forklift_heavy.yaml
 │   ├── inspection_bot.yaml
 │   ├── unidirectional.yaml
@@ -1451,7 +1451,7 @@ configs/
 ### Robot Config (YAML)
 
 ```yaml
-model: amr500
+model: heavy_lifter
 motion:
   max_linear_velocity: 0.8
   max_angular_velocity: 1.57
@@ -1785,7 +1785,7 @@ case-studies/project_29_full_robotics/
 │   ├── gazebo/
 │   │   ├── worlds/                       # 6 SDF world files
 │   │   ├── models/
-│   │   │   ├── addverb/                  # AMR500, Zippy10, Dynamo, Quadron, Veloce
+│   │   │   ├── industrial/                  # Heavy Lifter, Light Courier, Fork AMR, Omni Carrier, High-Speed
 │   │   │   └── generic/                  # DiffDrive AMR, Uni AGV
 │   │   ├── scripts/generate_world.py
 │   │   └── launch.py
@@ -1810,7 +1810,7 @@ case-studies/project_29_full_robotics/
 │   └── CLAUDE.md                         # Project-specific rules
 │
 ├── Main_robotics/
-│   ├── fleet_core/                       # ACTUAL Addverb C++ (200K LOC)
+│   ├── fleet_core/                       # Production C++ FMS (200K LOC)
 │   │   ├── src/
 │   │   │   ├── fleet/                    # FleetManager, COPP
 │   │   │   ├── task/                     # TaskManager, TaskPool
@@ -1828,8 +1828,8 @@ case-studies/project_29_full_robotics/
 │   ├── docker-compose.yml                # Alternative compose (top-level)
 │   └── Dockerfile
 │
-├── io-gita-addverb-v2/                   # io-gita compiled binary
-├── iogita_kdtree_addverb/                # KDTree zone intelligence
+├── io-gita-v2/                   # io-gita compiled binary
+├── iogita_kdtree_industrial/                # KDTree zone intelligence
 ├── maps/                                 # Warehouse graph configs
 ├── behavior_trees/                       # Behavior tree XMLs
 ├── tests/                                # Integration tests (9 files)
@@ -1923,7 +1923,7 @@ docker compose -f docker/docker-compose.yml down
 ## Appendix A: Architectural Decision Records (ADRs)
 
 ### ADR-001: Compile Actual fleet_core C++ — No Rewrites
-**Decision:** Compile and run the actual Addverb fleet_core C++ code inside Docker. Python is ONLY for new layers.
+**Decision:** Compile and run the actual production fleet_core C++ code inside Docker. Python is ONLY for new layers.
 **Reason:** Sim-to-real gap = 0% for fleet logic. Same binary, same behavior.
 
 ### ADR-002: MongoDB as IPC (No pybind11)
