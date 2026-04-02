@@ -366,6 +366,368 @@ The following documents from P29 have been moved to `_archive/docs_pre_p29a/` as
 
 ---
 
-*This document is the single source of truth for P29a evolution. All previous planning documents are archived above.*
+## 14. Complete System Flowchart — Web-Based SaaS Simulation
 
-*Generated: 02-04-2026 | Method: 4-agent AFM parallel analysis of full codebase*
+### User Journey
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                        USER JOURNEY                              │
+│                                                                  │
+│  ┌──────────┐   ┌──────────────┐   ┌──────────────┐            │
+│  │ 1. SIGN  │──▶│ 2. CHOOSE    │──▶│ 3. CHOOSE    │            │
+│  │    UP    │   │    WAREHOUSE │   │    ROBOTS    │            │
+│  │          │   │              │   │              │            │
+│  │ Email +  │   │ A) Template  │   │ A) Generic   │            │
+│  │ Password │   │ B) Upload    │   │    (sliders) │            │
+│  └──────────┘   │ C) Designer  │   │ B) Custom    │            │
+│                 └──────────────┘   │    (YAML+SDF)│            │
+│                                    └──────┬───────┘            │
+│                                           │                     │
+│  ┌──────────────┐   ┌──────────────┐      │                    │
+│  │ 6. RESULTS   │◀──│ 5. RUN       │◀─────┤                    │
+│  │              │   │    SIMULATION│      │                    │
+│  │ PDF/CSV     │   │              │   ┌──┴───────────┐        │
+│  │ Compare     │   │ Click Start  │   │ 4. CONNECT   │        │
+│  │ Tune+Rerun  │   │ Watch live   │   │    WMS       │        │
+│  └──────────────┘   └──────────────┘   │              │        │
+│                                        │ A) Manual CSV│        │
+│                                        │ B) Webhook   │        │
+│                                        │ C) 10-field  │        │
+│                                        │    mapping   │        │
+│                                        └──────────────┘        │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Complete System Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│                           BROWSER (User's Machine)                       │
+│                                                                          │
+│  ┌───────────────────────────────────────────────────────────────────┐  │
+│  │                      React 19 + Vite + Tailwind                    │  │
+│  │                                                                    │  │
+│  │  ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌────────────┐ │  │
+│  │  │ Login/      │ │ Onboarding  │ │ Dashboard   │ │ 3D View    │ │  │
+│  │  │ Signup      │ │ Wizard      │ │ (12 panels) │ │ (Three.js) │ │  │
+│  │  │             │ │             │ │             │ │            │ │  │
+│  │  │ JWT auth    │ │ 1.Warehouse │ │ Robot panel │ │ WebGL      │ │  │
+│  │  │             │ │ 2.Robots    │ │ Task queue  │ │ 60fps      │ │  │
+│  │  │             │ │ 3.WMS setup │ │ KPIs        │ │ GLTF models│ │  │
+│  │  │             │ │ 4.Test run  │ │ Heatmap     │ │ User's GPU │ │  │
+│  │  └─────────────┘ └─────────────┘ └──────┬──────┘ └─────┬──────┘ │  │
+│  │                                          │              │         │  │
+│  │                    REST (3s poll) ────────┘   WebSocket ─┘         │  │
+│  │                    /api/*                     /ws/fleet            │  │
+│  └───────────────────────────────────────────────────────────────────┘  │
+│                                                                          │
+│  Rendering: Three.js (user's GPU) | Zero GPU needed on server            │
+└─────────────────────────┬────────────────────┬───────────────────────────┘
+                          │ HTTPS              │ WSS
+                          ▼                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│                        CLOUD SERVER                                      │
+│                                                                          │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │                    PLATFORM LAYER (shared)                       │    │
+│  │                                                                  │    │
+│  │  ┌──────────────┐  ┌──────────────┐  ┌───────────────────────┐ │    │
+│  │  │ Auth Service  │  │ User DB      │  │ Container Orchestrator│ │    │
+│  │  │ (JWT/OAuth2)  │  │ (PostgreSQL) │  │ (Docker API)          │ │    │
+│  │  │              │  │              │  │                       │ │    │
+│  │  │ signup       │  │ accounts     │  │ create(user_id)      │ │    │
+│  │  │ login        │  │ configs      │  │ start(user_id)       │ │    │
+│  │  │ verify       │  │ uploads      │  │ stop(user_id)        │ │    │
+│  │  │ refresh      │  │ sessions     │  │ status(user_id)      │ │    │
+│  │  └──────────────┘  └──────────────┘  └──────────┬────────────┘ │    │
+│  └──────────────────────────────────────────────────┼──────────────┘    │
+│                                                     │                    │
+│                              spawns per user         │                    │
+│                                                     ▼                    │
+│  ┌─────────────────────────────────────────────────────────────────┐    │
+│  │              USER CONTAINER (isolated per user)                   │    │
+│  │              ~3GB RAM, ~2 CPU, ~60s startup                      │    │
+│  │                                                                  │    │
+│  │  ┌────────────────────────────────────────────────────────────┐ │    │
+│  │  │ C++ FMS Server (15Hz loop)                    Port: 65123  │ │    │
+│  │  │                                                            │ │    │
+│  │  │ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐  │ │    │
+│  │  │ │FleetMgr  │ │TaskMgr   │ │A* Path   │ │NodeReserv    │  │ │    │
+│  │  │ │(15Hz)    │ │(allocate)│ │(3 heur.) │ │(deadlock)    │  │ │    │
+│  │  │ └──────────┘ └──────────┘ └──────────┘ └──────────────┘  │ │    │
+│  │  │ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐  │ │    │
+│  │  │ │BT Engine │ │Motion    │ │Battery   │ │Obstacle      │  │ │    │
+│  │  │ │(BTCPP v4)│ │Controller│ │Model     │ │Handler       │  │ │    │
+│  │  │ └──────────┘ │Factory   │ └──────────┘ └──────────────┘  │ │    │
+│  │  │              │diff/omni │                                  │ │    │
+│  │  │              │ackermann │         ┌──────────────────┐     │ │    │
+│  │  │              └──────────┘         │ProtocolAdapter   │     │ │    │
+│  │  │                                   │ V1 / V2 / Custom│     │ │    │
+│  │  │     Writes fleet_state.json ──────┤                  │     │ │    │
+│  │  │     at 15Hz (66ms cycle)          └──────────────────┘     │ │    │
+│  │  └──────────────────────────┬─────────────────────────────────┘ │    │
+│  │                             │ JSON file (IPC)                    │    │
+│  │  ┌──────────────────────────▼─────────────────────────────────┐ │    │
+│  │  │ Python FastAPI                                Port: 8029   │ │    │
+│  │  │                                                            │ │    │
+│  │  │ ┌──────────────────────────────────────────────────────┐  │ │    │
+│  │  │ │ ~118 REST Endpoints + WebSocket /ws/fleet             │  │ │    │
+│  │  │ │                                                       │  │ │    │
+│  │  │ │ Fleet│Tasks│Map│WES│WCS│WMS│Inventory│VDA5050│MAPF   │  │ │    │
+│  │  │ │ Scenarios│io-gita│Maintenance│Charging│HumanAgents   │  │ │    │
+│  │  │ │ Designer│Analytics│Heatmap│Telemetry│ROS2│Health     │  │ │    │
+│  │  │ └──────────────────────────────────────────────────────┘  │ │    │
+│  │  │                                                            │ │    │
+│  │  │ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────────┐  │ │    │
+│  │  │ │WES       │ │WMS       │ │io-gita   │ │WebSocket     │  │ │    │
+│  │  │ │OrderGen  │ │Adapter   │ │KDTree v5 │ │Manager       │  │ │    │
+│  │  │ │WaveEngine│ │Registry  │ │Localiz.  │ │100 max conn  │  │ │    │
+│  │  │ │KPITracker│ │10-field  │ │Engine ABC│ │7 event types │  │ │    │
+│  │  │ └──────────┘ │mapping   │ └──────────┘ └──────────────┘  │ │    │
+│  │  │              └──────────┘                                  │ │    │
+│  │  └────────────────────────────────────────────────────────────┘ │    │
+│  │                                                                  │    │
+│  │  ┌──────────────────────────────────────────────────────────────┐│    │
+│  │  │ Gazebo Fortress (HEADLESS — no GUI, no GPU)                  ││    │
+│  │  │                                                              ││    │
+│  │  │ ODE Physics @ 1kHz │ Robot models │ Sensor simulation       ││    │
+│  │  │ LiDAR (10Hz)       │ IMU (100Hz) │ Barcode reader           ││    │
+│  │  │                                                              ││    │
+│  │  │ Connects to C++ FMS via TCP:65123 (same as real hardware)   ││    │
+│  │  └──────────────────────────────────────────────────────────────┘│    │
+│  │                                                                  │    │
+│  │  ┌─────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐           │    │
+│  │  │MongoDB 7│ │Redis 7   │ │RabbitMQ 3│ │Mosquitto │           │    │
+│  │  │:27017   │ │:6379     │ │:5672     │ │:1883     │           │    │
+│  │  │State IPC│ │Hot cache │ │Task queue│ │VDA5050   │           │    │
+│  │  └─────────┘ └──────────┘ └──────────┘ └──────────┘           │    │
+│  │                                                                  │    │
+│  │  Resources: ~3GB RAM, ~2 CPU, zero GPU                          │    │
+│  │  Startup: ~60s | Per-user cost: ~$5-10/month                    │    │
+│  └──────────────────────────────────────────────────────────────────┘    │
+│                                                                          │
+│  One container per user session. Isolated volumes. No cross-contamination│
+└──────────────────────────────────────────────────────────────────────────┘
+```
+
+### 3D Rendering Flow (Three.js in Browser)
+
+```
+SERVER (headless, zero GPU)              BROWSER (user's GPU)
+┌──────────────────────────┐            ┌──────────────────────────┐
+│                          │            │                          │
+│ Gazebo (physics only)    │            │ Three.js / WebGL         │
+│   └─ ODE 1kHz            │            │   └─ 60fps render        │
+│   └─ robot collisions    │            │   └─ GLTF robot models   │
+│   └─ sensor sim          │            │   └─ warehouse geometry  │
+│                          │            │   └─ path highlighting   │
+│ C++ FMS (15Hz)           │            │   └─ camera follow       │
+│   └─ robot positions     │            │   └─ heatmap overlay     │
+│   └─ battery levels      │  WebSocket │                          │
+│   └─ task assignments    │──────────▶ │ Receives every 66ms:     │
+│   └─ fleet status        │  /ws/fleet │   robot_id, x, y, theta  │
+│                          │            │   battery_pct, status     │
+│ Python FastAPI           │            │   task_id, path[]         │
+│   └─ broadcasts state    │            │                          │
+│   └─ 7 event types       │            │ Interpolates between     │
+│                          │            │ updates for smooth motion │
+│ Total: 0 GPU, ~3GB RAM  │            │ Total: user's GPU (free) │
+└──────────────────────────┘            └──────────────────────────┘
+```
+
+### WMS Integration Flow (10-Field Universal Order)
+
+```
+ANY ERP (SAP / Oracle / Odoo / Custom)
+│
+│  POST /api/wms/webhook/receive
+│  Body: { "AUFNR": "123", "MATNR": "WIDGET", "BMENG": 5, ... }
+│
+▼
+┌─────────────────────────────────────────────────┐
+│ ADAPTER REGISTRY                                 │
+│                                                  │
+│ Reads: configs/wms/translation_rules/sap.yaml   │
+│                                                  │
+│ Maps:  AUFNR → order_id                         │
+│        MATNR → sku                              │
+│        BMENG → qty                              │
+│        LGORT → from_location                    │
+│        UMLGO → to_location                      │
+│        PRIOK → priority                         │
+│        BWART → order_type                       │
+│        LFDAT → due_by                           │
+│        BRGEW → weight_kg                        │
+│        BSTNR → reference                        │
+└──────────────────────┬──────────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────────┐
+│ STANDARD ORDER (10 fields)                        │
+│                                                   │
+│ { order_id, sku, qty, from_location,             │
+│   to_location, priority, order_type,              │
+│   due_by, weight_kg, reference }                  │
+└──────────────────────┬───────────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────────┐
+│ WES PIPELINE                                      │
+│                                                   │
+│ OrderGenerator → WaveEngine → TaskGenerator       │
+│      │              │              │               │
+│      ▼              ▼              ▼               │
+│  Orders batched  Waves released  Tasks assigned    │
+│  by rules        to robots       via FleetManager  │
+└──────────────────────┬───────────────────────────┘
+                       │
+                       ▼
+┌──────────────────────────────────────────────────┐
+│ C++ FLEET MANAGER (15Hz)                          │
+│                                                   │
+│ TaskManager → A* Path → NodeReservation →         │
+│ BehaviorTree → MotionController → Robot moves     │
+└──────────────────────────────────────────────────┘
+```
+
+### Container Lifecycle (Per User)
+
+```
+User clicks "Start Simulation"
+    │
+    ▼
+Platform allocates:
+    ├─ Unique port range (API: 8030, TCP: 65124, REST: 7013)
+    ├─ Isolated Docker volumes (mongo_data_user123, etc.)
+    └─ User's uploaded configs mounted
+    │
+    ▼
+docker compose up -d (per-user compose file)
+    │
+    ├─ MongoDB starts         (5s)
+    ├─ Redis starts           (1s)
+    ├─ RabbitMQ starts        (5s)
+    ├─ Mosquitto starts       (2s)
+    │
+    ├─ C++ FMS starts         (loads user's warehouse + robot YAML)
+    ├─ Gazebo starts headless (loads user's world SDF)
+    ├─ Python FastAPI starts  (connects to all services)
+    │
+    └─ Health check passes    (~60s total)
+    │
+    ▼
+Platform returns: "Simulation running"
+    │
+    ▼
+Browser connects:
+    ├─ WebSocket: wss://platform/user123/ws/fleet
+    ├─ REST poll: https://platform/user123/api/robots
+    └─ Three.js renders 3D in real-time
+    │
+    ▼
+User interacts: inject orders, watch robots, compare scenarios
+    │
+    ▼
+User clicks "Stop Simulation"
+    │
+    ▼
+docker compose down (volumes preserved for next session)
+    │
+    ▼
+Platform returns: "Simulation stopped. Data saved."
+```
+
+---
+
+## 15. Updated Phase Plan (with SaaS + 3D)
+
+### Phase 0 — Foundation + Vendor Cleanup (2 days)
+1. Scrub all vendor references from code (~15 files)
+2. Fix ActionNodes.cpp — config lookup for action codes
+3. Create ProtocolAdapter.h + RobotTelemetry.h + ProtocolAdapter.cpp
+4. Create adapter_registry.py + standard_order.py
+5. Fix docker-compose.yml defaults + start.sh fail-fast
+6. Add `gazebo_model` field to robot YAML configs
+7. Create `gazebo/models/vendors/README.md`
+
+### Phase 1 — Robot Agnostic (3 days)
+8. Create MotionControllerFactory (diff, omni, ackermann)
+9. Create LocalizationEngine ABC
+10. Create ChargeStrategy ABC
+11. Create omnidirectional.yaml + default_omni.xml + Gazebo omni model
+12. Parametrize maintenance degradation curves
+13. Update spawn_fleet.py for registry-based model loading
+
+### Phase 2 — Map Agnostic (2 days)
+14. Generalize warehouse_distinct_generator.py for ANY warehouse JSON
+15. Create zone geometry templates (shelf, charger, conveyor SDF)
+16. Create DXF importer + auto-node-generator
+17. Create map_importer package with tests
+
+### Phase 3 — WMS Agnostic (2 days)
+18. Create declarative translation rules (YAML field mapping)
+19. Create Oracle + generic_webhook translation rules
+20. Enable multi-ERP routing in main.py
+21. Fix WCS: load lane types from YAML, create RoutingStrategy
+22. Implement 10-field standard order validation
+
+### Phase 4 — Auth + User Accounts (3 days)
+23. Add auth service (JWT signup/login/verify)
+24. Add user database (PostgreSQL — accounts, configs, sessions)
+25. Add file upload API (warehouse JSON, robot YAML, SDF models)
+26. Per-user config storage (S3 or local volume)
+27. Protect all API routes with JWT middleware
+
+### Phase 5 — Container Orchestration (3 days)
+28. Per-user docker-compose template generation
+29. Port allocation manager (no conflicts)
+30. Container lifecycle API: create / start / stop / status / destroy
+31. Volume isolation per user
+32. Health check + readiness polling
+33. Reverse proxy routing (nginx: /user123/* → user's container)
+
+### Phase 6 — Onboarding Wizard (3 days)
+34. Add React Router (page routing)
+35. Login/Signup pages
+36. 4-step onboarding wizard:
+    - Step 1: Choose/upload warehouse (template picker + file upload + designer)
+    - Step 2: Choose/upload robots (generic type sliders + custom YAML)
+    - Step 3: Connect WMS (10-field mapping form + webhook URL display)
+    - Step 4: Review + launch
+37. Save onboarding state to user DB
+
+### Phase 7 — 3D Visual Upgrade (2 days)
+38. Source/create GLTF robot models (AMR, AGV, Forklift, Omni)
+39. Load GLTF via `useGLTF()` in Warehouse3D.tsx (replace primitive boxes)
+40. Add `web_model` field to robot YAML → Three.js loads matching .glb
+41. Warehouse furniture models (shelves, conveyors, chargers as GLTF)
+42. Optional: LiDAR ray visualization, path trails
+
+### Phase 8 — Polish + Testing (3 days)
+43. End-to-end test: signup → onboard → simulate → results
+44. Load testing: 10 concurrent user containers
+45. WebSocket stability under multi-user load
+46. PDF/CSV report generation + download
+47. Scenario comparison export
+48. Error handling: container crash recovery, stale session cleanup
+
+---
+
+## 16. Resource Estimates (SaaS)
+
+| Metric | Per User | 10 Users | 100 Users |
+|--------|----------|----------|-----------|
+| **RAM** | ~3 GB | 30 GB | 300 GB (need autoscale) |
+| **CPU** | ~2 cores | 20 cores | 200 cores |
+| **GPU** | 0 (Three.js in browser) | 0 | 0 |
+| **Startup** | ~60s | ~60s (parallel) | ~60s (parallel) |
+| **Cost/month** | ~$5-10 | ~$50-100 | ~$500-1000 |
+| **Disk** | ~2 GB volumes | 20 GB | 200 GB |
+
+---
+
+*This document is the single source of truth for P29a evolution.*
+*Zero vendor references. Web-based SaaS. Three.js rendering. 10-field universal WMS.*
+
+*Updated: 02-04-2026 | Method: 7-agent AFM parallel analysis (architecture + frontend + docker)*
