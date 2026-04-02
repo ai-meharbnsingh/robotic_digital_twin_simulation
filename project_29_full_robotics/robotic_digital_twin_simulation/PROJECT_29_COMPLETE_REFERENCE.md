@@ -2,7 +2,7 @@
 
 ## Complete Technical Reference
 
-> **Status:** All 18 phases complete | 1,567 tests passing | 152+ API endpoints | 86+ audit score
+> **Status:** All 18 phases complete | ~1,428+ tests passing | ~118 API endpoints | 86+ audit score
 >
 > **Live at:** Dashboard `http://localhost:8029/dashboard` | API Docs `http://localhost:8029/docs` | Grafana `http://localhost:3000`
 
@@ -17,7 +17,7 @@
 5. [Docker Deployment](#5-docker-deployment)
 6. [C++ Fleet Core (FMS)](#6-c-fleet-core-fms)
 7. [Python FastAPI Backend](#7-python-fastapi-backend)
-8. [Complete API Reference (152+ Endpoints)](#8-complete-api-reference-152-endpoints)
+8. [Complete API Reference (~118 Endpoints)](#8-complete-api-reference-118-endpoints)
 9. [Robot Models & Properties](#9-robot-models--properties)
 10. [Gazebo Simulation Environments](#10-gazebo-simulation-environments)
 11. [Navigation & Path Planning](#11-navigation--path-planning)
@@ -45,6 +45,10 @@
 33. [Performance Benchmarks](#33-performance-benchmarks)
 34. [Project File Structure](#34-project-file-structure)
 35. [Quick Start Guide](#35-quick-start-guide)
+36. [Appendix A: ADRs](#appendix-a-architectural-decision-records-adrs) (11 ADRs)
+37. [Appendix B: Security](#appendix-b-security)
+38. [Appendix C: Known Limitations & Future Work](#appendix-c-known-limitations--future-work)
+39. [Appendix D: Port Reference](#appendix-d-port-reference)
 
 ---
 
@@ -56,8 +60,8 @@ P29 WRIE is a **production-grade warehouse robotics digital twin** that compiles
 
 | Metric | Value |
 |--------|-------|
-| API Endpoints | **152+** (118 documented in feature table) |
-| Tests | **1,567** (398 C++ gtest + 928 pytest + Playwright E2E) |
+| API Endpoints | **~118** documented in feature table (28 route modules) |
+| Tests | **~1,428+** (398 C++ gtest + 928 pytest + ~50 Playwright E2E + ~52 Gazebo integration) |
 | C++ Core LOC | 12,287 across 63 files |
 | Python Backend LOC | 45,791 across 28 route modules |
 | Docker Services | **8** (MongoDB, Redis, RabbitMQ, InfluxDB, Grafana, Mosquitto, ROS2 Bridge, main app) |
@@ -148,7 +152,7 @@ No unified simulation engine replicates the exact production fleet behavior (~20
 │                    └──────────────┘  └──────────────┘                  │
 │                                                                          │
 │  ┌──────────────────────────────────────────────────────────────────┐   │
-│  │ PYTHON FastAPI (:8029) — 152+ REST endpoints + WebSocket         │   │
+│  │ PYTHON FastAPI (:8029) — ~118 REST endpoints + WebSocket          │   │
 │  │  Fleet | Tasks | WES | WCS | WMS | Inventory | VDA5050 | MAPF   │   │
 │  │  Scenarios | io-gita | Maintenance | Charging | Human Agents    │   │
 │  │  Designer | Analytics | Heatmap | ROS2 | Telemetry | Health     │   │
@@ -424,7 +428,7 @@ TOTAL CRITICAL PATH: 15-38ms (well within 67ms budget)
 
 - **Framework:** FastAPI + Uvicorn
 - **Port:** 8029
-- **Routers:** 28 route modules (152+ endpoints)
+- **Routers:** 28 route modules (~118 endpoints)
 - **MongoDB Driver:** `motor` (async)
 - **Redis Client:** `redis-py` (async)
 - **InfluxDB Client:** `influxdb-client`
@@ -472,7 +476,7 @@ python/app/
 
 ---
 
-## 8. Complete API Reference (152+ Endpoints)
+## 8. Complete API Reference (~118 Endpoints)
 
 ### A. Fleet Management
 
@@ -750,10 +754,12 @@ python/app/
 | **Fork AMR** | Industrial | 45 kg | 0.7 x 0.6 x 0.35 | 0.9 m/s | Differential | Forklift |
 | **Omni Carrier** | Industrial | 55 kg | 0.75 x 0.65 x 0.40 | 1.2 m/s | Omni (4-wheel) | Tray |
 | **High-Speed** | Industrial | 60 kg | 0.8 x 0.7 x 0.45 | 1.5 m/s | Differential | None |
-| **DiffDrive AMR** | Generic | 150 kg | 0.93 x 0.73 x 0.666 | 0.8 m/s | Differential | Configurable |
-| **Uni AGV** | Generic | 60 kg | 0.6 x 0.5 x 0.25 | 1.0 m/s | Non-holonomic | None |
-| **DiffDrive AMR** | Base | — | — | — | Differential | — |
-| **Uni AGV** | Base | — | — | — | Unidirectional | — |
+| **DiffDrive AMR** | Generic (instantiable) | 150 kg | 0.93 x 0.73 x 0.666 | 0.8 m/s | Differential | Configurable |
+| **Uni AGV** | Generic (instantiable) | 60 kg | 0.6 x 0.5 x 0.25 | 1.0 m/s | Non-holonomic | None |
+| **DiffDrive AMR (template)** | Base (abstract) | — | — | — | Differential | — |
+| **Uni AGV (template)** | Base (abstract) | — | — | — | Unidirectional | — |
+
+> **Note:** Base models are abstract SDF templates used for inheritance. Generic models are the concrete, instantiable versions with full physical properties. They share the same geometry but Base has no mass/speed — it exists only as a parent for variant creation.
 
 ### Configurable Robot Properties
 
@@ -1004,10 +1010,28 @@ ReactiveSequence (root)
 
 ### 16 Features Extracted from LiDAR
 
-- **Structural:** Min range, max range, mean range, range std
-- **Topography:** Peak detection (wall positions), symmetry ratio
-- **Fingerprint:** Scan signature for corridor disambiguation
-- Plus 8 additional derived features for zone boundary detection
+All 16 features are extracted in `zone_identifier.py` → `extract_16_features()`:
+
+| # | Feature | Computation | Normalization |
+|---|---------|-------------|---------------|
+| F1 | Front clearance | median(scan[345-360, 0-15 deg]) | / 12.0 |
+| F2 | Back clearance | median(scan[165-195 deg]) | / 12.0 |
+| F3 | Left clearance | median(scan[255-285 deg]) | / 12.0 |
+| F4 | Right clearance | median(scan[75-105 deg]) | / 12.0 |
+| F5 | Front-half variance | var(scan[315-360, 0-45 deg]) | / 12.0 |
+| F6 | Full scan variance | var(full_scan) | / 12.0 |
+| F7 | Gap count (>1m) | sum(\|diff\| > 1.0) | / 50.0 |
+| F8 | Big gap count (>2m) | sum(\|diff\| > 2.0) | / 20.0 |
+| F9 | Left-right symmetry | \|left - right\| / max(left+right, 0.01) | 0-1 ratio |
+| F10 | Front-back symmetry | \|front - back\| / max(front+back, 0.01) | 0-1 ratio |
+| F11 | Close density | count(scan < 2.0m) / 360 | 0-1 ratio |
+| F12 | Far density | count(scan > 4.0m) / 360 | 0-1 ratio |
+| F13 | Heading (normalized) | heading_deg / 360.0 | 0-1 |
+| F14 | Heading (binned) | int(heading_deg / 45) / 8.0 | 0-1 |
+| F15 | Distance from dock | min(dist_from_dock / 30.0, 1.0) | clamped 0-1 |
+| F16 | Turns since dock | min(turns_since_dock / 10.0, 1.0) | clamped 0-1 |
+
+Code also provides `extract_24_features()` with 8 additional 3D-LiDAR height-aware features (F17-F24) for environments with multi-level shelving.
 
 ### Cold Start Recovery (5 Phases)
 
@@ -1206,7 +1230,7 @@ Industry standard MQTT-based protocol for Automated Guided Vehicle (AGV) communi
 - Tracks charge cycles per robot
 - Health degradation over time (capacity fade)
 - Predicts replacement dates
-- Temperature effects (future enhancement)
+- Temperature effects not yet implemented (see Appendix C: Known Limitations)
 
 ### Charge Queue Manager
 - Queue robots at charge stations
@@ -1238,8 +1262,11 @@ Industry standard MQTT-based protocol for Automated Guided Vehicle (AGV) communi
 
 ### Architecture
 - Runs as separate Docker container (ros:humble)
-- Connects to C++ FMS via HTTP
-- Graceful degradation: returns simulated responses if rclpy unavailable
+- Connects to C++ FMS via HTTP (`FMS_URL=http://rdt:7012`)
+- **Stub implementation** — no actual nav2 action client; returns simulated responses if rclpy unavailable
+- No exposed ports (internal Docker network only)
+- No CPU/memory resource limits configured (Docker defaults)
+- No nav2 SendGoal action server integration yet — planned for future phase
 
 ### Topics
 
@@ -1390,9 +1417,18 @@ Create Scenario → Run (inject orders → simulate → compute KPIs) → View R
 
 Each fault has configurable duration and target robot.
 
-### 14 Chaos Scenarios (From Blueprint)
+### Fault Injection Scenarios (4 Implemented)
 
-Pre-defined scenarios for testing system resilience under adverse conditions, covering all failure modes listed in the security blueprint.
+The blueprint originally scoped 14 failure modes, but 4 are implemented as injectable faults:
+
+| # | Scenario | Parameters | What It Tests |
+|---|----------|------------|---------------|
+| 1 | `battery_drain` | `robot_id`, `duration_s` | Rapid SoC depletion → auto-dock behavior |
+| 2 | `obstacle` | `robot_id`, `duration_s` | Dynamic obstacle in path → replan / emergency stop |
+| 3 | `network_loss` | `robot_id`, `duration_s` | TCP disconnect → heartbeat timeout → error state |
+| 4 | `motor_fault` | `robot_id`, `duration_s` | Motor failure → behavior tree error recovery |
+
+**Not yet implemented:** Sensor failure, barcode reader fault, MongoDB outage, RabbitMQ disconnect, conveyor jam cascade, multi-robot deadlock injection, charge station failure, zone boundary drift, MQTT broker loss, fleet-wide brownout. These were scoped in `blueprint/05_security.md` but not built.
 
 ---
 
@@ -1504,6 +1540,13 @@ Python background task reads MongoDB agents collection, caches in Redis for sub-
 - `fleet:metrics` — aggregate fleet KPIs
 - `telemetry:{id}:latest` — most recent telemetry point
 
+**Redis Configuration:**
+- Startup: `redis-server --requirepass ${REDIS_PASSWORD}`
+- `maxmemory`: Not set (uses Redis default: unlimited)
+- `eviction-policy`: Not set (uses Redis default: `noeviction`)
+- Key TTL: No explicit TTL or `expire`/`setex` calls in Python code — keys persist until overwritten
+- This is acceptable for simulation use; production deployment should set `maxmemory` and `allkeys-lru` eviction
+
 ### InfluxDB (Time-Series)
 
 - **Org:** rdt
@@ -1545,13 +1588,15 @@ If WebSocket unavailable, REST endpoints provide same data:
 
 ### Test Breakdown
 
-| Category | Count | Framework | Location |
-|----------|-------|-----------|----------|
-| **C++ Core** | 398 | gtest | `cpp/tests/test_*.cpp` |
-| **Python API** | 928 | pytest + httpx | `python/tests/test_*.py` |
-| **E2E** | ~50 | Playwright | `e2e/`, `frontend/` |
-| **Gazebo Integration** | ~52 | pytest | `tests/` |
-| **Total** | **1,567** | | **0 failures** |
+| Category | Count | Framework | Location | Precision |
+|----------|-------|-----------|----------|-----------|
+| **C++ Core** | ~398 | gtest | `cpp/tests/test_*.cpp` | Approximate (from audit) |
+| **Python API** | ~928 | pytest + httpx | `python/tests/test_*.py` (46 modules) | Approximate (from audit) |
+| **E2E** | ~50 | Playwright | `e2e/`, `frontend/` | Approximate |
+| **Gazebo Integration** | ~52 | pytest | `tests/` (9 files) | Approximate |
+| **Total** | **~1,428+** | | **0 failures** | Sum of above; additional tests may exist in phase-specific outputs |
+
+**Note:** Counts are approximate, compiled from external audit reports across 18 phases. No single `pytest` run covers all tests simultaneously since C++ (gtest) and Python (pytest) run in separate test harnesses. Some phase-specific tests may not be captured in the per-category breakdown.
 
 ### C++ Test Categories
 
@@ -1607,7 +1652,7 @@ npx playwright test --headed
 ### What You Can Do With the Deployed System
 
 #### 1. Full Fleet Simulation
-- Launch 1-100 robots in a Gazebo physics world
+- Launch fleet of robots in a Gazebo physics world (tested with 10, real-time up to ~20 within 67ms FMS budget; 50+ launches but exceeds real-time)
 - Watch robots navigate, pick, place, charge in real-time 3D
 - Monitor via React dashboard on `localhost:8029/dashboard`
 
@@ -1708,7 +1753,7 @@ npx playwright test --headed
 
 | Resource | Tested Limit | Bottleneck |
 |----------|-------------|------------|
-| Robots | 100+ (50 real-time) | FMS loop time |
+| Robots | 10 tested, ~20 real-time max, 50+ exceeds 67ms budget | FMS loop time |
 | WebSocket Connections | 100 | Broadcast bandwidth |
 | MongoDB Documents | Millions | Index on robot_id, task_id |
 | InfluxDB Retention | 7 days (configurable) | Disk space |
@@ -1749,7 +1794,7 @@ case-studies/project_29_full_robotics/
 │   │   │   ├── config.py                 # Pydantic Settings
 │   │   │   ├── auth.py                   # API key middleware
 │   │   │   ├── websocket.py              # WebSocket manager
-│   │   │   ├── routes/                   # 28 route modules (152+ endpoints)
+│   │   │   ├── routes/                   # 28 route modules (~118 endpoints)
 │   │   │   └── models/                   # Pydantic schemas
 │   │   ├── wes/                          # Warehouse Execution System
 │   │   ├── wcs/                          # Warehouse Control System
@@ -1938,9 +1983,88 @@ docker compose -f docker/docker-compose.yml down
 **Decision:** fleet_core C++, Gazebo, and FastAPI Python run as 3 separate OS processes in Docker.
 **Reason:** fleet_core is designed as a standalone process. Gazebo is a separate process. Python bridges them.
 
+### ADR-005: Gazebo Fortress Over Webots/Isaac Sim
+**Decision:** Use Gazebo Fortress (ignition-gazebo) for physics simulation.
+**Reason:** Native SDF support, ODE physics at 1kHz, mature ROS2 ecosystem integration, open source, runs headless in Docker. Isaac Sim requires NVIDIA GPU; Webots lacks fleet-scale simulation support.
+
+### ADR-006: InfluxDB Over Prometheus/TimescaleDB
+**Decision:** Use InfluxDB 2 for time-series telemetry storage.
+**Reason:** Purpose-built for time-series with built-in retention policies (7-day default), native Grafana integration, simple HTTP write API. Prometheus is pull-based (wrong model for push telemetry). TimescaleDB adds PostgreSQL overhead unnecessary for simulation.
+
+### ADR-007: Mosquitto for VDA5050 MQTT
+**Decision:** Use Eclipse Mosquitto 2 as MQTT broker for VDA5050 protocol.
+**Reason:** Lightweight (<10MB), supports MQTT 5.0, WebSocket bridge on port 9001, password auth with SCRAM-SHA-256. VDA5050 standard requires MQTT — Mosquitto is the reference implementation.
+
+### ADR-008: MAPF Dual Solver (CBS + PIBT)
+**Decision:** Implement both CBS (optimal) and PIBT (real-time) solvers for multi-agent path finding.
+**Reason:** CBS guarantees shortest combined path but is exponential beyond 200 agents. PIBT runs in linear time for 500+ agents but is suboptimal. Providing both lets users choose speed vs optimality per use case.
+
+### ADR-009: React 18 + Vite + Three.js for Dashboard
+**Decision:** React 18 with Vite bundler, Tailwind CSS, and Three.js for 3D rendering.
+**Reason:** Vite provides instant HMR during development. React component model fits panel-based dashboard. Three.js enables 3D warehouse visualization without WebGL boilerplate. Tailwind eliminates CSS file proliferation.
+
+### ADR-010: FastAPI Over Flask/Django
+**Decision:** Use FastAPI as the Python API framework.
+**Reason:** Native async support (essential for WebSocket + MongoDB motor driver), automatic OpenAPI docs at `/docs`, Pydantic model validation, and sub-ms request overhead. Django too heavy for a thin API wrapper; Flask lacks native async.
+
+### ADR-011: Redis for Hot State (Not Memcached)
+**Decision:** Use Redis 7 as hot state cache for robot positions and telemetry.
+**Reason:** Supports structured data types (hashes, sorted sets) beyond simple key-value. Persistence option if needed. Same Redis instance can serve both cache and pub/sub if WebSocket broadcast scales. Memcached is key-value only.
+
 ---
 
-## Appendix B: Port Reference
+## Appendix B: Security
+
+### Implemented Security Measures
+
+| Layer | Measure | Implementation | Status |
+|-------|---------|---------------|--------|
+| **API Authentication** | API key via `X-API-Key` header | `python/app/auth.py` — `APIKeyHeader` | Conditional (disabled when `API_KEY=disabled`) |
+| **CORS** | Allowed headers: `X-API-Key`, `Content-Type` | `python/app/main.py` CORSMiddleware | Active |
+| **MQTT Auth** | Password-protected broker | `docker/mosquitto/passwd` — SCRAM-SHA-256 | Active |
+| **MongoDB Auth** | Username/password via env vars | `MONGO_USER`/`MONGO_PASSWORD` in docker-compose | Active |
+| **Redis Auth** | Password-protected | `--requirepass ${REDIS_PASSWORD}` | Active |
+| **RabbitMQ Auth** | Username/password via env vars | `RABBITMQ_DEFAULT_USER`/`RABBITMQ_DEFAULT_PASS` | Active |
+| **Secrets Management** | `.env` files (gitignored) | `docker/.env.docker.example` as template | Active |
+| **Network Isolation** | All ports bind to `127.0.0.1` | docker-compose port mappings | Active |
+
+### Protected Endpoints (Require API Key)
+
+All mutating endpoints when `API_KEY` is set:
+- `POST /api/robots/{id}/command`
+- `POST /api/wes/inject-orders`
+- `POST /api/tasks`, `DELETE /api/tasks/{id}`, `POST /api/tasks/{id}/cancel`
+- `POST /api/simulation/start`, `/stop`, `/inject-fault`
+- `POST /api/vda5050/orders`, `/instant-actions`
+
+### Not Implemented (Simulation-Grade Limitations)
+
+| Gap | Description | Impact |
+|-----|-------------|--------|
+| No TLS/SSL | All traffic is HTTP/unencrypted | Acceptable for localhost simulation; requires reverse proxy (nginx) for production |
+| No JWT/OAuth | Simple API key only, no token expiry | Sufficient for simulation; production needs proper auth |
+| No Rate Limiting | No request throttling | DoS risk if exposed publicly |
+| No Audit Logging | Auth failures not logged | No forensic trail |
+| No Request Sanitization | No explicit input validation beyond Pydantic | Pydantic models provide type safety but no XSS/injection guards |
+
+---
+
+## Appendix C: Known Limitations & Future Work
+
+| Area | Limitation | Current State | Future Enhancement |
+|------|-----------|---------------|-------------------|
+| Fleet Scale | 67ms budget exceeded at 20+ robots | 10 robots tested, ~20 real-time max | Batch task allocation, A* caching, lazy BT eval |
+| Motion Control | P-controller with acceleration limiting | Jerky motion on curves | MPC + OSQP (planned Phase 7 enhancement) |
+| ROS2 Integration | Stub implementation, no actual nav2 | Simulated mode only | Full nav2 SendGoal action server |
+| Sensor Realism | Gaussian noise only | No occlusion, no ray casting delays | Raycast occlusion model, multi-bounce |
+| Battery Model | Fixed rate, no temperature dependence | Linear charge/discharge | Temperature-dependent degradation curves |
+| Fault Injection | 4 of 14 blueprint scenarios built | battery, obstacle, network, motor | Sensor fault, DB outage, multi-robot deadlock, etc. |
+| Security | Simulation-grade (no TLS, no JWT) | API key + password auth | TLS termination, OAuth2, rate limiting |
+| Cold Start | Synthetic zone identification | Type-based patterns, not real Gazebo raycast | Bridge real LiDAR scans to io-gita training |
+
+---
+
+## Appendix D: Port Reference
 
 | Port | Protocol | Service | Access |
 |------|----------|---------|--------|
