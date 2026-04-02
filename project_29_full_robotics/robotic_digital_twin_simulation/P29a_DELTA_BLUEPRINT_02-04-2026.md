@@ -10,18 +10,11 @@
 ## Table of Contents
 
 1. [Current State Summary](#1-current-state-summary)
-2. [Agnosticism Scorecard (Before/After)](#2-agnosticism-scorecard)
-3. [File Fate Map — KEEP / MODIFY / CREATE](#3-file-fate-map)
-4. [C++ Core (21 files)](#4-c-core)
-5. [Python Routes (28 files)](#5-python-routes)
-6. [Python Services](#6-python-services)
-7. [Configs](#7-configs)
-8. [Docker](#8-docker)
-9. [Gazebo](#9-gazebo)
-10. [Frontend](#10-frontend)
-11. [New Files to Create](#11-new-files-to-create)
-12. [Phase Plan](#12-phase-plan)
-13. [Archived Documents](#13-archived-documents)
+2. [Agnosticism Scorecard](#2-agnosticism-scorecard)
+3. [Complete Annotated Project Tree](#3-complete-annotated-project-tree)
+4. [Phase Plan (9 Phases, 48 Tasks, 23 Days)](#4-phase-plan)
+5. [System Architecture Flowcharts](#5-system-architecture-flowcharts)
+6. [Resource Estimates (SaaS)](#6-resource-estimates)
 
 ---
 
@@ -64,309 +57,459 @@ P29 is a **working warehouse robotics digital twin** inside Docker:
 
 ---
 
-## 3. File Fate Map
+## 3. Complete Annotated Project Tree
+
+Legend: `(existing)` = no changes | `[M]` = modify | `★ NEW` = create
 
 ```
-KEEP:     ~85 files  (85%)
-MODIFY:   ~15 files  (15%)
-CREATE:   ~13 files  (new)
-DELETE:    0 files
+project_29a_robotic_digital_twin/
+│
+├── CLAUDE.md                                       (existing)
+├── P29a_DELTA_BLUEPRINT_02-04-2026.md              (existing)
+├── CMakeLists.txt                                  (existing)
+├── vcpkg.json                                      (existing)
+├── .env.example                                    (existing)
+│
+├── cpp/
+│   ├── CMakeLists.txt                              [M] add new source files to build
+│   ├── include/rdt/
+│   │   ├── behavior/
+│   │   │   ├── ActionNodes.h                       (existing)
+│   │   │   ├── BTEngine.h                          (existing)
+│   │   │   └── ConditionNodes.h                    (existing)
+│   │   ├── core/
+│   │   │   ├── Config.h                            (existing)
+│   │   │   ├── Logger.h                            (existing)
+│   │   │   ├── Timer.h                             (existing)
+│   │   │   └── Types.h                             (existing)
+│   │   ├── fleet/
+│   │   │   ├── AgentInterface.h                    (existing)
+│   │   │   ├── COPPController.h                    (existing)
+│   │   │   ├── FleetManager.h                      (existing)
+│   │   │   └── TaskManager.h                       (existing)
+│   │   ├── navigation/
+│   │   │   ├── AStar.h                             (existing)
+│   │   │   ├── GraphMap.h                          (existing)
+│   │   │   ├── NodeReservation.h                   (existing)
+│   │   │   └── QuadTree.h                          (existing)
+│   │   ├── network/
+│   │   │   ├── ProtocolAdapter.h                   ★ NEW — abstract interface: any robot protocol
+│   │   │   ├── ProtocolV1.h                        [M] implement ProtocolAdapter interface
+│   │   │   ├── RESTServer.h                        (existing)
+│   │   │   └── TCPServer.h                         (existing)
+│   │   └── robot/
+│   │       ├── BatteryModel.h                      (existing)
+│   │       ├── MotionController.h                  [M] add factory method for multi-drive support
+│   │       ├── MotionControllerFactory.h           ★ NEW — diff/omni/ackermann per robot type
+│   │       ├── ObstacleHandler.h                   (existing)
+│   │       ├── RobotState.h                        (existing)
+│   │       └── RobotTelemetry.h                    ★ NEW — generic telemetry replacing V1 fields
+│   │
+│   ├── src/
+│   │   ├── apps/fms_server.cpp                     (existing)
+│   │   ├── behavior/
+│   │   │   ├── ActionNodes.cpp                     [M] config map lookup instead of hardcoded 14/15
+│   │   │   ├── BTEngine.cpp                        (existing)
+│   │   │   └── ConditionNodes.cpp                  (existing)
+│   │   ├── core/
+│   │   │   ├── Config.cpp                          (existing)
+│   │   │   ├── Logger.cpp                          (existing)
+│   │   │   └── Timer.cpp                           (existing)
+│   │   ├── fleet/
+│   │   │   ├── AgentInterface.cpp                  (existing)
+│   │   │   ├── COPPController.cpp                  (existing)
+│   │   │   ├── FleetManager.cpp                    (existing)
+│   │   │   └── TaskManager.cpp                     (existing)
+│   │   ├── navigation/
+│   │   │   ├── AStar.cpp                           (existing)
+│   │   │   ├── GraphMap.cpp                        (existing)
+│   │   │   ├── NodeReservation.cpp                 (existing)
+│   │   │   └── QuadTree.cpp                        (existing)
+│   │   ├── network/
+│   │   │   ├── ProtocolAdapter.cpp                 ★ NEW — factory + V1Adapter wrapping ProtocolV1
+│   │   │   ├── ProtocolV1.cpp                      [M] refactor into adapter pattern
+│   │   │   ├── RESTServer.cpp                      (existing)
+│   │   │   └── TCPServer.cpp                       (existing)
+│   │   └── robot/
+│   │       ├── BatteryModel.cpp                    (existing)
+│   │       ├── MotionController.cpp                [M] extract diff-drive, called by factory
+│   │       ├── MotionControllerFactory.cpp         ★ NEW — creates controller from RobotType
+│   │       ├── ObstacleHandler.cpp                 (existing)
+│   │       └── RobotState.cpp                      (existing)
+│   │
+│   └── tests/
+│       ├── CMakeLists.txt                          [M] register new test files
+│       ├── test_astar.cpp                          (existing)
+│       ├── test_battery.cpp                        (existing)
+│       ├── test_bt.cpp                             (existing)
+│       ├── test_config.cpp                         (existing)
+│       ├── test_fleet.cpp                          (existing)
+│       ├── test_graph.cpp                          (existing)
+│       ├── test_hello.cpp                          (existing)
+│       ├── test_logger.cpp                         (existing)
+│       ├── test_motion.cpp                         [M] add factory + omni controller tests
+│       ├── test_obstacle.cpp                       (existing)
+│       ├── test_protocol.cpp                       [M] test adapter pattern
+│       ├── test_protocol_adapter.cpp               ★ NEW — verify V1Adapter + factory dispatch
+│       ├── test_quadtree.cpp                       (existing)
+│       ├── test_reservation.cpp                    (existing)
+│       ├── test_rest.cpp                           (existing)
+│       ├── test_robot_state.cpp                    (existing)
+│       ├── test_tcp.cpp                            (existing)
+│       ├── test_timer.cpp                          (existing)
+│       └── test_types.cpp                          (existing)
+│
+├── python/
+│   ├── wrie_cli.py                                 [M] scrub vendor defaults
+│   ├── run_e2e.py                                  [M] scrub vendor defaults
+│   ├── run_production.py                           [M] scrub vendor defaults
+│   ├── generate_dashboard.py                       (existing)
+│   ├── requirements.txt                            (existing)
+│   │
+│   ├── app/
+│   │   ├── main.py                                 [M] scrub vendor presets, wire adapter registry
+│   │   ├── config.py                               (existing)
+│   │   ├── auth.py                                 (existing)
+│   │   ├── websocket.py                            (existing)
+│   │   └── routes/
+│   │       ├── analytics.py                        (existing)
+│   │       ├── charging.py                         [M] wire ChargeStrategy ABC
+│   │       ├── config_routes.py                    (existing)
+│   │       ├── designer.py                         [M] remove vendor template category
+│   │       ├── events.py                           (existing)
+│   │       ├── fleet.py                            (existing)
+│   │       ├── heatmap.py                          (existing)
+│   │       ├── human_agents.py                     (existing)
+│   │       ├── inventory.py                        (existing)
+│   │       ├── iogita.py                           [M] wire LocalizationEngine ABC
+│   │       ├── maintenance.py                      [M] parametric degradation from config
+│   │       ├── mapf.py                             (existing)
+│   │       ├── maps.py                             (existing)
+│   │       ├── order_import.py                     (existing)
+│   │       ├── reservations.py                     (existing)
+│   │       ├── robots.py                           (existing)
+│   │       ├── ros2.py                             (existing)
+│   │       ├── scenarios.py                        (existing)
+│   │       ├── simulation.py                       (existing)
+│   │       ├── stats.py                            (existing)
+│   │       ├── tasks.py                            (existing)
+│   │       ├── telemetry_export.py                 (existing)
+│   │       ├── telemetry.py                        (existing)
+│   │       ├── vda5050.py                          (existing)
+│   │       ├── waves.py                            (existing)
+│   │       ├── wcs.py                              [M] load lane types from YAML
+│   │       ├── wes.py                              (existing)
+│   │       └── wms.py                              (existing)
+│   │
+│   ├── wes/                                        (all 12 files existing — fully generic)
+│   │
+│   ├── wcs/
+│   │   ├── conveyor_controller.py                  (existing)
+│   │   ├── lane_manager.py                         [M] load lane types from YAML
+│   │   ├── package_tracker.py                      (existing)
+│   │   ├── sorter_engine.py                        [M] use RoutingStrategy interface
+│   │   └── routing_strategy.py                     ★ NEW — ABC for barcode/RFID/weight sorting
+│   │
+│   ├── wms/
+│   │   ├── connector.py                            (existing — adapter ABC)
+│   │   ├── dlq.py                                  (existing)
+│   │   ├── inventory_manager.py                    (existing)
+│   │   ├── odoo_adapter.py                         (existing)
+│   │   ├── order_translator.py                     [M] use declarative YAML translation rules
+│   │   ├── replenishment.py                        (existing)
+│   │   ├── sap_adapter.py                          (existing)
+│   │   ├── storage_optimizer.py                    (existing)
+│   │   ├── webhook_adapter.py                      (existing)
+│   │   ├── adapter_registry.py                     ★ NEW — register ERP adapters at runtime
+│   │   └── standard_order.py                       ★ NEW — 10-field universal order schema
+│   │
+│   ├── vda5050/                                    (all 5 files existing — standard protocol)
+│   │
+│   ├── intelligence/
+│   │   ├── localization_engine.py                  ★ NEW — ABC: io-gita/barcode/RFID backends
+│   │   └── iogita/                                 (all 7 files existing — becomes one impl)
+│   │
+│   ├── services/
+│   │   ├── charging/
+│   │   │   ├── charge_strategy.py                  ★ NEW — ABC for depot/in-situ/grid charging
+│   │   │   ├── degradation_model.py                (existing)
+│   │   │   ├── queue_manager.py                    (existing)
+│   │   │   └── strategy_engine.py                  [M] use ChargeStrategy ABC
+│   │   ├── human_agents/                           (all 4 files existing — generic)
+│   │   ├── maintenance/
+│   │   │   ├── component_model.py                  (existing)
+│   │   │   ├── predictive_engine.py                [M] load curve type from config
+│   │   │   └── scheduler.py                        (existing)
+│   │   └── simulation/
+│   │       ├── real_gazebo_bridge.py               [M] scrub vendor model paths
+│   │       └── (11 other files existing)
+│   │
+│   ├── ros2_bridge/                                (all 4 files existing)
+│   ├── monitoring/                                 (all 3 files existing)
+│   ├── designer/                                   (all 3 files existing)
+│   ├── scripts/                                    (all 3 files existing)
+│   │
+│   ├── map_importer/                               ★ NEW DIRECTORY
+│   │   ├── __init__.py                             ★ NEW — package init
+│   │   ├── dxf_converter.py                        ★ NEW — AutoCAD DXF → warehouse JSON
+│   │   └── node_generator.py                       ★ NEW — auto-gen nodes from floor plan
+│   │
+│   └── tests/
+│       ├── conftest.py                             (existing)
+│       ├── (41 existing test files)
+│       ├── test_designer_v2_api.py                 [M] scrub vendor template refs
+│       ├── test_fleet_config.py                    [M] scrub vendor refs
+│       ├── test_mapf.py                            [M] scrub vendor refs
+│       ├── test_scenario_overrides.py              [M] scrub vendor refs
+│       ├── test_wrie_cli.py                        [M] scrub vendor refs
+│       ├── test_adapter_registry.py                ★ NEW — test ERP adapter plugin registry
+│       ├── test_charge_strategy.py                 ★ NEW — test charging strategy ABC
+│       ├── test_localization_engine.py             ★ NEW — test localization ABC + io-gita
+│       ├── test_protocol_adapter.py                ★ NEW — test Python-side protocol adapter
+│       └── test_routing_strategy.py                ★ NEW — test sorter routing strategy ABC
+│
+├── configs/
+│   ├── behavior_trees/
+│   │   ├── default_agv.xml                         [M] template action codes via config injection
+│   │   ├── default_amr.xml                         [M] template action codes via config injection
+│   │   └── default_omni.xml                        ★ NEW — behavior tree for omni robots
+│   ├── charging/
+│   │   └── strategy_profiles.yaml                  (existing)
+│   ├── faults/                                     (existing — 2 files)
+│   ├── fleets/
+│   │   └── default_mixed.json                      [M] use generic type names only
+│   ├── human_agents/
+│   │   └── worker_profiles.yaml                    (existing)
+│   ├── maintenance/
+│   │   └── component_profiles.yaml                 (existing)
+│   ├── robots/
+│   │   ├── differential_drive.yaml                 [M] add gazebo_model field
+│   │   ├── forklift_heavy.yaml                     [M] add gazebo_model field
+│   │   ├── inspection_bot.yaml                     [M] add gazebo_model field
+│   │   ├── omnidirectional.yaml                    ★ NEW — generic omni robot config
+│   │   └── unidirectional.yaml                     [M] add gazebo_model field
+│   ├── warehouses/                                 (all 5 JSON files existing)
+│   ├── wcs/
+│   │   └── conveyor_layout.yaml                    [M] templateable sort rules
+│   └── wms/
+│       ├── sku_catalog.yaml                        (existing)
+│       └── translation_rules/                      ★ NEW DIRECTORY
+│           ├── sap.yaml                            ★ NEW — SAP field mapping
+│           ├── oracle.yaml                         ★ NEW — Oracle ERP mapping
+│           └── generic_webhook.yaml                ★ NEW — template for custom ERP
+│
+├── docker/
+│   ├── Dockerfile                                  (existing)
+│   ├── docker-compose.yml                          [M] remove hardcoded defaults, add env vars
+│   ├── start.sh                                    [M] fail-fast on missing config
+│   ├── .env.example                                [M] add BT/fleet/WCS env vars
+│   ├── .env.docker.example                         [M] same
+│   ├── mosquitto/                                  (existing — 2 files)
+│   └── sros2/                                      (existing — 2 files)
+│
+├── gazebo/
+│   ├── models/
+│   │   ├── generic/
+│   │   │   ├── diffdrive_amr/                      (existing — 2 files)
+│   │   │   ├── uni_agv/                            (existing — 2 files)
+│   │   │   └── omnidirectional/                    ★ NEW DIRECTORY
+│   │   │       ├── model.config                    ★ NEW — Gazebo model metadata
+│   │   │       └── model.sdf                       ★ NEW — 4-mecanum-wheel physics
+│   │   └── vendors/                                ★ NEW DIRECTORY
+│   │       └── README.md                           ★ NEW — customer model placement guide
+│   │
+│   ├── templates/                                  ★ NEW DIRECTORY
+│   │   └── zone_templates/
+│   │       ├── shelf_row.sdf                       ★ NEW — reusable shelf for world gen
+│   │       ├── charging_bay.sdf                    ★ NEW — reusable charger geometry
+│   │       └── conveyor_segment.sdf                ★ NEW — reusable conveyor geometry
+│   │
+│   ├── worlds/
+│   │   ├── (6 existing .sdf files)
+│   │   ├── warehouse_distinct_generator.py         [M] generalize for ANY warehouse JSON
+│   │   └── gen_fleet_world.py                      [M] add --world-file CLI arg
+│   │
+│   ├── plugins/                                    (existing — 4 files)
+│   ├── scripts/
+│   │   └── generate_robot_sdf.py                   [M] scrub vendor model references
+│   ├── spawn_fleet.py                              [M] read gazebo_model from robot YAML
+│   ├── launch.py                                   (existing)
+│   └── (12 other sim/benchmark scripts existing)
+│
+├── frontend/                                       (ALL EXISTING — data-driven, no changes)
+│   ├── package.json, vite.config.ts, etc.
+│   └── src/
+│       ├── App.tsx, main.tsx, types.ts
+│       ├── components/ (19 .tsx)
+│       └── hooks/ (8 .ts)
+│
+├── iogita_kdtree/                                  (renamed from iogita_kdtree_addverb)
+│   └── engine/io_gita_engine.py                    (existing)
+│
+├── docs/                                           (existing — 6 files)
+│   └── USER_EXPERIENCE.md                          [M] scrub vendor refs
+├── audit/                                          (existing — 5 files)
+│   ├── ALL_82_FINDINGS.md                          [M] scrub vendor refs
+│   └── KIMI_VERIFICATION_PROMPT.md                 [M] scrub vendor refs
+├── scenarios/                                      (existing — 4 files)
+│   ├── test_dynamic_obstacles.py                   [M] scrub vendor refs
+│   └── test_real_amcl_benchmark.py                 [M] scrub vendor refs
+└── e2e/                                            (existing — 6 files)
 ```
 
----
+### File Count Summary
 
-## 4. C++ Core
-
-### KEEP (17 files — no changes needed)
-
-| File | Why It's Already Agnostic |
-|------|--------------------------|
-| GraphMap.h/cpp | Loads ANY node/edge graph from config |
-| AStar.h/cpp | Generic A*, 3 heuristics, any graph |
-| NodeReservation.h/cpp | Generic mutex-based deadlock prevention |
-| QuadTree.h/cpp | Pure spatial index, any coordinates |
-| FleetManager.h/cpp | Orchestrates any robot type via RobotConfig |
-| TaskManager.h/cpp | Generic allocation with `isTypeCompatible()` |
-| COPPController.h/cpp | Generic cooperative path planning |
-| RobotState.h/cpp | Generic state machine (IDLE/MOVING/CHARGING/etc.) |
-| BatteryModel.h/cpp | All params from BatteryConfig YAML |
-| ObstacleHandler.h/cpp | Thresholds from ObstacleThresholdsConfig |
-| BTEngine.h/cpp | Loads ANY BTCPP v4 XML dynamically |
-| ConditionNodes.h/cpp | Generic conditions (batteryLow, atTarget, etc.) |
-| TCPServer.h/cpp | Generic TCP, callback-driven |
-| RESTServer.h/cpp | Generic HTTP GET server |
-| Config.h/cpp | Loads any YAML/JSON at runtime, action_codes from map |
-| Types.h/cpp | RobotType: DIFFERENTIAL/UNI/OMNI, TaskType: MOVE/PICK/PLACE/CHARGE/PARK |
-| Timer.h, Logger.h | Utility |
-
-### MODIFY (3 files)
-
-| File | Problem | Fix |
-|------|---------|-----|
-| **ActionNodes.cpp** | Lines 122-154: `action_code == 14` (load), `== 15` (unload) hardcoded | Read from `ctx.robot_config->action_codes["start_loading"]` map instead of literals |
-| **ProtocolV1.h/cpp** | 33-field pipe-delimited format assumes all robots send same fields (motor_left_rpm, barcode_row, etc.) | Extract to ProtocolV1Adapter implementing new ProtocolAdapter interface |
-| **MotionController.h/cpp** | P-controller assumes differential drive only (linear + angular) | Add MotionControllerFactory — instantiate per robot type (diff, omni, ackermann) |
-
-### CREATE (3 new files)
-
-| File | Purpose |
-|------|---------|
-| `include/rdt/network/ProtocolAdapter.h` + `src/network/ProtocolAdapter.cpp` | Abstract interface: `encode(RobotTelemetry)` / `decode(raw) -> RobotTelemetry`. Factory reads `robot_config.protocol_version`. ProtocolV1 becomes ProtocolV1Adapter. |
-| `include/rdt/robot/RobotTelemetry.h` | Generic telemetry: pose, velocity, battery + `map<string,double> sensor_data` for protocol-specific extras |
-| `include/rdt/robot/MotionControllerFactory.h` | Factory returns DiffDriveController / OmniController / AckermannController based on RobotType |
+| Action | Files | What |
+|--------|-------|------|
+| **(existing)** | ~155 | Working code — no changes needed |
+| **[M] MODIFY** | ~35 | Scrub vendors (~15) + add abstractions (~12) + config fields (~8) |
+| **★ NEW** | ~30 | Abstraction layers + configs + tests + Gazebo models + map importer |
+| **Total** | **~220** | |
 
 ---
 
-## 5. Python Routes
+## 4. Phase Plan (9 Phases, 48 Tasks, 23 Days)
 
-### KEEP (24 of 28 — no changes)
+### Phase 0 — Foundation + Vendor Cleanup (2 days)
+**Goal:** Zero vendor refs, remove all hardcoded assumptions
 
-| Files | Why |
-|-------|-----|
-| fleet.py, robots.py, tasks.py | Generic CRUD, no robot assumptions |
-| maps.py | Pure graph pathfinding |
-| wes.py, waves.py | Generic order/wave pipeline |
-| wms.py | Adapter pattern already works — adding SAP/Oracle = new adapter only |
-| vda5050.py | VDA5050 IS the robot-agnostic standard |
-| mapf.py | CBS/PIBT graph-agnostic solvers |
-| inventory.py | Generic SKU/stock tracking |
-| designer.py | Produces generic warehouse JSON |
-| human_agents.py | Data-driven |
-| ros2.py | HAL pattern extensible |
-| scenarios.py, simulation.py | Config-driven |
-| analytics.py, heatmap.py, stats.py, events.py | Pure data aggregation |
-| telemetry.py, telemetry_export.py | Format-agnostic |
-| reservations.py, config_routes.py, order_import.py | Generic |
-
-### MODIFY (4 of 28)
-
-| File | Problem | Fix |
-|------|---------|-----|
-| **wcs.py** | Lane types hardcoded enum (inbound/outbound/express/returns/staging) | Load lane types from YAML config instead |
-| **iogita.py** | Coupled to io-gita KDTree/Hopfield backend — breaks if robot has no LiDAR | Create LocalizationEngine ABC, io-gita becomes one implementation |
-| **charging.py** | Strategy logic hardcoded in engine | Create ChargeStrategy ABC (depot, in-situ, grid, custom) |
-| **maintenance.py** | Linear degradation model only | Parametrize curve type (linear/Weibull/exponential) from config |
-
----
-
-## 6. Python Services
-
-### KEEP (fully generic)
-
-| Directory | Files | Why |
-|-----------|-------|-----|
-| python/wes/ | 11 files | Order gen, task gen, wave engine, KPI, MAPF, scenarios — all generic |
-| python/wms/ | 9 files | Adapter pattern excellent — webhook/SAP/Odoo all pluggable, DLQ generic |
-| python/vda5050/ | 4 files | Standard protocol gateway, translator, MQTT client |
-| python/services/human_agents/ | 3 files | Worker model, interaction manager, safety zones — data-driven |
-| python/ros2_bridge/ | 3 files | HAL extensible, just needs brand-specific subclasses when needed |
-
-### MODIFY
-
-| Directory | Problem | Fix |
-|-----------|---------|-----|
-| python/wcs/ (4 files) | Sorter uses `startswith()` not regex. Lane types hardcoded. | Create RoutingStrategy interface (barcode, RFID, weight) |
-| python/intelligence/iogita/ (6 files) | No localization abstraction | Create LocalizationEngine ABC wrapping io-gita |
-| python/services/charging/ | Strategy hardcoded in engine | Create ChargeStrategy ABC |
-| python/services/maintenance/ | Linear degradation only | Load curve type from config YAML |
-
----
-
-## 7. Configs
-
-### KEEP (no changes)
-
-| Config | Why |
-|--------|-----|
-| configs/warehouses/*.json | Generic graph format (nodes, edges, zones) — any warehouse |
-| configs/robots/*.yaml | Fully parameterized — motion, battery, sensors, action_codes |
-| configs/wms/sku_catalog.yaml | Generic product metadata |
-| configs/charging/strategy_profiles.yaml | Parameterized |
-| configs/maintenance/component_profiles.yaml | Generic MTBF/degradation |
-| configs/fleets/*.json | Robot composition — references robot config names |
-
-### MODIFY
-
-| Config | Problem | Fix |
-|--------|---------|-----|
-| configs/behavior_trees/*.xml | Action codes in XML should use config injection | Parameterize via `{{ACTION_CODE_LOAD}}` template substitution |
-| configs/wcs/conveyor_layout.yaml | Sort rules site-specific | Provide template + document customization |
-| configs/robots/*.yaml | Missing `gazebo_model` field | Add `gazebo_model: "manufacturer/model_name"` for Gazebo registry |
-
-### CREATE
-
-| Config | Purpose |
-|--------|---------|
-| configs/wms/translation_rules/sap.yaml | Declarative field mapping: `AUFNR -> order_id`, `MATNR -> sku` |
-| configs/wms/translation_rules/oracle.yaml | Oracle ERP field mapping |
-| configs/wms/translation_rules/generic_webhook.yaml | Template for custom ERP |
-
----
-
-## 8. Docker
-
-### KEEP
-
-| File | Why |
-|------|-----|
-| docker/Dockerfile | Multi-stage build is clean and generic |
-| docker/mosquitto/ | Standard MQTT config, environment-driven |
-
-### MODIFY
-
-| File | Problem | Fix |
-|------|---------|-----|
-| docker/docker-compose.yml | Default `WAREHOUSE_CONFIG=production_50x60` hardcoded. Missing `BEHAVIOR_TREE_CONFIG`, `FLEET_CONFIG`, `WCS_CONFIG` env vars. | Remove hardcoded defaults. Add all missing env vars. Fail-fast if not set. |
-| docker/start.sh | Missing BT config handling. Silent failure if config file not found. | Add BT env var. `exit 1` on missing config instead of silent skip. |
-
----
-
-## 9. Gazebo
-
-### KEEP
-
-| File/Dir | Why |
-|----------|-----|
-| gazebo/worlds/*.sdf (6 files) | Existing worlds still valid for testing |
-| gazebo/models/generic/ (2 models) | Fallback models for any robot type |
-| gazebo/worlds/gen_fleet_world.py | Robot spawning is generic |
-
-### MODIFY
-
-| File/Dir | Problem | Fix |
-|----------|---------|-----|
-| gazebo/models/addverb/ (5 models) | Vendor-specific, no registry | Robot YAML should declare `gazebo_model` field; spawn script reads it |
-| gazebo/worlds/warehouse_distinct_generator.py | Hardcoded to one warehouse layout (40x30m, fixed zones) | Generalize: read ANY warehouse JSON + zone geometry template library |
-
-### CREATE
-
-| File/Dir | Purpose |
-|----------|---------|
-| gazebo/templates/zone_templates/ | SDF templates: shelf_row.sdf, charging_bay.sdf, conveyor_segment.sdf — generator picks by zone type |
-
----
-
-## 10. Frontend
-
-### KEEP (95%)
-
-| File/Dir | Why |
-|----------|-----|
-| frontend/src/types.ts | Generic data contracts (RobotType: diff/uni/omni, MapNode, Task) |
-| frontend/src/components/ (all) | Data-driven, graceful fallbacks for unknown types |
-| frontend/src/hooks/ | Generic REST/WebSocket hooks |
-
-### CREATE (Phase 2+)
-
-| File/Dir | Purpose |
-|----------|---------|
-| frontend/src/pages/Onboarding/ | Setup wizard: upload warehouse -> add robots -> connect ERP -> test |
-
----
-
-## 11. New Files to Create (Complete List)
-
-### HIGH Priority (Phase 0-1)
-
-| # | File | Purpose | Effort |
-|---|------|---------|--------|
-| 1 | `cpp/include/rdt/network/ProtocolAdapter.h` + `.cpp` | Abstract protocol interface (V1, V2, custom) | 2h |
-| 2 | `cpp/include/rdt/robot/RobotTelemetry.h` | Generic telemetry bridge type | 1h |
-| 3 | `cpp/include/rdt/robot/MotionControllerFactory.h` | Per-type controller instantiation | 3h |
-| 4 | `python/intelligence/localization_engine.py` | Abstract localization (io-gita, barcode, RFID, custom) | 2h |
-| 5 | `python/wms/adapter_registry.py` | Plugin registry for ERP adapters (register at runtime) | 1h |
-| 6 | `python/wms/standard_order.py` | Standard inbound order Pydantic schema | 1h |
-
-### MEDIUM Priority (Phase 2-3)
-
-| # | File | Purpose | Effort |
-|---|------|---------|--------|
-| 7 | `python/wcs/routing_strategy.py` | Abstract sorter routing (barcode, RFID, weight) | 2h |
-| 8 | `python/services/charging/charge_strategy.py` | Abstract charging interface (depot, in-situ, grid) | 2h |
-| 9 | `configs/wms/translation_rules/sap.yaml` | Declarative SAP field mapping | 1h |
-| 10 | `configs/wms/translation_rules/oracle.yaml` | Oracle ERP field mapping | 1h |
-| 11 | `python/map_importer/dxf_converter.py` | AutoCAD DXF -> warehouse JSON | 4h |
-| 12 | `python/map_importer/node_generator.py` | Auto-generate nodes from floor plan geometry | 3h |
-| 13 | `gazebo/templates/zone_templates/` | Shelf, charger, conveyor SDF templates for world gen | 3h |
-
----
-
-## 12. Phase Plan
-
-### Phase 0 — Foundation (2 days)
-**Goal:** Remove all hardcoded assumptions from C++ and Python core
-
-1. Fix ActionNodes.cpp — config lookup instead of literal 14/15/31/51
-2. Create ProtocolAdapter.h + RobotTelemetry.h
-3. Wrap ProtocolV1 as ProtocolV1Adapter
-4. Create adapter_registry.py for WMS plugins
-5. Create standard_order.py (Pydantic inbound schema)
-6. Fix docker-compose.yml defaults + start.sh fail-fast
+| # | Task | Files |
+|---|------|-------|
+| 1 | Scrub all vendor references from ~15 code files | main.py, designer.py, spawn_fleet.py, tests, scenarios, docs |
+| 2 | Fix ActionNodes.cpp — config map lookup for codes 14/15/31/51 | cpp/src/behavior/ActionNodes.cpp |
+| 3 | Create ProtocolAdapter.h + RobotTelemetry.h | cpp/include/rdt/network/, cpp/include/rdt/robot/ |
+| 4 | Create ProtocolAdapter.cpp (factory + V1Adapter) | cpp/src/network/ProtocolAdapter.cpp |
+| 5 | Refactor ProtocolV1.h/cpp to implement adapter interface | cpp/include/rdt/network/ProtocolV1.h, cpp/src/network/ProtocolV1.cpp |
+| 6 | Create adapter_registry.py (ERP plugin system) | python/wms/adapter_registry.py |
+| 7 | Create standard_order.py (10-field Pydantic schema) | python/wms/standard_order.py |
+| 8 | Fix docker-compose.yml — remove hardcoded defaults, add env vars | docker/docker-compose.yml, docker/.env.example |
+| 9 | Fix start.sh — fail-fast on missing config, add BT handling | docker/start.sh |
+| 10 | Add `gazebo_model` field to all robot YAML configs | configs/robots/*.yaml |
+| 11 | Create gazebo/models/vendors/README.md | gazebo/models/vendors/ |
+| 12 | Write tests for ProtocolAdapter | cpp/tests/test_protocol_adapter.cpp, python/tests/test_protocol_adapter.py |
+| 13 | Write tests for adapter_registry + standard_order | python/tests/test_adapter_registry.py |
 
 ### Phase 1 — Robot Agnostic (3 days)
-**Goal:** Any robot plugs in with a YAML config
+**Goal:** Any robot plugs in with a YAML config file
 
-7. Create MotionControllerFactory (diff, omni, ackermann)
-8. Create LocalizationEngine ABC (io-gita becomes one impl)
-9. Add `gazebo_model` field to robot YAML configs
-10. Update Gazebo spawn script to read model from robot config
-11. Create ChargeStrategy ABC
-12. Parametrize maintenance degradation curves
+| # | Task | Files |
+|---|------|-------|
+| 14 | Create MotionControllerFactory.h/.cpp (diff, omni, ackermann) | cpp/include/rdt/robot/, cpp/src/robot/ |
+| 15 | Refactor MotionController to work through factory | cpp/src/robot/MotionController.cpp |
+| 16 | Create LocalizationEngine ABC (io-gita becomes one impl) | python/intelligence/localization_engine.py |
+| 17 | Wire iogita.py route to use LocalizationEngine | python/app/routes/iogita.py |
+| 18 | Create ChargeStrategy ABC (depot, in-situ, grid) | python/services/charging/charge_strategy.py |
+| 19 | Wire strategy_engine.py to use ChargeStrategy | python/services/charging/strategy_engine.py |
+| 20 | Create omnidirectional.yaml + default_omni.xml | configs/robots/, configs/behavior_trees/ |
+| 21 | Create Gazebo omnidirectional model (4-mecanum SDF) | gazebo/models/generic/omnidirectional/ |
+| 22 | Parametrize maintenance degradation curves from config | python/services/maintenance/predictive_engine.py |
+| 23 | Update spawn_fleet.py for registry-based model loading | gazebo/spawn_fleet.py |
+| 24 | Template action codes in BT XMLs via config injection | configs/behavior_trees/default_amr.xml, default_agv.xml |
+| 25 | Write tests | python/tests/test_localization_engine.py, test_charge_strategy.py, cpp/tests/test_motion.cpp |
 
 ### Phase 2 — Map Agnostic (2 days)
 **Goal:** Any warehouse layout generates a working simulation
 
-13. Generalize warehouse_distinct_generator.py for ANY warehouse JSON
-14. Create zone geometry template library (shelf, charger, conveyor SDF)
-15. Create DXF importer (AutoCAD floor plan -> warehouse JSON)
-16. Create auto-node-generator (floor plan -> node graph)
+| # | Task | Files |
+|---|------|-------|
+| 26 | Generalize warehouse_distinct_generator.py for ANY JSON | gazebo/worlds/warehouse_distinct_generator.py |
+| 27 | Create zone geometry templates (shelf, charger, conveyor SDF) | gazebo/templates/zone_templates/*.sdf |
+| 28 | Create DXF importer (AutoCAD floor plan → warehouse JSON) | python/map_importer/dxf_converter.py |
+| 29 | Create auto-node-generator (floor plan geometry → node graph) | python/map_importer/node_generator.py |
+| 30 | Add --world-file and --model-type CLI args to gen_fleet_world.py | gazebo/worlds/gen_fleet_world.py |
+| 31 | Write tests for map_importer | python/tests/ (new test files) |
 
 ### Phase 3 — WMS Agnostic (2 days)
-**Goal:** Any ERP sends orders and they flow through
+**Goal:** Any ERP sends orders via 10-field mapping
 
-17. Create declarative translation rules (YAML field mapping per ERP)
-18. Create Oracle adapter
-19. Create NetSuite adapter stub
-20. Enable multi-ERP routing (not singleton connector)
-21. Fix WCS: load lane types from YAML, create RoutingStrategy interface
+| # | Task | Files |
+|---|------|-------|
+| 32 | Create declarative translation rules (YAML field mapping) | configs/wms/translation_rules/sap.yaml, oracle.yaml, generic_webhook.yaml |
+| 33 | Update order_translator.py to use YAML rules | python/wms/order_translator.py |
+| 34 | Enable multi-ERP routing (not singleton connector) | python/app/main.py |
+| 35 | Fix WCS: load lane types from YAML | python/wcs/lane_manager.py, python/app/routes/wcs.py |
+| 36 | Create RoutingStrategy ABC (barcode/RFID/weight) | python/wcs/routing_strategy.py |
+| 37 | Wire sorter_engine.py to use RoutingStrategy | python/wcs/sorter_engine.py |
+| 38 | Implement 10-field standard order validation on webhook | python/app/routes/wms.py |
+| 39 | Write tests | python/tests/test_routing_strategy.py |
 
-### Phase 4 — Platform (5 days)
-**Goal:** Self-service onboarding
+### Phase 4 — Auth + User Accounts (3 days)
+**Goal:** Users sign up, upload configs, own their data
 
-22. Dynamic robot registration API (add robots at runtime, not just config)
-23. Onboarding wizard (frontend: upload warehouse -> add robots -> connect ERP -> test)
-24. Multi-tenant support (tenant-isolated app_state)
-25. Standard order validation + DLQ for malformed orders
+| # | Task | Files |
+|---|------|-------|
+| 40 | Add auth service (JWT signup/login/verify/refresh) | python/app/auth.py (extend), new auth routes |
+| 41 | Add user database (PostgreSQL — accounts, configs, sessions) | docker/docker-compose.yml (add postgres), new models |
+| 42 | Add file upload API (warehouse JSON, robot YAML, SDF models) | new route: python/app/routes/uploads.py |
+| 43 | Per-user config storage (S3 or local volume) | python/app/config.py (extend) |
+| 44 | Protect all API routes with JWT middleware | python/app/auth.py, all routes |
+
+### Phase 5 — Container Orchestration (3 days)
+**Goal:** Each user gets isolated Docker simulation instance
+
+| # | Task | Files |
+|---|------|-------|
+| 45 | Per-user docker-compose template generation | new: platform/container_manager.py |
+| 46 | Port allocation manager (no conflicts across users) | new: platform/port_allocator.py |
+| 47 | Container lifecycle API: create/start/stop/status/destroy | new: platform/lifecycle_api.py |
+| 48 | Volume isolation per user (mongo, redis, influx per session) | docker-compose template |
+| 49 | Health check + readiness polling (wait for /health) | platform/container_manager.py |
+| 50 | Reverse proxy routing (nginx: /user123/* → user's container) | new: platform/nginx_config_gen.py |
+
+### Phase 6 — Onboarding Wizard (3 days)
+**Goal:** 4-step browser setup: warehouse → robots → WMS → launch
+
+| # | Task | Files |
+|---|------|-------|
+| 51 | Add React Router (page routing system) | frontend/package.json, frontend/src/App.tsx |
+| 52 | Login/Signup pages | frontend/src/pages/Login.tsx, Signup.tsx |
+| 53 | Step 1: Choose/upload warehouse (template picker + upload + designer) | frontend/src/pages/onboarding/WarehouseStep.tsx |
+| 54 | Step 2: Choose/upload robots (generic sliders + custom YAML) | frontend/src/pages/onboarding/RobotStep.tsx |
+| 55 | Step 3: Connect WMS (10-field mapping form + webhook URL) | frontend/src/pages/onboarding/WMSStep.tsx |
+| 56 | Step 4: Review + launch simulation | frontend/src/pages/onboarding/ReviewStep.tsx |
+| 57 | Save onboarding state to user DB | frontend hooks + platform API |
+
+### Phase 7 — 3D Visual Upgrade (2 days)
+**Goal:** GLTF robot models replace primitive boxes
+
+| # | Task | Files |
+|---|------|-------|
+| 58 | Source/create GLTF models (AMR, AGV, Forklift, Omni) | frontend/public/models/*.glb |
+| 59 | Load GLTF via useGLTF() in Warehouse3D.tsx | frontend/src/components/Warehouse3D.tsx |
+| 60 | Add `web_model` field to robot YAML → Three.js loads matching .glb | configs/robots/*.yaml, frontend/src/components/Robot3DModel.tsx |
+| 61 | Warehouse furniture GLTF (shelves, conveyors, chargers) | frontend/public/models/furniture/*.glb |
+| 62 | Optional: LiDAR ray visualization, path trails | frontend/src/components/Warehouse3D.tsx |
+
+### Phase 8 — Polish + End-to-End Testing (3 days)
+**Goal:** Production-ready SaaS with tested multi-user flow
+
+| # | Task | Files |
+|---|------|-------|
+| 63 | E2E test: signup → onboard → simulate → results | e2e/tests/ |
+| 64 | Load testing: 10 concurrent user containers | e2e/, platform/ |
+| 65 | WebSocket stability under multi-user load | python/app/websocket.py, platform/ |
+| 66 | PDF/CSV report generation + download | python/wes/report_generator.py |
+| 67 | Scenario comparison export | python/app/routes/scenarios.py |
+| 68 | Error handling: container crash recovery, stale session cleanup | platform/lifecycle_api.py |
+
+### Phase Summary
+
+| Phase | Name | Days | Tasks | Key Deliverable |
+|-------|------|------|-------|-----------------|
+| 0 | Foundation + Vendor Cleanup | 2 | 13 | Zero vendor refs, protocol adapter, standard order |
+| 1 | Robot Agnostic | 3 | 12 | MotionControllerFactory, LocalizationEngine, ChargeStrategy |
+| 2 | Map Agnostic | 2 | 6 | Generic world generator, DXF import, zone templates |
+| 3 | WMS Agnostic | 2 | 8 | YAML translation rules, RoutingStrategy, multi-ERP |
+| 4 | Auth + User Accounts | 3 | 5 | JWT auth, file upload, per-user storage |
+| 5 | Container Orchestration | 3 | 6 | Per-user Docker, port alloc, nginx routing |
+| 6 | Onboarding Wizard | 3 | 7 | 4-step React wizard, React Router |
+| 7 | 3D Visual Upgrade | 2 | 5 | GLTF robot models, warehouse furniture |
+| 8 | Polish + E2E Testing | 3 | 6 | Multi-user load test, reports, error recovery |
+| **Total** | | **23 days** | **68 tasks** | **Web-based SaaS simulation platform** |
 
 ---
 
-## 13. Archived Documents
-
-The following documents from P29 have been moved to `_archive/docs_pre_p29a/` as they reflect the pre-agnostic state. They remain available as historical reference but are superseded by this document.
-
-| Document | Original Location | Status |
-|----------|------------------|--------|
-| PROJECT_29_COMPLETE_REFERENCE.md | Both dirs | Superseded by this blueprint |
-| FEATURE_TABLE.md | Parent dir | Features list still valid, counts updated here |
-| ARCHITECTURE.md | Parent dir | Architecture unchanged, agnostic layer added on top |
-| SUMMARY.md | Parent dir | Summary outdated (old test/endpoint counts) |
-| EXECUTION_PLAN.md | Digital twin dir | P29 execution complete, P29a plan replaces |
-| MASTER_PLAN.md | Digital twin dir | Replaced by Phase Plan above |
-| PROJECT_PLAN.md | Digital twin dir | Replaced by Phase Plan above |
-| PROJECT_SUMMARY_1PAGE.md | Digital twin dir | Outdated |
-| ROADMAP.md | Digital twin dir | Replaced by Phase Plan above |
-| SIMULATION_SUMMARY.md | Digital twin dir | Outdated |
-| PLAN_PHASES_16_18.md | Parent dir | Phases 16-18 complete |
-| SYNTHETIC_DATA_AUDIT_REPORT.md | Parent dir | Historical audit |
-| iogita_presentation.md | Parent dir | Historical |
-| MANUAL_DEPS_INSTALL.md | Parent dir | Docker handles deps now |
-| warehouse_sim_prompt.md | Parent dir | Historical prompt |
-
-**CLAUDE.md is NOT archived** — it contains active project rules.
-
----
-
-## 14. Complete System Flowchart — Web-Based SaaS Simulation
+## 5. System Architecture Flowcharts
 
 ### User Journey
 
@@ -640,81 +783,9 @@ Platform returns: "Simulation stopped. Data saved."
 
 ---
 
-## 15. Updated Phase Plan (with SaaS + 3D)
-
-### Phase 0 — Foundation + Vendor Cleanup (2 days)
-1. Scrub all vendor references from code (~15 files)
-2. Fix ActionNodes.cpp — config lookup for action codes
-3. Create ProtocolAdapter.h + RobotTelemetry.h + ProtocolAdapter.cpp
-4. Create adapter_registry.py + standard_order.py
-5. Fix docker-compose.yml defaults + start.sh fail-fast
-6. Add `gazebo_model` field to robot YAML configs
-7. Create `gazebo/models/vendors/README.md`
-
-### Phase 1 — Robot Agnostic (3 days)
-8. Create MotionControllerFactory (diff, omni, ackermann)
-9. Create LocalizationEngine ABC
-10. Create ChargeStrategy ABC
-11. Create omnidirectional.yaml + default_omni.xml + Gazebo omni model
-12. Parametrize maintenance degradation curves
-13. Update spawn_fleet.py for registry-based model loading
-
-### Phase 2 — Map Agnostic (2 days)
-14. Generalize warehouse_distinct_generator.py for ANY warehouse JSON
-15. Create zone geometry templates (shelf, charger, conveyor SDF)
-16. Create DXF importer + auto-node-generator
-17. Create map_importer package with tests
-
-### Phase 3 — WMS Agnostic (2 days)
-18. Create declarative translation rules (YAML field mapping)
-19. Create Oracle + generic_webhook translation rules
-20. Enable multi-ERP routing in main.py
-21. Fix WCS: load lane types from YAML, create RoutingStrategy
-22. Implement 10-field standard order validation
-
-### Phase 4 — Auth + User Accounts (3 days)
-23. Add auth service (JWT signup/login/verify)
-24. Add user database (PostgreSQL — accounts, configs, sessions)
-25. Add file upload API (warehouse JSON, robot YAML, SDF models)
-26. Per-user config storage (S3 or local volume)
-27. Protect all API routes with JWT middleware
-
-### Phase 5 — Container Orchestration (3 days)
-28. Per-user docker-compose template generation
-29. Port allocation manager (no conflicts)
-30. Container lifecycle API: create / start / stop / status / destroy
-31. Volume isolation per user
-32. Health check + readiness polling
-33. Reverse proxy routing (nginx: /user123/* → user's container)
-
-### Phase 6 — Onboarding Wizard (3 days)
-34. Add React Router (page routing)
-35. Login/Signup pages
-36. 4-step onboarding wizard:
-    - Step 1: Choose/upload warehouse (template picker + file upload + designer)
-    - Step 2: Choose/upload robots (generic type sliders + custom YAML)
-    - Step 3: Connect WMS (10-field mapping form + webhook URL display)
-    - Step 4: Review + launch
-37. Save onboarding state to user DB
-
-### Phase 7 — 3D Visual Upgrade (2 days)
-38. Source/create GLTF robot models (AMR, AGV, Forklift, Omni)
-39. Load GLTF via `useGLTF()` in Warehouse3D.tsx (replace primitive boxes)
-40. Add `web_model` field to robot YAML → Three.js loads matching .glb
-41. Warehouse furniture models (shelves, conveyors, chargers as GLTF)
-42. Optional: LiDAR ray visualization, path trails
-
-### Phase 8 — Polish + Testing (3 days)
-43. End-to-end test: signup → onboard → simulate → results
-44. Load testing: 10 concurrent user containers
-45. WebSocket stability under multi-user load
-46. PDF/CSV report generation + download
-47. Scenario comparison export
-48. Error handling: container crash recovery, stale session cleanup
-
 ---
 
-## 16. Resource Estimates (SaaS)
+## 6. Resource Estimates (SaaS)
 
 | Metric | Per User | 10 Users | 100 Users |
 |--------|----------|----------|-----------|
